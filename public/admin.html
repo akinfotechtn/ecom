@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Infotech | Admin Control Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .admin-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+    .tab-content {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    .data-table th, .data-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.88rem;
+    }
+    .data-table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .status-online { background: #dcfce7; color: var(--accent-green); }
+    .status-cod { background: #ffedd5; color: var(--accent-orange); }
+    .badge-glow {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.webp" alt="AK Infotech Logo" class="logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9';">
+        <span>AK INFOTECH ADMIN</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="nav-btn">
+          🏪 View Storefront
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <div>
+        <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark);">⚙️ AK Infotech Control Panel</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Firebase Cloud Firestore & Google Auth Enabled.</p>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchAdminTab('sheetsTab', this)">📊 Google Sheets Sync</button>
+      <button class="tab-btn" onclick="switchAdminTab('productsTab', this)">📦 Manage Products</button>
+      <button class="tab-btn" onclick="switchAdminTab('brandsTab', this)">🏷️ Brands & Logos</button>
+      <button class="tab-btn" onclick="switchAdminTab('categoriesTab', this)">📁 Categories</button>
+      <button class="tab-btn" onclick="switchAdminTab('settingsTab', this)">⚙️ Store Settings</button>
+      <button class="tab-btn" onclick="switchAdminTab('ordersTab', this)">📋 Orders History</button>
+    </div>
+
+    <!-- TAB 1: GOOGLE SHEETS SYNC -->
+    <div class="tab-content active" id="sheetsTab">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 14px;">
+        <div>
+          <h2 style="font-size: 1.3rem; margin-bottom: 6px; color: var(--text-dark);">📊 Google Sheets Product Synchronizer</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Connect your Google Sheet to automatically import products with 9 columns (including Availability & Is Combo).
+          </p>
+        </div>
+
+        <a href="template/Ak_Info_Ecom_Product_Import_Template.csv" download="Ak_Info_Ecom_Product_Import_Template.csv" class="hero-btn" style="background: linear-gradient(135deg, #10b981, #059669); text-decoration: none; padding: 10px 20px;">
+          📥 Download Template CSV
+        </a>
+      </div>
+
+      <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
+        <div style="font-weight: 800; color: var(--accent-cyan); margin-bottom: 8px;">📋 Required 9 Column Headers in Google Sheet:</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span class="badge-glow">Product Photo/link</span>
+          <span class="badge-glow">Product Name</span>
+          <span class="badge-glow">Product Spec</span>
+          <span class="badge-glow">Brand</span>
+          <span class="badge-glow">Category</span>
+          <span class="badge-glow">Price</span>
+          <span class="badge-glow">Selling Price</span>
+          <span class="badge-glow" style="background: #fef3c7; color: #b45309; border-color: #fde68a;">Is Combo (Yes/No)</span>
+          <span class="badge-glow" style="background: #dcfce7; color: #16a34a; border-color: #86efac;">Availability (In stock/Out of stock)</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Published Google Sheet CSV URL</label>
+        <input type="url" id="googleSheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+        <button class="hero-btn" id="btnSyncGoogleSheet">
+          🔄 Sync Products Now
+        </button>
+        <button class="nav-btn" onclick="toggleCsvPasteBox()">
+          📝 Direct CSV Paste
+        </button>
+      </div>
+
+      <div id="syncLogStatus" style="margin-top: 16px; font-weight: 700;"></div>
+
+      <div id="csvPasteBox" style="display: none; margin-top: 20px;">
+        <label class="form-group">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Paste Raw CSV Text</span>
+          <textarea id="rawCsvText" rows="6" placeholder="Product Photo/link,Product Name,Product Spec,Brand,Category,Price,Selling Price,Is Combo,Availability..."></textarea>
+        </label>
+        <button class="pill-btn active" style="margin-top: 8px;" id="btnUploadCsv">Upload CSV</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: MANAGE PRODUCTS -->
+    <div class="tab-content" id="productsTab">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 1.3rem; color: var(--text-dark);">📦 Catalog Products Management</h2>
+        <button class="hero-btn" style="padding: 8px 18px;" onclick="openAddProductModal()">
+          + Add New Product
+        </button>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Product Name</th>
+              <th>Brand</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Selling Price</th>
+              <th>Combo?</th>
+              <th>Availability</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminProductsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: MANAGE BRANDS -->
+    <div class="tab-content" id="brandsTab">
+      <h2 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">🏷️ Brand Logos Management</h2>
+
+      <form id="brandForm" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; background: #f8fafc; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <input type="text" id="newBrandName" required placeholder="Brand Name (e.g. Trueview)" style="flex: 1; min-width: 180px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <input type="text" id="newBrandImg" placeholder="Logo Image URL (e.g. images/trueview-logo.webp)" style="flex: 2; min-width: 240px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <button type="submit" class="hero-btn" style="padding: 8px 20px;">+ Add Brand</button>
+      </form>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;" id="adminBrandsGrid"></div>
+    </div>
+
+    <!-- TAB 4: MANAGE CATEGORIES -->
+    <div class="tab-content" id="categoriesTab">
+      <h2 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">📁 Product Categories Management</h2>
+
+      <form id="categoryForm" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; background: #f8fafc; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <input type="text" id="newCatName" required placeholder="Category Name (e.g. CCTV Camera)" style="flex: 1; min-width: 180px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <input type="text" id="newCatImg" placeholder="Category Image URL (e.g. images/cctv-wholesale.webp)" style="flex: 2; min-width: 240px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <button type="submit" class="hero-btn" style="padding: 8px 20px;">+ Add Category</button>
+      </form>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px;" id="adminCategoriesGrid"></div>
+    </div>
+
+    <!-- TAB 5: STORE SETTINGS -->
+    <div class="tab-content" id="settingsTab">
+      <h2 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--text-dark);">⚙️ Delivery, COD & API Configuration</h2>
+
+      <form id="settingsForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Delivery Charge (₹)</label>
+            <input type="number" id="cfgDeliveryCharge" required>
+          </div>
+          <div class="form-group">
+            <label>Free Shipping Min Order (₹)</label>
+            <input type="number" id="cfgFreeShippingMin" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="background: #fff7ed; border: 1px solid #fed7aa; padding: 14px; border-radius: var(--radius-md);">
+          <label style="color: var(--accent-orange); font-weight: 800;">COD Mandatory Advance Fee (₹)</label>
+          <input type="number" id="cfgCodAdvanceAmount" required value="1000">
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 800; margin: 24px 0 12px; color: var(--accent-cyan);">💳 Razorpay Integration Keys</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Razorpay Key ID</label>
+            <input type="text" id="cfgRzpKeyId" placeholder="rzp_live_...">
+          </div>
+          <div class="form-group">
+            <label>Razorpay Key Secret</label>
+            <input type="password" id="cfgRzpKeySecret" placeholder="••••••••••••">
+          </div>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 800; margin: 24px 0 12px; color: var(--accent-cyan);">🚚 Shiprocket Logistics Credentials</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Shiprocket Email</label>
+            <input type="email" id="cfgSrEmail" placeholder="account@company.com">
+          </div>
+          <div class="form-group">
+            <label>Shiprocket Password</label>
+            <input type="password" id="cfgSrPassword" placeholder="••••••••••••">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-checkout" style="width: auto; padding: 12px 32px; margin-top: 20px;">
+          💾 Save Settings
+        </button>
+      </form>
+    </div>
+
+    <!-- TAB 6: ORDERS HISTORY -->
+    <div class="tab-content" id="ordersTab">
+      <h2 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">📋 Customer Orders & Live Status Manager</h2>
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Phone & City</th>
+              <th>Payment Method</th>
+              <th>Amount Breakdown</th>
+              <th>Live Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrdersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div class="modal-backdrop" id="productFormModalBackdrop">
+    <div class="modal-content">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" onclick="closeProductModal()">✕</button>
+      <h2 class="modal-title" id="productModalTitle">Add New Product</h2>
+
+      <form id="productForm">
+        <input type="hidden" id="editProductId">
+
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" id="prodName" required placeholder="4G WI-FI ROUTER R300 WHITE">
+        </div>
+
+        <div class="form-group">
+          <label>Product Photo Link (Image URL)</label>
+          <input type="text" id="prodPhotoLink" placeholder="images/cctv-wholesale.webp or https://...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Brand *</label>
+            <select id="prodBrandSelect" required></select>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="prodCategorySelect" required></select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>MRP / Original Price (₹) *</label>
+            <input type="number" id="prodPrice" required placeholder="2299">
+          </div>
+          <div class="form-group">
+            <label>Selling Price (Offer Price ₹) *</label>
+            <input type="number" id="prodSellingPrice" required placeholder="1249">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Availability *</label>
+            <select id="prodAvailabilitySelect" required>
+              <option value="In stock">In stock</option>
+              <option value="Out of stock">Out of stock</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Product Specifications / Details</label>
+          <textarea id="prodSpec" rows="3" placeholder="4G LTE Router with SIM slot..."></textarea>
+        </div>
+
+        <div style="margin: 12px 0;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.88rem;">
+            <input type="checkbox" id="prodIsCombo">
+            <span>Is this a Special Combo Pack / Kit?</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-checkout" style="width: 100%; margin-top: 16px;">
+          Save Product
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

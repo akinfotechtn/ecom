@@ -1,0 +1,30 @@
+{
+  "storeName": "Ak Info Ecom",
+  "tagline": "Premium Security Systems, CCTV, IT & Electronics",
+  "deliveryCharge": 150,
+  "freeShippingMinOrder": 3000,
+  "codAdvanceAmount": 1000,
+  "googleSheetUrl": "",
+  "lastSyncedAt": null,
+  "razorpay": {
+    "keyId": "rzp_test_sampleKey123",
+    "keySecret": "sampleSecretKey456"
+  },
+  "shiprocket": {
+    "email": "user@example.com",
+    "password": "Password123",
+    "channelId": ""
+  },
+  "discountCoupons": [
+    {
+      "code": "WELCOME10",
+      "discountPercent": 10,
+      "minOrderAmount": 1000
+    },
+    {
+      "code": "AKINFO500",
+      "discountFlat": 500,
+      "minOrderAmount": 5000
+    }
+  ]
+}

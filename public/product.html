@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Product Details | AK Infotech Security Store</title>
+  <meta name="description" content="View product specifications, price, and buy online with COD & Razorpay at AK Infotech.">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    .product-detail-container {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
+    }
+    .breadcrumb {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .breadcrumb a {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .gallery-box {
+      width: 100%;
+      height: 340px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    .specs-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.88rem;
+    }
+    .specs-table td:first-child {
+      font-weight: 700;
+      color: var(--text-muted);
+      width: 35%;
+    }
+    .btn-buy-now {
+      background: linear-gradient(135deg, var(--accent-orange), #c2410c);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
+    }
+    .btn-whatsapp-quote {
+      background: #25d366;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    @media (min-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 440px 1fr;
+      }
+      .gallery-box {
+        height: 420px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP UTILITY STRIP -->
+  <div class="announcement-bar">
+    <div class="announcement-left">
+      <span class="badge-glow">AK INFOTECH DEALS</span>
+      <span>⚡ Cash on Delivery (COD): Pay ₹1,000 Advance & Remaining at Delivery!</span>
+    </div>
+    <div class="announcement-right">
+      <span>📞 WhatsApp Orders: <strong>+91 9876543210</strong></span>
+      <span>🚚 Shiprocket Express Dispatch</span>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.webp" alt="AK Infotech Logo" class="logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9';">
+        <span>AK INFOTECH</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="index.html" class="nav-btn">
+          🏪 Store Catalog
+        </a>
+        <button class="nav-btn cart-btn" id="openCartBtn">
+          🛒 <span>Cart</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PRODUCT DETAIL SECTION -->
+  <main class="product-detail-container">
+    <div class="breadcrumb" id="productBreadcrumb">
+      <a href="index.html">Home</a> &gt; <span id="bcCategory">Product</span> &gt; <span id="bcName">Loading...</span>
+    </div>
+
+    <div class="detail-grid" id="productDetailGrid">
+      <div style="text-align: center; padding: 60px; color: var(--text-muted);">
+        Loading product details...
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS SECTION -->
+    <section style="margin-top: 40px;">
+      <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 16px; color: var(--text-dark);">📦 Related Security Products</h2>
+      <div class="product-grid" id="relatedProductsGrid"></div>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>🛒 Shopping Cart</h3>
+      <button class="close-btn" id="closeCartBtn">✕</button>
+    </div>
+    <div class="cart-items-list" id="cartItemsList"></div>
+    <div class="cart-footer">
+      <div class="summary-row">
+        <span>Total Amount</span>
+        <span id="cartFinalTotal">₹0</span>
+      </div>
+      <a href="index.html" class="btn-checkout" style="display: block; text-align: center; text-decoration: none;">
+        Go to Checkout →
+      </a>
+    </div>
+  </aside>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved.</p>
+  </footer>
+
+  <script type="module" src="js/product.js"></script>
+</body>
+</html>

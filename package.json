@@ -1,0 +1,27 @@
+{
+  "name": "ak-info-ecom",
+  "version": "1.0.0",
+  "description": "Modern E-Commerce Store with Google Sheet Product Sync, Razorpay, COD Advance Payment, Shiprocket Integration, Admin Management & Batch Scripts",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "razorpay": "^2.9.2"
+  },
+  "keywords": [
+    "ecommerce",
+    "razorpay",
+    "shiprocket",
+    "google-sheets-sync",
+    "cod-advance"
+  ],
+  "author": "AK Info Tech",
+  "license": "ISC"
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "prod-101",
+    "photoLink": "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800&q=80",
+    "productName": "Gopix 4MP Smart Color Night Vision Outdoor Bullet Camera",
+    "productSpec": "4MP Super HD resolution, 30m Color Night Vision, IP67 Weatherproof, Motion Detection AI, Built-in Mic & Speaker for Two-Way Audio.",
+    "brand": "Gopix",
+    "category": "CCTV Cameras",
+    "price": 3499,
+    "sellingPrice": 2299,
+    "inStock": true,
+    "isCombo": false
+  },
+  {
+    "id": "prod-102",
+    "photoLink": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=800&q=80",
+    "productName": "Hikvision 4-Channel 5MP AcuSense 4K DVR Kit",
+    "productSpec": "4 Channels AcuSense Human/Vehicle AI analytics, H.265+ Compression, 4K HDMI Output, 1TB Security Grade Hard Disk Included.",
+    "brand": "Hikvision",
+    "category": "DVR & NVR",
+    "price": 8999,
+    "sellingPrice": 6499,
+    "inStock": true,
+    "isCombo": false
+  },
+  {
+    "id": "prod-103",
+    "photoLink": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+    "productName": "Ultimate 4 Camera Home Security Combo Pack",
+    "productSpec": "Includes 2 Outdoor Bullet Cameras + 2 Indoor Dome Cameras + 4Ch DVR + 1TB Seagate Surveillance HDD + 90m Copper Wire + 12V 5A Power Supply.",
+    "brand": "Gopix",
+    "category": "Combo",
+    "price": 14999,
+    "sellingPrice": 10999,
+    "inStock": true,
+    "isCombo": true
+  },
+  {
+    "id": "prod-104",
+    "photoLink": "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=800&q=80",
+    "productName": "CP Plus 2MP Wi-Fi Smart PTZ Camera with Auto Tracking",
+    "productSpec": "360-degree coverage, 1080P Full HD, SD Card support up to 256GB, Alexa & Google Assistant support, Mobile app remote view.",
+    "brand": "CP Plus",
+    "category": "CCTV Cameras",
+    "price": 2899,
+    "sellingPrice": 1849,
+    "inStock": true,
+    "isCombo": false
+  },
+  {
+    "id": "prod-105",
+    "photoLink": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+    "productName": "Dahua 8-Port PoE Switch with 2 Uplink Gigabit Ports",
+    "productSpec": "8x 10/100Mbps PoE Ports, 96W Total Power budget, 250 Meter Long Range Extend Mode, Lightning Protection 4KV.",
+    "brand": "Dahua",
+    "category": "Accessories",
+    "price": 4500,
+    "sellingPrice": 3199,
+    "inStock": true,
+    "isCombo": false
+  },
+  {
+    "id": "prod-106",
+    "photoLink": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    "productName": "EyeTech Wireless Motion Sensor & Intrusion Alarm Kit",
+    "productSpec": "Smart Hub + 2 Door Sensors + PIR Motion Detector + Loud 110dB Siren + 2 Remote Controls. App notifications & GSM SIM backup.",
+    "brand": "EyeTech",
+    "category": "Security Systems",
+    "price": 7999,
+    "sellingPrice": 5299,
+    "inStock": true,
+    "isCombo": true
+  }
+]
