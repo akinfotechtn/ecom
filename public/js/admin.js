@@ -1,4 +1,4 @@
-// AK INFOTECH - ADMIN DASHBOARD JS (FIREBASE & AVAILABILITY INTEGRATED)
+// AK INFOTECH - ADMIN DASHBOARD JS (PURE CLIENT-SIDE FIREBASE & GOOGLE SHEETS SYNC)
 import { DbService } from "./db-service.js";
 
 let adminProducts = [];
@@ -28,7 +28,107 @@ window.switchAdminTab = function(tabId, btn) {
   document.getElementById(tabId).classList.add('active');
 };
 
-// 1. GOOGLE SHEETS & CSV SYNC
+// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC (WORKS ON VERCEL, GITHUB PAGES & ANY PORT)
+function normalizeGoogleSheetUrl(url) {
+  if (!url) return '';
+  let cleanUrl = url.trim();
+
+  if (cleanUrl.includes('/edit')) {
+    cleanUrl = cleanUrl.replace(/\/edit.*$/, '/export?format=csv');
+  } else if (cleanUrl.includes('/pubhtml')) {
+    cleanUrl = cleanUrl.replace(/\/pubhtml.*$/, '/pub?output=csv');
+  }
+  return cleanUrl;
+}
+
+function parseCsvTextToProducts(csvText) {
+  const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0);
+  if (lines.length <= 1) throw new Error("CSV contains no data rows.");
+
+  const parseCsvRow = (text) => {
+    const p = [];
+    let c = '';
+    let inQ = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (inQ && text[i + 1] === '"') {
+          c += '"';
+          i++;
+        } else {
+          inQ = !inQ;
+        }
+      } else if (ch === ',' && !inQ) {
+        p.push(c.trim());
+        c = '';
+      } else {
+        c += ch;
+      }
+    }
+    p.push(c.trim());
+    return p;
+  };
+
+  const headers = parseCsvRow(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  
+  const getColIndex = (aliases) => {
+    for (const alias of aliases) {
+      const idx = headers.findIndex(h => h.includes(alias));
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  };
+
+  const photoIdx = getColIndex(['photo', 'image', 'link', 'url']);
+  const nameIdx = getColIndex(['name', 'title', 'product']);
+  const specIdx = getColIndex(['spec', 'description', 'detail']);
+  const brandIdx = getColIndex(['brand', 'manufacturer']);
+  const catIdx = getColIndex(['category', 'cat', 'type']);
+  const priceIdx = getColIndex(['mrp', 'price']);
+  const sellingIdx = getColIndex(['selling', 'offer', 'saleprice', 'sale']);
+  const comboIdx = getColIndex(['combo', 'iscombo']);
+  const availIdx = getColIndex(['availability', 'stock']);
+
+  const parsed = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = parseCsvRow(lines[i]);
+    if (!cols.length || !cols.some(c => c)) continue;
+
+    const photoLink = (photoIdx !== -1 ? cols[photoIdx] : cols[0]) || 'images/cctv-wholesale.webp';
+    const productName = (nameIdx !== -1 ? cols[nameIdx] : cols[1]) || `Product #${i}`;
+    const productSpec = (specIdx !== -1 ? cols[specIdx] : cols[2]) || '';
+    const brand = (brandIdx !== -1 ? cols[brandIdx] : cols[3]) || 'Generic';
+    const category = (catIdx !== -1 ? cols[catIdx] : cols[4]) || 'General';
+
+    const rawPrice = (priceIdx !== -1 ? cols[priceIdx] : cols[5]) || '0';
+    const rawSelling = (sellingIdx !== -1 ? cols[sellingIdx] : cols[6]) || rawPrice;
+
+    const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
+    const sellingPrice = parseFloat(rawSelling.replace(/[^0-9.]/g, '')) || price;
+
+    const comboVal = ((comboIdx !== -1 ? cols[comboIdx] : cols[7]) || '').toLowerCase();
+    const isCombo = comboVal === 'yes' || comboVal === 'true' || comboVal === '1' || category.toLowerCase().includes('combo');
+
+    const availVal = ((availIdx !== -1 ? cols[availIdx] : cols[8]) || '').toLowerCase();
+    const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
+
+    parsed.push({
+      id: `gs-${Date.now()}-${i}`,
+      photoLink,
+      productName,
+      productSpec,
+      brand,
+      category,
+      price: price || sellingPrice,
+      sellingPrice: sellingPrice || price,
+      inStock,
+      isCombo
+    });
+  }
+
+  return parsed;
+}
+
 async function triggerGoogleSheetSync() {
   const urlInput = document.getElementById('googleSheetUrlInput').value.trim();
   const statusEl = document.getElementById('syncLogStatus');
@@ -40,29 +140,31 @@ async function triggerGoogleSheetSync() {
   }
 
   btn.disabled = true;
-  statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Fetching and parsing Google Sheet into Firebase...</span>`;
+  statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
 
   try {
-    const res = await fetch('/api/sync-google-sheet', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sheetUrl: urlInput })
-    });
-    
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success) {
-        await DbService.bulkSyncProducts(data.sampleProduct ? [data.sampleProduct] : []);
-        statusEl.innerHTML = `<span style="color: var(--accent-green);">✅ ${data.message} (${data.totalSynced} items synced)</span>`;
-      } else {
-        statusEl.innerHTML = `<span style="color: #ef4444;">✕ Sync Error: ${data.message}</span>`;
-      }
-    } else {
-      statusEl.innerHTML = `<span style="color: var(--accent-cyan);">⚠️ Backend offline. Use "Direct CSV Paste" or download the template CSV.</span>`;
+    const formattedUrl = normalizeGoogleSheetUrl(urlInput);
+    const response = await fetch(formattedUrl);
+
+    if (!response.ok) {
+      throw new Error(`Google Sheet request failed (${response.status}). Ensure your sheet access is set to "Anyone with the link can view" or "Published to web".`);
     }
+
+    const csvText = await response.text();
+    const parsedProducts = parseCsvTextToProducts(csvText);
+
+    if (!parsedProducts.length) {
+      throw new Error("No valid product rows were found in the Google Sheet.");
+    }
+
+    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">💾 Saving ${parsedProducts.length} products directly to Firebase Cloud Firestore...</span>`;
+    
+    await DbService.bulkSyncProducts(parsedProducts);
+    
+    statusEl.innerHTML = `<span style="color: var(--accent-green);">✅ Successfully synced ${parsedProducts.length} products from Google Sheet to Firebase!</span>`;
     await fetchAdminProducts();
   } catch (err) {
-    statusEl.innerHTML = `<span style="color: #ef4444;">✕ Request error: ${err.message}</span>`;
+    statusEl.innerHTML = `<span style="color: #ef4444;">✕ Sync Error: ${err.message}</span>`;
   } finally {
     btn.disabled = false;
   }
@@ -81,33 +183,7 @@ async function uploadRawCsv() {
   }
 
   try {
-    const lines = csvText.split('\n');
-    if (lines.length <= 1) throw new Error("CSV has no data rows.");
-    
-    const parsed = [];
-    for (let i = 1; i < lines.length; i++) {
-      if (!lines[i].trim()) continue;
-      const cols = lines[i].split(',').map(c => c.trim().replace(/^"(.*)"$/, '$1'));
-      const isComboVal = (cols[7] || '').toLowerCase();
-      const isCombo = isComboVal === 'yes' || isComboVal === 'true' || (cols[4] || '').toLowerCase().includes('combo');
-      
-      const availVal = (cols[8] || '').toLowerCase();
-      const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
-
-      parsed.push({
-        id: `csv-${Date.now()}-${i}`,
-        photoLink: cols[0] || 'images/cctv-wholesale.webp',
-        productName: cols[1] || `Product #${i}`,
-        productSpec: cols[2] || '',
-        brand: cols[3] || 'Generic',
-        category: cols[4] || 'General',
-        price: parseFloat(cols[5]) || 0,
-        sellingPrice: parseFloat(cols[6]) || parseFloat(cols[5]) || 0,
-        inStock,
-        isCombo
-      });
-    }
-
+    const parsed = parseCsvTextToProducts(csvText);
     await DbService.bulkSyncProducts(parsed);
     alert(`✅ Successfully imported ${parsed.length} products to Firebase!`);
     document.getElementById('rawCsvText').value = '';
