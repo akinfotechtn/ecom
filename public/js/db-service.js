@@ -22,14 +22,132 @@ const DEFAULT_PRODUCTS = [
   {
     id: "prod-101",
     photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
-    productName: "4G WI-FI ROUTER R300 WHITE",
-    productSpec: "4G LTE Wi-Fi Router with SIM slot, 300Mbps High Speed, Dual External Antennas",
+    productName: "Qubo 2K Prime 3MP PTZ",
+    productSpec: "Cloud Storage Mobile App; Qubo Smart AI Human Detection",
+    brand: "Qubo",
+    category: "Wireless CCTV",
+    price: 4490,
+    sellingPrice: 2400,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 150
+  },
+  {
+    id: "prod-102",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Qubo 3MP Outdoor Bullet Camera",
+    productSpec: "IP66 Weatherproof Night Vision Two-Way Audio Security",
+    brand: "Qubo",
+    category: "Wireless CCTV",
+    price: 5490,
+    sellingPrice: 3400,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 150
+  },
+  {
+    id: "prod-103",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Qubo Smart Door Lock Ultra",
+    productSpec: "Fingerprint OTP PIN RFID Card & Mechanical Key Unlock",
+    brand: "Qubo",
+    category: "Security Systems",
+    price: 9990,
+    sellingPrice: 3900,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 200
+  },
+  {
+    id: "prod-104",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Qubo Video Door Bell 2K",
+    productSpec: "2-Way Talk Intruder Alarm Motion Detector Wi-Fi Doorbell",
+    brand: "Qubo",
+    category: "Video Door Bell",
+    price: 14990,
+    sellingPrice: 8700,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 150
+  },
+  {
+    id: "prod-105",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Trueview 4G WI-FI ROUTER R300",
+    productSpec: "4G LTE Wi-Fi Router with SIM slot, 300Mbps High Speed",
     brand: "Trueview",
-    category: "CCTV Camera",
+    category: "Accessories",
     price: 2299,
     sellingPrice: 1249,
     inStock: true,
-    isCombo: true
+    isCombo: true,
+    deliveryCharge: 100
+  },
+  {
+    id: "prod-106",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "CPPlus 4CH Full HD DVR Kit",
+    productSpec: "4 Channel DVR + 2 Dome + 2 Bullet Cameras + Power Supply",
+    brand: "CPPlus",
+    category: "DVR & NVR",
+    price: 12990,
+    sellingPrice: 7990,
+    inStock: true,
+    isCombo: true,
+    deliveryCharge: 250
+  },
+  {
+    id: "prod-107",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Hikvision 8CH 4K NVR Network Video Recorder",
+    productSpec: "8 Channel 4K H.265+ NVR for IP Surveillance Cameras",
+    brand: "Hikvision",
+    category: "DVR & NVR",
+    price: 15990,
+    sellingPrice: 9490,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 250
+  },
+  {
+    id: "prod-108",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Qubo Smart Plug 16A",
+    productSpec: "Wi-Fi Smart Plug with Energy Monitoring Voice Control",
+    brand: "Qubo",
+    category: "Smart Plug",
+    price: 1990,
+    sellingPrice: 950,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 100
+  },
+  {
+    id: "prod-109",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "Qubo Smart Plug 10A Dual",
+    productSpec: "Dual Outlet Wi-Fi Smart Plug Alexa Google Assistant",
+    brand: "Qubo",
+    category: "Smart Plug",
+    price: 2290,
+    sellingPrice: 1050,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 100
+  },
+  {
+    id: "prod-110",
+    photoLink: "https://res.cloudinary.com/dympxkxk2/image/upload/v1783264637/realconnect/products/router.jpg",
+    productName: "ESSL Biometric Attendance Terminal",
+    productSpec: "Fingerprint & RFID Time Attendance System with Battery Backup",
+    brand: "Generic",
+    category: "Security Systems",
+    price: 8990,
+    sellingPrice: 4990,
+    inStock: true,
+    isCombo: false,
+    deliveryCharge: 200
   }
 ];
 
@@ -200,8 +318,13 @@ export class DbService {
       return true;
     } catch (err) {
       console.error("Bulk sync error:", err);
-      return false;
+      throw err;
     }
+  }
+
+  static async resetProductsToDefault() {
+    await this.bulkSyncProducts(DEFAULT_PRODUCTS, true);
+    return DEFAULT_PRODUCTS;
   }
 
   // BRANDS MANAGEMENT (ADD, EDIT, DELETE)
