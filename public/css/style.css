@@ -810,6 +810,12 @@ button {
   height: 2.5em;
 }
 
+.product-spec, .product-description, .product-desc-box, .product-text-formatted {
+  white-space: pre-line;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
 .price-row {
   display: flex;
   align-items: baseline;

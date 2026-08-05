@@ -85,9 +85,9 @@ async function loadProductDetail(id) {
         ${savings > 0 ? `<span class="discount-tag" style="font-size: 0.85rem;">SAVE ${savings}%</span>` : ''}
       </div>
 
-      <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 14px; border-radius: var(--radius-md); margin-bottom: 20px;">
-        <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); uppercase; margin-bottom:6px;">Product Specifications:</div>
-        <div style="font-size:0.9rem; line-height:1.5;">${escapeHtml(currentProduct.productSpec)}</div>
+      <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
+        <div style="font-size:0.8rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">📋 Product Overview & Specifications:</div>
+        <div class="product-text-formatted" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.')}</div>
       </div>
 
       ${isAvailable ? `

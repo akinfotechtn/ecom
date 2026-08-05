@@ -108,10 +108,10 @@ function renderCategoryScrollRow() {
       <div style="font-size: 1.2rem;">🏠</div>
       <span>All Categories</span>
     </div>
-    <div class="category-scroll-card ${isComboOnly ? 'active' : ''}" onclick="filterByComboOnly()">
+    <a href="category.html?name=Combo%20Packs" class="category-scroll-card" style="text-decoration:none;">
       <div style="font-size: 1.3rem;">🔥</div>
       <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
-    </div>
+    </a>
   ` + storeCategories.map(c => `
     <a href="category.html?name=${encodeURIComponent(c.name)}" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
       <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">

@@ -57,22 +57,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       const targetLower = currentCategoryName.toLowerCase().trim();
       const targetNorm = normalizeStr(currentCategoryName);
 
-      categoryProducts = prods.filter(p => {
-        if (!p.category) return false;
-        const catLower = p.category.toLowerCase().trim();
-        const catNorm = normalizeStr(p.category);
+      if (targetLower.includes('combo')) {
+        categoryProducts = prods.filter(p => p.isCombo || (p.category || '').toLowerCase().includes('combo') || (p.productName || '').toLowerCase().includes('combo'));
+      } else {
+        categoryProducts = prods.filter(p => {
+          if (!p.category) return false;
+          const catLower = p.category.toLowerCase().trim();
+          const catNorm = normalizeStr(p.category);
 
-        // 1. Exact string match (case insensitive)
-        if (catLower === targetLower) return true;
+          // 1. Exact string match (case insensitive)
+          if (catLower === targetLower) return true;
 
-        // 2. Exact normalized match
-        if (catNorm === targetNorm) return true;
+          // 2. Exact normalized match
+          if (catNorm === targetNorm) return true;
 
-        // 3. Product category contains target category (e.g. "PC UPS & Power" contains "PC UPS")
-        if (catNorm.includes(targetNorm) && targetNorm.length >= 3) return true;
+          // 3. Product category contains target category (e.g. "PC UPS & Power" contains "PC UPS")
+          if (catNorm.includes(targetNorm) && targetNorm.length >= 3) return true;
 
-        return false;
-      });
+          return false;
+        });
+      }
 
       // 4. Fallback if no exact category match: check if product name or spec specifically mentions target category tokens
       if (!categoryProducts.length) {
