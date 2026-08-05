@@ -185,8 +185,19 @@ function renderBrandHero() {
   }
 }
 
+const ITEMS_PER_PAGE = 12;
+let currentPage = 1;
+
+window.changeBrandPage = function(newPage) {
+  currentPage = newPage;
+  renderBrandCatalog();
+  const mainSec = document.querySelector('.catalog-section');
+  if (mainSec) mainSec.scrollIntoView({ behavior: 'smooth' });
+};
+
 function renderBrandCatalog() {
   const grid = document.getElementById('brandProductGrid');
+  const paginationBar = document.getElementById('brandPaginationBar');
   if (!grid) return;
 
   if (!filteredProducts.length) {
@@ -196,10 +207,18 @@ function renderBrandCatalog() {
         <p style="color: var(--text-muted); margin-top: 6px;">Try searching for other items or browse all brands.</p>
         <a href="index.html" class="hero-btn" style="margin-top: 14px; padding: 8px 20px; display: inline-block; text-decoration: none;">← View All Brands</a>
       </div>`;
+    if (paginationBar) paginationBar.style.display = 'none';
     return;
   }
 
-  grid.innerHTML = filteredProducts.map(p => {
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const pageProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  grid.innerHTML = pageProducts.map(p => {
     const isAvailable = p.inStock !== false;
     const basePrice = p.sellingPrice || 0;
     const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
@@ -235,6 +254,40 @@ function renderBrandCatalog() {
       </div>
     `;
   }).join('');
+
+  renderPaginationControls(paginationBar, totalPages);
+}
+
+function renderPaginationControls(container, totalPages) {
+  if (!container) return;
+  if (totalPages <= 1) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'flex';
+  let html = `
+    <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeBrandPage(${currentPage - 1})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">
+      ← Prev
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const isActive = i === currentPage;
+    html += `
+      <button class="pagination-btn" onclick="changeBrandPage(${i})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid ${isActive ? 'var(--accent-cyan)' : 'var(--border-color)'}; background: ${isActive ? 'var(--accent-cyan)' : '#ffffff'}; color: ${isActive ? '#ffffff' : 'var(--text-dark)'}; font-weight: 700; cursor: pointer;">
+        ${i}
+      </button>
+    `;
+  }
+
+  html += `
+    <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeBrandPage(${currentPage + 1})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">
+      Next →
+    </button>
+  `;
+
+  container.innerHTML = html;
 }
 
 window.addToCart = async function(productId) {

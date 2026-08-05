@@ -165,9 +165,20 @@ window.filterByComboOnly = function() {
   renderCatalog();
 };
 
+const ITEMS_PER_PAGE = 12;
+let currentPage = 1;
+
+window.changePage = function(newPage) {
+  currentPage = newPage;
+  renderCatalog();
+  const mainSec = document.querySelector('.catalog-section');
+  if (mainSec) mainSec.scrollIntoView({ behavior: 'smooth' });
+};
+
 // RENDER PRODUCTS CATALOG GRID
 function renderCatalog() {
   const grid = document.getElementById('productGrid');
+  const paginationBar = document.getElementById('homepagePaginationBar');
   if (!grid) return;
 
   let filtered = [...allProducts];
@@ -215,10 +226,18 @@ function renderCatalog() {
         <p style="color: var(--text-muted); margin-top: 6px;">Try clearing search or filters to see more security items.</p>
         <button class="hero-btn" style="margin-top: 14px; padding: 8px 20px;" onclick="resetFilters()">Reset Filters</button>
       </div>`;
+    if (paginationBar) paginationBar.style.display = 'none';
     return;
   }
 
-  grid.innerHTML = filtered.map(p => {
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const pageProducts = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  grid.innerHTML = pageProducts.map(p => {
     const basePrice = p.sellingPrice || 0;
     const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : (storeSettings.defaultGstPercent !== undefined ? storeSettings.defaultGstPercent : 18);
     const gstAmount = Math.round((basePrice * gstRate) / 100);
@@ -261,6 +280,40 @@ function renderCatalog() {
       </div>
     `;
   }).join('');
+
+  renderPaginationControls(paginationBar, totalPages);
+}
+
+function renderPaginationControls(container, totalPages) {
+  if (!container) return;
+  if (totalPages <= 1) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'flex';
+  let html = `
+    <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">
+      ← Prev
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const isActive = i === currentPage;
+    html += `
+      <button class="pagination-btn" onclick="changePage(${i})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid ${isActive ? 'var(--accent-cyan)' : 'var(--border-color)'}; background: ${isActive ? 'var(--accent-cyan)' : '#ffffff'}; color: ${isActive ? '#ffffff' : 'var(--text-dark)'}; font-weight: 700; cursor: pointer;">
+        ${i}
+      </button>
+    `;
+  }
+
+  html += `
+    <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">
+      Next →
+    </button>
+  `;
+
+  container.innerHTML = html;
 }
 
 window.resetFilters = function() {

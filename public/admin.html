@@ -543,6 +543,7 @@
               <th>Amount Breakdown</th>
               <th>Live Status</th>
               <th>Date</th>
+              <th>🚀 Shiprocket Actions</th>
             </tr>
           </thead>
           <tbody id="adminOrdersTableBody"></tbody>
@@ -717,6 +718,19 @@
           Save Changes
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- SHIPROCKET COURIER BOOKING MODAL -->
+  <div class="modal-backdrop" id="shiprocketModalBackdrop">
+    <div class="modal-content" style="max-width: 680px; width: 95%;">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" onclick="closeShiprocketModal()">✕</button>
+      <h2 class="modal-title">🚚 Shiprocket Courier Partner Booking</h2>
+      <div id="srModalOrderDetails" style="background: #f8fafc; padding: 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.9rem;"></div>
+      
+      <div id="srCourierListContainer">
+        <p style="color: var(--text-muted);">Fetching available courier partners and live shipping rates...</p>
+      </div>
     </div>
   </div>
 

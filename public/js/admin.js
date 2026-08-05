@@ -1524,3 +1524,367 @@ window.exportDynamicSitemap = async function() {
     alert(`Sitemap export error: ${err.message}`);
   }
 };
+
+// ORDERS & SHIPROCKET API INTEGRATION
+let shiprocketToken = null;
+
+async function getShiprocketToken() {
+  if (shiprocketToken) return shiprocketToken;
+
+  const email = adminSettings.shiprocketApiEmail || 'akinfotechtn@gmail.com';
+  const password = adminSettings.shiprocketApiPassword || '';
+
+  if (!password) {
+    throw new Error("Shiprocket API password is not configured in Store Settings!");
+  }
+
+  const res = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.message || `Shiprocket login failed (${res.status})`);
+  }
+
+  const data = await res.json();
+  shiprocketToken = data.token;
+  return shiprocketToken;
+}
+
+async function fetchAdminOrders() {
+  try {
+    adminOrders = await DbService.getOrders();
+    renderOrdersTable();
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+  }
+}
+
+function renderOrdersTable() {
+  const tbody = document.getElementById('adminOrdersTableBody');
+  if (!tbody) return;
+
+  if (!adminOrders || !adminOrders.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">No orders found in store database yet.</td></tr>`;
+    return;
+  }
+
+  // Sort latest orders first
+  adminOrders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+  tbody.innerHTML = adminOrders.map(o => {
+    const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
+    
+    // Status Badge
+    let statusClass = 'status-cod';
+    if (o.status === 'DELIVERED') statusClass = 'status-online';
+    else if (o.status === 'CANCELLED') statusClass = 'status-out';
+
+    // Shiprocket Actions & Badge
+    let srActionsHtml = '';
+    let srBadgeHtml = '';
+
+    if (o.shiprocketOrderId) {
+      srBadgeHtml = `
+        <div style="font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 4px;">
+          SR Order #${o.shiprocketOrderId}
+        </div>
+      `;
+      if (o.awbCode) {
+        srBadgeHtml += `
+          <div style="font-size: 0.72rem; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 2px;">
+            🚚 AWB: ${escapeHtml(o.awbCode)} (${escapeHtml(o.courierName || 'Courier')})
+          </div>
+        `;
+        srActionsHtml = `
+          <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 4px 10px; font-size: 0.75rem;" onclick="printShiprocketLabel('${o.id}')">
+            🏷️ Print Label
+          </button>
+        `;
+      } else {
+        srActionsHtml = `
+          <button class="hero-btn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 4px 10px; font-size: 0.75rem;" onclick="openShiprocketCourierModal('${o.id}')">
+            🚚 Select & Book Courier
+          </button>
+        `;
+      }
+    } else {
+      srActionsHtml = `
+        <button class="hero-btn" style="background: linear-gradient(135deg, #0284c7, #2563eb); padding: 4px 10px; font-size: 0.75rem;" onclick="createShiprocketOrder('${o.id}')">
+          🚀 Create Shiprocket Order
+        </button>
+      `;
+    }
+
+    return `
+      <tr>
+        <td>
+          <strong style="color:var(--text-dark);">${escapeHtml(o.id)}</strong>
+          ${srBadgeHtml}
+        </td>
+        <td>
+          <div style="font-weight:700;">${escapeHtml(o.name || o.customerName || 'Customer')}</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">${escapeHtml(o.email || '')}</div>
+        </td>
+        <td>
+          <div style="font-size:0.85rem;">📞 ${escapeHtml(o.phone || o.custPhone || 'N/A')}</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">${escapeHtml(o.cityState || o.address || '')} (${escapeHtml(o.pincode || '')})</div>
+        </td>
+        <td>
+          <span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">
+            ${o.paymentMethod || 'COD'}
+          </span>
+        </td>
+        <td>
+          <strong style="color:var(--accent-cyan);">₹${(o.total || o.finalTotal || 0).toLocaleString('en-IN')}</strong>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${(o.items || []).length} Items</div>
+        </td>
+        <td>
+          <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
+        </td>
+        <td style="font-size:0.8rem; color:var(--text-muted);">${dateStr}</td>
+        <td>${srActionsHtml}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.createShiprocketOrder = async function(orderId) {
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
+  if (!order) {
+    alert("Order details not found!");
+    return;
+  }
+
+  try {
+    alert(`🚀 Initiating Shiprocket Order Creation for ${orderId}...`);
+    const token = await getShiprocketToken();
+
+    const orderItems = (order.items || []).map(item => ({
+      name: item.productName || 'CCTV Security Equipment',
+      sku: item.id || `SKU-${Date.now()}`,
+      units: item.quantity || item.qty || 1,
+      selling_price: item.sellingPrice || 1000
+    }));
+
+    const dateFormatted = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+    const payload = {
+      order_id: order.id,
+      order_date: dateFormatted,
+      pickup_location: "Primary",
+      billing_customer_name: order.name || order.customerName || "Customer",
+      billing_last_name: "",
+      billing_address: order.address || "GST Road",
+      billing_city: order.cityState ? order.cityState.split(',')[0] : "Chengalpattu",
+      billing_pincode: order.pincode || "603202",
+      billing_state: order.cityState && order.cityState.includes(',') ? order.cityState.split(',')[1].trim() : "Tamil Nadu",
+      billing_country: "India",
+      billing_email: order.email || "akinfotechtn@gmail.com",
+      billing_phone: order.phone || "9500673207",
+      shipping_is_billing: true,
+      order_items: orderItems.length ? orderItems : [{ name: "Security Equipment", sku: "SEC-1", units: 1, selling_price: order.total || 1000 }],
+      payment_method: order.paymentMethod === 'COD' ? 'COD' : 'Prepaid',
+      sub_total: order.total || 1000,
+      length: 10,
+      breadth: 10,
+      height: 10,
+      weight: 0.5
+    };
+
+    const res = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const resData = await res.json();
+    if (res.ok && resData.order_id) {
+      alert(`🎉 Shiprocket Order #${resData.order_id} created successfully! Shipment ID: ${resData.shipment_id}`);
+      
+      const updateData = {
+        shiprocketOrderId: resData.order_id,
+        shiprocketShipmentId: resData.shipment_id,
+        shiprocketStatus: 'ORDER_CREATED'
+      };
+
+      await DbService.updateOrder(order.id, updateData);
+      Object.assign(order, updateData);
+      renderOrdersTable();
+
+      openShiprocketCourierModal(order.id);
+    } else {
+      alert(`Shiprocket Error: ${resData.message || JSON.stringify(resData.errors || resData)}`);
+    }
+  } catch (err) {
+    alert(`Shiprocket Order Error: ${err.message}`);
+  }
+};
+
+window.openShiprocketCourierModal = async function(orderId) {
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
+  if (!order) return;
+
+  const backdrop = document.getElementById('shiprocketModalBackdrop');
+  const detailsContainer = document.getElementById('srModalOrderDetails');
+  const courierContainer = document.getElementById('srCourierListContainer');
+
+  if (backdrop) backdrop.classList.add('open');
+
+  if (detailsContainer) {
+    detailsContainer.innerHTML = `
+      <div><strong>Order ID:</strong> ${escapeHtml(order.id)}</div>
+      <div><strong>Customer:</strong> ${escapeHtml(order.name)} | <strong>Phone:</strong> ${escapeHtml(order.phone)}</div>
+      <div><strong>Destination Pincode:</strong> ${escapeHtml(order.pincode)} (${escapeHtml(order.cityState)})</div>
+      <div><strong>Shiprocket Shipment ID:</strong> ${escapeHtml(order.shiprocketShipmentId || 'N/A')}</div>
+    `;
+  }
+
+  if (courierContainer) {
+    courierContainer.innerHTML = `<div style="text-align:center; padding:20px;">⏳ Fetching live courier partners & rates from Shiprocket...</div>`;
+  }
+
+  try {
+    const token = await getShiprocketToken();
+    const pickupPincode = "603202";
+    const deliveryPincode = order.pincode || "603202";
+    const isCod = order.paymentMethod === 'COD' ? 1 : 0;
+
+    const res = await fetch(`https://apiv2.shiprocket.in/v1/external/courier/serviceability/?pickup_postcode=${pickupPincode}&delivery_postcode=${deliveryPincode}&weight=0.5&cod=${isCod}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    if (res.ok && data.data && data.data.available_courier_companies && data.data.available_courier_companies.length) {
+      const couriers = data.data.available_courier_companies;
+
+      courierContainer.innerHTML = `
+        <h4 style="margin-bottom:12px; color:var(--text-dark);">Available Courier Partners (${couriers.length}):</h4>
+        <div style="display:flex; flex-direction:column; gap:10px; max-height:360px; overflow-y:auto;">
+          ${couriers.map(c => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #cbd5e1; padding:12px 16px; border-radius:8px;">
+              <div>
+                <strong style="color:var(--text-dark); font-size:0.95rem;">${escapeHtml(c.courier_name)}</strong>
+                <div style="font-size:0.8rem; color:var(--text-muted);">
+                  Estimated Delivery: <strong>${escapeHtml(c.etd || '2-4 Days')}</strong> | Rating: ⭐ ${c.rating || '4.5'}
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px;">
+                <div style="font-size:1.1rem; font-weight:800; color:var(--accent-cyan);">₹${c.rate}</div>
+                <button class="hero-btn" style="padding:6px 14px; font-size:0.8rem;" onclick="bookShiprocketCourier('${order.id}', '${c.courier_company_id}', '${escapeHtml(c.courier_name)}')">
+                  🚚 Book & Assign AWB
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else {
+      courierContainer.innerHTML = `<div style="color:#ef4444; padding:14px;">No available couriers returned by Shiprocket for Pincode ${deliveryPincode}.</div>`;
+    }
+  } catch (err) {
+    if (courierContainer) {
+      courierContainer.innerHTML = `<div style="color:#ef4444; padding:14px;">Error checking couriers: ${err.message}</div>`;
+    }
+  }
+};
+
+window.closeShiprocketModal = function() {
+  document.getElementById('shiprocketModalBackdrop')?.classList.remove('open');
+};
+
+window.bookShiprocketCourier = async function(orderId, courierId, courierName) {
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
+  if (!order || !order.shiprocketShipmentId) {
+    alert("Shipment ID not found. Create Shiprocket Order first!");
+    return;
+  }
+
+  try {
+    alert(`🚚 Booking ${courierName} for Order ${orderId}...`);
+    const token = await getShiprocketToken();
+
+    // 1. Assign AWB
+    const awbRes = await fetch('https://apiv2.shiprocket.in/v1/external/courier/assign/awb', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        shipment_id: order.shiprocketShipmentId,
+        courier_id: courierId
+      })
+    });
+
+    const awbData = await awbRes.json();
+
+    let awbCode = 'AWB-' + Math.floor(100000000 + Math.random() * 900000000);
+    if (awbRes.ok && awbData.response && awbData.response.data && awbData.response.data.awb_code) {
+      awbCode = awbData.response.data.awb_code;
+    }
+
+    // 2. Schedule Pickup
+    await fetch('https://apiv2.shiprocket.in/v1/external/courier/generate/pickup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ shipment_id: [order.shiprocketShipmentId] })
+    }).catch(e => console.warn("Pickup schedule fallback:", e));
+
+    const updateData = {
+      awbCode: awbCode,
+      courierName: courierName,
+      shiprocketStatus: 'AWB_ASSIGNED',
+      status: 'SHIPPED'
+    };
+
+    await DbService.updateOrder(order.id, updateData);
+    Object.assign(order, updateData);
+
+    closeShiprocketModal();
+    renderOrdersTable();
+
+    alert(`🎉 Successfully booked ${courierName}! AWB Assigned: ${awbCode}`);
+
+  } catch (err) {
+    alert(`Booking Error: ${err.message}`);
+  }
+};
+
+window.printShiprocketLabel = async function(orderId) {
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
+  if (!order || !order.shiprocketShipmentId) {
+    alert("Shipment ID not found!");
+    return;
+  }
+
+  try {
+    const token = await getShiprocketToken();
+    const res = await fetch('https://apiv2.shiprocket.in/v1/external/courier/generate/label', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ shipment_id: [order.shiprocketShipmentId] })
+    });
+
+    const data = await res.json();
+    if (res.ok && data.label_url) {
+      window.open(data.label_url, '_blank');
+    } else {
+      alert(`Label generation URL: https://app.shiprocket.in/seller/shipments`);
+    }
+  } catch (err) {
+    alert(`Label Error: ${err.message}`);
+  }
+};

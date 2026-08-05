@@ -233,16 +233,33 @@ export class DbService {
     await deleteDoc(doc(db, "hero_banners", id));
   }
 
+  static _cachedProducts = null;
+  static _cachedBrands = null;
+  static _cachedCategories = null;
+  static _cachedSettings = null;
+
+  static clearCache() {
+    this._cachedProducts = null;
+    this._cachedBrands = null;
+    this._cachedCategories = null;
+    this._cachedSettings = null;
+  }
+
   // PRODUCTS: Fetch all
-  static async getProducts() {
+  static async getProducts(forceRefresh = false) {
+    if (!forceRefresh && this._cachedProducts) {
+      return this._cachedProducts;
+    }
     try {
       const snap = await getDocs(collection(db, "products"));
       if (!snap.empty) {
-        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        this._cachedProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        return this._cachedProducts;
       }
       for (const p of DEFAULT_PRODUCTS) {
         await setDoc(doc(db, "products", p.id), p);
       }
+      this._cachedProducts = DEFAULT_PRODUCTS;
       return DEFAULT_PRODUCTS;
     } catch (err) {
       console.warn("Firestore fallback to local:", err.message);
@@ -250,9 +267,11 @@ export class DbService {
         const res = await fetch("/api/products");
         if (res.ok) {
           const data = await res.json();
-          return data.products || DEFAULT_PRODUCTS;
+          this._cachedProducts = data.products || DEFAULT_PRODUCTS;
+          return this._cachedProducts;
         }
       } catch (e) {}
+      this._cachedProducts = DEFAULT_PRODUCTS;
       return DEFAULT_PRODUCTS;
     }
   }
@@ -541,6 +560,14 @@ export class DbService {
         }
       } catch (e) {}
       return [];
+    }
+  }
+
+  static async updateOrder(id, orderData) {
+    try {
+      await setDoc(doc(db, "orders", id), orderData, { merge: true });
+    } catch (err) {
+      console.warn("Update order fallback error:", err);
     }
   }
 
