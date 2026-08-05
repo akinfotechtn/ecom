@@ -290,18 +290,23 @@ button {
   color: #38bdf8;
 }
 
-/* HERO BANNER & AUTO-SCROLL SLIDER */
+/* HERO BANNER & AUTO-SCROLL SLIDER - NATURAL IMAGE SIZE FIT */
 .hero {
   width: 100%;
   padding: 10px 10px 0;
   position: relative;
 }
 
+@media (min-width: 768px) {
+  .hero {
+    padding: 16px 20px 0;
+  }
+}
+
 .hero-slider-wrap {
   position: relative;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 8;
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -309,43 +314,28 @@ button {
   background: #0f172a;
 }
 
+@media (min-width: 768px) {
+  .hero-slider-wrap {
+    border-radius: var(--radius-lg);
+  }
+}
+
 .hero-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  display: none;
   width: 100%;
-  height: 100%;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+  height: auto;
 }
 
 .hero-slide.active {
-  opacity: 1;
-  visibility: visible;
+  display: block;
 }
 
 .hero-slide-img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
+  height: auto;
   display: block;
-  background: #0f172a;
-}
-
-@media (min-width: 768px) {
-  .hero {
-    padding: 16px 20px 0;
-  }
-  .hero-slider-wrap {
-    height: 360px;
-    aspect-ratio: auto;
-    border-radius: var(--radius-lg);
-  }
-  .hero-slide-img {
-    object-fit: cover;
-  }
+  object-fit: contain;
 }
 
 .hero-slide-overlay {

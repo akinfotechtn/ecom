@@ -185,13 +185,27 @@ function renderCatalog() {
   }
 
   if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(p =>
-      p.productName?.toLowerCase().includes(q) ||
-      p.productSpec?.toLowerCase().includes(q) ||
-      p.brand?.toLowerCase().includes(q) ||
-      p.category?.toLowerCase().includes(q)
-    );
+    const rawTokens = searchQuery.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+
+    filtered = filtered.filter(p => {
+      const comboText = p.isCombo ? 'combo kit pack set special offer' : '';
+      const stockText = p.inStock !== false ? 'in stock available in-stock' : 'out of stock unavailable out-of-stock';
+      const searchText = `
+        ${p.productName || ''} 
+        ${p.productSpec || ''} 
+        ${p.brand || ''} 
+        ${p.category || ''} 
+        ${p.id || ''} 
+        ₹${p.price || ''} 
+        ₹${p.sellingPrice || ''} 
+        ${p.price || ''} 
+        ${p.sellingPrice || ''} 
+        ${comboText} 
+        ${stockText}
+      `.toLowerCase();
+
+      return rawTokens.every(token => searchText.includes(token));
+    });
   }
 
   if (!filtered.length) {
