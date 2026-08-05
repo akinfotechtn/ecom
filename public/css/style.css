@@ -477,10 +477,54 @@ button {
   display: none;
 }
 
-/* BRAND SHOWCASE LOGOS */
-.brand-showcase-section {
+/* BRAND & CATEGORY SHOWCASE SECTIONS */
+.brand-showcase-section, .filter-section {
   width: 100%;
   padding: 16px 12px 0;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.3px;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 1.55rem;
+  }
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.12);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
 }
 
 .brand-logos-row {
