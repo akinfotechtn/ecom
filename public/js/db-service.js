@@ -1,4 +1,4 @@
-// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + BRANDS & CATEGORIES EDIT + USER ADDRESSES CRUD + SEO
+// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + CLEAN SHEET SYNC + BRANDS & CATEGORIES CRUD + USER ADDRESSES CRUD
 import { 
   db, 
   auth,
@@ -54,54 +54,6 @@ const DEFAULT_PRODUCTS = [
     sellingPrice: 3999,
     inStock: true,
     isCombo: true
-  },
-  {
-    id: "prod-104",
-    photoLink: "images/hero-banner.webp",
-    productName: "Ultimate 4 Camera Home Security Combo Pack",
-    productSpec: "Includes 2 Outdoor Bullet Cameras + 2 Indoor Dome Cameras + 4Ch DVR + 1TB Seagate HDD",
-    brand: "CPPlus",
-    category: "CCTV Camera",
-    price: 2589,
-    sellingPrice: 1999,
-    inStock: true,
-    isCombo: false
-  },
-  {
-    id: "prod-105",
-    photoLink: "images/cctv-wholesale.webp",
-    productName: "CP Plus 2MP Wi-Fi Smart PTZ Camera",
-    productSpec: "360-degree coverage, 1080P Full HD, SD Card support, Alexa & Google Assistant",
-    brand: "Trueview",
-    category: "CCTV Camera",
-    price: 1499,
-    sellingPrice: 999,
-    inStock: false,
-    isCombo: false
-  },
-  {
-    id: "prod-106",
-    photoLink: "images/networking-wholesale.webp",
-    productName: "Dahua 8-Port PoE Switch with 2 Uplink Ports",
-    productSpec: "8x 10/100Mbps PoE Ports, 96W Total Power budget, 250m Extend Mode",
-    brand: "Hikvision",
-    category: "CCTV Camera",
-    price: 3699,
-    sellingPrice: 2999,
-    inStock: true,
-    isCombo: false
-  },
-  {
-    id: "prod-107",
-    photoLink: "images/biometrics-wholesale.webp",
-    productName: "ZKTeco Wireless Motion Sensor & Intrusion Alarm Kit",
-    productSpec: "Smart Hub + 2 Door Sensors + PIR Motion Detector + Loud 110dB Siren",
-    brand: "CPPlus",
-    category: "CCTV Camera",
-    price: 4799,
-    sellingPrice: 3999,
-    inStock: false,
-    isCombo: false
   }
 ];
 
@@ -225,8 +177,17 @@ export class DbService {
     }
   }
 
-  static async bulkSyncProducts(productsArray) {
+  // BULK SYNC FROM GOOGLE SHEET (REPLACES CATALOG & REMOVES DUMMY ITEMS)
+  static async bulkSyncProducts(productsArray, replaceAll = true) {
     try {
+      if (replaceAll) {
+        // Delete all existing products to remove dummy items
+        const snap = await getDocs(collection(db, "products"));
+        for (const d of snap.docs) {
+          await deleteDoc(doc(db, "products", d.id));
+        }
+      }
+
       for (const p of productsArray) {
         const docId = p.id || `gs-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
         await setDoc(doc(db, "products", docId), p);

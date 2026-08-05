@@ -83,7 +83,7 @@ async function loadBrandsAndCategories() {
   storeBrands = await DbService.getBrands();
   storeCategories = await DbService.getCategories();
   renderBrandLogosStrip();
-  renderFilterPills();
+  renderCategoryScrollRow();
 }
 
 function renderBrandLogosStrip() {
@@ -92,39 +92,31 @@ function renderBrandLogosStrip() {
 
   container.innerHTML = `
     <div class="brand-logo-card ${activeBrand === '' ? 'active' : ''}" onclick="selectBrand('')" title="All Brands">
-      <span style="font-weight: 800; font-size: 0.85rem; color: var(--accent-cyan);">ALL BRANDS</span>
+      <span style="font-weight: 800; font-size: 0.82rem; color: var(--accent-cyan);">ALL BRANDS</span>
     </div>
   ` + storeBrands.map(b => `
-    <div class="brand-logo-card ${activeBrand === b.name ? 'active' : ''}" onclick="selectBrand('${escapeHtml(b.name)}')" title="${escapeHtml(b.name)}">
+    <div class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" onclick="selectBrand('${escapeHtml(b.name)}')" title="${escapeHtml(b.name)}">
       <img src="${b.imageLink || 'images/logo.webp'}" alt="${escapeHtml(b.name)}" onerror="this.src='images/logo.webp'">
+      <span>${escapeHtml(b.name)}</span>
     </div>
   `).join('');
 }
 
-function renderFilterPills() {
-  const brandPillsEl = document.getElementById('brandPills');
-  if (brandPillsEl) {
-    brandPillsEl.innerHTML = `<button class="pill-btn ${activeBrand === '' ? 'active' : ''}" onclick="selectBrand('')">All Brands</button>`;
-    storeBrands.forEach(b => {
-      const btn = document.createElement('button');
-      btn.className = `pill-btn ${activeBrand === b.name ? 'active' : ''}`;
-      btn.textContent = b.name;
-      btn.onclick = () => selectBrand(b.name);
-      brandPillsEl.appendChild(btn);
-    });
-  }
+function renderCategoryScrollRow() {
+  const container = document.getElementById('categoryScrollRow');
+  if (!container) return;
 
-  const catPillsEl = document.getElementById('categoryPills');
-  if (catPillsEl) {
-    catPillsEl.innerHTML = `<button class="pill-btn ${activeCategory === '' ? 'active' : ''}" onclick="selectCategory('')">All Categories</button>`;
-    storeCategories.forEach(c => {
-      const btn = document.createElement('button');
-      btn.className = `pill-btn ${activeCategory === c.name ? 'active' : ''}`;
-      btn.textContent = c.name;
-      btn.onclick = () => selectCategory(c.name);
-      catPillsEl.appendChild(btn);
-    });
-  }
+  container.innerHTML = `
+    <div class="category-scroll-card ${activeCategory === '' ? 'active' : ''}" onclick="selectCategory('')">
+      <div style="font-size: 1.2rem;">🏠</div>
+      <span>All Categories</span>
+    </div>
+  ` + storeCategories.map(c => `
+    <div class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() ? 'active' : ''}" onclick="selectCategory('${escapeHtml(c.name)}')">
+      <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">
+      <span>${escapeHtml(c.name)}</span>
+    </div>
+  `).join('');
 }
 
 async function fetchProducts() {
@@ -141,22 +133,13 @@ async function fetchProducts() {
 
 window.selectBrand = function(b) {
   activeBrand = b;
-  document.querySelectorAll('#brandPills .pill-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === (b || 'All Brands'));
-  });
-
-  document.querySelectorAll('.brand-logo-card').forEach(card => {
-    card.classList.toggle('active', card.getAttribute('title') === (b || 'All Brands'));
-  });
-
+  renderBrandLogosStrip();
   renderCatalog();
 };
 
 window.selectCategory = function(c) {
   activeCategory = c;
-  document.querySelectorAll('#categoryPills .pill-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === (c || 'All Categories'));
-  });
+  renderCategoryScrollRow();
 
   document.querySelectorAll('.rc-nav2-inner a').forEach(a => {
     a.classList.toggle('active', a.textContent.includes(c || 'All Products'));
