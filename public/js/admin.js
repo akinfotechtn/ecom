@@ -625,6 +625,8 @@ window.openAddProductModal = function() {
   document.getElementById('editProductId').value = '';
   document.getElementById('productModalTitle').textContent = 'Add New Product';
   document.getElementById('productForm').reset();
+  const devEl = document.getElementById('prodDeliveryCharge');
+  if (devEl) devEl.value = '';
   populateDropdowns();
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
@@ -645,6 +647,10 @@ window.editProduct = function(id) {
   document.getElementById('prodAvailabilitySelect').value = p.inStock !== false ? 'In stock' : 'Out of stock';
   document.getElementById('prodSpec').value = p.productSpec;
   document.getElementById('prodIsCombo').checked = p.isCombo || false;
+  const devEl = document.getElementById('prodDeliveryCharge');
+  if (devEl) {
+    devEl.value = (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : '';
+  }
 
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
@@ -657,6 +663,7 @@ async function saveProductSubmit(e) {
   e.preventDefault();
   const id = document.getElementById('editProductId').value;
   const availVal = document.getElementById('prodAvailabilitySelect').value;
+  const customDevChargeVal = document.getElementById('prodDeliveryCharge')?.value.trim();
 
   const payload = {
     productName: document.getElementById('prodName').value.trim(),
@@ -667,7 +674,8 @@ async function saveProductSubmit(e) {
     sellingPrice: parseFloat(document.getElementById('prodSellingPrice').value) || 0,
     productSpec: document.getElementById('prodSpec').value.trim(),
     isCombo: document.getElementById('prodIsCombo').checked,
-    inStock: availVal === 'In stock'
+    inStock: availVal === 'In stock',
+    deliveryCharge: (customDevChargeVal !== '' && customDevChargeVal !== undefined) ? parseFloat(customDevChargeVal) : null
   };
 
   try {

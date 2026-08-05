@@ -500,6 +500,10 @@
               <option value="Out of stock">Out of stock</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Custom Shipping Charge (₹) (Optional)</label>
+            <input type="number" id="prodDeliveryCharge" placeholder="Leave empty for default">
+          </div>
         </div>
 
         <div class="form-group">
@@ -600,6 +604,10 @@
         <div class="form-group">
           <label>Category Image URL *</label>
           <input type="text" id="editCategoryImgInput" required>
+        </div>
+        <div class="form-group">
+          <label>Category Shipping Charge Override (₹) (Optional)</label>
+          <input type="number" id="editCategoryDeliveryCharge" placeholder="Leave empty for store default (₹150)">
         </div>
         <button type="submit" class="btn-checkout" style="width: 100%; margin-top: 14px;">
           Save Changes

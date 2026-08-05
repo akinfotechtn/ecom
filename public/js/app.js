@@ -368,14 +368,9 @@ function renderCart() {
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   const enableFreeShipping = storeSettings.enableFreeShipping !== false;
   const freeMin = storeSettings.freeShippingMinOrder || 3000;
-  const stdDelivery = storeSettings.deliveryCharge !== undefined ? Number(storeSettings.deliveryCharge) : 150;
-
-  let deliveryFee = stdDelivery;
-  if (subtotal === 0) {
-    deliveryFee = 0;
-  } else if (enableFreeShipping && subtotal >= freeMin) {
-    deliveryFee = 0;
-  }
+  
+  // Category-wise & Product-specific custom delivery charge calculation
+  let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -399,9 +394,9 @@ function renderCart() {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {
       const needed = freeMin - subtotal;
-      deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
     } else {
-      deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge applies to all orders</small>`;
+      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge calculated for catalog items</small>`;
     }
   }
 
@@ -418,6 +413,57 @@ function renderCart() {
 
   const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+
+  renderPromoChips();
+}
+
+function renderPromoChips() {
+  const container = document.querySelector('.coupon-quick-chips');
+  if (!container) return;
+
+  const activeCoupons = (storeSettings.discountCoupons || []).filter(c => c.active !== false);
+  if (!activeCoupons.length) {
+    container.style.display = 'none';
+  } else {
+    container.style.display = 'flex';
+    container.innerHTML = `<span class="chip-label">Promo Codes:</span>` + activeCoupons.map(c => `
+      <button type="button" class="coupon-chip" onclick="autoApplyCoupon('${escapeHtml(c.code)}')">
+        🎟️ ${escapeHtml(c.code)}
+      </button>
+    `).join('');
+  }
+}
+
+function calculateCartDeliveryFee(cartItems, settings, categories = []) {
+  if (!cartItems || !cartItems.length) return 0;
+
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+  const enableFree = settings.enableFreeShipping !== false;
+  const freeMin = settings.freeShippingMinOrder || 3000;
+
+  if (enableFree && subtotal >= freeMin) {
+    return 0;
+  }
+
+  let maxDeliveryCharge = 0;
+  cartItems.forEach(item => {
+    let itemFee = 0;
+    if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
+      itemFee = Number(item.deliveryCharge);
+    } else {
+      const matchCat = categories.find(c => c.name?.toLowerCase() === item.category?.toLowerCase());
+      if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
+        itemFee = Number(matchCat.deliveryCharge);
+      } else {
+        itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
+      }
+    }
+    if (itemFee > maxDeliveryCharge) {
+      maxDeliveryCharge = itemFee;
+    }
+  });
+
+  return maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
 }
 
 window.autoApplyCoupon = function(code) {
@@ -445,8 +491,8 @@ window.selectPaymentMethod = function(method) {
     optCOD.className = 'payment-option-card selected cod-selected';
     codBanner.style.display = 'block';
 
-    const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
-    let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
+    const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+    let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
     const finalTotal = subtotal + deliveryFee;
     const advanceFee = storeSettings.codAdvanceAmount || 1000;
     const remaining = Math.max(0, finalTotal - advanceFee);
@@ -470,7 +516,7 @@ async function handleCheckoutSubmit(e) {
   const custAddress = document.getElementById('custAddress').value.trim();
   const custPincode = document.getElementById('custPincode').value.trim();
   const custCityState = document.getElementById('custCityState').value.trim();
-  const shouldSaveAddress = document.getElementById('chkSaveAddress').checked;
+  const shouldSaveAddress = (document.getElementById('saveAddressToAccount') || document.getElementById('chkSaveAddress'))?.checked ?? false;
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
   let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
