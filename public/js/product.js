@@ -50,7 +50,7 @@ async function loadProductDetail(id) {
     <div>
       <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
         <span class="badge-glow">${escapeHtml(currentProduct.brand || 'AK Infotech')}</span>
-        <span class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;">${escapeHtml(currentProduct.category)}</span>
+        <a href="category.html?name=${encodeURIComponent(currentProduct.category)}" class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd; text-decoration:none;" title="View Category Page">${escapeHtml(currentProduct.category)}</a>
         ${currentProduct.isCombo ? `<span class="badge-glow" style="background:#fff7ed; color:#c2410c; border-color:#fdba74;">🔥 Combo Package</span>` : ''}
         ${isAvailable ? `
           <span class="badge-glow" style="background:#dcfce7; color:#16a34a; border-color:#86efac;">✅ In Stock</span>

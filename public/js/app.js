@@ -121,10 +121,10 @@ function renderCategoryScrollRow() {
       <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
     </div>
   ` + storeCategories.map(c => `
-    <div class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" onclick="selectCategory('${escapeHtml(c.name)}')">
+    <a href="category.html?name=${encodeURIComponent(c.name)}" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
       <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">
       <span>${escapeHtml(c.name)}</span>
-    </div>
+    </a>
   `).join('');
 }
 
@@ -147,15 +147,14 @@ window.selectBrand = function(b) {
 };
 
 window.selectCategory = function(c) {
-  activeCategory = c;
-  isComboOnly = false;
-  renderCategoryScrollRow();
-
-  document.querySelectorAll('.rc-nav2-inner a').forEach(a => {
-    a.classList.toggle('active', a.textContent.includes(c || 'All Products'));
-  });
-
-  renderCatalog();
+  if (c) {
+    window.location.href = `category.html?name=${encodeURIComponent(c)}`;
+  } else {
+    activeCategory = '';
+    isComboOnly = false;
+    renderCategoryScrollRow();
+    renderCatalog();
+  }
 };
 
 window.filterByComboOnly = function() {
