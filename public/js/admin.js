@@ -1110,3 +1110,37 @@ function escapeHtml(str) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
+
+window.exportProductsToCsv = function() {
+  if (!adminProducts || !adminProducts.length) {
+    alert('No products available to export.');
+    return;
+  }
+
+  const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Custom Delivery Fee', 'Is Combo', 'Availability'];
+
+  const rows = adminProducts.map(p => {
+    return [
+      `"${(p.photoLink || '').replace(/"/g, '""')}"`,
+      `"${(p.productName || '').replace(/"/g, '""')}"`,
+      `"${(p.productSpec || '').replace(/"/g, '""')}"`,
+      `"${(p.brand || '').replace(/"/g, '""')}"`,
+      `"${(p.category || '').replace(/"/g, '""')}"`,
+      p.price || 0,
+      p.sellingPrice || 0,
+      (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : '',
+      p.isCombo ? 'TRUE' : 'FALSE',
+      p.inStock !== false ? 'In stock' : 'Out of stock'
+    ].join(',');
+  });
+
+  const csvText = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `ak_infotech_products_catalog_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
