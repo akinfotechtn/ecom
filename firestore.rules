@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Admin helper function (Restricts administrative rights to akinfotecttn@gmail.com)
+    // Admin helper function (Restricts administrative rights to akinfotecttn@gmail.com & akinfotechtn@gmail.com)
     function isAdmin() {
       return request.auth != null && 
         (request.auth.token.email == 'akinfotecttn@gmail.com' || request.auth.token.email == 'akinfotechtn@gmail.com');
@@ -26,17 +26,28 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // 4. STORE SETTINGS COLLECTION
+    // 4. HERO BANNERS & SLIDER COLLECTION
+    match /hero_banners/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 5. STORE SETTINGS COLLECTION
     match /settings/{document} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // 5. CUSTOMER ORDERS COLLECTION
+    // 6. CUSTOMER ORDERS COLLECTION
     match /orders/{document} {
       allow create: if true;
       allow read: if true;
       allow update, delete: if isAdmin();
+    }
+
+    // 7. USER PROFILES & SAVED DELIVERY ADDRESSES
+    match /users/{userId} {
+      allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
     }
   }
 }
