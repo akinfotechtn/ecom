@@ -631,16 +631,22 @@ function renderHeroSlider() {
   const dotsEl = document.getElementById('heroSliderDots');
   if (!wrap || !heroBanners.length) return;
 
-  wrap.innerHTML = heroBanners.map((b, idx) => `
-    <div class="hero-slide ${idx === currentHeroIndex ? 'active' : ''}" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 58, 138, 0.85)), url('${b.imageUrl || 'images/hero-banner.webp'}') center/cover;">
-      <div class="hero-content">
-        ${b.tag ? `<span class="hero-tag">${escapeHtml(b.tag)}</span>` : ''}
-        <h1 class="hero-title">${escapeHtml(b.title || 'Next-Gen CCTV & Security Systems')}</h1>
-        <p class="hero-subtitle">${escapeHtml(b.subtitle || '')}</p>
-        ${b.btnText ? `<a href="${b.btnLink || 'javascript:void(0)'}" class="hero-btn">${escapeHtml(b.btnText)}</a>` : ''}
+  wrap.innerHTML = heroBanners.map((b, idx) => {
+    const hasText = b.tag || b.title || b.subtitle || b.btnText;
+    return `
+      <div class="hero-slide ${idx === currentHeroIndex ? 'active' : ''}">
+        <img class="hero-slide-img" src="${b.imageUrl || 'images/hero-banner.webp'}" alt="Hero Banner" onerror="this.src='images/hero-banner.webp'">
+        <div class="hero-slide-overlay ${hasText ? '' : 'no-text'}">
+          <div class="hero-content">
+            ${b.tag ? `<span class="hero-tag">${escapeHtml(b.tag)}</span>` : ''}
+            ${b.title ? `<h1 class="hero-title">${escapeHtml(b.title)}</h1>` : ''}
+            ${b.subtitle ? `<p class="hero-subtitle">${escapeHtml(b.subtitle)}</p>` : ''}
+            ${b.btnText ? `<a href="${b.btnLink || 'javascript:void(0)'}" class="hero-btn">${escapeHtml(b.btnText)}</a>` : ''}
+          </div>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   if (dotsEl) {
     dotsEl.innerHTML = heroBanners.map((_, idx) => `
