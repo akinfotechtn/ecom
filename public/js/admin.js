@@ -942,9 +942,11 @@ async function saveStoreSettings(e) {
       keyId: document.getElementById('cfgRzpKeyId').value.trim(),
       keySecret: document.getElementById('cfgRzpKeySecret').value.trim()
     },
+    shiprocketApiEmail: document.getElementById('cfgSrEmail')?.value.trim() || 'akinfotechtn@gmail.com',
+    shiprocketApiPassword: document.getElementById('cfgSrPassword')?.value.trim() || '',
     shiprocket: {
-      email: document.getElementById('cfgSrEmail').value.trim(),
-      password: document.getElementById('cfgSrPassword').value.trim()
+      email: document.getElementById('cfgSrEmail')?.value.trim() || 'akinfotechtn@gmail.com',
+      password: document.getElementById('cfgSrPassword')?.value.trim() || ''
     }
   };
 
@@ -1494,11 +1496,16 @@ let shiprocketToken = null;
 async function getShiprocketToken() {
   if (shiprocketToken) return shiprocketToken;
 
-  const email = adminSettings.shiprocketApiEmail || 'akinfotechtn@gmail.com';
-  const password = adminSettings.shiprocketApiPassword || '';
+  const email = adminSettings.shiprocket?.email || adminSettings.shiprocketApiEmail || 'akinfotechtn@gmail.com';
+  let password = adminSettings.shiprocket?.password || adminSettings.shiprocketApiPassword || '';
 
   if (!password) {
-    throw new Error("Shiprocket API password is not configured in Store Settings!");
+    const userPass = prompt("🔑 Shiprocket Password Not Saved in Store Settings.\nPlease enter your Shiprocket Account Password to proceed:");
+    if (userPass && userPass.trim()) {
+      password = userPass.trim();
+    } else {
+      throw new Error("Shiprocket API password is required! Please enter it in Store Settings tab.");
+    }
   }
 
   const res = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {

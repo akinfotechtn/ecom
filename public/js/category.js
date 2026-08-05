@@ -1,5 +1,4 @@
 import { DbService } from './db-service.js';
-import { AuthService } from './auth-service.js';
 
 let currentCategoryName = '';
 let categoryProducts = [];
@@ -22,7 +21,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   currentCategoryName = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category') || '';
 
-  AuthService.initAuthUI();
+  DbService.listenAuthState((user) => {
+    const loginLink = document.getElementById('navLoginLink');
+    if (loginLink) {
+      if (user) {
+        loginLink.innerHTML = `👤 ${escapeHtml(user.displayName || user.email.split('@')[0])}`;
+        loginLink.href = 'account.html';
+      } else {
+        loginLink.innerHTML = `🔑 Sign In`;
+        loginLink.href = 'account.html';
+      }
+    }
+  });
+
   setupCartDrawer();
 
   try {
