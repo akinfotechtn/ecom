@@ -1469,3 +1469,114 @@ footer {
   font-size: 0.82rem !important;
   opacity: 1 !important;
 }
+
+/* ELEGANT COUPON CODE SECTION */
+.coupon-container {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.coupon-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0f9ff;
+  border: 1.5px dashed #38bdf8;
+  border-radius: 12px;
+  padding: 4px 6px 4px 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coupon-box:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  background: #ffffff;
+}
+
+.coupon-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.coupon-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dark);
+  padding: 6px 0;
+}
+
+.coupon-box input::placeholder {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.btn-apply-coupon {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+}
+
+.btn-apply-coupon:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.btn-apply-coupon:active {
+  transform: translateY(0);
+}
+
+.coupon-status-msg {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+.coupon-quick-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.chip-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.coupon-chip {
+  background: #f1f5f9;
+  color: #0284c7;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.coupon-chip:hover {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  transform: scale(1.03);
+}

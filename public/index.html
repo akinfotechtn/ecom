@@ -161,12 +161,20 @@
         <span id="cartSubtotal">₹0</span>
       </div>
 
-      <!-- COUPON INPUT -->
-      <div class="coupon-box">
-        <input type="text" id="couponCodeInput" placeholder="Enter Coupon Code (e.g. WELCOME10)">
-        <button class="pill-btn" id="applyCouponBtn">Apply</button>
+      <!-- ELEGANT COUPON CODE SECTION -->
+      <div class="coupon-container">
+        <div class="coupon-box">
+          <span class="coupon-icon">🏷️</span>
+          <input type="text" id="couponCodeInput" placeholder="Enter Coupon Code" autocomplete="off">
+          <button class="btn-apply-coupon" id="applyCouponBtn">Apply</button>
+        </div>
+        <div id="couponMsg" class="coupon-status-msg"></div>
+        <div class="coupon-quick-chips">
+          <span class="chip-label">Promo Codes:</span>
+          <button type="button" class="coupon-chip" onclick="autoApplyCoupon('WELCOME10')">🎟️ WELCOME10</button>
+          <button type="button" class="coupon-chip" onclick="autoApplyCoupon('AKINFO500')">🎟️ AKINFO500</button>
+        </div>
       </div>
-      <div id="couponMsg" style="font-size: 0.75rem; margin-top: 4px;"></div>
 
       <div class="cart-summary-row" id="discountRow" style="display: none; color: var(--accent-green);">
         <span>Discount</span>

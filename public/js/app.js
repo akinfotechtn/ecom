@@ -420,6 +420,15 @@ function renderCart() {
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
+window.autoApplyCoupon = function(code) {
+  const input = document.getElementById('couponCodeInput');
+  if (input) {
+    input.value = code;
+    const applyBtn = document.getElementById('applyCouponBtn');
+    if (applyBtn) applyBtn.click();
+  }
+};
+
 // CHECKOUT & PAYMENT SELECTION
 window.selectPaymentMethod = function(method) {
   selectedPaymentMethod = method;
