@@ -1323,17 +1323,31 @@ window.importCategoryCsvText = async function() {
       return;
     }
 
-    if (!confirm(`Import ${parsedCats.length} categories into your database?`)) return;
+    if (!confirm(`Import/update ${parsedCats.length} categories in your database? (Existing categories will be updated, not duplicated)`)) return;
+
+    let addedCount = 0;
+    let updatedCount = 0;
 
     for (const cat of parsedCats) {
-      await DbService.addCategory({
-        name: cat.name,
-        imageLink: cat.imageLink,
-        deliveryCharge: cat.deliveryCharge
-      });
+      const existing = adminCategories.find(c => (c.name || '').trim().toLowerCase() === (cat.name || '').trim().toLowerCase());
+      if (existing) {
+        await DbService.updateCategory(existing.id, {
+          name: cat.name,
+          imageLink: cat.imageLink || existing.imageLink,
+          deliveryCharge: cat.deliveryCharge !== undefined ? cat.deliveryCharge : (existing.deliveryCharge || 150)
+        });
+        updatedCount++;
+      } else {
+        await DbService.addCategory({
+          name: cat.name,
+          imageLink: cat.imageLink,
+          deliveryCharge: cat.deliveryCharge || 150
+        });
+        addedCount++;
+      }
     }
 
-    alert(`✅ Successfully imported ${parsedCats.length} categories!`);
+    alert(`✅ Category sync complete! Added: ${addedCount}, Updated: ${updatedCount}`);
     await fetchAdminCategories();
   } catch (err) {
     alert(`Category import error: ${err.message}`);
@@ -1361,18 +1375,32 @@ window.syncCategoriesFromGoogleSheet = async function() {
       return;
     }
 
-    if (!confirm(`Found ${parsedCats.length} categories. Sync them into your store database?`)) return;
+    if (!confirm(`Found ${parsedCats.length} categories. Sync them into your store database? (Existing categories will be updated, not duplicated)`)) return;
+
+    let addedCount = 0;
+    let updatedCount = 0;
 
     for (const cat of parsedCats) {
-      await DbService.addCategory({
-        name: cat.name,
-        imageLink: cat.imageLink,
-        deliveryCharge: cat.deliveryCharge
-      });
+      const existing = adminCategories.find(c => (c.name || '').trim().toLowerCase() === (cat.name || '').trim().toLowerCase());
+      if (existing) {
+        await DbService.updateCategory(existing.id, {
+          name: cat.name,
+          imageLink: cat.imageLink || existing.imageLink,
+          deliveryCharge: cat.deliveryCharge !== undefined ? cat.deliveryCharge : (existing.deliveryCharge || 150)
+        });
+        updatedCount++;
+      } else {
+        await DbService.addCategory({
+          name: cat.name,
+          imageLink: cat.imageLink,
+          deliveryCharge: cat.deliveryCharge || 150
+        });
+        addedCount++;
+      }
     }
 
     await DbService.updateSettings({ catGoogleSheetUrl: rawUrl });
-    alert(`✅ Successfully synced ${parsedCats.length} categories from Google Sheet!`);
+    alert(`✅ Google Sheet category sync complete! Added: ${addedCount}, Updated: ${updatedCount}`);
     await fetchAdminCategories();
   } catch (err) {
     alert(`Category sync error: ${err.message}`);
