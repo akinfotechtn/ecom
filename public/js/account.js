@@ -20,9 +20,23 @@ function setupAuthState() {
     const loggedOutGate = document.getElementById('accountLoggedOutGate');
     const dashboard = document.getElementById('accountDashboard');
 
+    const bottomAvatarEl = document.getElementById('bottomProfileAvatar');
+    const bottomTextEl = document.getElementById('bottomProfileText');
+
     if (user) {
       loggedOutGate.style.display = 'none';
       dashboard.style.display = 'block';
+
+      if (bottomAvatarEl) {
+        if (user.photoURL) {
+          bottomAvatarEl.innerHTML = `<img src="${user.photoURL}" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent-cyan);" alt="Profile">`;
+        } else {
+          bottomAvatarEl.innerHTML = `👤`;
+        }
+      }
+      if (bottomTextEl) {
+        bottomTextEl.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Profile';
+      }
 
       document.getElementById('userAvatarImg').src = user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
       document.getElementById('userDisplayName').textContent = user.displayName || 'Customer Account';

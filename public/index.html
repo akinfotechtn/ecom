@@ -50,17 +50,6 @@
 
       <!-- NAV ACTIONS -->
       <div class="nav-actions">
-        <div id="authContainer">
-          <button class="nav-btn" id="googleLoginBtn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;" alt="Google">
-            <span>Sign In</span>
-          </button>
-        </div>
-
-        <a href="account.html" class="nav-btn">
-          👤 <span>My Account</span>
-        </a>
-
         <button class="nav-btn cart-btn" id="openCartBtn">
           🛒 <span>Cart</span>
           <span class="cart-count" id="cartCount">0</span>
@@ -107,27 +96,20 @@
     </div>
   </section>
 
-  <!-- BRAND SHOWCASE STRIP WITH LOGO & NAME SCROLL -->
-  <section class="brand-showcase-section">
-    <div class="section-title-row">
-      <div class="section-title-group">
-        <span class="section-tagline">🏷️ AUTHORIZED DISTRIBUTORS</span>
-        <h2 class="section-title">Shop By <span class="accent-highlight">Brands</span></h2>
-      </div>
+  <!-- BRAND SHOWCASE STRIP WITH WORDART HEADER -->
+  <section class="brand-showcase-section" style="padding: 24px 0 16px;">
+    <div class="wordart-header-box">
+      <span class="wordart-badge">🏷️ AUTHORIZED DISTRIBUTORS</span>
+      <h2 class="wordart-title">Shop By <span class="wordart-gradient-text">BRANDS</span></h2>
     </div>
     <div class="brand-logos-row" id="brandLogosRow"></div>
   </section>
 
-  <!-- CATEGORY SHOWCASE STRIP WITH THUMBNAIL & NAME SCROLL -->
-  <section class="filter-section">
-    <div class="section-title-row">
-      <div class="section-title-group">
-        <span class="section-tagline">📁 EXPLORE CATALOG</span>
-        <h2 class="section-title">Shop By <span class="accent-highlight">Categories</span></h2>
-      </div>
-      <button class="pill-btn combo-pill" id="comboToggleBtn">
-        ✨ Show Combos Only
-      </button>
+  <!-- CATEGORY SHOWCASE STRIP WITH WORDART HEADER -->
+  <section class="filter-section" style="padding: 24px 0 16px;">
+    <div class="wordart-header-box">
+      <span class="wordart-badge">📁 EXPLORE CATALOG</span>
+      <h2 class="wordart-title">Shop By <span class="wordart-gradient-text">CATEGORIES</span></h2>
     </div>
     <div class="category-scroll-row" id="categoryScrollRow"></div>
   </section>
@@ -359,11 +341,34 @@
       </div>
     </div>
 
-    <div class="footer-bottom-bar">
-      <div>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved.</div>
-      <div>Mount Road, Chennai's Wholesale CCTV & Security Electronics Hub.</div>
     </div>
   </footer>
+
+  <!-- MOBILE / BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-nav-item active">
+      <div class="mobile-nav-icon">🏠</div>
+      <span>Home</span>
+    </a>
+    <a href="category.html" class="mobile-nav-item">
+      <div class="mobile-nav-icon">📁</div>
+      <span>Categories</span>
+    </a>
+    <a href="brand.html" class="mobile-nav-item">
+      <div class="mobile-nav-icon">🏷️</div>
+      <span>Brands</span>
+    </a>
+    <button onclick="toggleCartDrawer()" class="mobile-nav-item" style="background:none; border:none; padding:0; font:inherit; cursor:pointer;">
+      <div class="mobile-nav-icon" style="position:relative;">
+        🛒
+      </div>
+      <span>Cart</span>
+    </button>
+    <a href="account.html" class="mobile-nav-item" id="bottomProfileLink">
+      <div class="mobile-nav-icon" id="bottomProfileAvatar">👤</div>
+      <span id="bottomProfileText">Profile</span>
+    </a>
+  </nav>
 
   <script type="module" src="js/app.js"></script>
 </body>

@@ -48,31 +48,23 @@ function setupAuthState() {
 }
 
 function renderAuthUI() {
-  const container = document.getElementById('authContainer');
-  if (!container) return;
+  const avatarEl = document.getElementById('bottomProfileAvatar');
+  const textEl = document.getElementById('bottomProfileText');
 
   if (currentUser) {
-    container.innerHTML = `
-      <a href="account.html" class="user-avatar-btn" title="${escapeHtml(currentUser.displayName || currentUser.email)}">
-        <img src="${currentUser.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}" class="user-avatar-img" alt="User Profile">
-        <span style="font-weight: 700; font-size: 0.8rem; color: var(--text-dark); max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(currentUser.displayName?.split(' ')[0] || 'Account')}</span>
-      </a>
-    `;
-  } else {
-    container.innerHTML = `
-      <button class="nav-btn" id="googleLoginBtn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;">
-        <span>Sign In</span>
-      </button>
-    `;
-
-    document.getElementById('googleLoginBtn')?.addEventListener('click', async () => {
-      try {
-        await DbService.loginWithGoogle();
-      } catch (err) {
-        alert(`Google Sign-In Notice: ${err.message}`);
+    if (avatarEl) {
+      if (currentUser.photoURL) {
+        avatarEl.innerHTML = `<img src="${currentUser.photoURL}" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent-cyan);" alt="Profile">`;
+      } else {
+        avatarEl.innerHTML = `👤`;
       }
-    });
+    }
+    if (textEl) {
+      textEl.textContent = currentUser.displayName ? currentUser.displayName.split(' ')[0] : 'Profile';
+    }
+  } else {
+    if (avatarEl) avatarEl.innerHTML = `👤`;
+    if (textEl) textEl.textContent = 'Profile';
   }
 }
 
