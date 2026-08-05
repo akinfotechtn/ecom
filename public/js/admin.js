@@ -281,6 +281,7 @@ function parseCsvTextToProducts(csvText) {
   const sellingIdx = getColIndex(['selling', 'offer', 'saleprice', 'sale']);
   const comboIdx = getColIndex(['combo', 'iscombo']);
   const availIdx = getColIndex(['availability', 'stock']);
+  const deliveryIdx = getColIndex(['delivery', 'shipping', 'fee', 'customdelivery']);
 
   const parsed = [];
   for (let i = 1; i < matrix.length; i++) {
@@ -305,6 +306,9 @@ function parseCsvTextToProducts(csvText) {
     const availVal = ((availIdx !== -1 ? cols[availIdx] : cols[8]) || '').toLowerCase();
     const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
 
+    const rawDelivery = (deliveryIdx !== -1 ? cols[deliveryIdx] : cols[9]) || '';
+    const deliveryCharge = (rawDelivery !== '' && !isNaN(rawDelivery)) ? parseFloat(rawDelivery) : null;
+
     parsed.push({
       id: `gs-${Date.now()}-${i}`,
       photoLink,
@@ -315,7 +319,8 @@ function parseCsvTextToProducts(csvText) {
       price: price || sellingPrice,
       sellingPrice: sellingPrice || price,
       inStock,
-      isCombo
+      isCombo,
+      deliveryCharge
     });
   }
 
@@ -1166,7 +1171,7 @@ window.exportProductsToCsv = function() {
     return;
   }
 
-  const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Custom Delivery Fee', 'Is Combo', 'Availability'];
+  const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Is Combo', 'Availability', 'Custom Delivery Fee'];
 
   const rows = adminProducts.map(p => {
     return [
@@ -1177,9 +1182,9 @@ window.exportProductsToCsv = function() {
       `"${(p.category || '').replace(/"/g, '""')}"`,
       p.price || 0,
       p.sellingPrice || 0,
-      (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : '',
       p.isCombo ? 'TRUE' : 'FALSE',
-      p.inStock !== false ? 'In stock' : 'Out of stock'
+      p.inStock !== false ? 'In stock' : 'Out of stock',
+      (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : ''
     ].join(',');
   });
 
