@@ -242,9 +242,6 @@ function renderCatalog() {
             ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
             ${savings > 0 ? `<span class="discount-tag">${savings}% OFF</span>` : ''}
           </div>
-          <div style="font-size: 0.72rem; color: #0284c7; font-weight: 700; margin-top: 2px;">
-            ₹${basePrice.toLocaleString('en-IN')} + ${gstRate}% GST Extra
-          </div>
 
           <div class="card-actions">
             ${isAvailable ? `
