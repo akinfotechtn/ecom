@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- PRIMARY CANONICAL STORE PAGES -->
+  <!-- PRIMARY CANONICAL STOREFRONT PAGES -->
   <url>
     <loc>https://shop.akinfotechcctv.in/index.html</loc>
     <lastmod>2026-08-05</lastmod>
@@ -14,7 +14,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- POPULAR BRAND PAGES -->
+  <!-- DYNAMIC BRAND PAGES -->
   <url>
     <loc>https://shop.akinfotechcctv.in/brand.html?name=Trueview</loc>
     <lastmod>2026-08-05</lastmod>
@@ -22,7 +22,67 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shop.akinfotechcctv.in/brand.html?name=CP%20Plus</loc>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=D-Link</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Maxxion</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Qubo</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=ESSL</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Folla</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Prama</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Fyber</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Toshiba</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=WD</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Seagate</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=CPPlus</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -34,9 +94,17 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shop.akinfotechcctv.in/brand.html?name=D-Link</loc>
+    <loc>https://shop.akinfotechcctv.in/brand.html?name=Dahua</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- DYNAMIC PRODUCT PAGES (AUTO-GENERATED VIA FIREBASE CATALOG SYNC) -->
+  <url>
+    <loc>https://shop.akinfotechcctv.in/product.html?id=prod-101</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
 </urlset>
