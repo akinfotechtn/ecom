@@ -22,10 +22,15 @@ let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
 let appliedCoupon = null;
 let selectedPaymentMethod = 'ONLINE'; // ONLINE or COD
 
+let heroBanners = [];
+let currentHeroIndex = 0;
+let heroAutoScrollTimer = null;
+
 // INITIALIZATION
 document.addEventListener('DOMContentLoaded', async () => {
   setupAuthState();
   await fetchSettings();
+  await loadHeroBanners();
   await loadBrandsAndCategories();
   await fetchProducts();
   setupEventListeners();
@@ -612,6 +617,57 @@ async function openCheckoutModal() {
 
 function closeCheckoutModal() {
   document.getElementById('checkoutBackdrop').classList.remove('active');
+}
+
+// HERO AUTO-SCROLL SLIDER
+async function loadHeroBanners() {
+  heroBanners = await DbService.getHeroBanners();
+  renderHeroSlider();
+  startHeroAutoScroll();
+}
+
+function renderHeroSlider() {
+  const wrap = document.getElementById('heroSliderWrap');
+  const dotsEl = document.getElementById('heroSliderDots');
+  if (!wrap || !heroBanners.length) return;
+
+  wrap.innerHTML = heroBanners.map((b, idx) => `
+    <div class="hero-slide ${idx === currentHeroIndex ? 'active' : ''}" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 58, 138, 0.85)), url('${b.imageUrl || 'images/hero-banner.webp'}') center/cover;">
+      <div class="hero-content">
+        ${b.tag ? `<span class="hero-tag">${escapeHtml(b.tag)}</span>` : ''}
+        <h1 class="hero-title">${escapeHtml(b.title || 'Next-Gen CCTV & Security Systems')}</h1>
+        <p class="hero-subtitle">${escapeHtml(b.subtitle || '')}</p>
+        ${b.btnText ? `<a href="${b.btnLink || 'javascript:void(0)'}" class="hero-btn">${escapeHtml(b.btnText)}</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  if (dotsEl) {
+    dotsEl.innerHTML = heroBanners.map((_, idx) => `
+      <div class="hero-dot ${idx === currentHeroIndex ? 'active' : ''}" onclick="goToHeroSlide(${idx})"></div>
+    `).join('');
+  }
+}
+
+window.goToHeroSlide = function(index) {
+  currentHeroIndex = index;
+  renderHeroSlider();
+  resetHeroAutoScroll();
+};
+
+function nextHeroSlide() {
+  if (!heroBanners.length) return;
+  currentHeroIndex = (currentHeroIndex + 1) % heroBanners.length;
+  renderHeroSlider();
+}
+
+function startHeroAutoScroll() {
+  if (heroAutoScrollTimer) clearInterval(heroAutoScrollTimer);
+  heroAutoScrollTimer = setInterval(nextHeroSlide, 4000);
+}
+
+function resetHeroAutoScroll() {
+  startHeroAutoScroll();
 }
 
 function escapeHtml(str) {

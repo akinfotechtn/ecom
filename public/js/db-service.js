@@ -1,4 +1,4 @@
-// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + CLEAN SHEET SYNC + BRANDS & CATEGORIES CRUD + USER ADDRESSES CRUD
+// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + HERO BANNERS CRUD & AUTO-SCROLL
 import { 
   db, 
   auth,
@@ -30,30 +30,6 @@ const DEFAULT_PRODUCTS = [
     sellingPrice: 1249,
     inStock: true,
     isCombo: true
-  },
-  {
-    id: "prod-102",
-    photoLink: "images/cctv-wholesale.webp",
-    productName: "Gopix 4MP Smart Color Night Vision Outdoor Bullet Camera",
-    productSpec: "4MP Super HD resolution, 30m Color Night Vision, IP67 Weatherproof, Motion Detection AI",
-    brand: "CPPlus",
-    category: "CCTV Camera",
-    price: 5499,
-    sellingPrice: 3599,
-    inStock: false,
-    isCombo: false
-  },
-  {
-    id: "prod-103",
-    photoLink: "images/storage-wholesale.webp",
-    productName: "Hikvision 4-Channel 5MP AcuSense 4K DVR Kit",
-    productSpec: "4 Channels AcuSense Human/Vehicle AI analytics, H.265+ Compression, 1TB Security HDD",
-    brand: "Hikvision",
-    category: "Printers",
-    price: 4899,
-    sellingPrice: 3999,
-    inStock: true,
-    isCombo: true
   }
 ];
 
@@ -72,6 +48,27 @@ const DEFAULT_CATEGORIES = [
   { id: "cat-3", name: "DVR & NVR", imageLink: "images/storage-wholesale.webp" },
   { id: "cat-4", name: "Security Systems", imageLink: "images/biometrics-wholesale.webp" },
   { id: "cat-5", name: "Accessories", imageLink: "images/networking-wholesale.webp" }
+];
+
+const DEFAULT_HERO_BANNERS = [
+  {
+    id: "hero-1",
+    imageUrl: "images/hero-banner.webp",
+    tag: "🔥 AK INFOTECH WHOLESALE & RETAIL",
+    title: "Next-Gen CCTV & Security Systems",
+    subtitle: "High Definition 4K Security Cameras, AI Motion Tracking & Complete All-in-One Surveillance Kits.",
+    btnText: "📦 Explore Combo Kits",
+    btnLink: "javascript:filterByComboOnly()"
+  },
+  {
+    id: "hero-2",
+    imageUrl: "images/cctv-wholesale.webp",
+    tag: "⚡ 4K ULTRA HD SECURITY",
+    title: "Smart Color Night Vision Surveillance",
+    subtitle: "Crystal clear 4MP & 8MP cameras with built-in mic, active defense siren & remote mobile view.",
+    btnText: "📹 Shop CCTV Cameras",
+    btnLink: "javascript:selectCategory('CCTV Camera')"
+  }
 ];
 
 const DEFAULT_SETTINGS = {
@@ -107,6 +104,37 @@ export class DbService {
 
   static listenAuthState(callback) {
     return onAuthStateChanged(auth, callback);
+  }
+
+  // HERO BANNERS MANAGEMENT (CRUD)
+  static async getHeroBanners() {
+    try {
+      const snap = await getDocs(collection(db, "hero_banners"));
+      if (!snap.empty) {
+        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+      for (const h of DEFAULT_HERO_BANNERS) {
+        await setDoc(doc(db, "hero_banners", h.id), h);
+      }
+      return DEFAULT_HERO_BANNERS;
+    } catch (err) {
+      return DEFAULT_HERO_BANNERS;
+    }
+  }
+
+  static async addHeroBanner(bannerData) {
+    const id = `hero-${Date.now()}`;
+    const newBanner = { id, ...bannerData };
+    await setDoc(doc(db, "hero_banners", id), newBanner);
+    return newBanner;
+  }
+
+  static async updateHeroBanner(id, bannerData) {
+    await setDoc(doc(db, "hero_banners", id), bannerData, { merge: true });
+  }
+
+  static async deleteHeroBanner(id) {
+    await deleteDoc(doc(db, "hero_banners", id));
   }
 
   // PRODUCTS: Fetch all

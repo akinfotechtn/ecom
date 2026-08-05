@@ -1,4 +1,4 @@
-// AK INFOTECH - ADMIN DASHBOARD JS (PROPER QUOTED CSV PARSER & FIREBASE CLOUD FIRESTORE SYNC)
+// AK INFOTECH - ADMIN DASHBOARD JS (HERO BANNERS SLIDER CRUD & FIREBASE CLOUD FIRESTORE SYNC)
 import { DbService } from "./db-service.js";
 
 const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
@@ -6,6 +6,7 @@ const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.c
 let adminProducts = [];
 let adminBrands = [];
 let adminCategories = [];
+let adminHeroBanners = [];
 let adminSettings = {};
 let adminOrders = [];
 let currentAdminUser = null;
@@ -74,6 +75,7 @@ function setupAdminAuthGuard() {
 
 async function loadAdminData() {
   await fetchAdminSettings();
+  await fetchAdminHeroBanners();
   await fetchAdminBrands();
   await fetchAdminCategories();
   await fetchAdminProducts();
@@ -88,7 +90,111 @@ window.switchAdminTab = function(tabId, btn) {
   document.getElementById(tabId).classList.add('active');
 };
 
-// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC & PERSISTENT URL
+// 1. HERO BANNERS & SLIDER MANAGEMENT (CRUD)
+async function fetchAdminHeroBanners() {
+  adminHeroBanners = await DbService.getHeroBanners();
+  renderHeroBannersList();
+}
+
+function renderHeroBannersList() {
+  const container = document.getElementById('adminHeroBannersList');
+  if (!container) return;
+
+  if (!adminHeroBanners.length) {
+    container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">No hero slides added yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = adminHeroBanners.map(h => `
+    <div class="hero-banner-card">
+      <div style="display:flex; align-items:center; gap:14px; padding:12px; background:#f8fafc; border-bottom:1px solid var(--border-color);">
+        <img src="${h.imageUrl || 'images/hero-banner.webp'}" style="width:100px; height:50px; object-fit:cover; border-radius:6px;" onerror="this.src='images/hero-banner.webp'">
+        <div style="flex:1;">
+          <div style="font-weight:800; font-size:0.95rem; color:var(--text-dark);">${escapeHtml(h.title)}</div>
+          <div style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(h.subtitle || '')}</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="pill-btn" onclick="editHeroBanner('${h.id}')">✏️ Edit</button>
+          <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3);" onclick="deleteHeroBanner('${h.id}')">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function handleAddHeroBanner(e) {
+  e.preventDefault();
+  const payload = {
+    imageUrl: document.getElementById('heroImgUrl').value.trim() || 'images/hero-banner.webp',
+    tag: document.getElementById('heroTag').value.trim(),
+    title: document.getElementById('heroTitle').value.trim(),
+    subtitle: document.getElementById('heroSubtitle').value.trim(),
+    btnText: document.getElementById('heroBtnText').value.trim(),
+    btnLink: document.getElementById('heroBtnLink').value.trim() || 'javascript:void(0)'
+  };
+
+  try {
+    await DbService.addHeroBanner(payload);
+    document.getElementById('heroBannerForm').reset();
+    await fetchAdminHeroBanners();
+    alert('✅ New Hero Slide added successfully!');
+  } catch (err) {
+    alert(`Failed to add hero slide: ${err.message}`);
+  }
+}
+
+window.editHeroBanner = function(id) {
+  const hero = adminHeroBanners.find(h => h.id === id);
+  if (!hero) return;
+
+  document.getElementById('editHeroId').value = hero.id;
+  document.getElementById('editHeroImgUrl').value = hero.imageUrl || '';
+  document.getElementById('editHeroTag').value = hero.tag || '';
+  document.getElementById('editHeroTitle').value = hero.title || '';
+  document.getElementById('editHeroSubtitle').value = hero.subtitle || '';
+  document.getElementById('editHeroBtnText').value = hero.btnText || '';
+  document.getElementById('editHeroBtnLink').value = hero.btnLink || '';
+
+  document.getElementById('editHeroModalBackdrop').classList.add('active');
+};
+
+window.closeEditHeroModal = function() {
+  document.getElementById('editHeroModalBackdrop').classList.remove('active');
+};
+
+async function handleSaveHeroEdit(e) {
+  e.preventDefault();
+  const id = document.getElementById('editHeroId').value;
+  const payload = {
+    imageUrl: document.getElementById('editHeroImgUrl').value.trim(),
+    tag: document.getElementById('editHeroTag').value.trim(),
+    title: document.getElementById('editHeroTitle').value.trim(),
+    subtitle: document.getElementById('editHeroSubtitle').value.trim(),
+    btnText: document.getElementById('editHeroBtnText').value.trim(),
+    btnLink: document.getElementById('editHeroBtnLink').value.trim()
+  };
+
+  try {
+    await DbService.updateHeroBanner(id, payload);
+    closeEditHeroModal();
+    await fetchAdminHeroBanners();
+    alert('✅ Hero Slide updated successfully!');
+  } catch (err) {
+    alert(`Failed to update hero slide: ${err.message}`);
+  }
+}
+
+window.deleteHeroBanner = async function(id) {
+  if (!confirm('Are you sure you want to delete this hero slide?')) return;
+  try {
+    await DbService.deleteHeroBanner(id);
+    await fetchAdminHeroBanners();
+  } catch (err) {
+    alert(`Failed to delete hero slide: ${err.message}`);
+  }
+};
+
+// 2. PURE CLIENT-SIDE GOOGLE SHEETS SYNC & PERSISTENT URL
 function normalizeGoogleSheetUrl(url) {
   if (!url) return '';
   let cleanUrl = url.trim();
@@ -101,7 +207,6 @@ function normalizeGoogleSheetUrl(url) {
   return cleanUrl;
 }
 
-// ROBUST CSV PARSER THAT RESPECTS QUOTED MULTI-LINE CELLS (FIXES 55 ROWS BUG -> 9 ROWS)
 function parseCsvToMatrix(csvText) {
   const rows = [];
   let currentRow = [];
@@ -115,7 +220,7 @@ function parseCsvToMatrix(csvText) {
     if (char === '"') {
       if (inQuotes && nextChar === '"') {
         currentField += '"';
-        i++; // skip escaped quote
+        i++;
       } else {
         inQuotes = !inQuotes;
       }
@@ -221,7 +326,6 @@ async function triggerGoogleSheetSync() {
     return;
   }
 
-  // Save URL persistently
   await DbService.updateSettings({ googleSheetUrl: urlInput });
 
   btn.disabled = true;
@@ -290,7 +394,7 @@ async function uploadRawCsv() {
   }
 }
 
-// 2. BRANDS MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
+// 3. BRANDS MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
 async function fetchAdminBrands() {
   adminBrands = await DbService.getBrands();
   renderBrandsGrid();
@@ -373,7 +477,7 @@ window.deleteBrand = async function(id) {
   }
 };
 
-// 3. CATEGORIES MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
+// 4. CATEGORIES MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
 async function fetchAdminCategories() {
   adminCategories = await DbService.getCategories();
   renderCategoriesGrid();
@@ -468,7 +572,7 @@ function populateDropdowns() {
   }
 }
 
-// 4. PRODUCTS MANAGEMENT (CRUD)
+// 5. PRODUCTS MANAGEMENT (CRUD)
 async function fetchAdminProducts() {
   try {
     adminProducts = await DbService.getProducts();
@@ -585,7 +689,7 @@ window.deleteProduct = async function(id) {
   }
 };
 
-// 5. SETTINGS MANAGEMENT & PERSISTENCE
+// 6. SETTINGS MANAGEMENT & PERSISTENCE
 async function fetchAdminSettings() {
   try {
     adminSettings = await DbService.getSettings();
@@ -633,7 +737,7 @@ async function saveStoreSettings(e) {
   }
 }
 
-// 6. ORDERS HISTORY
+// 7. ORDERS HISTORY
 async function fetchAdminOrders() {
   try {
     adminOrders = await DbService.getOrders();
@@ -702,6 +806,12 @@ function setupEventListeners() {
 
   const btnUploadCsv = document.getElementById('btnUploadCsv');
   if (btnUploadCsv) btnUploadCsv.addEventListener('click', uploadRawCsv);
+
+  const heroBannerForm = document.getElementById('heroBannerForm');
+  if (heroBannerForm) heroBannerForm.addEventListener('submit', handleAddHeroBanner);
+
+  const editHeroForm = document.getElementById('editHeroForm');
+  if (editHeroForm) editHeroForm.addEventListener('submit', handleSaveHeroEdit);
 
   const productForm = document.getElementById('productForm');
   if (productForm) productForm.addEventListener('submit', saveProductSubmit);
