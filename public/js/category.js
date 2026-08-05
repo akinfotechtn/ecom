@@ -54,17 +54,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     storeSettings = settings || {};
 
     if (currentCategoryName) {
+      const targetLower = currentCategoryName.toLowerCase().trim();
       const targetNorm = normalizeStr(currentCategoryName);
+
       categoryProducts = prods.filter(p => {
         if (!p.category) return false;
+        const catLower = p.category.toLowerCase().trim();
         const catNorm = normalizeStr(p.category);
-        return catNorm === targetNorm || catNorm.includes(targetNorm) || targetNorm.includes(catNorm);
+
+        // 1. Exact string match (case insensitive)
+        if (catLower === targetLower) return true;
+
+        // 2. Exact normalized match
+        if (catNorm === targetNorm) return true;
+
+        // 3. Product category contains target category (e.g. "PC UPS & Power" contains "PC UPS")
+        if (catNorm.includes(targetNorm) && targetNorm.length >= 3) return true;
+
+        return false;
       });
+
+      // 4. Fallback if no exact category match: check if product name or spec specifically mentions target category tokens
       if (!categoryProducts.length) {
-        categoryProducts = prods.filter(p => (p.category || '').toLowerCase().trim() === currentCategoryName.toLowerCase().trim());
-      }
-      if (!categoryProducts.length) {
-        categoryProducts = [...prods];
+        const rawTokens = targetLower.split(/[\s\/\-]+/).filter(t => t.length > 1);
+        categoryProducts = prods.filter(p => {
+          const text = `${p.category || ''} ${p.productName || ''} ${p.brand || ''}`.toLowerCase();
+          return rawTokens.every(token => text.includes(token));
+        });
       }
     } else {
       categoryProducts = [...prods];
