@@ -1209,14 +1209,3 @@ window.exportProductsToCsv = function() {
   link.click();
   document.body.removeChild(link);
 };
-
-window.restoreFullCatalog = async function() {
-  if (!confirm('Restore full 10-product catalog into your store database?')) return;
-  try {
-    await DbService.resetProductsToDefault();
-    alert('✅ Successfully restored full catalog products in database!');
-    await fetchAdminProducts();
-  } catch (err) {
-    alert(`Restore error: ${err.message}`);
-  }
-};
