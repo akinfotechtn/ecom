@@ -695,13 +695,37 @@ window.deleteProduct = async function(id) {
   }
 };
 
+window.toggleFreeShippingMinGroup = function(enabled) {
+  const minGroup = document.getElementById('freeShippingMinGroup');
+  const label = document.getElementById('freeShippingPolicyLabel');
+  if (minGroup) {
+    minGroup.style.opacity = enabled ? '1' : '0.4';
+    minGroup.style.pointerEvents = enabled ? 'auto' : 'none';
+  }
+  if (label) {
+    if (enabled) {
+      label.textContent = 'Enable Free Shipping Above Min Order';
+      label.style.color = 'var(--accent-green)';
+    } else {
+      label.textContent = 'Free Shipping Disabled (All Orders Paid Delivery)';
+      label.style.color = 'var(--accent-orange)';
+    }
+  }
+};
+
 // 6. SETTINGS MANAGEMENT & PERSISTENCE
 async function fetchAdminSettings() {
   try {
     adminSettings = await DbService.getSettings();
-    document.getElementById('cfgDeliveryCharge').value = adminSettings.deliveryCharge || 150;
+    document.getElementById('cfgDeliveryCharge').value = adminSettings.deliveryCharge !== undefined ? adminSettings.deliveryCharge : 150;
     document.getElementById('cfgFreeShippingMin').value = adminSettings.freeShippingMinOrder || 3000;
     document.getElementById('cfgCodAdvanceAmount').value = adminSettings.codAdvanceAmount || 1000;
+
+    const enableFreeChk = document.getElementById('cfgEnableFreeShipping');
+    if (enableFreeChk) {
+      enableFreeChk.checked = adminSettings.enableFreeShipping !== false;
+      toggleFreeShippingMinGroup(enableFreeChk.checked);
+    }
 
     const urlInput = document.getElementById('googleSheetUrlInput');
     if (urlInput && adminSettings.googleSheetUrl) {
@@ -719,9 +743,11 @@ async function fetchAdminSettings() {
 
 async function saveStoreSettings(e) {
   e.preventDefault();
+  const enableFreeShipping = document.getElementById('cfgEnableFreeShipping')?.checked ?? true;
   const payload = {
     deliveryCharge: parseFloat(document.getElementById('cfgDeliveryCharge').value),
-    freeShippingMinOrder: parseFloat(document.getElementById('cfgFreeShippingMin').value),
+    enableFreeShipping: enableFreeShipping,
+    freeShippingMinOrder: parseFloat(document.getElementById('cfgFreeShippingMin').value) || 3000,
     codAdvanceAmount: parseFloat(document.getElementById('cfgCodAdvanceAmount').value) || 1000,
     googleSheetUrl: document.getElementById('googleSheetUrlInput').value.trim(),
     razorpay: {

@@ -225,18 +225,28 @@ function renderCart() {
     discount = appliedCoupon.type === 'PERCENT' ? (subtotal * appliedCoupon.value / 100) : appliedCoupon.value;
   }
 
-  const freeMin = 3000;
-  let deliveryFee = (subtotal >= freeMin || subtotal === 0) ? 0 : 150;
-  const deliveryEl = document.getElementById('cartDelivery');
+  const enableFreeShipping = (window.storeSettings && window.storeSettings.enableFreeShipping !== false);
+  const freeMin = (window.storeSettings && window.storeSettings.freeShippingMinOrder) || 3000;
+  const stdDelivery = (window.storeSettings && window.storeSettings.deliveryCharge !== undefined) ? Number(window.storeSettings.deliveryCharge) : 150;
 
+  let deliveryFee = stdDelivery;
+  if (subtotal === 0) {
+    deliveryFee = 0;
+  } else if (enableFreeShipping && subtotal >= freeMin) {
+    deliveryFee = 0;
+  }
+
+  const deliveryEl = document.getElementById('cartDelivery');
   if (deliveryEl) {
     if (subtotal === 0) {
       deliveryEl.innerHTML = `₹0`;
     } else if (deliveryFee === 0) {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
-    } else {
+    } else if (enableFreeShipping) {
       const needed = freeMin - subtotal;
-      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+      deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+    } else {
+      deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge applies to all orders</small>`;
     }
   }
 

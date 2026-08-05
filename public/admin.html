@@ -340,12 +340,19 @@
       <form id="settingsForm">
         <div class="form-row">
           <div class="form-group">
-            <label>Delivery Charge (₹)</label>
+            <label>Standard Delivery Charge (₹)</label>
             <input type="number" id="cfgDeliveryCharge" required>
           </div>
           <div class="form-group">
+            <label>Free Shipping Policy</label>
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+              <input type="checkbox" id="cfgEnableFreeShipping" style="width: 22px; height: 22px; cursor: pointer;" onchange="toggleFreeShippingMinGroup(this.checked)">
+              <span id="freeShippingPolicyLabel" style="font-weight: 800; font-size: 0.9rem; color: var(--accent-green);">Enable Free Shipping Above Min Order</span>
+            </div>
+          </div>
+          <div class="form-group" id="freeShippingMinGroup">
             <label>Free Shipping Min Order (₹)</label>
-            <input type="number" id="cfgFreeShippingMin" required>
+            <input type="number" id="cfgFreeShippingMin">
           </div>
         </div>
 
