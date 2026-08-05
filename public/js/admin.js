@@ -1,16 +1,78 @@
-// AK INFOTECH - ADMIN DASHBOARD JS (PURE CLIENT-SIDE FIREBASE & GOOGLE SHEETS SYNC)
+// AK INFOTECH - ADMIN DASHBOARD JS (STRICT ADMIN EMAIL GUARD & FIREBASE SYNC)
 import { DbService } from "./db-service.js";
+
+const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
 
 let adminProducts = [];
 let adminBrands = [];
 let adminCategories = [];
 let adminSettings = {};
 let adminOrders = [];
+let currentAdminUser = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  setupAdminAuthGuard();
   setupEventListeners();
-  await loadAdminData();
 });
+
+// STRICT ADMIN AUTHENTICATION GUARD
+function setupAdminAuthGuard() {
+  DbService.listenAuthState(async (user) => {
+    currentAdminUser = user;
+    const gatekeeperEl = document.getElementById('adminGatekeeper');
+    const mainPanelEl = document.getElementById('adminMainPanel');
+    const msgEl = document.getElementById('gatekeeperStatusMsg');
+    const statusLabel = document.getElementById('adminUserStatus');
+
+    if (user && AUTHORIZED_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+      // AUTHORIZED ADMIN LOGGED IN
+      gatekeeperEl.style.display = 'none';
+      mainPanelEl.style.display = 'block';
+
+      if (statusLabel) {
+        statusLabel.innerHTML = `<span style="color:var(--accent-green);">🟢 Admin: ${escapeHtml(user.email)}</span>`;
+      }
+      document.getElementById('adminEmailLabel').textContent = user.email;
+
+      await loadAdminData();
+    } else {
+      // UNAUTHORIZED OR NOT LOGGED IN
+      gatekeeperEl.style.display = 'block';
+      mainPanelEl.style.display = 'none';
+
+      if (statusLabel) {
+        statusLabel.innerHTML = `<span style="color:#ef4444;">🔒 Access Denied</span>`;
+      }
+
+      if (user) {
+        msgEl.innerHTML = `
+          <div style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:12px; border-radius:var(--radius-sm); font-size:0.88rem;">
+            Signed in as <strong>${escapeHtml(user.email)}</strong> (Unauthorized). Please sign out and sign in with <strong>akinfotecttn@gmail.com</strong>.
+          </div>
+          <button id="btnGatekeeperLogout" class="pill-btn" style="margin-top:10px; color:#ef4444;">Sign Out Current Account</button>
+        `;
+        document.getElementById('btnGatekeeperLogout')?.addEventListener('click', async () => {
+          await DbService.logoutUser();
+        });
+      } else {
+        msgEl.innerHTML = `<span style="color:var(--text-muted); font-size:0.88rem;">Please sign in using your Google Admin Account.</span>`;
+      }
+    }
+  });
+
+  document.getElementById('btnAdminGoogleLogin')?.addEventListener('click', async () => {
+    try {
+      await DbService.loginWithGoogle();
+    } catch (err) {
+      alert(`Google Login Error: ${err.message}`);
+    }
+  });
+
+  document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
+    await DbService.logoutUser();
+    alert('Admin signed out.');
+  });
+}
 
 async function loadAdminData() {
   await fetchAdminSettings();
@@ -28,7 +90,7 @@ window.switchAdminTab = function(tabId, btn) {
   document.getElementById(tabId).classList.add('active');
 };
 
-// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC (WORKS ON VERCEL, GITHUB PAGES & ANY PORT)
+// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC
 function normalizeGoogleSheetUrl(url) {
   if (!url) return '';
   let cleanUrl = url.trim();
@@ -147,7 +209,7 @@ async function triggerGoogleSheetSync() {
     const response = await fetch(formattedUrl);
 
     if (!response.ok) {
-      throw new Error(`Google Sheet request failed (${response.status}). Ensure your sheet access is set to "Anyone with the link can view" or "Published to web".`);
+      throw new Error(`Google Sheet request failed (${response.status}). Ensure sheet access is "Anyone with link can view" or "Publish to Web".`);
     }
 
     const csvText = await response.text();
@@ -222,16 +284,24 @@ async function handleAddBrand(e) {
   const imageLink = document.getElementById('newBrandImg').value.trim() || 'images/logo.webp';
 
   if (!name) return;
-  await DbService.addBrand({ name, imageLink });
-  document.getElementById('brandForm').reset();
-  await fetchAdminBrands();
-  alert(`✅ Brand "${name}" added successfully!`);
+  try {
+    await DbService.addBrand({ name, imageLink });
+    document.getElementById('brandForm').reset();
+    await fetchAdminBrands();
+    alert(`✅ Brand "${name}" added successfully!`);
+  } catch (err) {
+    alert(`Brand error: ${err.message}`);
+  }
 }
 
 window.deleteBrand = async function(id) {
   if (!confirm('Delete this brand?')) return;
-  await DbService.deleteBrand(id);
-  await fetchAdminBrands();
+  try {
+    await DbService.deleteBrand(id);
+    await fetchAdminBrands();
+  } catch (err) {
+    alert(`Delete error: ${err.message}`);
+  }
 };
 
 // 3. CATEGORIES MANAGEMENT
@@ -262,16 +332,24 @@ async function handleAddCategory(e) {
   const imageLink = document.getElementById('newCatImg').value.trim() || 'images/cctv-wholesale.webp';
 
   if (!name) return;
-  await DbService.addCategory({ name, imageLink });
-  document.getElementById('categoryForm').reset();
-  await fetchAdminCategories();
-  alert(`✅ Category "${name}" added successfully!`);
+  try {
+    await DbService.addCategory({ name, imageLink });
+    document.getElementById('categoryForm').reset();
+    await fetchAdminCategories();
+    alert(`✅ Category "${name}" added successfully!`);
+  } catch (err) {
+    alert(`Category error: ${err.message}`);
+  }
 }
 
 window.deleteCategory = async function(id) {
   if (!confirm('Delete this category?')) return;
-  await DbService.deleteCategory(id);
-  await fetchAdminCategories();
+  try {
+    await DbService.deleteCategory(id);
+    await fetchAdminCategories();
+  } catch (err) {
+    alert(`Delete error: ${err.message}`);
+  }
 };
 
 function populateDropdowns() {

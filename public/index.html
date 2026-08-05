@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AK Infotech | Wholesale & Retail CCTV, Security Systems & IT Solutions</title>
-  <meta name="description" content="AK Infotech - Authorized Wholesale & Retail Distributor for Gopix, Hikvision, CP Plus, Dahua, EZVIZ CCTV Cameras, DVRs, Biometrics & Security Systems. COD Available with ₹1,000 Advance.">
-  <meta name="keywords" content="AK Infotech, CCTV Cameras Wholesale, Hikvision DVR, CP Plus Camera, Gopix CCTV, Biometrics Access Control, Security Systems Chennai">
+  <title>AK Infotech | CCTV Security Systems, Cameras & IT Solutions</title>
+  <meta name="description" content="Authorized Wholesale & Retail Security Systems Distributor. Shop 4K CCTV Cameras, DVR/NVR, Wireless Cameras, Biometrics, PoE Switches & Combo Packs. Fast Delivery via Shiprocket & COD Available.">
+
+  <!-- OpenGraph Meta Tags for Social Sharing & SEO -->
+  <meta property="og:title" content="AK Infotech | CCTV Security Systems & IT Solutions">
+  <meta property="og:description" content="Authorized Wholesale & Retail Security Systems Distributor. Fast Delivery & COD Available.">
+  <meta property="og:image" content="images/logo.webp">
+  <meta property="og:type" content="website">
+
   <link rel="stylesheet" href="css/style.css">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
-  <!-- TOP UTILITY STRIP (REALTECHVISION STYLE) -->
+  <!-- TOP UTILITY STRIP -->
   <div class="announcement-bar">
     <div class="announcement-left">
       <span class="badge-glow">AK INFOTECH DEALS</span>
@@ -20,11 +26,11 @@
     <div class="announcement-right">
       <span>📞 WhatsApp Orders: <strong>+91 9876543210</strong></span>
       <span>🚚 Shiprocket Express Dispatch</span>
-      <span>🛡️ 100% Genuine Brand Warranty</span>
+      <span>🛡️ 100% Genuine Warranty</span>
     </div>
   </div>
 
-  <!-- MAIN STICKY NAVBAR -->
+  <!-- MAIN HEADER / NAVBAR -->
   <nav class="navbar">
     <div class="navbar-container">
       <a href="index.html" class="logo">
@@ -32,16 +38,17 @@
         <span>AK INFOTECH</span>
       </a>
 
+      <!-- SEARCH BOX -->
       <div class="search-box">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" placeholder="Search CCTV Cameras, DVRs, Combos, Specs...">
       </div>
 
+      <!-- NAV ACTIONS -->
       <div class="nav-actions">
-        <!-- GOOGLE AUTH LOGIN / PROFILE BTN -->
         <div id="authContainer">
           <button class="nav-btn" id="googleLoginBtn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;" alt="Google">
             <span>Sign In</span>
           </button>
         </div>
@@ -49,10 +56,6 @@
         <button class="nav-btn" id="openTrackModalBtn">
           📍 <span>Track Order</span>
         </button>
-
-        <a href="admin.html" class="nav-btn">
-          ⚙️ <span>Admin</span>
-        </a>
 
         <button class="nav-btn cart-btn" id="openCartBtn">
           🛒 <span>Cart</span>
@@ -62,7 +65,7 @@
     </div>
   </nav>
 
-  <!-- SECONDARY CATEGORY MEGA NAV BAR (REALTECHVISION STYLE) -->
+  <!-- SECONDARY CATEGORY MEGA NAV BAR -->
   <div class="rc-nav2">
     <div class="rc-nav2-inner">
       <a href="javascript:selectCategory('')" class="active" id="navCategoryAll">🏠 All Products</a>
@@ -118,48 +121,17 @@
       <div class="trust-badge-icon">🛡️</div>
       <div>
         <div class="trust-badge-title">100% Genuine Brand Warranty</div>
-        <div class="trust-badge-sub">Official distributor products</div>
+        <div class="trust-badge-sub">Official replacement warranty</div>
       </div>
     </div>
   </section>
 
-  <!-- BRAND SHOWCASE LOGOS -->
+  <!-- BRAND SHOWCASE STRIP -->
   <section class="brand-showcase-section">
-    <div class="section-title-row" style="margin-bottom: 10px;">
-      <h3 style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px;">Authorized Brand Distributors:</h3>
+    <div class="section-title-row">
+      <h2 class="section-title">Authorized Brand Distributors</h2>
     </div>
-    <div class="brand-logos-row" id="brandLogosRow">
-      <div class="brand-logo-card active" onclick="selectBrand('')" title="All Brands">
-        <span style="font-weight: 800; font-size: 0.85rem; color: var(--accent-cyan);">ALL BRANDS</span>
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Gopix')" title="Gopix">
-        <img src="images/gopix-logo.webp" alt="Gopix Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Hikvision')" title="Hikvision">
-        <img src="images/hikvision-logo.webp" alt="Hikvision Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('CP Plus')" title="CP Plus">
-        <img src="images/cpplus-logo.webp" alt="CP Plus Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Dahua')" title="Dahua">
-        <img src="images/dahua-logo.webp" alt="Dahua Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('EZVIZ')" title="EZVIZ">
-        <img src="images/ezviz-logo.webp" alt="EZVIZ Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Prama')" title="Prama">
-        <img src="images/prama-logo.webp" alt="Prama Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Trueview')" title="Trueview">
-        <img src="images/trueview-logo.webp" alt="Trueview Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('TP-Link')" title="TP-Link">
-        <img src="images/tplink-logo.webp" alt="TP-Link Logo">
-      </div>
-      <div class="brand-logo-card" onclick="selectBrand('Seagate')" title="Seagate">
-        <img src="images/seagate-logo.webp" alt="Seagate Logo">
-      </div>
-    </div>
+    <div class="brand-logos-row" id="brandLogosRow"></div>
   </section>
 
   <!-- FILTER & SHOP BY SECTION -->
@@ -213,9 +185,15 @@
         </div>
       </div>
 
-      <div id="userOrdersHistoryContainer" style="margin-top: 20px;">
-        <!-- Dynamically rendered -->
-      </div>
+      <div id="userOrdersHistoryContainer" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- MY ACCOUNT / PROFILE MODAL -->
+  <div class="modal-backdrop" id="accountModalBackdrop">
+    <div class="modal-content" style="max-width: 520px;">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" id="closeAccountModalBtn">✕</button>
+      <div id="accountModalBody"></div>
     </div>
   </div>
 
@@ -248,8 +226,8 @@
         <span id="cartDiscount">-₹0</span>
       </div>
 
-      <div class="summary-row total">
-        <span>Total Amount</span>
+      <div class="summary-row" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
+        <span>Final Payable Amount</span>
         <span id="cartFinalTotal">₹0</span>
       </div>
 
@@ -258,14 +236,6 @@
       </button>
     </div>
   </aside>
-
-  <!-- QUICK VIEW MODAL -->
-  <div class="modal-backdrop" id="quickViewBackdrop">
-    <div class="modal-content" style="max-width: 600px;">
-      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" id="closeQuickViewBtn">✕</button>
-      <div id="quickViewBody"></div>
-    </div>
-  </div>
 
   <!-- CHECKOUT MODAL -->
   <div class="modal-backdrop" id="checkoutBackdrop">
@@ -280,66 +250,51 @@
             <input type="text" id="custName" required placeholder="John Doe">
           </div>
           <div class="form-group">
-            <label>Phone Number (WhatsApp) *</label>
-            <input type="tel" id="custPhone" required placeholder="9876543210">
+            <label>Mobile Number *</label>
+            <input type="tel" id="custPhone" required placeholder="9876543210" pattern="[0-9]{10}">
           </div>
         </div>
 
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="custEmail" placeholder="customer@example.com">
+          <input type="email" id="custEmail" placeholder="name@example.com">
         </div>
 
         <div class="form-group">
-          <label>Delivery Street Address *</label>
-          <textarea id="custAddress" rows="2" required placeholder="Door No, Street, Area, Landmark"></textarea>
+          <label>Delivery Address *</label>
+          <textarea id="custAddress" rows="2" required placeholder="House No, Street Name, Area..."></textarea>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Pincode *</label>
-            <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
-            <div id="pincodeStatus" style="font-size: 0.75rem; margin-top: 4px;"></div>
+            <input type="text" id="custPincode" required placeholder="600001">
           </div>
           <div class="form-group">
-            <label>City & State</label>
-            <input type="text" id="custCityState" placeholder="Chennai, Tamil Nadu">
+            <label>City & State *</label>
+            <input type="text" id="custCityState" required placeholder="Chennai, Tamil Nadu">
           </div>
         </div>
 
-        <!-- PAYMENT METHOD SELECTION -->
-        <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin: 14px 0 6px; text-transform: uppercase;">
-          Select Payment Method *
-        </label>
+        <h3 style="font-size: 0.95rem; font-weight: 800; margin: 16px 0 10px; color: var(--text-dark);">Choose Payment Method</h3>
 
         <div class="payment-method-selector">
           <div class="payment-option-card selected" id="optOnline" onclick="selectPaymentMethod('ONLINE')">
-            <div class="payment-option-title" style="font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
-              <span>💳 Online Payment</span>
-              <span style="font-size: 0.72rem; color: var(--accent-green); font-weight: 700;">Full Paid</span>
-            </div>
-            <div class="payment-option-sub" style="font-size: 0.78rem; color: var(--text-muted);">Pay 100% amount online via Razorpay (UPI, Credit/Debit Card, Netbanking).</div>
+            <div style="font-weight: 800; font-size: 0.9rem; color: var(--accent-cyan);">💳 100% Online Payment</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">UPI, GPay, PhonePe, Credit/Debit Cards & Netbanking via Razorpay</div>
           </div>
 
           <div class="payment-option-card" id="optCOD" onclick="selectPaymentMethod('COD')">
-            <div class="payment-option-title" style="font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; display: flex; justify-content: space-between;">
-              <span>💵 Cash on Delivery</span>
-              <span style="font-size: 0.72rem; color: var(--accent-orange); font-weight: 800;">₹1,000 Advance</span>
-            </div>
-            <div class="payment-option-sub" style="font-size: 0.78rem; color: var(--text-muted);">Pay ₹1,000 Advance online to process order. Balance paid on delivery.</div>
+            <div style="font-weight: 800; font-size: 0.9rem; color: var(--accent-orange);">💵 Cash on Delivery (COD)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Pay ₹1,000 Advance to process & balance at delivery</div>
           </div>
         </div>
 
-        <div class="cod-advance-banner" id="codAdvanceBanner" style="display: none;">
-          <div class="cod-advance-header">
-            ⚠️ Cash on Delivery Rule: Advance Required
-          </div>
-          <div class="cod-advance-desc" style="font-size: 0.82rem; color: #9a3412; line-height: 1.4;">
-            To confirm order dispatch, a mandatory <strong>₹1,000 Advance Payment</strong> is collected online via Razorpay.
-            <div style="margin-top: 6px; font-weight: 700; font-size: 0.88rem; color: var(--text-dark);">
-              👉 Paid Now (Advance): <span style="color: var(--accent-cyan);">₹1,000</span><br>
-              👉 Payable to Courier at Delivery: <span style="color: var(--accent-green);" id="codBalanceText">₹0</span>
-            </div>
+        <div id="codAdvanceBanner" style="display: none; background: #fff7ed; border: 1px solid #fed7aa; padding: 12px; border-radius: var(--radius-sm); margin-top: 10px; font-size: 0.82rem; color: #9a3412;">
+          <div style="font-weight: 800; margin-bottom: 4px;">⚡ COD Terms:</div>
+          <div>
+            👉 Paid Now (Advance): <span style="color: var(--accent-cyan);">₹1,000</span><br>
+            👉 Payable to Courier at Delivery: <span style="color: var(--accent-green);" id="codBalanceText">₹0</span>
           </div>
         </div>
 
@@ -370,9 +325,9 @@
       <span class="mobile-nav-icon">🛒</span>
       <span>Cart</span>
     </a>
-    <a href="admin.html" class="mobile-nav-item">
-      <span class="mobile-nav-icon">⚙️</span>
-      <span>Admin</span>
+    <a href="javascript:openAccountModal()" class="mobile-nav-item">
+      <span class="mobile-nav-icon">👤</span>
+      <span>Account</span>
     </a>
   </nav>
 

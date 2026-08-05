@@ -89,6 +89,16 @@
       font-weight: 700;
       border: 1px solid #cbd5e1;
     }
+    .admin-gatekeeper {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px 24px;
+      text-align: center;
+      max-width: 540px;
+      margin: 40px auto;
+      box-shadow: var(--shadow-lg);
+    }
   </style>
 </head>
 <body>
@@ -104,16 +114,35 @@
         <a href="index.html" class="nav-btn">
           🏪 View Storefront
         </a>
+        <div id="adminUserStatus" style="font-size:0.8rem; font-weight:700;"></div>
       </div>
     </div>
   </nav>
 
-  <div class="admin-container">
+  <!-- ACCESS DENIED GATEKEEPER SCREEN (SHOWN WHEN NOT LOGGED IN AS ADMIN) -->
+  <div id="adminGatekeeper" class="admin-gatekeeper" style="display: none;">
+    <div style="font-size: 3.5rem; margin-bottom: 12px;">🔒</div>
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">Admin Access Restricted</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;">
+      Only <strong>akinfotecttn@gmail.com</strong> is authorized to manage store settings, products, brands, and categories.
+    </p>
+
+    <div id="gatekeeperStatusMsg" style="margin-bottom: 20px;"></div>
+
+    <button id="btnAdminGoogleLogin" class="hero-btn" style="padding: 12px 28px; font-size: 0.95rem;">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px;">
+      Sign In with Admin Google Account
+    </button>
+  </div>
+
+  <!-- MAIN ADMIN PANEL (SHOWN ONLY TO AUTHORIZED ADMIN) -->
+  <div class="admin-container" id="adminMainPanel" style="display: none;">
     <div class="admin-header">
       <div>
         <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark);">⚙️ AK Infotech Control Panel</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Firebase Cloud Firestore & Google Auth Enabled.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Authenticated as Admin: <strong id="adminEmailLabel" style="color: var(--accent-cyan);">akinfotecttn@gmail.com</strong></p>
       </div>
+      <button id="adminLogoutBtn" class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:6px 14px;">Sign Out</button>
     </div>
 
     <!-- TABS -->

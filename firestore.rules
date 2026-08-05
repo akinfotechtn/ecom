@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin helper function (Restricts administrative rights to akinfotecttn@gmail.com)
+    function isAdmin() {
+      return request.auth != null && 
+        (request.auth.token.email == 'akinfotecttn@gmail.com' || request.auth.token.email == 'akinfotechtn@gmail.com');
+    }
+
+    // 1. PRODUCTS COLLECTION
+    match /products/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // 2. BRANDS COLLECTION
+    match /brands/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. CATEGORIES COLLECTION
+    match /categories/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. STORE SETTINGS COLLECTION
+    match /settings/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 5. CUSTOMER ORDERS COLLECTION
+    match /orders/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
