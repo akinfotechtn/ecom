@@ -6,10 +6,6 @@
   <title>AK Infotech | CCTV Security Systems, Cameras & IT Solutions</title>
   <meta name="description" content="Authorized Wholesale & Retail Security Systems Distributor. Shop 4K CCTV Cameras, DVR/NVR, Wireless Cameras, Biometrics, PoE Switches & Combo Packs. Fast Delivery via Shiprocket & COD Available.">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="images/logo.webp">
-  <link rel="shortcut icon" href="images/logo.webp">
-
   <!-- OpenGraph Meta Tags for Social Sharing & SEO -->
   <meta property="og:title" content="AK Infotech | CCTV Security Systems & IT Solutions">
   <meta property="og:description" content="Authorized Wholesale & Retail Security Systems Distributor. Fast Delivery & COD Available.">
@@ -28,7 +24,7 @@
       <span>⚡ Cash on Delivery (COD): Pay ₹1,000 Advance & Remaining at Delivery!</span>
     </div>
     <div class="announcement-right">
-      <span>📞 WhatsApp Support: <strong><a href="https://wa.me/919500673207" target="_blank" style="color:inherit; text-decoration:underline;">+91 9500673207</a></strong></span>
+      <span>📞 WhatsApp Orders: <strong>+91 9876543210</strong></span>
       <span>🚚 Shiprocket Express Dispatch</span>
       <span>🛡️ 100% Genuine Warranty</span>
     </div>
@@ -48,8 +44,15 @@
         <input type="text" id="searchInput" placeholder="Search CCTV Cameras, DVRs, Combos, Specs...">
       </div>
 
-      <!-- USER ACTIONS -->
-      <div class="nav-actions" id="authContainer">
+      <!-- NAV ACTIONS -->
+      <div class="nav-actions">
+        <div id="authContainer">
+          <button class="nav-btn" id="googleLoginBtn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;" alt="Google">
+            <span>Sign In</span>
+          </button>
+        </div>
+
         <a href="account.html" class="nav-btn">
           👤 <span>My Account</span>
         </a>
@@ -61,6 +64,21 @@
       </div>
     </div>
   </nav>
+
+  <!-- SECONDARY CATEGORY MEGA NAV BAR -->
+  <div class="rc-nav2">
+    <div class="rc-nav2-inner">
+      <a href="javascript:selectCategory('')" class="active" id="navCategoryAll">🏠 All Products</a>
+      <a href="javascript:selectCategory('CCTV Cameras')">📹 CCTV Cameras</a>
+      <a href="javascript:selectCategory('DVR & NVR')">📟 DVR & NVR</a>
+      <a href="javascript:selectCategory('Wireless Cameras')">📡 Wireless Cameras</a>
+      <a href="javascript:selectCategory('Biometrics & Access Control')">👆 Biometrics & Access</a>
+      <a href="javascript:selectCategory('PoE Switches')">🔌 PoE Switches</a>
+      <a href="javascript:filterByComboOnly()">🔥 Combo Packs</a>
+      <a href="javascript:selectCategory('Accessories')">🛠️ Accessories</a>
+      <a href="account.html" style="margin-left: auto; background: var(--accent-orange); color: #fff;">📍 My Account & Orders</a>
+    </div>
+  </div>
 
   <!-- HERO BANNER AUTO-SCROLL SLIDER -->
   <header class="hero" id="heroHeaderSection">
@@ -101,115 +119,114 @@
   </section>
 
   <!-- BRAND SHOWCASE STRIP WITH LOGO & NAME SCROLL -->
-  <section class="brand-showcase-section" id="brandLogosRow">
-    <div class="section-header">
-      <h2>Shop By <span class="accent-text">Brands</span></h2>
+  <section class="brand-showcase-section">
+    <div class="section-title-row">
+      <h2 class="section-title"><span>Shop By</span> Brands</h2>
     </div>
-    <div class="brand-scroll-row" id="brandScrollContainer"></div>
+    <div class="brand-logos-row" id="brandLogosRow"></div>
   </section>
 
   <!-- CATEGORY SHOWCASE STRIP WITH THUMBNAIL & NAME SCROLL -->
-  <section class="filter-section" id="categoriesRow">
-    <div class="section-header">
-      <h2>Shop By <span class="accent-text">Categories</span></h2>
-      <button class="pill-btn" id="btnShowCombos" onclick="filterByComboOnly()">
+  <section class="filter-section">
+    <div class="section-title-row">
+      <h2 class="section-title"><span>Shop By</span> Categories</h2>
+      <button class="pill-btn combo-pill" id="comboToggleBtn">
         ✨ Show Combos Only
       </button>
     </div>
-    <div class="category-scroll-row" id="categoryScrollContainer"></div>
+    <div class="category-scroll-row" id="categoryScrollRow"></div>
   </section>
 
   <!-- PRODUCT CATALOG GRID -->
   <main class="catalog-section">
-    <div class="catalog-header">
-      <h2 id="catalogTitle">All Security Products</h2>
-      <button class="reset-filter-btn" id="btnResetFilters" style="display: none;" onclick="resetFilters()">
-        ✕ Clear Filters
-      </button>
-    </div>
-
     <div class="product-grid" id="productGrid">
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-        <div class="loading-spinner"></div>
-        <p style="color: var(--text-muted); margin-top: 10px;">Loading security catalog...</p>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+        Loading products catalog...
       </div>
     </div>
   </main>
 
   <!-- CART DRAWER -->
-  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop"></div>
+  <div class="cart-drawer-backdrop" id="cartBackdrop"></div>
   <aside class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
-      <h3>🛒 Shopping Cart (<span id="cartItemCount">0</span>)</h3>
+      <h3>🛒 Shopping Cart</h3>
       <button class="close-btn" id="closeCartBtn">✕</button>
     </div>
 
-    <div class="cart-items" id="cartItemsContainer">
-      <div style="text-align: center; padding: 40px; color: var(--text-muted);">
-        Your cart is currently empty.
-      </div>
-    </div>
+    <div class="cart-items-list" id="cartItemsList"></div>
 
-    <div class="cart-summary" id="cartSummaryContainer">
+    <div class="cart-footer">
+      <div class="coupon-box" style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input type="text" id="couponInput" placeholder="Enter coupon (e.g. WELCOME10)" style="flex: 1; padding: 8px; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-sm);">
+        <button class="pill-btn active" id="applyCouponBtn">Apply</button>
+      </div>
+
       <div class="summary-row">
         <span>Subtotal</span>
         <span id="cartSubtotal">₹0</span>
       </div>
       <div class="summary-row">
         <span>Delivery Charge</span>
-        <span id="cartDeliveryCharge">₹150</span>
+        <span id="cartDeliveryFee">₹0</span>
       </div>
-      <div class="summary-row total-row">
-        <span>Grand Total</span>
-        <span id="cartGrandTotal">₹0</span>
+      <div class="summary-row" id="discountRow" style="display: none; color: var(--accent-green);">
+        <span>Discount Coupon</span>
+        <span id="cartDiscount">-₹0</span>
       </div>
 
-      <button class="btn-checkout" id="btnProceedToCheckout">
+      <div class="summary-row" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
+        <span>Final Payable Amount</span>
+        <span id="cartFinalTotal">₹0</span>
+      </div>
+
+      <button class="btn-checkout" id="proceedCheckoutBtn">
         Proceed to Checkout →
       </button>
     </div>
   </aside>
 
-  <!-- CHECKOUT & ADDRESS SELECTION MODAL -->
+  <!-- CHECKOUT MODAL -->
   <div class="modal-backdrop" id="checkoutBackdrop">
-    <div class="modal-content" style="max-width: 600px;">
-      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" onclick="closeCheckoutModal()">✕</button>
-      <h2 class="modal-title">🚚 Checkout & Shipping Address</h2>
+    <div class="modal-content">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" id="closeCheckoutBtn">✕</button>
+      <h2 class="modal-title">📦 Complete Your Order</h2>
 
       <form id="checkoutForm">
-        <!-- SAVED ADDRESSES DROPDOWN (FOR LOGGED-IN USERS) -->
-        <div id="savedAddressGroup" style="display: none; margin-bottom: 16px; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px; border-radius: var(--radius-sm);">
-          <label style="font-weight: 700; font-size: 0.85rem; color: var(--accent-cyan);">📍 Select Saved Address from My Account:</label>
-          <select id="savedAddressSelect" style="width: 100%; margin-top: 6px; padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.85rem;">
+
+        <!-- SAVED ADDRESSES DROPDOWN (AUTOFILLS WHEN SELECTED) -->
+        <div class="form-group" id="savedAddressGroup" style="display: none; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px; border-radius: var(--radius-sm);">
+          <label style="color: var(--accent-cyan);">📍 Select From Your Saved Addresses</label>
+          <select id="savedAddressSelect">
             <option value="">-- Choose a saved delivery address --</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Full Name *</label>
-          <input type="text" id="custName" required placeholder="John Doe">
-        </div>
-
         <div class="form-row">
           <div class="form-group">
-            <label>Phone Number (WhatsApp) *</label>
-            <input type="tel" id="custPhone" required placeholder="9876543210">
+            <label>Full Name *</label>
+            <input type="text" id="custName" required placeholder="John Doe">
           </div>
           <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="custEmail" placeholder="john@example.com">
+            <label>Mobile Number *</label>
+            <input type="tel" id="custPhone" required placeholder="9876543210" pattern="[0-9]{10}">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Complete Delivery Address (Door No, Street, Landmark) *</label>
-          <textarea id="custAddress" rows="2" required placeholder="123 Main Street, Near City Park"></textarea>
+          <label>Email Address</label>
+          <input type="email" id="custEmail" placeholder="name@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address *</label>
+          <textarea id="custAddress" rows="2" required placeholder="House No, Street Name, Area..."></textarea>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Pincode *</label>
-            <input type="text" id="custPincode" required placeholder="600002">
+            <input type="text" id="custPincode" required placeholder="600001">
           </div>
           <div class="form-group">
             <label>City & State *</label>
@@ -217,9 +234,9 @@
           </div>
         </div>
 
-        <div style="margin: 10px 0 16px;" id="saveAddressCheckboxGroup">
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem;">
-            <input type="checkbox" id="chkSaveAddressToAccount" checked>
+        <div style="margin: 8px 0 14px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: var(--text-dark);">
+            <input type="checkbox" id="chkSaveAddress" checked>
             <span>Save this delivery address to My Account for future orders</span>
           </label>
         </div>
@@ -279,67 +296,10 @@
     </a>
   </nav>
 
-  <!-- RICH FOOTER WITH COMPANY DETAILS -->
+  <!-- FOOTER -->
   <footer>
-    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px;">
-      
-      <!-- BRAND & ADDRESS -->
-      <div>
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-          <img src="images/logo.webp" style="height: 32px;" alt="AK Infotech Logo">
-          <span style="font-weight: 800; font-size: 1.15rem; color: #ffffff;">AK INFOTECH</span>
-        </div>
-        <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.6; margin-bottom: 14px;">
-          Authorized Wholesale & Retail Security Systems Distributor. Premium 4K CCTV Cameras, DVR/NVR, Wireless Cameras, Biometrics & IT Solutions.
-        </p>
-        <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
-          <strong>📍 Showroom Address:</strong><br>
-          No.19, Shop No: F22 & F23, 1st Floor,<br>
-          Uno Arcade A/C Complex, Meeran Sahib Street,<br>
-          Mount Road, Chennai - 600002, Tamil Nadu.
-        </div>
-      </div>
-
-      <!-- CONTACT & WORKING HOURS -->
-      <div>
-        <h3 style="font-size: 0.95rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 14px;">📞 Contact & Hours</h3>
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: #cbd5e1;">
-          <li>📞 <strong>Call & WhatsApp:</strong> <a href="https://wa.me/919500673207" target="_blank" style="color: #38bdf8; text-decoration: none;">+91 9500673207</a></li>
-          <li>✉️ <strong>Email:</strong> <a href="mailto:akinfotechtn@gmail.com" style="color: #38bdf8; text-decoration: none;">akinfotechtn@gmail.com</a></li>
-          <li>⏰ <strong>Working Hours:</strong> Mon - Sat: 10:00 AM - 7:30 PM (Sun Closed)</li>
-          <li>📄 <strong>GSTIN:</strong> <span style="color: #f59e0b; font-weight: 700;">33CPAPA9563H1Z1</span> (ITC Benefits Eligible)</li>
-        </ul>
-      </div>
-
-      <!-- QUICK LINKS -->
-      <div>
-        <h3 style="font-size: 0.95rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 14px;">🔗 Quick Links</h3>
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-          <li><a href="index.html" style="color: #cbd5e1; text-decoration: none;">🏠 Home / All Products</a></li>
-          <li><a href="account.html" style="color: #cbd5e1; text-decoration: none;">👤 My Account & Track Orders</a></li>
-          <li><a href="javascript:filterByComboOnly()" style="color: #cbd5e1; text-decoration: none;">🔥 Special Combo Packs</a></li>
-          <li><a href="admin.html" style="color: #cbd5e1; text-decoration: none;">⚙️ Admin Control Panel</a></li>
-        </ul>
-      </div>
-
-      <!-- SOCIAL & TRUST BADGE -->
-      <div>
-        <h3 style="font-size: 0.95rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 14px;">🌐 Connect With Us</h3>
-        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-          <a href="https://www.facebook.com/p/AK-Infotech-61551839859994/" target="_blank" rel="noopener" style="background: rgba(255,255,255,0.1); color: #fff; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; text-decoration: none;">Facebook</a>
-          <a href="https://www.instagram.com/akinfotech/" target="_blank" rel="noopener" style="background: rgba(255,255,255,0.1); color: #fff; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; text-decoration: none;">Instagram</a>
-        </div>
-        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.78rem; color: #94a3b8;">
-          🚚 All India Express Shipping via Shiprocket.<br>
-          🔒 100% Secured Payments via Razorpay.
-        </div>
-      </div>
-
-    </div>
-
-    <div style="max-width: 1200px; margin: 30px auto 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #64748b; font-size: 0.78rem;">
-      &copy; 2026 <strong>AK Infotech</strong>. All Rights Reserved. Authorized Security Systems Distributor, Mount Road, Chennai.
-    </div>
+    <p>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved.</p>
+    <p style="margin-top: 4px; font-size: 0.78rem;">Authorized Wholesale & Retail Security Systems Distributor.</p>
   </footer>
 
   <script type="module" src="js/app.js"></script>
