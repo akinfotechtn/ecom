@@ -418,11 +418,12 @@ async function handleCheckoutSubmit(e) {
 
   const custName = document.getElementById('custName').value.trim();
   const custPhone = document.getElementById('custPhone').value.trim();
-  const custEmail = document.getElementById('custEmail').value.trim();
+  const custEmail = document.getElementById('custEmail')?.value.trim() || '';
   const custAddress = document.getElementById('custAddress').value.trim();
   const custPincode = document.getElementById('custPincode').value.trim();
   const custCityState = document.getElementById('custCityState').value.trim();
-  const shouldSaveAddress = document.getElementById('chkSaveAddress').checked;
+  const chkSave = document.getElementById('chkSaveAddressToAccount') || document.getElementById('chkSaveAddress');
+  const shouldSaveAddress = chkSave ? chkSave.checked : false;
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
   let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
@@ -539,7 +540,7 @@ function setupEventListeners() {
     });
   }
 
-  const comboBtn = document.getElementById('comboToggleBtn');
+  const comboBtn = document.getElementById('btnShowCombos') || document.getElementById('comboToggleBtn');
   if (comboBtn) comboBtn.addEventListener('click', filterByComboOnly);
 
   const openCartBtn = document.getElementById('openCartBtn');
@@ -548,16 +549,12 @@ function setupEventListeners() {
   const closeCartBtn = document.getElementById('closeCartBtn');
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
 
-  const cartBackdrop = document.getElementById('cartBackdrop');
+  const cartBackdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
   if (cartBackdrop) cartBackdrop.addEventListener('click', closeCartDrawer);
 
-  const proceedBtn = document.getElementById('proceedCheckoutBtn');
+  const proceedBtn = document.getElementById('btnProceedToCheckout') || document.getElementById('proceedCheckoutBtn');
   if (proceedBtn) {
     proceedBtn.addEventListener('click', () => {
-      if (!cart.length) {
-        alert('Your cart is empty!');
-        return;
-      }
       openCheckoutModal();
     });
   }
@@ -571,7 +568,7 @@ function setupEventListeners() {
   const applyCouponBtn = document.getElementById('applyCouponBtn');
   if (applyCouponBtn) {
     applyCouponBtn.addEventListener('click', () => {
-      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      const code = document.getElementById('couponInput')?.value.trim().toUpperCase();
       const found = storeSettings.discountCoupons?.find(c => c.code === code);
       if (found) {
         appliedCoupon = found;
@@ -586,18 +583,27 @@ function setupEventListeners() {
 }
 
 window.openCartDrawer = function() {
-  document.getElementById('cartDrawer').classList.add('active');
-  document.getElementById('cartBackdrop').classList.add('active');
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
+  if (drawer) drawer.classList.add('active');
+  if (backdrop) backdrop.classList.add('active');
 };
 
 window.closeCartDrawer = function() {
-  document.getElementById('cartDrawer').classList.remove('active');
-  document.getElementById('cartBackdrop').classList.remove('active');
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
+  if (drawer) drawer.classList.remove('active');
+  if (backdrop) backdrop.classList.remove('active');
 };
 
-async function openCheckoutModal() {
+window.openCheckoutModal = async function() {
+  if (!cart.length) {
+    alert('Your cart is currently empty! Please add products before checking out.');
+    return;
+  }
   closeCartDrawer();
-  document.getElementById('checkoutBackdrop').classList.add('active');
+  const backdrop = document.getElementById('checkoutBackdrop');
+  if (backdrop) backdrop.classList.add('active');
   selectPaymentMethod('ONLINE');
 
   const savedGroup = document.getElementById('savedAddressGroup');
@@ -611,7 +617,7 @@ async function openCheckoutModal() {
 
     userAddresses = await DbService.getUserAddresses(currentUser.uid);
 
-    if (userAddresses && userAddresses.length) {
+    if (userAddresses && userAddresses.length && savedGroup && savedSelect) {
       savedGroup.style.display = 'block';
       savedSelect.innerHTML = `<option value="">-- Choose a saved delivery address --</option>` +
         userAddresses.map((a, idx) => `<option value="${a.id}">${escapeHtml(a.fullName)} - ${escapeHtml(a.street)}, ${escapeHtml(a.pincode)}</option>`).join('');
@@ -620,30 +626,28 @@ async function openCheckoutModal() {
         const selectedId = this.value;
         const found = userAddresses.find(a => a.id === selectedId);
         if (found) {
-          document.getElementById('custName').value = found.fullName;
-          document.getElementById('custPhone').value = found.phone;
-          document.getElementById('custAddress').value = found.street;
-          document.getElementById('custPincode').value = found.pincode;
-          document.getElementById('custCityState').value = found.cityState;
+          if (document.getElementById('custName')) document.getElementById('custName').value = found.fullName;
+          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = found.phone;
+          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = found.street;
+          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = found.pincode;
+          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = found.cityState;
         }
       };
 
-      // Pre-fill default address
       if (userAddresses[0]) {
         savedSelect.value = userAddresses[0].id;
         savedSelect.dispatchEvent(new Event('change'));
       }
-    } else {
+    } else if (savedGroup) {
       savedGroup.style.display = 'none';
     }
-  } else {
+  } else if (savedGroup) {
     savedGroup.style.display = 'none';
   }
-}
-
-function closeCheckoutModal() {
-  document.getElementById('checkoutBackdrop').classList.remove('active');
-}
+window.closeCheckoutModal = function() {
+  const backdrop = document.getElementById('checkoutBackdrop');
+  if (backdrop) backdrop.classList.remove('active');
+};
 
 // HERO AUTO-SCROLL SLIDER
 async function loadHeroBanners() {
