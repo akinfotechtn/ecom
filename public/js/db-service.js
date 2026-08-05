@@ -485,6 +485,10 @@ export class DbService {
     }
   }
 
+  static getStoreSettings() {
+    return this.getSettings();
+  }
+
   static async updateSettings(newSettings) {
     if (newSettings.googleSheetUrl) {
       localStorage.setItem('ak_google_sheet_url', newSettings.googleSheetUrl);

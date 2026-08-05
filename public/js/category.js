@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       DbService.getProducts(),
       DbService.getCategories(),
       DbService.getBrands(),
-      DbService.getStoreSettings()
+      DbService.getSettings()
     ]);
 
     allCategories = categories || [];
