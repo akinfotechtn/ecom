@@ -312,37 +312,42 @@ function saveCart() {
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
+  const cartItemCountEl = document.getElementById('cartItemCount');
   const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   if (cartCountEl) cartCountEl.textContent = totalQty;
+  if (cartItemCountEl) cartItemCountEl.textContent = totalQty;
 
-  const itemsListEl = document.getElementById('cartItemsList');
-  if (!itemsListEl) return;
-
-  if (!cart.length) {
-    itemsListEl.innerHTML = `
-      <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
-        <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
-        Your cart is empty.<br>Browse items & add to cart.
-      </div>`;
-  } else {
-    itemsListEl.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
-        <div class="cart-item-info">
-          <div class="cart-item-name">${escapeHtml(item.productName)}</div>
-          <div class="cart-item-price">₹${item.sellingPrice.toLocaleString('en-IN')}</div>
-          <div class="cart-item-qty">
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
+  const itemsListEl = document.getElementById('cartItemsContainer') || document.getElementById('cartItemsList');
+  if (itemsListEl) {
+    if (!cart.length) {
+      itemsListEl.innerHTML = `
+        <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+          <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+          Your cart is empty.<br>Browse items & add to cart.
+        </div>`;
+    } else {
+      itemsListEl.innerHTML = cart.map(item => `
+        <div class="cart-item" style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); align-items: center;">
+          <img src="${item.photoLink}" style="width: 54px; height: 54px; object-fit: cover; border-radius: 6px;" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <div style="flex: 1;">
+            <div style="font-weight: 700; font-size: 0.85rem; color: var(--text-dark); margin-bottom: 4px;">${escapeHtml(item.productName)}</div>
+            <div style="font-weight: 800; font-size: 0.88rem; color: var(--accent-cyan);">₹${item.sellingPrice?.toLocaleString('en-IN')}</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px;">
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)" style="border:none; background:none; font-weight:800; cursor:pointer; padding: 0 4px;">-</button>
             <span style="font-weight: 700; font-size: 0.85rem;">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)" style="border:none; background:none; font-weight:800; cursor:pointer; padding: 0 4px;">+</button>
           </div>
         </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
-  let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
+  const minFree = storeSettings?.freeShippingMinOrder || 3000;
+  const deliveryCharge = storeSettings?.deliveryCharge || 150;
+  let deliveryFee = subtotal >= minFree || subtotal === 0 ? 0 : deliveryCharge;
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -355,18 +360,25 @@ function renderCart() {
 
   const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
 
-  document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-  document.getElementById('cartDeliveryFee').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
-
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const deliveryFeeEl = document.getElementById('cartDeliveryCharge') || document.getElementById('cartDeliveryFee');
   const discountRow = document.getElementById('discountRow');
-  if (discountAmount > 0) {
-    discountRow.style.display = 'flex';
-    document.getElementById('cartDiscount').textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
-  } else {
-    discountRow.style.display = 'none';
+  const finalTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
+
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  if (deliveryFeeEl) deliveryFeeEl.textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee.toLocaleString('en-IN')}`;
+
+  if (discountRow) {
+    if (discountAmount > 0) {
+      discountRow.style.display = 'flex';
+      const discEl = document.getElementById('cartDiscount');
+      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+    } else {
+      discountRow.style.display = 'none';
+    }
   }
 
-  document.getElementById('cartFinalTotal').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+  if (finalTotalEl) finalTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
 // CHECKOUT & PAYMENT SELECTION
