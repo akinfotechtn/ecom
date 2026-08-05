@@ -1454,3 +1454,73 @@ window.exportCategoriesToCsv = function() {
   link.click();
   document.body.removeChild(link);
 };
+
+window.exportDynamicSitemap = async function() {
+  try {
+    const prods = adminProducts && adminProducts.length ? adminProducts : await DbService.getProducts();
+    const brands = adminBrands && adminBrands.length ? adminBrands : await DbService.getBrands();
+
+    const baseUrl = 'https://shop.akinfotechcctv.in';
+    const today = new Date().toISOString().split('T')[0];
+
+    const xmlLines = [];
+    xmlLines.push('<?xml version="1.0" encoding="UTF-8"?>');
+    xmlLines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+
+    // Homepage
+    xmlLines.push('  <url>');
+    xmlLines.push(`    <loc>${baseUrl}/index.html</loc>`);
+    xmlLines.push(`    <lastmod>${today}</lastmod>`);
+    xmlLines.push('    <changefreq>daily</changefreq>');
+    xmlLines.push('    <priority>1.0</priority>');
+    xmlLines.push('  </url>');
+
+    // Account Page
+    xmlLines.push('  <url>');
+    xmlLines.push(`    <loc>${baseUrl}/account.html</loc>`);
+    xmlLines.push(`    <lastmod>${today}</lastmod>`);
+    xmlLines.push('    <changefreq>weekly</changefreq>');
+    xmlLines.push('    <priority>0.8</priority>');
+    xmlLines.push('  </url>');
+
+    // Brands Pages
+    brands.forEach(b => {
+      if (!b.name) return;
+      const encodedName = encodeURIComponent(b.name);
+      xmlLines.push('  <url>');
+      xmlLines.push(`    <loc>${baseUrl}/brand.html?name=${encodedName}</loc>`);
+      xmlLines.push(`    <lastmod>${today}</lastmod>`);
+      xmlLines.push('    <changefreq>daily</changefreq>');
+      xmlLines.push('    <priority>0.9</priority>');
+      xmlLines.push('  </url>');
+    });
+
+    // Products Pages
+    prods.forEach(p => {
+      if (!p.id) return;
+      xmlLines.push('  <url>');
+      xmlLines.push(`    <loc>${baseUrl}/product.html?id=${p.id}</loc>`);
+      xmlLines.push(`    <lastmod>${today}</lastmod>`);
+      xmlLines.push('    <changefreq>daily</changefreq>');
+      xmlLines.push('    <priority>0.8</priority>');
+      xmlLines.push('  </url>');
+    });
+
+    xmlLines.push('</urlset>');
+
+    const xmlText = xmlLines.join('\n');
+    const blob = new Blob([xmlText], { type: 'application/xml;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'sitemap.xml');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    const totalUrls = 2 + brands.length + prods.length;
+    alert(`✅ Successfully generated & downloaded dynamic sitemap.xml with ${totalUrls} page URLs!`);
+  } catch (err) {
+    alert(`Sitemap export error: ${err.message}`);
+  }
+};
