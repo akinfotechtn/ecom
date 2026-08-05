@@ -165,15 +165,34 @@ function renderBrandCatalog() {
   }).join('');
 }
 
-window.addToCart = function(productId) {
-  const product = brandProducts.find(p => p.id === productId);
-  if (!product) return;
+window.addToCart = async function(productId) {
+  let product = brandProducts.find(p => String(p.id) === String(productId));
+  
+  if (!product) {
+    try {
+      product = await DbService.getProductById(productId);
+    } catch (e) {
+      console.warn("Async product fetch fallback:", e);
+    }
+  }
 
-  const existing = cart.find(item => item.id === productId);
-  if (existing) {
-    existing.qty += 1;
+  if (!product) {
+    alert("Product details could not be loaded. Please refresh the page.");
+    return;
+  }
+
+  if (product.inStock === false) {
+    alert('Sorry, this product is currently out of stock!');
+    return;
+  }
+
+  const existingIndex = cart.findIndex(item => String(item.id) === String(productId));
+  if (existingIndex > -1) {
+    const currentQty = cart[existingIndex].quantity || cart[existingIndex].qty || 1;
+    cart[existingIndex].quantity = currentQty + 1;
+    cart[existingIndex].qty = currentQty + 1;
   } else {
-    cart.push({ ...product, qty: 1 });
+    cart.push({ ...product, quantity: 1, qty: 1 });
   }
 
   saveCart();
@@ -192,8 +211,8 @@ function renderCart() {
   const subtotalEl = document.getElementById('cartSubtotal');
   const grandTotalEl = document.getElementById('cartGrandTotal');
 
-  const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
-  const subtotal = cart.reduce((sum, i) => sum + (i.sellingPrice * i.qty), 0);
+  const totalQty = cart.reduce((sum, i) => sum + (i.quantity || i.qty || 1), 0);
+  const subtotal = cart.reduce((sum, i) => sum + (i.sellingPrice * (i.quantity || i.qty || 1)), 0);
 
   if (badgeCount) badgeCount.textContent = totalQty;
   if (drawerCount) drawerCount.textContent = totalQty;
@@ -202,21 +221,24 @@ function renderCart() {
     if (!cart.length) {
       body.innerHTML = `<div style="text-align: center; color: var(--text-muted); margin-top: 40px;">Your cart is empty.</div>`;
     } else {
-      body.innerHTML = cart.map(i => `
-        <div class="cart-item">
-          <img src="${i.photoLink}" class="cart-item-img" alt="${escapeHtml(i.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
-          <div class="cart-item-info">
-            <div class="cart-item-title">${escapeHtml(i.productName)}</div>
-            <div class="cart-item-price">₹${i.sellingPrice?.toLocaleString('en-IN')}</div>
-            <div class="cart-qty-controls">
-              <button onclick="updateQty('${i.id}', -1)">-</button>
-              <span>${i.qty}</span>
-              <button onclick="updateQty('${i.id}', 1)">+</button>
+      body.innerHTML = cart.map(i => {
+        const q = i.quantity || i.qty || 1;
+        return `
+          <div class="cart-item">
+            <img src="${i.photoLink}" class="cart-item-img" alt="${escapeHtml(i.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${escapeHtml(i.productName)}</div>
+              <div class="cart-item-price">₹${i.sellingPrice?.toLocaleString('en-IN')}</div>
+              <div class="cart-qty-controls">
+                <button onclick="updateQty('${i.id}', -1)">-</button>
+                <span>${q}</span>
+                <button onclick="updateQty('${i.id}', 1)">+</button>
+              </div>
             </div>
+            <button class="remove-btn" onclick="removeFromCart('${i.id}')">✕</button>
           </div>
-          <button class="remove-btn" onclick="removeFromCart('${i.id}')">✕</button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
   }
 
@@ -257,19 +279,23 @@ function renderCart() {
 }
 
 window.updateQty = function(id, delta) {
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
 
-  item.qty += delta;
-  if (item.qty <= 0) {
-    cart = cart.filter(i => i.id !== id);
+  const currentQty = item.quantity || item.qty || 1;
+  const newQty = currentQty + delta;
+  if (newQty <= 0) {
+    cart = cart.filter(i => String(i.id) !== String(id));
+  } else {
+    item.quantity = newQty;
+    item.qty = newQty;
   }
   saveCart();
   renderCart();
 };
 
 window.removeFromCart = function(id) {
-  cart = cart.filter(i => i.id !== id);
+  cart = cart.filter(i => String(i.id) !== String(id));
   saveCart();
   renderCart();
 };

@@ -272,21 +272,35 @@ window.resetFilters = function() {
   selectCategory('');
 };
 
-// CART MANAGEMENT
-window.addToCart = function(productId) {
-  const prod = allProducts.find(p => p.id === productId);
-  if (!prod) return;
+// CART MANAGEMENT (PERMANENT BULLETPROOF FIX)
+window.addToCart = async function(productId) {
+  let prod = allProducts.find(p => String(p.id) === String(productId));
+  
+  if (!prod) {
+    try {
+      prod = await DbService.getProductById(productId);
+    } catch (e) {
+      console.warn("Async product fetch fallback:", e);
+    }
+  }
+
+  if (!prod) {
+    alert("Product details could not be loaded. Please refresh the page.");
+    return;
+  }
 
   if (prod.inStock === false) {
     alert('Sorry, this product is currently out of stock!');
     return;
   }
 
-  const existingIndex = cart.findIndex(item => item.id === productId);
+  const existingIndex = cart.findIndex(item => String(item.id) === String(productId));
   if (existingIndex > -1) {
-    cart[existingIndex].quantity += 1;
+    const currentQty = cart[existingIndex].quantity || cart[existingIndex].qty || 1;
+    cart[existingIndex].quantity = currentQty + 1;
+    cart[existingIndex].qty = currentQty + 1;
   } else {
-    cart.push({ ...prod, quantity: 1 });
+    cart.push({ ...prod, quantity: 1, qty: 1 });
   }
 
   saveCart();
@@ -295,11 +309,15 @@ window.addToCart = function(productId) {
 };
 
 window.updateCartQty = function(productId, change) {
-  const index = cart.findIndex(item => item.id === productId);
+  const index = cart.findIndex(item => String(item.id) === String(productId));
   if (index > -1) {
-    cart[index].quantity += change;
-    if (cart[index].quantity <= 0) {
+    const currentQty = cart[index].quantity || cart[index].qty || 1;
+    const newQty = currentQty + change;
+    if (newQty <= 0) {
       cart.splice(index, 1);
+    } else {
+      cart[index].quantity = newQty;
+      cart[index].qty = newQty;
     }
   }
   saveCart();
@@ -312,7 +330,7 @@ function saveCart() {
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
-  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
   if (cartCountEl) cartCountEl.textContent = totalQty;
 
   const itemsListEl = document.getElementById('cartItemsList');
@@ -325,22 +343,26 @@ function renderCart() {
         Your cart is empty.<br>Browse items & add to cart.
       </div>`;
   } else {
-    itemsListEl.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
-        <div class="cart-item-info">
-          <div class="cart-item-name">${escapeHtml(item.productName)}</div>
-          <div class="cart-item-price">₹${item.sellingPrice.toLocaleString('en-IN')}</div>
-          <div class="cart-item-qty">
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
-            <span style="font-weight: 700; font-size: 0.85rem;">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+    itemsListEl.innerHTML = cart.map(item => {
+      const q = item.quantity || item.qty || 1;
+      return `
+        <div class="cart-item">
+          <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${escapeHtml(item.productName)}</div>
+            <div class="cart-item-price">₹${item.sellingPrice?.toLocaleString('en-IN')}</div>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
+              <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
+              <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
+  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   const enableFreeShipping = storeSettings.enableFreeShipping !== false;
   const freeMin = storeSettings.freeShippingMinOrder || 3000;
   const stdDelivery = storeSettings.deliveryCharge !== undefined ? Number(storeSettings.deliveryCharge) : 150;

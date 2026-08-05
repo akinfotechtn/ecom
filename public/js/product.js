@@ -126,21 +126,38 @@ async function loadRelatedProducts(category, currentId) {
   `).join('');
 }
 
-window.addToCart = function(id) {
-  if (currentProduct && currentProduct.inStock === false) {
+window.addToCart = async function(id) {
+  let prod = currentProduct;
+  if (!prod) {
+    try {
+      prod = await DbService.getProductById(id);
+    } catch (e) {
+      console.warn("Product fetch fallback:", e);
+    }
+  }
+
+  if (!prod) {
+    alert("Product details could not be loaded.");
+    return;
+  }
+
+  if (prod.inStock === false) {
     alert('Sorry, this product is currently out of stock!');
     return;
   }
 
-  const existing = cart.find(i => i.id === id);
-  if (existing) {
-    existing.quantity += 1;
-  } else if (currentProduct) {
-    cart.push({ ...currentProduct, quantity: 1 });
+  const existingIndex = cart.findIndex(i => String(i.id) === String(id));
+  if (existingIndex > -1) {
+    const currentQty = cart[existingIndex].quantity || cart[existingIndex].qty || 1;
+    cart[existingIndex].quantity = currentQty + 1;
+    cart[existingIndex].qty = currentQty + 1;
+  } else {
+    cart.push({ ...prod, quantity: 1, qty: 1 });
   }
+
   localStorage.setItem('ak_cart', JSON.stringify(cart));
   renderCart();
-  alert('Item added to cart!');
+  alert('✅ Item added to cart!');
 };
 
 window.buyNowDirect = function(id) {
@@ -154,10 +171,10 @@ window.buyNowDirect = function(id) {
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
-  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
   if (cartCountEl) cartCountEl.textContent = totalQty;
 
-  const totalAmt = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
+  const totalAmt = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   const cartFinalTotal = document.getElementById('cartFinalTotal');
   if (cartFinalTotal) cartFinalTotal.textContent = `₹${totalAmt.toLocaleString('en-IN')}`;
 }
