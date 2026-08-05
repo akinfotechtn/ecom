@@ -136,9 +136,7 @@ button {
 }
 
 .logo span {
-  background: linear-gradient(135deg, #0f172a 40%, var(--accent-cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0f172a;
 }
 
 .logo-img {
@@ -209,9 +207,9 @@ button {
 
 .cart-btn {
   position: relative;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-  color: #fff;
-  border: none;
+  background: transparent;
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
 }
 
 .cart-count {

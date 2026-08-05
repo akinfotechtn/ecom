@@ -1,4 +1,4 @@
-// AK INFOTECH - ADMIN DASHBOARD JS (PERSISTENT GOOGLE SHEET URL & BRANDS/CATEGORIES FULL CRUD)
+// AK INFOTECH - ADMIN DASHBOARD JS (PROPER QUOTED CSV PARSER & FIREBASE CLOUD FIRESTORE SYNC)
 import { DbService } from "./db-service.js";
 
 const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
@@ -101,35 +101,57 @@ function normalizeGoogleSheetUrl(url) {
   return cleanUrl;
 }
 
-function parseCsvTextToProducts(csvText) {
-  const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0);
-  if (lines.length <= 1) throw new Error("CSV contains no data rows.");
+// ROBUST CSV PARSER THAT RESPECTS QUOTED MULTI-LINE CELLS (FIXES 55 ROWS BUG -> 9 ROWS)
+function parseCsvToMatrix(csvText) {
+  const rows = [];
+  let currentRow = [];
+  let currentField = '';
+  let inQuotes = false;
 
-  const parseCsvRow = (text) => {
-    const p = [];
-    let c = '';
-    let inQ = false;
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      if (ch === '"') {
-        if (inQ && text[i + 1] === '"') {
-          c += '"';
-          i++;
-        } else {
-          inQ = !inQ;
-        }
-      } else if (ch === ',' && !inQ) {
-        p.push(c.trim());
-        c = '';
+  for (let i = 0; i < csvText.length; i++) {
+    const char = csvText[i];
+    const nextChar = csvText[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        currentField += '"';
+        i++; // skip escaped quote
       } else {
-        c += ch;
+        inQuotes = !inQuotes;
       }
+    } else if (char === ',' && !inQuotes) {
+      currentRow.push(currentField.trim());
+      currentField = '';
+    } else if ((char === '\r' || char === '\n') && !inQuotes) {
+      if (char === '\r' && nextChar === '\n') {
+        i++;
+      }
+      currentRow.push(currentField.trim());
+      if (currentRow.some(cell => cell.length > 0)) {
+        rows.push(currentRow);
+      }
+      currentRow = [];
+      currentField = '';
+    } else {
+      currentField += char;
     }
-    p.push(c.trim());
-    return p;
-  };
+  }
 
-  const headers = parseCsvRow(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  if (currentField || currentRow.length) {
+    currentRow.push(currentField.trim());
+    if (currentRow.some(cell => cell.length > 0)) {
+      rows.push(currentRow);
+    }
+  }
+
+  return rows;
+}
+
+function parseCsvTextToProducts(csvText) {
+  const matrix = parseCsvToMatrix(csvText);
+  if (matrix.length <= 1) throw new Error("CSV contains no data rows.");
+
+  const headers = matrix[0].map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
   
   const getColIndex = (aliases) => {
     for (const alias of aliases) {
@@ -150,8 +172,8 @@ function parseCsvTextToProducts(csvText) {
   const availIdx = getColIndex(['availability', 'stock']);
 
   const parsed = [];
-  for (let i = 1; i < lines.length; i++) {
-    const cols = parseCsvRow(lines[i]);
+  for (let i = 1; i < matrix.length; i++) {
+    const cols = matrix[i];
     if (!cols.length || !cols.some(c => c)) continue;
 
     const photoLink = (photoIdx !== -1 ? cols[photoIdx] : cols[0]) || 'images/cctv-wholesale.webp';
@@ -220,9 +242,9 @@ async function triggerGoogleSheetSync() {
       throw new Error("No valid product rows were found in the Google Sheet.");
     }
 
-    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">💾 Saving ${parsedProducts.length} products directly to Firebase Cloud Firestore...</span>`;
+    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">💾 Replacing store catalog with ${parsedProducts.length} clean products...</span>`;
     
-    await DbService.bulkSyncProducts(parsedProducts);
+    await DbService.bulkSyncProducts(parsedProducts, true);
     
     statusEl.innerHTML = `<span style="color: var(--accent-green);">✅ Successfully synced ${parsedProducts.length} products from Google Sheet to Firebase!</span>`;
     await fetchAdminProducts();
@@ -258,7 +280,7 @@ async function uploadRawCsv() {
 
   try {
     const parsed = parseCsvTextToProducts(csvText);
-    await DbService.bulkSyncProducts(parsed);
+    await DbService.bulkSyncProducts(parsed, true);
     alert(`✅ Successfully imported ${parsed.length} products to Firebase!`);
     document.getElementById('rawCsvText').value = '';
     toggleCsvPasteBox();

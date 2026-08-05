@@ -107,12 +107,16 @@ function renderCategoryScrollRow() {
   if (!container) return;
 
   container.innerHTML = `
-    <div class="category-scroll-card ${activeCategory === '' ? 'active' : ''}" onclick="selectCategory('')">
+    <div class="category-scroll-card ${activeCategory === '' && !isComboOnly ? 'active' : ''}" onclick="selectCategory('')">
       <div style="font-size: 1.2rem;">🏠</div>
       <span>All Categories</span>
     </div>
+    <div class="category-scroll-card ${isComboOnly ? 'active' : ''}" onclick="filterByComboOnly()">
+      <div style="font-size: 1.3rem;">🔥</div>
+      <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
+    </div>
   ` + storeCategories.map(c => `
-    <div class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() ? 'active' : ''}" onclick="selectCategory('${escapeHtml(c.name)}')">
+    <div class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" onclick="selectCategory('${escapeHtml(c.name)}')">
       <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">
       <span>${escapeHtml(c.name)}</span>
     </div>
@@ -139,6 +143,7 @@ window.selectBrand = function(b) {
 
 window.selectCategory = function(c) {
   activeCategory = c;
+  isComboOnly = false;
   renderCategoryScrollRow();
 
   document.querySelectorAll('.rc-nav2-inner a').forEach(a => {
@@ -150,10 +155,8 @@ window.selectCategory = function(c) {
 
 window.filterByComboOnly = function() {
   isComboOnly = !isComboOnly;
-  const comboBtn = document.getElementById('comboToggleBtn');
-  if (comboBtn) {
-    comboBtn.classList.toggle('active', isComboOnly);
-  }
+  if (isComboOnly) activeCategory = '';
+  renderCategoryScrollRow();
   renderCatalog();
 };
 
