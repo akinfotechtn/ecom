@@ -953,7 +953,7 @@ window.pushToGoogleSheetWebhook = async function() {
   const pushBtn = document.getElementById('btnPushToGoogleSheet');
   if (pushBtn) {
     pushBtn.disabled = true;
-    pushBtn.textContent = '🚀 Pushing to Google Sheet...';
+    pushBtn.textContent = `🚀 Pushing ${adminProducts.length} Products...`;
   }
 
   try {
@@ -970,12 +970,12 @@ window.pushToGoogleSheetWebhook = async function() {
       deliveryCharge: (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : null
     }));
 
+    const formData = new URLSearchParams();
+    formData.append('payload', JSON.stringify({ products: cleanProducts }));
+
     await fetch(webhookUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
-      },
-      body: JSON.stringify({ products: cleanProducts })
+      body: formData
     });
 
     await DbService.updateSettings({ googleSheetWebhookUrl: webhookUrl });
