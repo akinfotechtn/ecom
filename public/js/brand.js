@@ -201,6 +201,11 @@ function renderBrandCatalog() {
 
   grid.innerHTML = filteredProducts.map(p => {
     const isAvailable = p.inStock !== false;
+    const basePrice = p.sellingPrice || 0;
+    const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
+    const gstAmount = Math.round((basePrice * gstRate) / 100);
+    const priceWithGst = basePrice + gstAmount;
+
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="product.html?id=${p.id}" class="product-image-wrap">
@@ -214,8 +219,11 @@ function renderBrandCatalog() {
           <p class="product-spec">${escapeHtml(p.productSpec)}</p>
 
           <div class="price-row">
-            <span class="selling-price">₹${p.sellingPrice?.toLocaleString('en-IN')}</span>
-            ${p.price > p.sellingPrice ? `<span class="mrp-price">₹${p.price?.toLocaleString('en-IN')}</span>` : ''}
+            <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
+            ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price?.toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <div style="font-size: 0.72rem; color: #0284c7; font-weight: 700; margin-top: 2px;">
+            ₹${basePrice.toLocaleString('en-IN')} + ${gstRate}% GST Extra
           </div>
 
           <div class="card-actions">

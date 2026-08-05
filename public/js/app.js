@@ -219,7 +219,11 @@ function renderCatalog() {
   }
 
   grid.innerHTML = filtered.map(p => {
-    const savings = p.price > p.sellingPrice ? Math.round(((p.price - p.sellingPrice) / p.price) * 100) : 0;
+    const basePrice = p.sellingPrice || 0;
+    const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : (storeSettings.defaultGstPercent !== undefined ? storeSettings.defaultGstPercent : 18);
+    const gstAmount = Math.round((basePrice * gstRate) / 100);
+    const priceWithGst = basePrice + gstAmount;
+    const savings = p.price > priceWithGst ? Math.round(((p.price - priceWithGst) / p.price) * 100) : 0;
     const isAvailable = p.inStock !== false;
 
     return `
@@ -234,9 +238,12 @@ function renderCatalog() {
           <h3 class="product-name"><a href="product.html?id=${p.id}" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
 
           <div class="price-row">
-            <span class="selling-price">₹${p.sellingPrice.toLocaleString('en-IN')}</span>
-            ${p.price > p.sellingPrice ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
+            <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
+            ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
             ${savings > 0 ? `<span class="discount-tag">${savings}% OFF</span>` : ''}
+          </div>
+          <div style="font-size: 0.72rem; color: #0284c7; font-weight: 700; margin-top: 2px;">
+            ₹${basePrice.toLocaleString('en-IN')} + ${gstRate}% GST Extra
           </div>
 
           <div class="card-actions">
@@ -371,6 +378,7 @@ function renderCart() {
   
   // Category-wise & Product-specific custom delivery charge calculation
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
+  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -381,10 +389,13 @@ function renderCart() {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
 
   const subtotalEl = document.getElementById('cartSubtotal');
   if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+
+  const gstEl = document.getElementById('cartGstAmount');
+  if (gstEl) gstEl.textContent = `+₹${gstAmount.toLocaleString('en-IN')}`;
   
   const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
@@ -512,7 +523,8 @@ window.selectPaymentMethod = function(method) {
 
     const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
     let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-    const finalTotal = subtotal + deliveryFee;
+    let gstAmount = calculateCartGstAmount(cart, storeSettings);
+    const finalTotal = subtotal + gstAmount + deliveryFee;
     const advanceFee = storeSettings.codAdvanceAmount || 1000;
     const remaining = Math.max(0, finalTotal - advanceFee);
 
@@ -539,6 +551,7 @@ async function handleCheckoutSubmit(e) {
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
+  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -549,7 +562,7 @@ async function handleCheckoutSubmit(e) {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
   const codAdvanceFee = storeSettings.codAdvanceAmount || 1000;
   const amountToPayNow = selectedPaymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
 

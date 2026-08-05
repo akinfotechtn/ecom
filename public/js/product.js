@@ -34,9 +34,11 @@ async function loadProductDetail(id) {
   document.getElementById('bcCategory').textContent = currentProduct.category || 'General';
   document.getElementById('bcName').textContent = currentProduct.productName;
 
-  const savings = currentProduct.price > currentProduct.sellingPrice 
-    ? Math.round(((currentProduct.price - currentProduct.sellingPrice) / currentProduct.price) * 100) 
-    : 0;
+  const basePrice = currentProduct.sellingPrice || 0;
+  const gstRate = (currentProduct.gstPercent !== undefined && currentProduct.gstPercent !== null && currentProduct.gstPercent !== '') ? Number(currentProduct.gstPercent) : 18;
+  const gstAmount = Math.round((basePrice * gstRate) / 100);
+  const priceWithGst = basePrice + gstAmount;
+  const savings = currentProduct.price > priceWithGst ? Math.round(((currentProduct.price - priceWithGst) / currentProduct.price) * 100) : 0;
 
   const isAvailable = currentProduct.inStock !== false;
 
@@ -59,10 +61,13 @@ async function loadProductDetail(id) {
 
       <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(currentProduct.productName)}</h1>
 
-      <div class="price-row" style="margin-bottom: 16px;">
-        <span class="selling-price" style="font-size: 1.8rem;">₹${currentProduct.sellingPrice.toLocaleString('en-IN')}</span>
-        ${currentProduct.price > currentProduct.sellingPrice ? `<span class="mrp-price" style="font-size: 1.1rem;">₹${currentProduct.price.toLocaleString('en-IN')}</span>` : ''}
+      <div class="price-row" style="margin-bottom: 4px;">
+        <span class="selling-price" style="font-size: 1.8rem;">₹${priceWithGst.toLocaleString('en-IN')}</span>
+        ${currentProduct.price > priceWithGst ? `<span class="mrp-price" style="font-size: 1.1rem;">₹${currentProduct.price.toLocaleString('en-IN')}</span>` : ''}
         ${savings > 0 ? `<span class="discount-tag" style="font-size: 0.85rem;">SAVE ${savings}%</span>` : ''}
+      </div>
+      <div style="font-size: 0.85rem; color: #0284c7; font-weight: 700; margin-bottom: 16px;">
+        ₹${basePrice.toLocaleString('en-IN')} + ${gstRate}% GST Extra
       </div>
 
       <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 14px; border-radius: var(--radius-md); margin-bottom: 20px;">
