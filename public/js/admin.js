@@ -11,6 +11,23 @@ let adminSettings = {};
 let adminOrders = [];
 let currentAdminUser = null;
 
+window.adminGoogleLogin = async function() {
+  const btn = document.getElementById('btnAdminGoogleLogin');
+  try {
+    if (btn) btn.innerHTML = `<span style="color:#0f172a; font-weight:800;">⏳ Opening Google Sign In...</span>`;
+    await DbService.loginWithGoogle();
+  } catch (err) {
+    console.error("Admin Google Login Error:", err);
+    alert(`Google Login Error: ${err.message || err}`);
+    if (btn) {
+      btn.innerHTML = `
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px;" alt="Google">
+        <span>Sign In with Admin Google Account</span>
+      `;
+    }
+  }
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
   setupAdminAuthGuard();
   setupEventListeners();
@@ -58,14 +75,6 @@ function setupAdminAuthGuard() {
       }
     }
   });
-
-  window.adminGoogleLogin = async function() {
-    try {
-      await DbService.loginWithGoogle();
-    } catch (err) {
-      alert(`Google Login Error: ${err.message}`);
-    }
-  };
 
   document.getElementById('btnAdminGoogleLogin')?.addEventListener('click', window.adminGoogleLogin);
 

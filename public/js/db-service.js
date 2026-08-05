@@ -4,6 +4,7 @@ import {
   auth,
   googleProvider,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   onAuthStateChanged,
   collection, 
@@ -193,8 +194,13 @@ const DEFAULT_SETTINGS = {
 
 export class DbService {
   // GOOGLE AUTHENTICATION
-  static loginWithGoogle() {
-    return signInWithPopup(auth, googleProvider);
+  static async loginWithGoogle() {
+    try {
+      return await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.warn("signInWithPopup failed/blocked, trying signInWithRedirect:", err);
+      return await signInWithRedirect(auth, googleProvider);
+    }
   }
 
   static logoutUser() {
