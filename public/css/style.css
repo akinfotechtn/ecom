@@ -1580,3 +1580,232 @@ footer {
   border-color: #38bdf8;
   transform: scale(1.03);
 }
+
+/* ==========================================================================
+   PREMIUM CART DRAWER & SUMMARY BREAKDOWN STYLING
+   ========================================================================== */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 9999;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-drawer.active {
+  right: 0;
+}
+
+.cart-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-header h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.cart-item:hover {
+  border-color: #38bdf8;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 4px;
+  border: 1px solid #cbd5e1;
+  flex-shrink: 0;
+}
+
+.cart-item-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.cart-item-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0284c7;
+}
+
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.qty-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.qty-btn:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+}
+
+/* CART SUMMARY FOOTER */
+.cart-summary-footer {
+  padding: 16px 20px 20px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.cart-summary-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 0.88rem !important;
+  color: #475569 !important;
+  padding: 4px 0 !important;
+}
+
+.cart-summary-row span:first-child {
+  font-weight: 600 !important;
+}
+
+.cart-summary-row span:last-child {
+  font-weight: 700 !important;
+  color: #0f172a !important;
+}
+
+/* GST Tax Row */
+.cart-summary-row#gstRow {
+  color: #0284c7 !important;
+}
+
+.cart-summary-row#gstRow span:first-child {
+  font-weight: 700 !important;
+  color: #0284c7 !important;
+}
+
+.cart-summary-row#gstRow span:last-child {
+  color: #0284c7 !important;
+  font-weight: 800 !important;
+}
+
+/* Discount Row */
+.cart-summary-row#discountRow {
+  color: #16a34a !important;
+}
+
+.cart-summary-row#discountRow span:last-child {
+  color: #16a34a !important;
+  font-weight: 800 !important;
+}
+
+/* Total Payable Row */
+.cart-summary-row.total-row {
+  margin-top: 6px !important;
+  padding-top: 10px !important;
+  border-top: 1.5px dashed #cbd5e1 !important;
+  font-size: 1.05rem !important;
+}
+
+.cart-summary-row.total-row span:first-child {
+  font-weight: 800 !important;
+  color: #0f172a !important;
+}
+
+.cart-summary-row.total-row span:last-child {
+  font-size: 1.25rem !important;
+  font-weight: 900 !important;
+  color: #2563eb !important;
+}
+
+/* Checkout CTA Button */
+.btn-checkout {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  width: 100% !important;
+  padding: 14px 20px !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.btn-checkout:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
+}
+
+.btn-checkout:active {
+  transform: translateY(0) !important;
+}
