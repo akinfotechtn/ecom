@@ -957,19 +957,30 @@ window.pushToGoogleSheetWebhook = async function() {
   }
 
   try {
-    const payload = { products: adminProducts };
+    const cleanProducts = adminProducts.map(p => ({
+      photoLink: p.photoLink || '',
+      productName: p.productName || '',
+      productSpec: p.productSpec || '',
+      brand: p.brand || '',
+      category: p.category || '',
+      price: p.price || 0,
+      sellingPrice: p.sellingPrice || 0,
+      isCombo: !!p.isCombo,
+      inStock: p.inStock !== false,
+      deliveryCharge: (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : null
+    }));
+
     await fetch(webhookUrl, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain;charset=utf-8'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ products: cleanProducts })
     });
 
     await DbService.updateSettings({ googleSheetWebhookUrl: webhookUrl });
 
-    alert(`✅ Successfully pushed ${adminProducts.length} catalog products directly to your Google Sheet!`);
+    alert(`✅ Successfully pushed ALL ${cleanProducts.length} catalog products directly to your Google Sheet!`);
   } catch (err) {
     alert(`Push error: ${err.message}`);
   } finally {
