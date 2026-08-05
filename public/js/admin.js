@@ -889,6 +889,11 @@ async function fetchAdminSettings() {
       urlInput.value = adminSettings.googleSheetUrl;
     }
 
+    const webhookInput = document.getElementById('googleSheetWebhookUrlInput');
+    if (webhookInput && adminSettings.googleSheetWebhookUrl) {
+      webhookInput.value = adminSettings.googleSheetWebhookUrl;
+    }
+
     document.getElementById('cfgRzpKeyId').value = adminSettings.razorpay?.keyId || '';
     document.getElementById('cfgRzpKeySecret').value = adminSettings.razorpay?.keySecret || '';
     document.getElementById('cfgSrEmail').value = adminSettings.shiprocket?.email || '';
@@ -899,14 +904,15 @@ async function fetchAdminSettings() {
 }
 
 async function saveStoreSettings(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   const enableFreeShipping = document.getElementById('cfgEnableFreeShipping')?.checked ?? true;
   const payload = {
     deliveryCharge: parseFloat(document.getElementById('cfgDeliveryCharge').value),
     enableFreeShipping: enableFreeShipping,
     freeShippingMinOrder: parseFloat(document.getElementById('cfgFreeShippingMin').value) || 3000,
     codAdvanceAmount: parseFloat(document.getElementById('cfgCodAdvanceAmount').value) || 1000,
-    googleSheetUrl: document.getElementById('googleSheetUrlInput').value.trim(),
+    googleSheetUrl: document.getElementById('googleSheetUrlInput')?.value.trim() || '',
+    googleSheetWebhookUrl: document.getElementById('googleSheetWebhookUrlInput')?.value.trim() || '',
     razorpay: {
       keyId: document.getElementById('cfgRzpKeyId').value.trim(),
       keySecret: document.getElementById('cfgRzpKeySecret').value.trim()
@@ -925,6 +931,49 @@ async function saveStoreSettings(e) {
     alert(`Error saving settings: ${err.message}`);
   }
 }
+
+window.pushToGoogleSheetWebhook = async function() {
+  const webhookUrl = (document.getElementById('googleSheetWebhookUrlInput')?.value || adminSettings.googleSheetWebhookUrl || '').trim();
+
+  if (!webhookUrl) {
+    alert('Please enter your Google Apps Script Web App URL first!');
+    return;
+  }
+
+  if (!adminProducts || !adminProducts.length) {
+    alert('No products available to push.');
+    return;
+  }
+
+  const pushBtn = document.getElementById('btnPushToGoogleSheet');
+  if (pushBtn) {
+    pushBtn.disabled = true;
+    pushBtn.textContent = '🚀 Pushing to Google Sheet...';
+  }
+
+  try {
+    const payload = { products: adminProducts };
+    await fetch(webhookUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    await DbService.updateSettings({ googleSheetWebhookUrl: webhookUrl });
+
+    alert(`✅ Successfully pushed ${adminProducts.length} catalog products directly to your Google Sheet!`);
+  } catch (err) {
+    alert(`Push error: ${err.message}`);
+  } finally {
+    if (pushBtn) {
+      pushBtn.disabled = false;
+      pushBtn.textContent = '🚀 Push DIRECT TO Google Sheet';
+    }
+  }
+};
 
 window.togglePasswordVisibility = function(inputId, btn) {
   const input = document.getElementById(inputId);

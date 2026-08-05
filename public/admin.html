@@ -200,22 +200,30 @@
       </div>
 
       <div class="form-group">
-        <label>Saved Google Sheet CSV URL (Automatically preserved)</label>
+        <label>Saved Google Sheet CSV URL (For Importing FROM Google Sheet)</label>
         <input type="url" id="googleSheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv">
+      </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label>Google Apps Script Web App URL (For Direct 1-Click Writing BACK TO Google Sheet)</label>
+        <input type="url" id="googleSheetWebhookUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
       </div>
 
       <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
         <button class="hero-btn" id="btnSyncGoogleSheet">
-          🔄 Sync Products Now
+          🔄 Sync FROM Google Sheet
+        </button>
+        <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d);" id="btnPushToGoogleSheet" onclick="pushToGoogleSheetWebhook()">
+          🚀 Push DIRECT TO Google Sheet
         </button>
         <button class="nav-btn" id="btnSaveSheetLink">
-          💾 Save Sheet Link
+          💾 Save Settings
         </button>
         <button class="nav-btn" onclick="toggleCsvPasteBox()">
           📝 Direct CSV Paste
         </button>
-        <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d);" onclick="exportProductsToCsv()">
-          📊 Export CSV for Google Sheets
+        <button class="nav-btn" onclick="exportProductsToCsv()">
+          📊 Export CSV File
         </button>
         <button class="hero-btn" id="btnGenerateSitemap" style="background: linear-gradient(135deg, #0284c7, #2563eb);">
           📡 Export Dynamic XML Sitemap
