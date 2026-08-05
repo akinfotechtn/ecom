@@ -12,6 +12,10 @@ let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
 const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
 
+function normalizeStr(str) {
+  return (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   currentCategoryName = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category') || '';
@@ -32,7 +36,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     storeSettings = settings || {};
 
     if (currentCategoryName) {
-      categoryProducts = prods.filter(p => p.category && p.category.toLowerCase() === currentCategoryName.toLowerCase());
+      const targetNorm = normalizeStr(currentCategoryName);
+      categoryProducts = prods.filter(p => {
+        if (!p.category) return false;
+        const catNorm = normalizeStr(p.category);
+        return catNorm === targetNorm || catNorm.includes(targetNorm) || targetNorm.includes(catNorm);
+      });
+      if (!categoryProducts.length) {
+        categoryProducts = prods.filter(p => (p.category || '').toLowerCase().trim() === currentCategoryName.toLowerCase().trim());
+      }
     } else {
       categoryProducts = [...prods];
     }
@@ -108,11 +120,6 @@ function renderCategoryBrandsSection() {
 
   if (!section || !grid) return;
 
-  if (!categoryProducts.length) {
-    section.style.display = 'none';
-    return;
-  }
-
   const brandCounts = {};
   categoryProducts.forEach(p => {
     const b = p.brand ? p.brand.trim() : 'AK Infotech';
@@ -120,10 +127,6 @@ function renderCategoryBrandsSection() {
   });
 
   const uniqueBrands = Object.keys(brandCounts);
-  if (uniqueBrands.length <= 1) {
-    section.style.display = 'none';
-    return;
-  }
 
   section.style.display = 'block';
   if (titleName) titleName.textContent = currentCategoryName || 'Category';
@@ -251,18 +254,45 @@ function renderPaginationControls(container, totalPages) {
   }
 
   container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
+  container.style.gap = '8px';
+
   let html = `
     <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeCategoryPage(${currentPage - 1})">
       ← Prev
     </button>
   `;
 
-  for (let i = 1; i <= totalPages; i++) {
+  const maxButtons = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+  if (endPage - startPage + 1 < maxButtons) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  if (startPage > 1) {
+    html += `<button class="pagination-btn" onclick="changeCategoryPage(1)">1</button>`;
+    if (startPage > 2) {
+      html += `<span style="color: var(--text-muted); font-weight: 700;">...</span>`;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const isActive = i === currentPage;
     html += `
-      <button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changeCategoryPage(${i})">
+      <button class="pagination-btn ${isActive ? 'active' : ''}" onclick="changeCategoryPage(${i})">
         ${i}
       </button>
     `;
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      html += `<span style="color: var(--text-muted); font-weight: 700;">...</span>`;
+    }
+    html += `<button class="pagination-btn" onclick="changeCategoryPage(${totalPages})">${totalPages}</button>`;
   }
 
   html += `

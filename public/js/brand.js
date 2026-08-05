@@ -266,19 +266,45 @@ function renderPaginationControls(container, totalPages) {
   }
 
   container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'center';
+  container.style.gap = '8px';
+
   let html = `
     <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeBrandPage(${currentPage - 1})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">
       ← Prev
     </button>
   `;
 
-  for (let i = 1; i <= totalPages; i++) {
+  const maxButtons = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+  if (endPage - startPage + 1 < maxButtons) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  if (startPage > 1) {
+    html += `<button class="pagination-btn" onclick="changeBrandPage(1)" style="padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">1</button>`;
+    if (startPage > 2) {
+      html += `<span style="color: var(--text-muted); font-weight: 700;">...</span>`;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
     const isActive = i === currentPage;
     html += `
-      <button class="pagination-btn" onclick="changeBrandPage(${i})" style="padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid ${isActive ? 'var(--accent-cyan)' : 'var(--border-color)'}; background: ${isActive ? 'var(--accent-cyan)' : '#ffffff'}; color: ${isActive ? '#ffffff' : 'var(--text-dark)'}; font-weight: 700; cursor: pointer;">
+      <button class="pagination-btn" onclick="changeBrandPage(${i})" style="padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid ${isActive ? 'var(--accent-cyan)' : 'var(--border-color)'}; background: ${isActive ? 'var(--accent-cyan)' : '#ffffff'}; color: ${isActive ? '#ffffff' : 'var(--text-dark)'}; font-weight: 700; cursor: pointer;">
         ${i}
       </button>
     `;
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      html += `<span style="color: var(--text-muted); font-weight: 700;">...</span>`;
+    }
+    html += `<button class="pagination-btn" onclick="changeBrandPage(${totalPages})" style="padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #ffffff; color: var(--text-dark); font-weight: 700; cursor: pointer;">${totalPages}</button>`;
   }
 
   html += `
