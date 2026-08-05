@@ -59,13 +59,15 @@ function setupAdminAuthGuard() {
     }
   });
 
-  document.getElementById('btnAdminGoogleLogin')?.addEventListener('click', async () => {
+  window.adminGoogleLogin = async function() {
     try {
       await DbService.loginWithGoogle();
     } catch (err) {
       alert(`Google Login Error: ${err.message}`);
     }
-  });
+  };
+
+  document.getElementById('btnAdminGoogleLogin')?.addEventListener('click', window.adminGoogleLogin);
 
   document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
     await DbService.logoutUser();
