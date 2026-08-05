@@ -330,10 +330,13 @@ function saveCart() {
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
+  const drawerCountEl = document.getElementById('cartItemCount');
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+  
   if (cartCountEl) cartCountEl.textContent = totalQty;
+  if (drawerCountEl) drawerCountEl.textContent = totalQty;
 
-  const itemsListEl = document.getElementById('cartItemsList');
+  const itemsListEl = document.getElementById('cartItemsBody') || document.getElementById('cartItemsList');
   if (!itemsListEl) return;
 
   if (!cart.length) {
@@ -385,9 +388,10 @@ function renderCart() {
 
   const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
 
-  document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  const subtotalEl = document.getElementById('cartSubtotal');
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
   
-  const deliveryEl = document.getElementById('cartDeliveryFee') || document.getElementById('cartDelivery');
+  const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
     if (subtotal === 0) {
       deliveryEl.innerHTML = `₹0`;
@@ -402,14 +406,18 @@ function renderCart() {
   }
 
   const discountRow = document.getElementById('discountRow');
-  if (discountAmount > 0) {
-    discountRow.style.display = 'flex';
-    document.getElementById('cartDiscount').textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
-  } else {
-    discountRow.style.display = 'none';
+  if (discountRow) {
+    if (discountAmount > 0) {
+      discountRow.style.display = 'flex';
+      const discEl = document.getElementById('cartDiscount');
+      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+    } else {
+      discountRow.style.display = 'none';
+    }
   }
 
-  document.getElementById('cartFinalTotal').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+  const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
+  if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
 // CHECKOUT & PAYMENT SELECTION
