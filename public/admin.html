@@ -232,14 +232,36 @@
 
     <!-- TAB 2: MANAGE PRODUCTS -->
     <div class="tab-content" id="productsTab">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
         <h2 style="font-size: 1.3rem; color: var(--text-dark);">📦 Catalog Products Management</h2>
-        <button class="hero-btn" style="padding: 8px 18px;" onclick="openAddProductModal()">
-          + Add New Product
-        </button>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="hero-btn" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 8px 18px;" id="btnToggleBulkEdit" onclick="toggleBulkEditMode()">
+            📝 Bulk Spreadsheet Edit
+          </button>
+          <button class="hero-btn" style="padding: 8px 18px;" onclick="openAddProductModal()">
+            + Add New Product
+          </button>
+        </div>
       </div>
 
-      <div style="overflow-x: auto;">
+      <!-- BULK EDIT TOOLBAR (DISPLAYED WHEN BULK EDIT IS ACTIVE) -->
+      <div id="bulkEditToolbar" style="display: none; background: #f0f9ff; border: 1.5px solid #0284c7; padding: 14px 20px; border-radius: var(--radius-md); margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <strong style="color: #0284c7; font-size: 1rem;">📝 Spreadsheet Bulk Edit Mode Active</strong>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Edit any product fields directly in the table below and click Save All.</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="hero-btn" style="background: #16a34a; padding: 8px 20px;" onclick="saveAllBulkEdits()">
+            💾 Save All Changes
+          </button>
+          <button class="nav-btn" style="padding: 8px 16px;" onclick="toggleBulkEditMode()">
+            ❌ Exit Bulk Mode
+          </button>
+        </div>
+      </div>
+
+      <!-- STANDARD PRODUCTS TABLE VIEW -->
+      <div style="overflow-x: auto;" id="standardTableContainer">
         <table class="data-table">
           <thead>
             <tr>
@@ -255,6 +277,27 @@
             </tr>
           </thead>
           <tbody id="adminProductsTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- BULK SPREADSHEET TABLE VIEW -->
+      <div style="overflow-x: auto; display: none;" id="bulkTableContainer">
+        <table class="data-table bulk-edit-table" style="min-width: 1100px;">
+          <thead>
+            <tr>
+              <th style="width: 110px;">Image URL</th>
+              <th style="min-width: 200px;">Product Name</th>
+              <th style="width: 130px;">Brand</th>
+              <th style="width: 140px;">Category</th>
+              <th style="width: 90px;">MRP (₹)</th>
+              <th style="width: 90px;">Offer (₹)</th>
+              <th style="width: 100px;">Shipping (₹)</th>
+              <th style="width: 110px;">Stock</th>
+              <th style="width: 70px;">Combo?</th>
+              <th style="min-width: 180px;">Specifications</th>
+            </tr>
+          </thead>
+          <tbody id="bulkProductsTableBody"></tbody>
         </table>
       </div>
     </div>

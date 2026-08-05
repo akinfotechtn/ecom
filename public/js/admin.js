@@ -638,6 +638,138 @@ function renderProductsTable() {
   `).join('');
 }
 
+let isBulkEditMode = false;
+
+window.toggleBulkEditMode = function() {
+  isBulkEditMode = !isBulkEditMode;
+  const toolbar = document.getElementById('bulkEditToolbar');
+  const stdTable = document.getElementById('standardTableContainer');
+  const bulkTable = document.getElementById('bulkTableContainer');
+  const btnToggle = document.getElementById('btnToggleBulkEdit');
+
+  if (isBulkEditMode) {
+    if (toolbar) toolbar.style.display = 'flex';
+    if (stdTable) stdTable.style.display = 'none';
+    if (bulkTable) bulkTable.style.display = 'block';
+    if (btnToggle) btnToggle.textContent = '❌ Exit Bulk Mode';
+    renderBulkEditTable();
+  } else {
+    if (toolbar) toolbar.style.display = 'none';
+    if (stdTable) stdTable.style.display = 'block';
+    if (bulkTable) bulkTable.style.display = 'none';
+    if (btnToggle) btnToggle.textContent = '📝 Bulk Spreadsheet Edit';
+    renderProductsTable();
+  }
+};
+
+function renderBulkEditTable() {
+  const tbody = document.getElementById('bulkProductsTableBody');
+  if (!tbody) return;
+
+  if (!adminProducts.length) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">No products available to bulk edit.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = adminProducts.map(p => `
+    <tr data-bulk-id="${p.id}">
+      <td>
+        <input type="text" class="bulk-photo" value="${escapeHtml(p.photoLink || '')}" style="width:100px; padding:4px 6px; font-size:0.75rem; border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+      <td>
+        <input type="text" class="bulk-name" value="${escapeHtml(p.productName || '')}" style="width:100%; min-width:180px; padding:4px 6px; font-weight:700; border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+      <td>
+        <select class="bulk-brand" style="width:100%; padding:4px; border:1px solid var(--border-color); border-radius:4px;">
+          ${adminBrands.map(b => `<option value="${escapeHtml(b.name)}" ${b.name.toLowerCase() === p.brand?.toLowerCase() ? 'selected' : ''}>${escapeHtml(b.name)}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select class="bulk-category" style="width:100%; padding:4px; border:1px solid var(--border-color); border-radius:4px;">
+          ${adminCategories.map(c => `<option value="${escapeHtml(c.name)}" ${c.name.toLowerCase() === p.category?.toLowerCase() ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <input type="number" class="bulk-price" value="${p.price || 0}" style="width:80px; padding:4px; border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+      <td>
+        <input type="number" class="bulk-selling" value="${p.sellingPrice || 0}" style="width:80px; padding:4px; font-weight:700; color:var(--accent-cyan); border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+      <td>
+        <input type="number" class="bulk-shipping" value="${p.deliveryCharge !== undefined && p.deliveryCharge !== null ? p.deliveryCharge : ''}" placeholder="Default" style="width:80px; padding:4px; border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+      <td>
+        <select class="bulk-stock" style="width:100%; padding:4px; border:1px solid var(--border-color); border-radius:4px;">
+          <option value="true" ${p.inStock !== false ? 'selected' : ''}>In Stock</option>
+          <option value="false" ${p.inStock === false ? 'selected' : ''}>Out of Stock</option>
+        </select>
+      </td>
+      <td style="text-align:center;">
+        <input type="checkbox" class="bulk-combo" ${p.isCombo ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer;">
+      </td>
+      <td>
+        <input type="text" class="bulk-spec" value="${escapeHtml(p.productSpec || '')}" style="width:100%; min-width:160px; padding:4px 6px; font-size:0.8rem; border:1px solid var(--border-color); border-radius:4px;">
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.saveAllBulkEdits = async function() {
+  const rows = document.querySelectorAll('#bulkProductsTableBody tr[data-bulk-id]');
+  if (!rows.length) return;
+
+  const updatedProducts = [];
+
+  rows.forEach(tr => {
+    const id = tr.getAttribute('data-bulk-id');
+    const photoLink = tr.querySelector('.bulk-photo')?.value.trim() || 'images/cctv-wholesale.webp';
+    const productName = tr.querySelector('.bulk-name')?.value.trim() || 'Product';
+    const brand = tr.querySelector('.bulk-brand')?.value || 'Generic';
+    const category = tr.querySelector('.bulk-category')?.value || 'General';
+    const price = parseFloat(tr.querySelector('.bulk-price')?.value) || 0;
+    const sellingPrice = parseFloat(tr.querySelector('.bulk-selling')?.value) || price;
+    const shipVal = tr.querySelector('.bulk-shipping')?.value.trim();
+    const deliveryCharge = (shipVal !== '' && shipVal !== undefined) ? parseFloat(shipVal) : null;
+    const inStock = tr.querySelector('.bulk-stock')?.value === 'true';
+    const isCombo = tr.querySelector('.bulk-combo')?.checked ?? false;
+    const productSpec = tr.querySelector('.bulk-spec')?.value.trim() || '';
+
+    updatedProducts.push({
+      id,
+      productName,
+      photoLink,
+      brand,
+      category,
+      price,
+      sellingPrice,
+      deliveryCharge,
+      inStock,
+      isCombo,
+      productSpec
+    });
+  });
+
+  const saveBtn = document.querySelector('#bulkEditToolbar button[onclick="saveAllBulkEdits()"]');
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = '💾 Saving All Edits...';
+  }
+
+  try {
+    await DbService.bulkSyncProducts(updatedProducts, true);
+    alert(`✅ Successfully saved bulk edits for ${updatedProducts.length} products!`);
+    await fetchAdminProducts();
+    toggleBulkEditMode();
+  } catch (err) {
+    alert(`Failed to save bulk edits: ${err.message}`);
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '💾 Save All Changes';
+    }
+  }
+};
+
 window.openAddProductModal = function() {
   document.getElementById('editProductId').value = '';
   document.getElementById('productModalTitle').textContent = 'Add New Product';
