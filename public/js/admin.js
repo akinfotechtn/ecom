@@ -124,8 +124,14 @@ function renderHeroBannersList() {
 
 async function handleAddHeroBanner(e) {
   e.preventDefault();
+  const imageUrl = document.getElementById('heroImgUrl').value.trim();
+  if (!imageUrl) {
+    alert('Please enter a Hero Banner Image URL!');
+    return;
+  }
+
   const payload = {
-    imageUrl: document.getElementById('heroImgUrl').value.trim() || 'images/hero-banner.webp',
+    imageUrl,
     tag: document.getElementById('heroTag').value.trim(),
     title: document.getElementById('heroTitle').value.trim(),
     subtitle: document.getElementById('heroSubtitle').value.trim(),

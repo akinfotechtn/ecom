@@ -293,25 +293,29 @@ button {
 /* HERO BANNER & AUTO-SCROLL SLIDER */
 .hero {
   width: 100%;
-  padding: 12px 12px 0;
+  padding: 0;
   position: relative;
 }
 
 .hero-slider-wrap {
   position: relative;
   width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  border: none;
   height: 220px;
   background: #0f172a;
 }
 
 @media (min-width: 768px) {
+  .hero {
+    padding: 16px 20px 0;
+  }
   .hero-slider-wrap {
-    height: 340px;
+    height: 360px;
     border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
   }
 }
 

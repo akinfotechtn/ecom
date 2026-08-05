@@ -50,27 +50,6 @@ const DEFAULT_CATEGORIES = [
   { id: "cat-5", name: "Accessories", imageLink: "images/networking-wholesale.webp" }
 ];
 
-const DEFAULT_HERO_BANNERS = [
-  {
-    id: "hero-1",
-    imageUrl: "images/hero-banner.webp",
-    tag: "🔥 AK INFOTECH WHOLESALE & RETAIL",
-    title: "Next-Gen CCTV & Security Systems",
-    subtitle: "High Definition 4K Security Cameras, AI Motion Tracking & Complete All-in-One Surveillance Kits.",
-    btnText: "📦 Explore Combo Kits",
-    btnLink: "javascript:filterByComboOnly()"
-  },
-  {
-    id: "hero-2",
-    imageUrl: "images/cctv-wholesale.webp",
-    tag: "⚡ 4K ULTRA HD SECURITY",
-    title: "Smart Color Night Vision Surveillance",
-    subtitle: "Crystal clear 4MP & 8MP cameras with built-in mic, active defense siren & remote mobile view.",
-    btnText: "📹 Shop CCTV Cameras",
-    btnLink: "javascript:selectCategory('CCTV Camera')"
-  }
-];
-
 const DEFAULT_SETTINGS = {
   storeName: "AK Infotech",
   tagline: "Wholesale & Retail Security Systems, CCTV & IT Solutions",
@@ -113,12 +92,9 @@ export class DbService {
       if (!snap.empty) {
         return snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
-      for (const h of DEFAULT_HERO_BANNERS) {
-        await setDoc(doc(db, "hero_banners", h.id), h);
-      }
-      return DEFAULT_HERO_BANNERS;
+      return [];
     } catch (err) {
-      return DEFAULT_HERO_BANNERS;
+      return [];
     }
   }
 

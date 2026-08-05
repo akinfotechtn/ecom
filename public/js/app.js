@@ -627,15 +627,26 @@ async function loadHeroBanners() {
 }
 
 function renderHeroSlider() {
+  const headerSection = document.getElementById('heroHeaderSection');
   const wrap = document.getElementById('heroSliderWrap');
   const dotsEl = document.getElementById('heroSliderDots');
-  if (!wrap || !heroBanners.length) return;
+
+  if (!wrap) return;
+
+  if (!heroBanners || !heroBanners.length) {
+    if (headerSection) headerSection.style.display = 'none';
+    wrap.innerHTML = '';
+    if (dotsEl) dotsEl.innerHTML = '';
+    return;
+  }
+
+  if (headerSection) headerSection.style.display = 'block';
 
   wrap.innerHTML = heroBanners.map((b, idx) => {
     const hasText = b.tag || b.title || b.subtitle || b.btnText;
     return `
       <div class="hero-slide ${idx === currentHeroIndex ? 'active' : ''}">
-        <img class="hero-slide-img" src="${b.imageUrl || 'images/hero-banner.webp'}" alt="Hero Banner" onerror="this.src='images/hero-banner.webp'">
+        <img class="hero-slide-img" src="${b.imageUrl}" alt="Hero Banner">
         <div class="hero-slide-overlay ${hasText ? '' : 'no-text'}">
           <div class="hero-content">
             ${b.tag ? `<span class="hero-tag">${escapeHtml(b.tag)}</span>` : ''}
