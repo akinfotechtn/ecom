@@ -22,15 +22,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   currentCategoryName = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category') || '';
 
   DbService.listenAuthState((user) => {
-    const loginLink = document.getElementById('navLoginLink');
-    if (loginLink) {
-      if (user) {
-        loginLink.innerHTML = `👤 ${escapeHtml(user.displayName || user.email.split('@')[0])}`;
-        loginLink.href = 'account.html';
-      } else {
-        loginLink.innerHTML = `🔑 Sign In`;
-        loginLink.href = 'account.html';
+    const avatarEl = document.getElementById('bottomProfileAvatar');
+    const textEl = document.getElementById('bottomProfileText');
+    if (user) {
+      if (avatarEl) {
+        if (user.photoURL) {
+          avatarEl.innerHTML = `<img src="${user.photoURL}" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent-cyan);" alt="Profile">`;
+        } else {
+          avatarEl.innerHTML = `👤`;
+        }
       }
+      if (textEl) textEl.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Profile';
+    } else {
+      if (avatarEl) avatarEl.innerHTML = `👤`;
+      if (textEl) textEl.textContent = 'Profile';
     }
   });
 

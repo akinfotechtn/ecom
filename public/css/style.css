@@ -894,10 +894,11 @@ button {
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  gap: 2px;
-  width: 20%;
+  gap: 3px;
+  width: 25%;
+  text-decoration: none;
 }
 
 .mobile-nav-item.active {

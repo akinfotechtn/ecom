@@ -102,17 +102,6 @@
 
       <!-- NAV ACTIONS -->
       <div class="nav-actions">
-        <div id="authContainer">
-          <button class="nav-btn" id="googleLoginBtn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 16px; height: 16px;" alt="Google">
-            <span>Sign In</span>
-          </button>
-        </div>
-
-        <a href="account.html" class="nav-btn">
-          👤 <span>My Account</span>
-        </a>
-
         <button class="nav-btn cart-btn" id="openCartBtn">
           🛒 <span>Cart</span>
           <span class="cart-count" id="cartCount">0</span>
@@ -346,6 +335,26 @@
       <div>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved.</div>
     </div>
   </footer>
+
+  <!-- MOBILE / BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-nav-item">
+      <div class="mobile-nav-icon">🏠</div>
+      <span>Home</span>
+    </a>
+    <a href="category.html" class="mobile-nav-item">
+      <div class="mobile-nav-icon">📁</div>
+      <span>Categories</span>
+    </a>
+    <a href="brand.html" class="mobile-nav-item active">
+      <div class="mobile-nav-icon">🏷️</div>
+      <span>Brands</span>
+    </a>
+    <a href="account.html" class="mobile-nav-item" id="bottomProfileLink">
+      <div class="mobile-nav-icon" id="bottomProfileAvatar">👤</div>
+      <span id="bottomProfileText">Profile</span>
+    </a>
+  </nav>
 
   <script type="module" src="js/brand.js"></script>
 </body>

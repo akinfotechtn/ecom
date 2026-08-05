@@ -8,6 +8,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get('id') || 'prod-101';
 
+  DbService.listenAuthState((user) => {
+    const avatarEl = document.getElementById('bottomProfileAvatar');
+    const textEl = document.getElementById('bottomProfileText');
+    if (user) {
+      if (avatarEl) {
+        if (user.photoURL) {
+          avatarEl.innerHTML = `<img src="${user.photoURL}" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent-cyan);" alt="Profile">`;
+        } else {
+          avatarEl.innerHTML = `👤`;
+        }
+      }
+      if (textEl) textEl.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Profile';
+    } else {
+      if (avatarEl) avatarEl.innerHTML = `👤`;
+      if (textEl) textEl.textContent = 'Profile';
+    }
+  });
+
   await loadProductDetail(productId);
   renderCart();
   setupEventListeners();
