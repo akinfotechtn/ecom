@@ -1,7 +1,5 @@
-// AK INFOTECH - FRONTEND APP (MY ACCOUNT MODAL, CHECKOUT Z-INDEX & GOOGLE AUTH)
+// AK INFOTECH - FRONTEND APP (CHECKOUT SAVED ADDRESSES & ACCOUNT PAGE LINKING)
 import { DbService } from "./db-service.js";
-
-const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
 
 let allProducts = [];
 let storeBrands = [];
@@ -19,6 +17,7 @@ let isComboOnly = false;
 let searchQuery = '';
 
 let currentUser = null;
+let userAddresses = [];
 let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
 let appliedCoupon = null;
 let selectedPaymentMethod = 'ONLINE'; // ONLINE or COD
@@ -34,9 +33,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function setupAuthState() {
-  DbService.listenAuthState((user) => {
+  DbService.listenAuthState(async (user) => {
     currentUser = user;
     renderAuthUI();
+    if (user) {
+      userAddresses = await DbService.getUserAddresses(user.uid);
+    }
   });
 }
 
@@ -46,15 +48,11 @@ function renderAuthUI() {
 
   if (currentUser) {
     container.innerHTML = `
-      <div class="user-avatar-btn" id="userProfileBtn" title="${escapeHtml(currentUser.displayName || currentUser.email)}">
+      <a href="account.html" class="user-avatar-btn" title="${escapeHtml(currentUser.displayName || currentUser.email)}">
         <img src="${currentUser.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}" class="user-avatar-img" alt="User Profile">
         <span style="font-weight: 700; font-size: 0.8rem; color: var(--text-dark); max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(currentUser.displayName?.split(' ')[0] || 'Account')}</span>
-      </div>
+      </a>
     `;
-
-    document.getElementById('userProfileBtn')?.addEventListener('click', () => {
-      openAccountModal();
-    });
   } else {
     container.innerHTML = `
       <button class="nav-btn" id="googleLoginBtn">
@@ -72,82 +70,6 @@ function renderAuthUI() {
     });
   }
 }
-
-// MY ACCOUNT & PROFILE MODAL
-window.openAccountModal = function() {
-  const modal = document.getElementById('accountModalBackdrop');
-  const body = document.getElementById('accountModalBody');
-  if (!modal || !body) return;
-
-  modal.classList.add('active');
-
-  if (currentUser) {
-    const isAdminUser = AUTHORIZED_ADMIN_EMAILS.includes((currentUser.email || '').toLowerCase());
-
-    body.innerHTML = `
-      <div style="text-align: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px;">
-        <img src="${currentUser.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-cyan); margin-bottom: 8px;">
-        <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark);">${escapeHtml(currentUser.displayName || 'Customer Account')}</h2>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">${escapeHtml(currentUser.email)}</div>
-        ${isAdminUser ? `<span class="badge-glow" style="background:#dcfce7; color:#16a34a; margin-top:6px; display:inline-block;">🟢 Verified Store Admin</span>` : ''}
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button class="hero-btn" style="width: 100%; justify-content: flex-start; padding: 12px 16px; background: #ffffff; color: var(--text-dark); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);" onclick="closeAccountModal(); openTrackModal();">
-          📍 <strong>My Orders & Live Tracking</strong>
-        </button>
-
-        <a href="https://wa.me/919876543210?text=Hi%20AK%20Infotech%20Support," target="_blank" class="hero-btn" style="width: 100%; justify-content: flex-start; padding: 12px 16px; background: #ffffff; color: var(--text-dark); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); text-decoration: none;">
-          💬 <strong>WhatsApp Customer Support</strong> (+91 9876543210)
-        </a>
-
-        ${isAdminUser ? `
-          <a href="admin.html" class="hero-btn" style="width: 100%; justify-content: flex-start; padding: 12px 16px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); text-decoration: none;">
-            ⚙️ <strong>Open Admin Control Panel</strong>
-          </a>
-        ` : ''}
-
-        <button id="accountSignOutBtn" class="pill-btn" style="width: 100%; padding: 10px; color: #ef4444; border-color: rgba(239,68,68,0.3); margin-top: 10px;">
-          🚪 Sign Out
-        </button>
-      </div>
-    `;
-
-    document.getElementById('accountSignOutBtn')?.addEventListener('click', async () => {
-      await DbService.logoutUser();
-      closeAccountModal();
-      alert('Signed out successfully.');
-    });
-  } else {
-    body.innerHTML = `
-      <div style="text-align: center; padding: 20px 10px;">
-        <div style="font-size: 3rem; margin-bottom: 10px;">👤</div>
-        <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">My Account</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
-          Sign in with Google to view your live order tracking history and manage your account.
-        </p>
-
-        <button class="hero-btn" id="accountGoogleLoginBtn" style="padding: 12px 24px;">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 18px; height: 18px; margin-right: 8px; vertical-align: middle;">
-          Sign In with Google
-        </button>
-      </div>
-    `;
-
-    document.getElementById('accountGoogleLoginBtn')?.addEventListener('click', async () => {
-      try {
-        await DbService.loginWithGoogle();
-        closeAccountModal();
-      } catch (err) {
-        alert(`Google Sign-In Error: ${err.message}`);
-      }
-    });
-  }
-};
-
-window.closeAccountModal = function() {
-  document.getElementById('accountModalBackdrop')?.classList.remove('active');
-};
 
 async function fetchSettings() {
   try {
@@ -442,107 +364,6 @@ function renderCart() {
   document.getElementById('cartFinalTotal').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
-// ORDER TRACKING MODAL
-window.openTrackModal = async function() {
-  document.getElementById('trackModalBackdrop').classList.add('active');
-  const container = document.getElementById('userOrdersHistoryContainer');
-  if (!container) return;
-
-  if (currentUser) {
-    container.innerHTML = `<div style="text-align:center; padding:16px;">Loading your order history...</div>`;
-    const userOrders = await DbService.getUserOrders(currentUser.uid);
-    renderOrderTrackingCards(userOrders, container);
-  } else {
-    container.innerHTML = `
-      <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 14px; border-radius: var(--radius-md); font-size: 0.88rem; color: #0369a1;">
-        💡 <strong>Tip:</strong> Sign in with Google to view all your order history automatically, or type your Order ID / Phone number above to search.
-      </div>
-    `;
-  }
-};
-
-window.closeTrackModal = function() {
-  document.getElementById('trackModalBackdrop').classList.remove('active');
-};
-
-async function handleTrackSearch() {
-  const queryStr = document.getElementById('trackInput').value.trim();
-  const container = document.getElementById('userOrdersHistoryContainer');
-
-  if (!queryStr) {
-    alert('Please enter an Order ID or Mobile Number!');
-    return;
-  }
-
-  container.innerHTML = `<div style="text-align:center; padding:16px;">Searching orders for "${escapeHtml(queryStr)}"...</div>`;
-  const results = await DbService.trackOrderByIdOrPhone(queryStr);
-  renderOrderTrackingCards(results, container);
-}
-
-function renderOrderTrackingCards(ordersList, container) {
-  if (!ordersList || !ordersList.length) {
-    container.innerHTML = `
-      <div style="text-align:center; padding: 30px 10px; color: var(--text-muted);">
-        🔍 No orders found. Please verify your Order ID or Phone number.
-      </div>`;
-    return;
-  }
-
-  container.innerHTML = ordersList.map(order => {
-    const status = (order.status || 'PROCESSING').toUpperCase();
-    const isStep1 = true;
-    const isStep2 = status === 'SHIPPED' || status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
-    const isStep3 = status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
-    const isStep4 = status === 'DELIVERED';
-
-    return `
-      <div class="order-tracking-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">
-          <div>
-            <div style="font-weight: 800; font-size: 1rem; color: var(--text-dark);">Order #${order.id}</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">${new Date(order.createdAt).toLocaleString('en-IN')}</div>
-          </div>
-          <div style="text-align: right;">
-            <span class="status-badge ${order.paymentMethod === 'COD' ? 'status-cod' : 'status-online'}">
-              ${order.paymentMethod === 'COD' ? '💵 COD (Advance Paid)' : '💳 Paid Online'}
-            </span>
-            <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px; color: var(--text-dark);">Total: ₹${order.finalTotal?.toLocaleString('en-IN')}</div>
-          </div>
-        </div>
-
-        <div style="font-size: 0.82rem; margin-bottom: 8px;">
-          <strong>Items:</strong> ${order.items?.map(i => `${i.productName} (x${i.quantity})`).join(', ')}
-        </div>
-
-        <div class="tracking-timeline">
-          <div class="step-node ${isStep1 ? (isStep2 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">1</div>
-            <span>Placed</span>
-          </div>
-          <div class="step-node ${isStep2 ? (isStep3 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">2</div>
-            <span>Shipped</span>
-          </div>
-          <div class="step-node ${isStep3 ? (isStep4 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">3</div>
-            <span>Out for Delivery</span>
-          </div>
-          <div class="step-node ${isStep4 ? 'completed' : ''}">
-            <div class="step-dot">4</div>
-            <span>Delivered</span>
-          </div>
-        </div>
-
-        ${order.paymentMethod === 'COD' ? `
-          <div style="font-size: 0.8rem; background: #fff7ed; border: 1px solid #fed7aa; padding: 8px; border-radius: 6px; margin-top: 10px; color: #9a3412;">
-            👉 <strong>COD Split:</strong> ₹${order.advancePaid} Advance Paid | <strong>₹${order.balanceOnDelivery} Due at Delivery</strong>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }).join('');
-}
-
 // CHECKOUT & PAYMENT SELECTION
 window.selectPaymentMethod = function(method) {
   selectedPaymentMethod = method;
@@ -584,6 +405,7 @@ async function handleCheckoutSubmit(e) {
   const custAddress = document.getElementById('custAddress').value.trim();
   const custPincode = document.getElementById('custPincode').value.trim();
   const custCityState = document.getElementById('custCityState').value.trim();
+  const shouldSaveAddress = document.getElementById('chkSaveAddress').checked;
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
   let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
@@ -600,6 +422,21 @@ async function handleCheckoutSubmit(e) {
   const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
   const codAdvanceFee = storeSettings.codAdvanceAmount || 1000;
   const amountToPayNow = selectedPaymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
+
+  // Save address to user account if requested
+  if (currentUser && shouldSaveAddress) {
+    try {
+      await DbService.addUserAddress(currentUser.uid, {
+        fullName: custName,
+        phone: custPhone,
+        street: custAddress,
+        pincode: custPincode,
+        cityState: custCityState
+      });
+    } catch (err) {
+      console.warn("Address save warning:", err);
+    }
+  }
 
   const submitBtn = document.getElementById('payOrderSubmitBtn');
   submitBtn.disabled = true;
@@ -697,18 +534,6 @@ function setupEventListeners() {
   const cartBackdrop = document.getElementById('cartBackdrop');
   if (cartBackdrop) cartBackdrop.addEventListener('click', closeCartDrawer);
 
-  const openTrackBtn = document.getElementById('openTrackModalBtn');
-  if (openTrackBtn) openTrackBtn.addEventListener('click', openTrackModal);
-
-  const closeTrackBtn = document.getElementById('closeTrackModalBtn');
-  if (closeTrackBtn) closeTrackBtn.addEventListener('click', closeTrackModal);
-
-  const btnTrackSearch = document.getElementById('btnTrackSearch');
-  if (btnTrackSearch) btnTrackSearch.addEventListener('click', handleTrackSearch);
-
-  const closeAccountBtn = document.getElementById('closeAccountModalBtn');
-  if (closeAccountBtn) closeAccountBtn.addEventListener('click', closeAccountModal);
-
   const proceedBtn = document.getElementById('proceedCheckoutBtn');
   if (proceedBtn) {
     proceedBtn.addEventListener('click', () => {
@@ -753,18 +578,49 @@ window.closeCartDrawer = function() {
   document.getElementById('cartBackdrop').classList.remove('active');
 };
 
-function openCheckoutModal() {
-  // Close cart drawer first so screens do not overlap!
+async function openCheckoutModal() {
   closeCartDrawer();
-
   document.getElementById('checkoutBackdrop').classList.add('active');
   selectPaymentMethod('ONLINE');
+
+  const savedGroup = document.getElementById('savedAddressGroup');
+  const savedSelect = document.getElementById('savedAddressSelect');
 
   if (currentUser) {
     const custEmail = document.getElementById('custEmail');
     const custName = document.getElementById('custName');
     if (custEmail && currentUser.email) custEmail.value = currentUser.email;
     if (custName && currentUser.displayName) custName.value = currentUser.displayName;
+
+    userAddresses = await DbService.getUserAddresses(currentUser.uid);
+
+    if (userAddresses && userAddresses.length) {
+      savedGroup.style.display = 'block';
+      savedSelect.innerHTML = `<option value="">-- Choose a saved delivery address --</option>` +
+        userAddresses.map((a, idx) => `<option value="${a.id}">${escapeHtml(a.fullName)} - ${escapeHtml(a.street)}, ${escapeHtml(a.pincode)}</option>`).join('');
+
+      savedSelect.onchange = function() {
+        const selectedId = this.value;
+        const found = userAddresses.find(a => a.id === selectedId);
+        if (found) {
+          document.getElementById('custName').value = found.fullName;
+          document.getElementById('custPhone').value = found.phone;
+          document.getElementById('custAddress').value = found.street;
+          document.getElementById('custPincode').value = found.pincode;
+          document.getElementById('custCityState').value = found.cityState;
+        }
+      };
+
+      // Pre-fill default address
+      if (userAddresses[0]) {
+        savedSelect.value = userAddresses[0].id;
+        savedSelect.dispatchEvent(new Event('change'));
+      }
+    } else {
+      savedGroup.style.display = 'none';
+    }
+  } else {
+    savedGroup.style.display = 'none';
   }
 }
 

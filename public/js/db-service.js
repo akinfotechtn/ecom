@@ -1,4 +1,4 @@
-// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + BRANDS & CATEGORIES CRUD + SEO + AVAILABILITY
+// DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + BRANDS & CATEGORIES EDIT + USER ADDRESSES CRUD + SEO
 import { 
   db, 
   auth,
@@ -40,7 +40,7 @@ const DEFAULT_PRODUCTS = [
     category: "CCTV Camera",
     price: 5499,
     sellingPrice: 3599,
-    inStock: false, // Out of stock
+    inStock: false,
     isCombo: false
   },
   {
@@ -76,7 +76,7 @@ const DEFAULT_PRODUCTS = [
     category: "CCTV Camera",
     price: 1499,
     sellingPrice: 999,
-    inStock: false, // Out of stock
+    inStock: false,
     isCombo: false
   },
   {
@@ -100,7 +100,7 @@ const DEFAULT_PRODUCTS = [
     category: "CCTV Camera",
     price: 4799,
     sellingPrice: 3999,
-    inStock: false, // Out of stock
+    inStock: false,
     isCombo: false
   }
 ];
@@ -128,7 +128,7 @@ const DEFAULT_SETTINGS = {
   deliveryCharge: 150,
   freeShippingMinOrder: 3000,
   codAdvanceAmount: 1000,
-  googleSheetUrl: "",
+  googleSheetUrl: "https://docs.google.com/spreadsheets/d/17o2T1_38rPgFHXLIMbbheudVMKginlpzrgY8NztiQgs/edit?usp=sharing",
   razorpay: {
     keyId: "rzp_test_sampleKey123",
     keySecret: "sampleSecretKey456"
@@ -238,7 +238,7 @@ export class DbService {
     }
   }
 
-  // BRANDS MANAGEMENT
+  // BRANDS MANAGEMENT (ADD, EDIT, DELETE)
   static async getBrands() {
     try {
       const snap = await getDocs(collection(db, "brands"));
@@ -261,11 +261,15 @@ export class DbService {
     return newBrand;
   }
 
+  static async updateBrand(id, brandData) {
+    await setDoc(doc(db, "brands", id), brandData, { merge: true });
+  }
+
   static async deleteBrand(id) {
     await deleteDoc(doc(db, "brands", id));
   }
 
-  // CATEGORIES MANAGEMENT
+  // CATEGORIES MANAGEMENT (ADD, EDIT, DELETE)
   static async getCategories() {
     try {
       const snap = await getDocs(collection(db, "categories"));
@@ -288,32 +292,88 @@ export class DbService {
     return newCat;
   }
 
+  static async updateCategory(id, catData) {
+    await setDoc(doc(db, "categories", id), catData, { merge: true });
+  }
+
   static async deleteCategory(id) {
     await deleteDoc(doc(db, "categories", id));
   }
 
-  // SETTINGS
+  // USER PROFILE & DELIVERY ADDRESSES (CRUD)
+  static async getUserAddresses(uid) {
+    if (!uid) return [];
+    try {
+      const docSnap = await getDoc(doc(db, "users", uid));
+      if (docSnap.exists() && docSnap.data().addresses) {
+        return docSnap.data().addresses;
+      }
+      const local = JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
+      return local;
+    } catch (err) {
+      return JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
+    }
+  }
+
+  static async addUserAddress(uid, addressData) {
+    if (!uid) return;
+    const addressId = `addr-${Date.now()}`;
+    const newAddr = { id: addressId, ...addressData, createdAt: new Date().toISOString() };
+    
+    try {
+      const existing = await this.getUserAddresses(uid);
+      const updated = [newAddr, ...existing];
+      await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
+      localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
+    } catch (err) {
+      const local = JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
+      local.unshift(newAddr);
+      localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(local));
+    }
+    return newAddr;
+  }
+
+  static async updateUserAddress(uid, addressId, addressData) {
+    if (!uid) return;
+    const existing = await this.getUserAddresses(uid);
+    const updated = existing.map(a => a.id === addressId ? { ...a, ...addressData } : a);
+    try {
+      await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
+    } catch (e) {}
+    localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
+  }
+
+  static async deleteUserAddress(uid, addressId) {
+    if (!uid) return;
+    const existing = await this.getUserAddresses(uid);
+    const updated = existing.filter(a => a.id !== addressId);
+    try {
+      await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
+    } catch (e) {}
+    localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
+  }
+
+  // STORE SETTINGS & PERSISTENT GOOGLE SHEET URL
   static async getSettings() {
     try {
       const docSnap = await getDoc(doc(db, "settings", "store_config"));
       if (docSnap.exists()) {
-        return { ...DEFAULT_SETTINGS, ...docSnap.data() };
+        const data = docSnap.data();
+        const savedUrl = localStorage.getItem('ak_google_sheet_url') || data.googleSheetUrl;
+        return { ...DEFAULT_SETTINGS, ...data, googleSheetUrl: savedUrl || DEFAULT_SETTINGS.googleSheetUrl };
       }
       await setDoc(doc(db, "settings", "store_config"), DEFAULT_SETTINGS);
       return DEFAULT_SETTINGS;
     } catch (err) {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const data = await res.json();
-          return data.settings || DEFAULT_SETTINGS;
-        }
-      } catch (e) {}
-      return DEFAULT_SETTINGS;
+      const localUrl = localStorage.getItem('ak_google_sheet_url');
+      return { ...DEFAULT_SETTINGS, googleSheetUrl: localUrl || DEFAULT_SETTINGS.googleSheetUrl };
     }
   }
 
   static async updateSettings(newSettings) {
+    if (newSettings.googleSheetUrl) {
+      localStorage.setItem('ak_google_sheet_url', newSettings.googleSheetUrl);
+    }
     try {
       await setDoc(doc(db, "settings", "store_config"), newSettings, { merge: true });
     } catch (err) {

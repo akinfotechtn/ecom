@@ -1,4 +1,4 @@
-// AK INFOTECH - ADMIN DASHBOARD JS (STRICT ADMIN EMAIL GUARD & FIREBASE SYNC)
+// AK INFOTECH - ADMIN DASHBOARD JS (PERSISTENT GOOGLE SHEET URL & BRANDS/CATEGORIES FULL CRUD)
 import { DbService } from "./db-service.js";
 
 const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
@@ -25,7 +25,6 @@ function setupAdminAuthGuard() {
     const statusLabel = document.getElementById('adminUserStatus');
 
     if (user && AUTHORIZED_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
-      // AUTHORIZED ADMIN LOGGED IN
       gatekeeperEl.style.display = 'none';
       mainPanelEl.style.display = 'block';
 
@@ -36,7 +35,6 @@ function setupAdminAuthGuard() {
 
       await loadAdminData();
     } else {
-      // UNAUTHORIZED OR NOT LOGGED IN
       gatekeeperEl.style.display = 'block';
       mainPanelEl.style.display = 'none';
 
@@ -90,7 +88,7 @@ window.switchAdminTab = function(tabId, btn) {
   document.getElementById(tabId).classList.add('active');
 };
 
-// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC
+// 1. PURE CLIENT-SIDE GOOGLE SHEETS SYNC & PERSISTENT URL
 function normalizeGoogleSheetUrl(url) {
   if (!url) return '';
   let cleanUrl = url.trim();
@@ -201,6 +199,9 @@ async function triggerGoogleSheetSync() {
     return;
   }
 
+  // Save URL persistently
+  await DbService.updateSettings({ googleSheetUrl: urlInput });
+
   btn.disabled = true;
   statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
 
@@ -232,6 +233,17 @@ async function triggerGoogleSheetSync() {
   }
 }
 
+async function saveGoogleSheetUrlOnly() {
+  const urlInput = document.getElementById('googleSheetUrlInput').value.trim();
+  if (!urlInput) {
+    alert('Please enter a Google Sheet URL first!');
+    return;
+  }
+
+  await DbService.updateSettings({ googleSheetUrl: urlInput });
+  alert('✅ Google Sheet URL saved persistently!');
+}
+
 window.toggleCsvPasteBox = function() {
   const box = document.getElementById('csvPasteBox');
   box.style.display = box.style.display === 'none' ? 'block' : 'none';
@@ -256,7 +268,7 @@ async function uploadRawCsv() {
   }
 }
 
-// 2. BRANDS MANAGEMENT
+// 2. BRANDS MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
 async function fetchAdminBrands() {
   adminBrands = await DbService.getBrands();
   renderBrandsGrid();
@@ -269,11 +281,14 @@ function renderBrandsGrid() {
 
   grid.innerHTML = adminBrands.map(b => `
     <div style="background:#ffffff; border:1px solid var(--border-color); padding:12px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <img src="${b.imageLink || 'images/logo.webp'}" style="height:28px; max-width:60px; object-fit:contain;" onerror="this.src='images/logo.webp'">
-        <strong style="font-size:0.88rem;">${escapeHtml(b.name)}</strong>
+      <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+        <img src="${b.imageLink || 'images/logo.webp'}" style="height:28px; max-width:50px; object-fit:contain; flex-shrink:0;" onerror="this.src='images/logo.webp'">
+        <strong style="font-size:0.88rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(b.name)}</strong>
       </div>
-      <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px;" onclick="deleteBrand('${b.id}')">✕</button>
+      <div style="display:flex; gap:4px;">
+        <button class="pill-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="editBrand('${b.id}')">✏️</button>
+        <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px; font-size:0.75rem;" onclick="deleteBrand('${b.id}')">🗑️</button>
+      </div>
     </div>
   `).join('');
 }
@@ -294,6 +309,38 @@ async function handleAddBrand(e) {
   }
 }
 
+window.editBrand = function(id) {
+  const brand = adminBrands.find(b => b.id === id);
+  if (!brand) return;
+
+  document.getElementById('editBrandId').value = brand.id;
+  document.getElementById('editBrandNameInput').value = brand.name;
+  document.getElementById('editBrandImgInput').value = brand.imageLink || '';
+
+  document.getElementById('editBrandModalBackdrop').classList.add('active');
+};
+
+window.closeEditBrandModal = function() {
+  document.getElementById('editBrandModalBackdrop').classList.remove('active');
+};
+
+async function handleSaveBrandEdit(e) {
+  e.preventDefault();
+  const id = document.getElementById('editBrandId').value;
+  const name = document.getElementById('editBrandNameInput').value.trim();
+  const imageLink = document.getElementById('editBrandImgInput').value.trim() || 'images/logo.webp';
+
+  if (!id || !name) return;
+  try {
+    await DbService.updateBrand(id, { name, imageLink });
+    closeEditBrandModal();
+    await fetchAdminBrands();
+    alert(`✅ Brand updated successfully!`);
+  } catch (err) {
+    alert(`Failed to update brand: ${err.message}`);
+  }
+}
+
 window.deleteBrand = async function(id) {
   if (!confirm('Delete this brand?')) return;
   try {
@@ -304,7 +351,7 @@ window.deleteBrand = async function(id) {
   }
 };
 
-// 3. CATEGORIES MANAGEMENT
+// 3. CATEGORIES MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
 async function fetchAdminCategories() {
   adminCategories = await DbService.getCategories();
   renderCategoriesGrid();
@@ -317,11 +364,14 @@ function renderCategoriesGrid() {
 
   grid.innerHTML = adminCategories.map(c => `
     <div style="background:#ffffff; border:1px solid var(--border-color); padding:12px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" style="width:32px; height:32px; object-fit:cover; border-radius:4px;" onerror="this.src='images/cctv-wholesale.webp'">
-        <strong style="font-size:0.88rem;">${escapeHtml(c.name)}</strong>
+      <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+        <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" style="width:32px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0;" onerror="this.src='images/cctv-wholesale.webp'">
+        <strong style="font-size:0.88rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(c.name)}</strong>
       </div>
-      <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px;" onclick="deleteCategory('${c.id}')">✕</button>
+      <div style="display:flex; gap:4px;">
+        <button class="pill-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="editCategory('${c.id}')">✏️</button>
+        <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px; font-size:0.75rem;" onclick="deleteCategory('${c.id}')">🗑️</button>
+      </div>
     </div>
   `).join('');
 }
@@ -339,6 +389,38 @@ async function handleAddCategory(e) {
     alert(`✅ Category "${name}" added successfully!`);
   } catch (err) {
     alert(`Category error: ${err.message}`);
+  }
+}
+
+window.editCategory = function(id) {
+  const cat = adminCategories.find(c => c.id === id);
+  if (!cat) return;
+
+  document.getElementById('editCategoryId').value = cat.id;
+  document.getElementById('editCategoryNameInput').value = cat.name;
+  document.getElementById('editCategoryImgInput').value = cat.imageLink || '';
+
+  document.getElementById('editCategoryModalBackdrop').classList.add('active');
+};
+
+window.closeEditCategoryModal = function() {
+  document.getElementById('editCategoryModalBackdrop').classList.remove('active');
+};
+
+async function handleSaveCategoryEdit(e) {
+  e.preventDefault();
+  const id = document.getElementById('editCategoryId').value;
+  const name = document.getElementById('editCategoryNameInput').value.trim();
+  const imageLink = document.getElementById('editCategoryImgInput').value.trim() || 'images/cctv-wholesale.webp';
+
+  if (!id || !name) return;
+  try {
+    await DbService.updateCategory(id, { name, imageLink });
+    closeEditCategoryModal();
+    await fetchAdminCategories();
+    alert(`✅ Category updated successfully!`);
+  } catch (err) {
+    alert(`Failed to update category: ${err.message}`);
   }
 }
 
@@ -481,14 +563,19 @@ window.deleteProduct = async function(id) {
   }
 };
 
-// 5. SETTINGS MANAGEMENT
+// 5. SETTINGS MANAGEMENT & PERSISTENCE
 async function fetchAdminSettings() {
   try {
     adminSettings = await DbService.getSettings();
     document.getElementById('cfgDeliveryCharge').value = adminSettings.deliveryCharge || 150;
     document.getElementById('cfgFreeShippingMin').value = adminSettings.freeShippingMinOrder || 3000;
     document.getElementById('cfgCodAdvanceAmount').value = adminSettings.codAdvanceAmount || 1000;
-    document.getElementById('googleSheetUrlInput').value = adminSettings.googleSheetUrl || '';
+
+    const urlInput = document.getElementById('googleSheetUrlInput');
+    if (urlInput && adminSettings.googleSheetUrl) {
+      urlInput.value = adminSettings.googleSheetUrl;
+    }
+
     document.getElementById('cfgRzpKeyId').value = adminSettings.razorpay?.keyId || '';
     document.getElementById('cfgRzpKeySecret').value = adminSettings.razorpay?.keySecret || '';
     document.getElementById('cfgSrEmail').value = adminSettings.shiprocket?.email || '';
@@ -588,6 +675,9 @@ function setupEventListeners() {
   const btnSync = document.getElementById('btnSyncGoogleSheet');
   if (btnSync) btnSync.addEventListener('click', triggerGoogleSheetSync);
 
+  const btnSaveUrl = document.getElementById('btnSaveSheetLink');
+  if (btnSaveUrl) btnSaveUrl.addEventListener('click', saveGoogleSheetUrlOnly);
+
   const btnUploadCsv = document.getElementById('btnUploadCsv');
   if (btnUploadCsv) btnUploadCsv.addEventListener('click', uploadRawCsv);
 
@@ -597,8 +687,14 @@ function setupEventListeners() {
   const brandForm = document.getElementById('brandForm');
   if (brandForm) brandForm.addEventListener('submit', handleAddBrand);
 
+  const editBrandForm = document.getElementById('editBrandForm');
+  if (editBrandForm) editBrandForm.addEventListener('submit', handleSaveBrandEdit);
+
   const categoryForm = document.getElementById('categoryForm');
   if (categoryForm) categoryForm.addEventListener('submit', handleAddCategory);
+
+  const editCategoryForm = document.getElementById('editCategoryForm');
+  if (editCategoryForm) editCategoryForm.addEventListener('submit', handleSaveCategoryEdit);
 
   const settingsForm = document.getElementById('settingsForm');
   if (settingsForm) settingsForm.addEventListener('submit', saveStoreSettings);

@@ -53,9 +53,9 @@
           </button>
         </div>
 
-        <button class="nav-btn" id="openTrackModalBtn">
-          📍 <span>Track Order</span>
-        </button>
+        <a href="account.html" class="nav-btn">
+          👤 <span>My Account</span>
+        </a>
 
         <button class="nav-btn cart-btn" id="openCartBtn">
           🛒 <span>Cart</span>
@@ -76,7 +76,7 @@
       <a href="javascript:selectCategory('PoE Switches')">🔌 PoE Switches</a>
       <a href="javascript:filterByComboOnly()">🔥 Combo Packs</a>
       <a href="javascript:selectCategory('Accessories')">🛠️ Accessories</a>
-      <a href="javascript:openTrackModal()" style="margin-left: auto; background: var(--accent-orange); color: #fff;">📍 Track Order Status</a>
+      <a href="account.html" style="margin-left: auto; background: var(--accent-orange); color: #fff;">📍 My Account & Orders</a>
     </div>
   </div>
 
@@ -171,32 +171,6 @@
     </div>
   </main>
 
-  <!-- ORDER TRACKING MODAL -->
-  <div class="modal-backdrop" id="trackModalBackdrop">
-    <div class="modal-content" style="max-width: 650px;">
-      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" id="closeTrackModalBtn">✕</button>
-      <h2 class="modal-title">📍 Order Tracking & History</h2>
-
-      <div class="form-group">
-        <label>Track by Order ID (e.g. AK-123456) or Mobile Number</label>
-        <div style="display: flex; gap: 8px;">
-          <input type="text" id="trackInput" placeholder="Enter Order ID (e.g. AK-984210) or Phone" style="flex: 1;">
-          <button class="hero-btn" id="btnTrackSearch" style="padding: 10px 20px;">Search</button>
-        </div>
-      </div>
-
-      <div id="userOrdersHistoryContainer" style="margin-top: 20px;"></div>
-    </div>
-  </div>
-
-  <!-- MY ACCOUNT / PROFILE MODAL -->
-  <div class="modal-backdrop" id="accountModalBackdrop">
-    <div class="modal-content" style="max-width: 520px;">
-      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" id="closeAccountModalBtn">✕</button>
-      <div id="accountModalBody"></div>
-    </div>
-  </div>
-
   <!-- CART DRAWER -->
   <div class="cart-drawer-backdrop" id="cartBackdrop"></div>
   <aside class="cart-drawer" id="cartDrawer">
@@ -244,6 +218,15 @@
       <h2 class="modal-title">📦 Complete Your Order</h2>
 
       <form id="checkoutForm">
+
+        <!-- SAVED ADDRESSES DROPDOWN (AUTOFILLS WHEN SELECTED) -->
+        <div class="form-group" id="savedAddressGroup" style="display: none; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px; border-radius: var(--radius-sm);">
+          <label style="color: var(--accent-cyan);">📍 Select From Your Saved Addresses</label>
+          <select id="savedAddressSelect">
+            <option value="">-- Choose a saved delivery address --</option>
+          </select>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label>Full Name *</label>
@@ -274,6 +257,13 @@
             <label>City & State *</label>
             <input type="text" id="custCityState" required placeholder="Chennai, Tamil Nadu">
           </div>
+        </div>
+
+        <div style="margin: 8px 0 14px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: var(--text-dark);">
+            <input type="checkbox" id="chkSaveAddress" checked>
+            <span>Save this delivery address to My Account for future orders</span>
+          </label>
         </div>
 
         <h3 style="font-size: 0.95rem; font-weight: 800; margin: 16px 0 10px; color: var(--text-dark);">Choose Payment Method</h3>
@@ -317,15 +307,15 @@
       <span class="mobile-nav-icon">🏷️</span>
       <span>Brands</span>
     </a>
-    <a href="javascript:openTrackModal()" class="mobile-nav-item">
+    <a href="account.html" class="mobile-nav-item">
       <span class="mobile-nav-icon">📍</span>
-      <span>Track</span>
+      <span>Orders</span>
     </a>
     <a href="javascript:openCartDrawer()" class="mobile-nav-item">
       <span class="mobile-nav-icon">🛒</span>
       <span>Cart</span>
     </a>
-    <a href="javascript:openAccountModal()" class="mobile-nav-item">
+    <a href="account.html" class="mobile-nav-item">
       <span class="mobile-nav-icon">👤</span>
       <span>Account</span>
     </a>
