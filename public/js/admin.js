@@ -803,6 +803,52 @@ window.updateOrderStatus = async function(orderId, newStatus) {
   }
 };
 
+async function generateDynamicSitemap() {
+  const statusEl = document.getElementById('syncLogStatus');
+  statusEl.innerHTML = `<span style="color: var(--accent-cyan);">📡 Generating dynamic XML sitemap from Firebase products & brands...</span>`;
+
+  try {
+    const products = await DbService.getProducts();
+    const brands = await DbService.getBrands();
+    const today = new Date().toISOString().split('T')[0];
+    const baseUrl = 'https://shop.akinfotechcctv.in';
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // Static pages
+    xml += `  <url><loc>${baseUrl}/index.html</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
+    xml += `  <url><loc>${baseUrl}/account.html</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+
+    // Dynamic brand pages
+    brands.forEach(b => {
+      xml += `  <url><loc>${baseUrl}/brand.html?name=${encodeURIComponent(b.name)}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>\n`;
+    });
+
+    // Dynamic product pages
+    products.forEach(p => {
+      xml += `  <url><loc>${baseUrl}/product.html?id=${encodeURIComponent(p.id)}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>\n`;
+    });
+
+    xml += `</urlset>`;
+
+    // Download XML Blob
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sitemap.xml';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    statusEl.innerHTML = `<span style="color: var(--accent-green);">✅ Successfully generated dynamic sitemap.xml with ${brands.length} brand pages & ${products.length} product pages!</span>`;
+  } catch (err) {
+    statusEl.innerHTML = `<span style="color: #ef4444;">✕ Sitemap generation failed: ${err.message}</span>`;
+  }
+}
+
 function setupEventListeners() {
   const btnSync = document.getElementById('btnSyncGoogleSheet');
   if (btnSync) btnSync.addEventListener('click', triggerGoogleSheetSync);
@@ -812,6 +858,9 @@ function setupEventListeners() {
 
   const btnUploadCsv = document.getElementById('btnUploadCsv');
   if (btnUploadCsv) btnUploadCsv.addEventListener('click', uploadRawCsv);
+
+  const btnSitemap = document.getElementById('btnGenerateSitemap');
+  if (btnSitemap) btnSitemap.addEventListener('click', generateDynamicSitemap);
 
   const heroBannerForm = document.getElementById('heroBannerForm');
   if (heroBannerForm) heroBannerForm.addEventListener('submit', handleAddHeroBanner);

@@ -477,62 +477,70 @@ button {
   display: none;
 }
 
-/* BRAND & CATEGORY SHOWCASE SECTIONS */
+/* ELEGANT & BEAUTIFUL SECTION HEADERS (SHOP BY BRANDS & CATEGORIES) */
 .brand-showcase-section, .filter-section {
   width: 100%;
-  padding: 16px 12px 0;
+  padding: 24px 12px 0;
 }
 
 .section-title-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
-  gap: 8px;
-  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
-  color: #0f172a;
-  padding: 12px 18px;
-  border-radius: 14px;
-  border: 1px solid #93c5fd;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.1);
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+  position: relative;
+}
+
+.section-title-row::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+  border-radius: 2px;
+}
+
+.section-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section-tagline {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .section-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 900;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  letter-spacing: -0.3px;
+  color: var(--text-dark);
+  letter-spacing: -0.4px;
+  margin: 0;
+  line-height: 1.2;
 }
 
 @media (min-width: 768px) {
   .section-title {
-    font-size: 1.55rem;
+    font-size: 1.7rem;
   }
 }
 
-.title-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #0284c7;
-  border: 1px solid #93c5fd;
-  font-size: 1.05rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.gradient-text {
-  color: #0284c7;
-  font-weight: 900;
-  background: none;
-  -webkit-text-fill-color: initial;
+.accent-highlight {
+  color: var(--accent-cyan);
+  position: relative;
 }
 
 .brand-logos-row {
