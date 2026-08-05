@@ -341,8 +341,8 @@ function renderCart() {
     `).join('');
   }
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
-  let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
+  const freeMin = storeSettings.freeShippingMinOrder || 3000;
+  let deliveryFee = (subtotal >= freeMin || subtotal === 0) ? 0 : (storeSettings.deliveryCharge || 150);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -356,7 +356,18 @@ function renderCart() {
   const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
 
   document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-  document.getElementById('cartDeliveryFee').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+  
+  const deliveryEl = document.getElementById('cartDeliveryFee') || document.getElementById('cartDelivery');
+  if (deliveryEl) {
+    if (subtotal === 0) {
+      deliveryEl.innerHTML = `₹0`;
+    } else if (deliveryFee === 0) {
+      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+    } else {
+      const needed = freeMin - subtotal;
+      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+    }
+  }
 
   const discountRow = document.getElementById('discountRow');
   if (discountAmount > 0) {

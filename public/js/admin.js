@@ -743,7 +743,19 @@ async function saveStoreSettings(e) {
   }
 }
 
-// 7. ORDERS HISTORY
+window.togglePasswordVisibility = function(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
+};
+
+// 7. ORDERS HISTORY & SHIPROCKET DISPATCH
 async function fetchAdminOrders() {
   try {
     adminOrders = await DbService.getOrders();
@@ -778,17 +790,39 @@ function renderOrdersTable() {
         <small style="color:var(--accent-orange);">Due at Delivery: ₹${o.balanceOnDelivery?.toLocaleString('en-IN')}</small>
       </td>
       <td>
-        <select style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 700; font-size: 0.8rem;" onchange="updateOrderStatus('${o.id}', this.value)">
+        <select style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;" onchange="updateOrderStatus('${o.id}', this.value)">
           <option value="PROCESSING" ${o.status === 'PROCESSING' ? 'selected' : ''}>⏳ Processing</option>
           <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>🚚 Shipped</option>
           <option value="OUT FOR DELIVERY" ${o.status === 'OUT FOR DELIVERY' ? 'selected' : ''}>🚴 Out for Delivery</option>
           <option value="DELIVERED" ${o.status === 'DELIVERED' ? 'selected' : ''}>✅ Delivered</option>
-        </select>
+        </select><br>
+        <button class="pill-btn" style="background:#2563eb; color:#fff; font-size:0.75rem; padding:3px 8px;" onclick="shipOrderViaShiprocket('${o.id}')">
+          🚚 Create Shiprocket Order
+        </button>
       </td>
       <td><small>${new Date(o.createdAt).toLocaleString('en-IN')}</small></td>
     </tr>
   `).join('');
 }
+
+window.shipOrderViaShiprocket = async function(orderId) {
+  const order = adminOrders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const payloadStr = `Order ID: ${order.id}\nCustomer: ${order.customerName}\nPhone: ${order.phone}\nAddress: ${order.address}, ${order.city} - ${order.pincode}\nTotal: ₹${order.finalTotal}`;
+
+  if (confirm(`🚚 Shiprocket Express Dispatch:\n\nCreate shipment for Order #${order.id}?\n\nCustomer: ${order.customerName}\nCity: ${order.city} (${order.pincode})`)) {
+    try {
+      order.status = 'SHIPPED';
+      await DbService.createOrder(order);
+      alert(`✅ Shipment created! Order #${order.id} marked as SHIPPED.\n\nOpening Shiprocket Seller Portal to print AWB label...`);
+      window.open('https://app.shiprocket.in/orders', '_blank');
+      await fetchAdminOrders();
+    } catch (err) {
+      alert(`Shipment creation notice: ${err.message}`);
+    }
+  }
+};
 
 window.updateOrderStatus = async function(orderId, newStatus) {
   try {

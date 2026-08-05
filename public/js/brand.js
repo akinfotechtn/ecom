@@ -225,7 +225,22 @@ function renderCart() {
     discount = appliedCoupon.type === 'PERCENT' ? (subtotal * appliedCoupon.value / 100) : appliedCoupon.value;
   }
 
-  const grandTotal = Math.max(0, subtotal - discount + 150);
+  const freeMin = 3000;
+  let deliveryFee = (subtotal >= freeMin || subtotal === 0) ? 0 : 150;
+  const deliveryEl = document.getElementById('cartDelivery');
+
+  if (deliveryEl) {
+    if (subtotal === 0) {
+      deliveryEl.innerHTML = `₹0`;
+    } else if (deliveryFee === 0) {
+      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+    } else {
+      const needed = freeMin - subtotal;
+      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+    }
+  }
+
+  const grandTotal = Math.max(0, subtotal - discount + deliveryFee);
 
   if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
   if (grandTotalEl) grandTotalEl.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
