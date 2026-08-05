@@ -96,14 +96,14 @@ function renderBrandLogosStrip() {
   if (!container) return;
 
   container.innerHTML = `
-    <div class="brand-logo-card ${activeBrand === '' ? 'active' : ''}" onclick="selectBrand('')" title="All Brands">
+    <a href="brand.html?name=All%20Brands" class="brand-logo-card ${activeBrand === '' ? 'active' : ''}" style="text-decoration:none;" title="All Brands">
       <span style="font-weight: 800; font-size: 0.82rem; color: var(--accent-cyan);">ALL BRANDS</span>
-    </div>
+    </a>
   ` + storeBrands.map(b => `
-    <div class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" onclick="selectBrand('${escapeHtml(b.name)}')" title="${escapeHtml(b.name)}">
+    <a href="brand.html?name=${encodeURIComponent(b.name)}" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
       <img src="${b.imageLink || 'images/logo.webp'}" alt="${escapeHtml(b.name)}" onerror="this.src='images/logo.webp'">
       <span>${escapeHtml(b.name)}</span>
-    </div>
+    </a>
   `).join('');
 }
 
