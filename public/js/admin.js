@@ -1227,8 +1227,37 @@ window.toggleCategoryCsvPasteBox = function() {
   }
 };
 
+function convertGoogleSheetUrlToCsv(url) {
+  if (!url) return '';
+  let cleanUrl = url.trim();
+
+  if (cleanUrl.includes('output=csv') || cleanUrl.includes('format=csv')) {
+    return cleanUrl;
+  }
+
+  const match = cleanUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+  if (match && match[1]) {
+    const sheetId = match[1];
+    let gid = '0';
+    const gidMatch = cleanUrl.match(/[#&?]gid=([0-9]+)/);
+    if (gidMatch && gidMatch[1]) {
+      gid = gidMatch[1];
+    }
+    return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+  }
+
+  return cleanUrl;
+}
+
 function parseCsvTextToCategories(csvText) {
-  const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+  if (!csvText) return [];
+  const trimmed = csvText.trim();
+
+  if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html') || trimmed.includes('<script')) {
+    throw new Error('The Google Sheet URL returned an HTML web page instead of CSV data. Please make sure your Google Sheet link is set to "Anyone with the link can view" or use Direct CSV Paste!');
+  }
+
+  const lines = trimmed.split(/\r?\n/).map(l => l.trim()).filter(l => l);
   if (lines.length < 2) return [];
 
   const parseCsvRow = (rowText) => {
@@ -1259,14 +1288,21 @@ function parseCsvTextToCategories(csvText) {
   const categories = [];
 
   dataRows.forEach((row, idx) => {
+    if (row.startsWith('/*') || row.startsWith('*') || row.startsWith('//') || row.startsWith('function') || row.startsWith('<') || row.includes('SPDX-License') || row.includes('Copyright')) {
+      return;
+    }
+
     const cols = parseCsvRow(row);
     if (!cols || cols.length < 1 || !cols[0]) return;
 
+    const name = cols[0].trim();
+    if (!name || name.length > 80 || name.startsWith('/*') || name.startsWith('//') || name.startsWith('<') || name.includes('function(')) return;
+
     categories.push({
       id: `cat-import-${Date.now()}-${idx}`,
-      name: cols[0],
+      name: name,
       imageLink: cols[1] || 'images/cctv-wholesale.webp',
-      deliveryCharge: cols[2] ? parseFloat(cols[2]) : 150
+      deliveryCharge: (cols[2] && !isNaN(parseFloat(cols[2]))) ? parseFloat(cols[2]) : 150
     });
   });
 
@@ -1280,15 +1316,15 @@ window.importCategoryCsvText = async function() {
     return;
   }
 
-  const parsedCats = parseCsvTextToCategories(text);
-  if (!parsedCats.length) {
-    alert('No valid category rows found in CSV text.');
-    return;
-  }
-
-  if (!confirm(`Import ${parsedCats.length} categories into your database?`)) return;
-
   try {
+    const parsedCats = parseCsvTextToCategories(text);
+    if (!parsedCats.length) {
+      alert('No valid category rows found in CSV text.');
+      return;
+    }
+
+    if (!confirm(`Import ${parsedCats.length} categories into your database?`)) return;
+
     for (const cat of parsedCats) {
       await DbService.addCategory({
         name: cat.name,
@@ -1305,16 +1341,18 @@ window.importCategoryCsvText = async function() {
 };
 
 window.syncCategoriesFromGoogleSheet = async function() {
-  let url = document.getElementById('catGoogleSheetUrlInput')?.value.trim() || adminSettings.catGoogleSheetUrl || '';
+  let rawUrl = document.getElementById('catGoogleSheetUrlInput')?.value.trim() || adminSettings.catGoogleSheetUrl || '';
 
-  if (!url) {
-    const userInput = prompt('Enter your published Google Sheet CSV URL for Categories:');
+  if (!rawUrl) {
+    const userInput = prompt('Enter your Google Sheet URL for Categories:');
     if (!userInput) return;
-    url = userInput.trim();
+    rawUrl = userInput.trim();
   }
 
+  const csvUrl = convertGoogleSheetUrlToCsv(rawUrl);
+
   try {
-    const res = await fetch(url);
+    const res = await fetch(csvUrl);
     const text = await res.text();
     const parsedCats = parseCsvTextToCategories(text);
 
@@ -1333,11 +1371,35 @@ window.syncCategoriesFromGoogleSheet = async function() {
       });
     }
 
-    await DbService.updateSettings({ catGoogleSheetUrl: url });
+    await DbService.updateSettings({ catGoogleSheetUrl: rawUrl });
     alert(`✅ Successfully synced ${parsedCats.length} categories from Google Sheet!`);
     await fetchAdminCategories();
   } catch (err) {
     alert(`Category sync error: ${err.message}`);
+  }
+};
+
+window.clearInvalidCategories = async function() {
+  if (!confirm('This will delete all corrupted/invalid category entries (such as code snippets or HTML tags). Proceed?')) return;
+  try {
+    const invalidCats = adminCategories.filter(c => {
+      const name = c.name || '';
+      return name.startsWith('/*') || name.startsWith('*') || name.startsWith('//') || name.startsWith('<') || name.includes('function(') || name.includes('Copyright') || name.includes('SPDX') || name.includes('var b=') || name.includes('g&&');
+    });
+
+    if (!invalidCats.length) {
+      alert('No invalid category entries found to clean.');
+      return;
+    }
+
+    for (const cat of invalidCats) {
+      await DbService.deleteCategory(cat.id);
+    }
+
+    alert(`✅ Cleaned ${invalidCats.length} corrupted category entries!`);
+    await fetchAdminCategories();
+  } catch (err) {
+    alert(`Cleanup error: ${err.message}`);
   }
 };
 
@@ -1347,7 +1409,7 @@ window.exportCategoriesToCsv = function() {
     return;
   }
 
-  const headers = ['Category Name', 'Image Link', 'Delivery Charge'];
+  const headers = ['Category Name', 'Image URL', 'Delivery Charge'];
   const rows = adminCategories.map(c => [
     `"${(c.name || '').replace(/"/g, '""')}"`,
     `"${(c.imageLink || '').replace(/"/g, '""')}"`,
