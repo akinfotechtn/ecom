@@ -388,6 +388,41 @@
         <button type="submit" class="hero-btn" style="padding: 8px 20px;">+ Add Category</button>
       </form>
 
+      <!-- CATEGORY GOOGLE SHEET / CSV IMPORT TOOLBAR -->
+      <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
+        <h3 style="font-size: 1.05rem; font-weight: 800; color: #0369a1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+          📊 Import & Sync Categories FROM Google Sheet / CSV
+        </h3>
+        
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label style="font-size: 0.82rem; font-weight: 700; color: #0284c7;">Google Sheet Published CSV URL for Categories (Optional)</label>
+          <input type="url" id="catGoogleSheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="hero-btn" style="padding: 8px 16px; font-size: 0.85rem;" onclick="syncCategoriesFromGoogleSheet()">
+            🔄 Sync Categories FROM Google Sheet
+          </button>
+          <button type="button" class="nav-btn" style="padding: 8px 16px; font-size: 0.85rem;" onclick="toggleCategoryCsvPasteBox()">
+            📝 Direct CSV Paste
+          </button>
+          <button type="button" class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 8px 16px; font-size: 0.85rem;" onclick="exportCategoriesToCsv()">
+            📊 Export Categories CSV
+          </button>
+        </div>
+
+        <!-- COLLAPSIBLE CSV PASTE BOX FOR CATEGORIES -->
+        <div id="categoryCsvPasteContainer" style="display: none; margin-top: 14px; background: #ffffff; padding: 14px; border-radius: 8px; border: 1px solid #cbd5e1;">
+          <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 6px;">
+            Paste Category CSV Data (Headers: Category Name, Image Link, Delivery Charge)
+          </label>
+          <textarea id="categoryCsvPasteInput" rows="5" placeholder="Category Name,Image Link,Delivery Charge&#10;CCTV Camera,images/cctv-wholesale.webp,150&#10;Printers,images/printers-wholesale.webp,200" style="width: 100%; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;"></textarea>
+          <button type="button" class="hero-btn" style="margin-top: 10px; padding: 8px 20px; font-size: 0.85rem;" onclick="importCategoryCsvText()">
+            📥 Import Categories from CSV Text
+          </button>
+        </div>
+      </div>
+
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;" id="adminCategoriesGrid"></div>
     </div>
 

@@ -1218,3 +1218,149 @@ window.exportProductsToCsv = function() {
   link.click();
   document.body.removeChild(link);
 };
+
+// CATEGORY GOOGLE SHEET & CSV IMPORT LOGIC
+window.toggleCategoryCsvPasteBox = function() {
+  const container = document.getElementById('categoryCsvPasteContainer');
+  if (container) {
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+  }
+};
+
+function parseCsvTextToCategories(csvText) {
+  const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+  if (lines.length < 2) return [];
+
+  const parseCsvRow = (rowText) => {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < rowText.length; i++) {
+      const char = rowText[i];
+      if (char === '"') {
+        if (inQuotes && rowText[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        result.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim());
+    return result;
+  };
+
+  const dataRows = lines.slice(1);
+  const categories = [];
+
+  dataRows.forEach((row, idx) => {
+    const cols = parseCsvRow(row);
+    if (!cols || cols.length < 1 || !cols[0]) return;
+
+    categories.push({
+      id: `cat-import-${Date.now()}-${idx}`,
+      name: cols[0],
+      imageLink: cols[1] || 'images/cctv-wholesale.webp',
+      deliveryCharge: cols[2] ? parseFloat(cols[2]) : 150
+    });
+  });
+
+  return categories;
+}
+
+window.importCategoryCsvText = async function() {
+  const text = document.getElementById('categoryCsvPasteInput')?.value.trim();
+  if (!text) {
+    alert('Please paste Category CSV text first!');
+    return;
+  }
+
+  const parsedCats = parseCsvTextToCategories(text);
+  if (!parsedCats.length) {
+    alert('No valid category rows found in CSV text.');
+    return;
+  }
+
+  if (!confirm(`Import ${parsedCats.length} categories into your database?`)) return;
+
+  try {
+    for (const cat of parsedCats) {
+      await DbService.addCategory({
+        name: cat.name,
+        imageLink: cat.imageLink,
+        deliveryCharge: cat.deliveryCharge
+      });
+    }
+
+    alert(`✅ Successfully imported ${parsedCats.length} categories!`);
+    await fetchAdminCategories();
+  } catch (err) {
+    alert(`Category import error: ${err.message}`);
+  }
+};
+
+window.syncCategoriesFromGoogleSheet = async function() {
+  let url = document.getElementById('catGoogleSheetUrlInput')?.value.trim() || adminSettings.catGoogleSheetUrl || '';
+
+  if (!url) {
+    const userInput = prompt('Enter your published Google Sheet CSV URL for Categories:');
+    if (!userInput) return;
+    url = userInput.trim();
+  }
+
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const parsedCats = parseCsvTextToCategories(text);
+
+    if (!parsedCats.length) {
+      alert('No valid category rows found in Google Sheet CSV.');
+      return;
+    }
+
+    if (!confirm(`Found ${parsedCats.length} categories. Sync them into your store database?`)) return;
+
+    for (const cat of parsedCats) {
+      await DbService.addCategory({
+        name: cat.name,
+        imageLink: cat.imageLink,
+        deliveryCharge: cat.deliveryCharge
+      });
+    }
+
+    await DbService.updateSettings({ catGoogleSheetUrl: url });
+    alert(`✅ Successfully synced ${parsedCats.length} categories from Google Sheet!`);
+    await fetchAdminCategories();
+  } catch (err) {
+    alert(`Category sync error: ${err.message}`);
+  }
+};
+
+window.exportCategoriesToCsv = function() {
+  if (!adminCategories || !adminCategories.length) {
+    alert('No categories available to export.');
+    return;
+  }
+
+  const headers = ['Category Name', 'Image Link', 'Delivery Charge'];
+  const rows = adminCategories.map(c => [
+    `"${(c.name || '').replace(/"/g, '""')}"`,
+    `"${(c.imageLink || '').replace(/"/g, '""')}"`,
+    c.deliveryCharge !== undefined ? c.deliveryCharge : 150
+  ].join(','));
+
+  const csvText = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `ak_infotech_categories_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
