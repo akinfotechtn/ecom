@@ -43,11 +43,11 @@ const DEFAULT_BRANDS = [
 ];
 
 const DEFAULT_CATEGORIES = [
-  { id: "cat-1", name: "CCTV Camera", imageLink: "images/cctv-wholesale.webp" },
-  { id: "cat-2", name: "Printers", imageLink: "images/printers-wholesale.webp" },
-  { id: "cat-3", name: "DVR & NVR", imageLink: "images/storage-wholesale.webp" },
-  { id: "cat-4", name: "Security Systems", imageLink: "images/biometrics-wholesale.webp" },
-  { id: "cat-5", name: "Accessories", imageLink: "images/networking-wholesale.webp" }
+  { id: "cat-1", name: "CCTV Camera", imageLink: "images/cctv-wholesale.webp", deliveryCharge: 150 },
+  { id: "cat-2", name: "Printers", imageLink: "images/printers-wholesale.webp", deliveryCharge: 200 },
+  { id: "cat-3", name: "DVR & NVR", imageLink: "images/storage-wholesale.webp", deliveryCharge: 250 },
+  { id: "cat-4", name: "Security Systems", imageLink: "images/biometrics-wholesale.webp", deliveryCharge: 200 },
+  { id: "cat-5", name: "Accessories", imageLink: "images/networking-wholesale.webp", deliveryCharge: 100 }
 ];
 
 const DEFAULT_SETTINGS = {

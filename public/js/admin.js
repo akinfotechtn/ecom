@@ -494,28 +494,39 @@ function renderCategoriesGrid() {
   const grid = document.getElementById('adminCategoriesGrid');
   if (!grid) return;
 
-  grid.innerHTML = adminCategories.map(c => `
-    <div style="background:#ffffff; border:1px solid var(--border-color); padding:12px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-      <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
-        <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" style="width:32px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0;" onerror="this.src='images/cctv-wholesale.webp'">
-        <strong style="font-size:0.88rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(c.name)}</strong>
+  grid.innerHTML = adminCategories.map(c => {
+    const feeBadge = (c.deliveryCharge !== undefined && c.deliveryCharge !== null && c.deliveryCharge !== '')
+      ? `🚚 ₹${c.deliveryCharge}`
+      : `🚚 Default`;
+
+    return `
+      <div style="background:#ffffff; border:1px solid var(--border-color); padding:12px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+          <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" style="width:36px; height:36px; object-fit:cover; border-radius:6px; flex-shrink:0;" onerror="this.src='images/cctv-wholesale.webp'">
+          <div style="overflow:hidden;">
+            <strong style="font-size:0.88rem; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(c.name)}</strong>
+            <span style="font-size:0.75rem; color:var(--accent-cyan); font-weight:700;">${feeBadge}</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:4px;">
+          <button class="pill-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="editCategory('${c.id}')">✏️</button>
+          <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px; font-size:0.75rem;" onclick="deleteCategory('${c.id}')">🗑️</button>
+        </div>
       </div>
-      <div style="display:flex; gap:4px;">
-        <button class="pill-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="editCategory('${c.id}')">✏️</button>
-        <button class="pill-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.3); padding:2px 8px; font-size:0.75rem;" onclick="deleteCategory('${c.id}')">🗑️</button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 async function handleAddCategory(e) {
   e.preventDefault();
   const name = document.getElementById('newCatName').value.trim();
   const imageLink = document.getElementById('newCatImg').value.trim() || 'images/cctv-wholesale.webp';
+  const devChargeVal = document.getElementById('newCatDeliveryCharge')?.value.trim();
+  const deliveryCharge = (devChargeVal !== '' && devChargeVal !== undefined) ? parseFloat(devChargeVal) : null;
 
   if (!name) return;
   try {
-    await DbService.addCategory({ name, imageLink });
+    await DbService.addCategory({ name, imageLink, deliveryCharge });
     document.getElementById('categoryForm').reset();
     await fetchAdminCategories();
     alert(`✅ Category "${name}" added successfully!`);
@@ -531,6 +542,10 @@ window.editCategory = function(id) {
   document.getElementById('editCategoryId').value = cat.id;
   document.getElementById('editCategoryNameInput').value = cat.name;
   document.getElementById('editCategoryImgInput').value = cat.imageLink || '';
+  const devEl = document.getElementById('editCategoryDeliveryCharge');
+  if (devEl) {
+    devEl.value = (cat.deliveryCharge !== undefined && cat.deliveryCharge !== null) ? cat.deliveryCharge : '';
+  }
 
   document.getElementById('editCategoryModalBackdrop').classList.add('active');
 };
@@ -544,13 +559,15 @@ async function handleSaveCategoryEdit(e) {
   const id = document.getElementById('editCategoryId').value;
   const name = document.getElementById('editCategoryNameInput').value.trim();
   const imageLink = document.getElementById('editCategoryImgInput').value.trim() || 'images/cctv-wholesale.webp';
+  const devChargeVal = document.getElementById('editCategoryDeliveryCharge')?.value.trim();
+  const deliveryCharge = (devChargeVal !== '' && devChargeVal !== undefined) ? parseFloat(devChargeVal) : null;
 
   if (!id || !name) return;
   try {
-    await DbService.updateCategory(id, { name, imageLink });
+    await DbService.updateCategory(id, { name, imageLink, deliveryCharge });
     closeEditCategoryModal();
     await fetchAdminCategories();
-    alert(`✅ Category updated successfully!`);
+    alert(`✅ Category "${name}" updated successfully!`);
   } catch (err) {
     alert(`Failed to update category: ${err.message}`);
   }
