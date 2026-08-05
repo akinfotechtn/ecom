@@ -101,22 +101,22 @@
   </section>
 
   <!-- BRAND SHOWCASE STRIP WITH LOGO & NAME SCROLL -->
-  <section class="brand-showcase-section">
+  <section class="brand-showcase-section" id="brandLogosRow">
     <div class="section-header">
       <h2>Shop By <span class="accent-text">Brands</span></h2>
     </div>
-    <div class="brand-scroll-row brand-logos-row" id="brandLogosRow"></div>
+    <div class="brand-scroll-row" id="brandScrollContainer"></div>
   </section>
 
   <!-- CATEGORY SHOWCASE STRIP WITH THUMBNAIL & NAME SCROLL -->
-  <section class="filter-section">
+  <section class="filter-section" id="categoriesRow">
     <div class="section-header">
       <h2>Shop By <span class="accent-text">Categories</span></h2>
       <button class="pill-btn" id="btnShowCombos" onclick="filterByComboOnly()">
         ✨ Show Combos Only
       </button>
     </div>
-    <div class="category-scroll-row" id="categoryScrollRow"></div>
+    <div class="category-scroll-row" id="categoryScrollContainer"></div>
   </section>
 
   <!-- PRODUCT CATALOG GRID -->
@@ -164,7 +164,7 @@
         <span id="cartGrandTotal">₹0</span>
       </div>
 
-      <button class="btn-checkout" id="btnProceedToCheckout" onclick="openCheckoutModal()">
+      <button class="btn-checkout" id="btnProceedToCheckout">
         Proceed to Checkout →
       </button>
     </div>

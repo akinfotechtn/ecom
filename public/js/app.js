@@ -312,42 +312,37 @@ function saveCart() {
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
-  const cartItemCountEl = document.getElementById('cartItemCount');
   const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   if (cartCountEl) cartCountEl.textContent = totalQty;
-  if (cartItemCountEl) cartItemCountEl.textContent = totalQty;
 
-  const itemsListEl = document.getElementById('cartItemsContainer') || document.getElementById('cartItemsList');
-  if (itemsListEl) {
-    if (!cart.length) {
-      itemsListEl.innerHTML = `
-        <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
-          <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
-          Your cart is empty.<br>Browse items & add to cart.
-        </div>`;
-    } else {
-      itemsListEl.innerHTML = cart.map(item => `
-        <div class="cart-item" style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); align-items: center;">
-          <img src="${item.photoLink}" style="width: 54px; height: 54px; object-fit: cover; border-radius: 6px;" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
-          <div style="flex: 1;">
-            <div style="font-weight: 700; font-size: 0.85rem; color: var(--text-dark); margin-bottom: 4px;">${escapeHtml(item.productName)}</div>
-            <div style="font-weight: 800; font-size: 0.88rem; color: var(--accent-cyan);">₹${item.sellingPrice?.toLocaleString('en-IN')}</div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px;">
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)" style="border:none; background:none; font-weight:800; cursor:pointer; padding: 0 4px;">-</button>
+  const itemsListEl = document.getElementById('cartItemsList');
+  if (!itemsListEl) return;
+
+  if (!cart.length) {
+    itemsListEl.innerHTML = `
+      <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+        Your cart is empty.<br>Browse items & add to cart.
+      </div>`;
+  } else {
+    itemsListEl.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${escapeHtml(item.productName)}</div>
+          <div class="cart-item-price">₹${item.sellingPrice.toLocaleString('en-IN')}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
             <span style="font-weight: 700; font-size: 0.85rem;">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)" style="border:none; background:none; font-weight:800; cursor:pointer; padding: 0 4px;">+</button>
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
           </div>
         </div>
-      `).join('');
-    }
+      </div>
+    `).join('');
   }
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
-  const minFree = storeSettings?.freeShippingMinOrder || 3000;
-  const deliveryCharge = storeSettings?.deliveryCharge || 150;
-  let deliveryFee = subtotal >= minFree || subtotal === 0 ? 0 : deliveryCharge;
+  let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -360,25 +355,18 @@ function renderCart() {
 
   const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
 
-  const subtotalEl = document.getElementById('cartSubtotal');
-  const deliveryFeeEl = document.getElementById('cartDeliveryCharge') || document.getElementById('cartDeliveryFee');
+  document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  document.getElementById('cartDeliveryFee').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+
   const discountRow = document.getElementById('discountRow');
-  const finalTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
-
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-  if (deliveryFeeEl) deliveryFeeEl.textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee.toLocaleString('en-IN')}`;
-
-  if (discountRow) {
-    if (discountAmount > 0) {
-      discountRow.style.display = 'flex';
-      const discEl = document.getElementById('cartDiscount');
-      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
-    } else {
-      discountRow.style.display = 'none';
-    }
+  if (discountAmount > 0) {
+    discountRow.style.display = 'flex';
+    document.getElementById('cartDiscount').textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+  } else {
+    discountRow.style.display = 'none';
   }
 
-  if (finalTotalEl) finalTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+  document.getElementById('cartFinalTotal').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
 // CHECKOUT & PAYMENT SELECTION
@@ -418,12 +406,11 @@ async function handleCheckoutSubmit(e) {
 
   const custName = document.getElementById('custName').value.trim();
   const custPhone = document.getElementById('custPhone').value.trim();
-  const custEmail = document.getElementById('custEmail')?.value.trim() || '';
+  const custEmail = document.getElementById('custEmail').value.trim();
   const custAddress = document.getElementById('custAddress').value.trim();
   const custPincode = document.getElementById('custPincode').value.trim();
   const custCityState = document.getElementById('custCityState').value.trim();
-  const chkSave = document.getElementById('chkSaveAddressToAccount') || document.getElementById('chkSaveAddress');
-  const shouldSaveAddress = chkSave ? chkSave.checked : false;
+  const shouldSaveAddress = document.getElementById('chkSaveAddress').checked;
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
   let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
@@ -540,7 +527,7 @@ function setupEventListeners() {
     });
   }
 
-  const comboBtn = document.getElementById('btnShowCombos') || document.getElementById('comboToggleBtn');
+  const comboBtn = document.getElementById('comboToggleBtn');
   if (comboBtn) comboBtn.addEventListener('click', filterByComboOnly);
 
   const openCartBtn = document.getElementById('openCartBtn');
@@ -549,12 +536,16 @@ function setupEventListeners() {
   const closeCartBtn = document.getElementById('closeCartBtn');
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
 
-  const cartBackdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
+  const cartBackdrop = document.getElementById('cartBackdrop');
   if (cartBackdrop) cartBackdrop.addEventListener('click', closeCartDrawer);
 
-  const proceedBtn = document.getElementById('btnProceedToCheckout') || document.getElementById('proceedCheckoutBtn');
+  const proceedBtn = document.getElementById('proceedCheckoutBtn');
   if (proceedBtn) {
     proceedBtn.addEventListener('click', () => {
+      if (!cart.length) {
+        alert('Your cart is empty!');
+        return;
+      }
       openCheckoutModal();
     });
   }
@@ -568,7 +559,7 @@ function setupEventListeners() {
   const applyCouponBtn = document.getElementById('applyCouponBtn');
   if (applyCouponBtn) {
     applyCouponBtn.addEventListener('click', () => {
-      const code = document.getElementById('couponInput')?.value.trim().toUpperCase();
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
       const found = storeSettings.discountCoupons?.find(c => c.code === code);
       if (found) {
         appliedCoupon = found;
@@ -583,27 +574,18 @@ function setupEventListeners() {
 }
 
 window.openCartDrawer = function() {
-  const drawer = document.getElementById('cartDrawer');
-  const backdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
-  if (drawer) drawer.classList.add('active');
-  if (backdrop) backdrop.classList.add('active');
+  document.getElementById('cartDrawer').classList.add('active');
+  document.getElementById('cartBackdrop').classList.add('active');
 };
 
 window.closeCartDrawer = function() {
-  const drawer = document.getElementById('cartDrawer');
-  const backdrop = document.getElementById('cartDrawerBackdrop') || document.getElementById('cartBackdrop');
-  if (drawer) drawer.classList.remove('active');
-  if (backdrop) backdrop.classList.remove('active');
+  document.getElementById('cartDrawer').classList.remove('active');
+  document.getElementById('cartBackdrop').classList.remove('active');
 };
 
-window.openCheckoutModal = async function() {
-  if (!cart.length) {
-    alert('Your cart is currently empty! Please add products before checking out.');
-    return;
-  }
+async function openCheckoutModal() {
   closeCartDrawer();
-  const backdrop = document.getElementById('checkoutBackdrop');
-  if (backdrop) backdrop.classList.add('active');
+  document.getElementById('checkoutBackdrop').classList.add('active');
   selectPaymentMethod('ONLINE');
 
   const savedGroup = document.getElementById('savedAddressGroup');
@@ -617,7 +599,7 @@ window.openCheckoutModal = async function() {
 
     userAddresses = await DbService.getUserAddresses(currentUser.uid);
 
-    if (userAddresses && userAddresses.length && savedGroup && savedSelect) {
+    if (userAddresses && userAddresses.length) {
       savedGroup.style.display = 'block';
       savedSelect.innerHTML = `<option value="">-- Choose a saved delivery address --</option>` +
         userAddresses.map((a, idx) => `<option value="${a.id}">${escapeHtml(a.fullName)} - ${escapeHtml(a.street)}, ${escapeHtml(a.pincode)}</option>`).join('');
@@ -626,28 +608,30 @@ window.openCheckoutModal = async function() {
         const selectedId = this.value;
         const found = userAddresses.find(a => a.id === selectedId);
         if (found) {
-          if (document.getElementById('custName')) document.getElementById('custName').value = found.fullName;
-          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = found.phone;
-          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = found.street;
-          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = found.pincode;
-          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = found.cityState;
+          document.getElementById('custName').value = found.fullName;
+          document.getElementById('custPhone').value = found.phone;
+          document.getElementById('custAddress').value = found.street;
+          document.getElementById('custPincode').value = found.pincode;
+          document.getElementById('custCityState').value = found.cityState;
         }
       };
 
+      // Pre-fill default address
       if (userAddresses[0]) {
         savedSelect.value = userAddresses[0].id;
         savedSelect.dispatchEvent(new Event('change'));
       }
-    } else if (savedGroup) {
+    } else {
       savedGroup.style.display = 'none';
     }
-  } else if (savedGroup) {
+  } else {
     savedGroup.style.display = 'none';
   }
-window.closeCheckoutModal = function() {
-  const backdrop = document.getElementById('checkoutBackdrop');
-  if (backdrop) backdrop.classList.remove('active');
-};
+}
+
+function closeCheckoutModal() {
+  document.getElementById('checkoutBackdrop').classList.remove('active');
+}
 
 // HERO AUTO-SCROLL SLIDER
 async function loadHeroBanners() {
