@@ -172,6 +172,7 @@ const DEFAULT_SETTINGS = {
   storeName: "AK Infotech",
   tagline: "Wholesale & Retail Security Systems, CCTV & IT Solutions",
   deliveryCharge: 150,
+  defaultGstPercent: 18,
   enableFreeShipping: true,
   freeShippingMinOrder: 3000,
   codAdvanceAmount: 1000,

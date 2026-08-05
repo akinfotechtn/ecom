@@ -371,6 +371,7 @@ function renderCart() {
   
   // Category-wise & Product-specific custom delivery charge calculation
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
+  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -381,10 +382,13 @@ function renderCart() {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
 
   const subtotalEl = document.getElementById('cartSubtotal');
   if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+
+  const gstEl = document.getElementById('cartGstAmount');
+  if (gstEl) gstEl.textContent = `+₹${gstAmount.toLocaleString('en-IN')}`;
   
   const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
@@ -415,6 +419,25 @@ function renderCart() {
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 
   renderPromoChips();
+}
+
+function calculateCartGstAmount(cartItems, settings) {
+  if (!cartItems || !cartItems.length) return 0;
+  const defaultGst = settings.defaultGstPercent !== undefined ? settings.defaultGstPercent : 18;
+
+  let totalGst = 0;
+  cartItems.forEach(item => {
+    const q = item.quantity || item.qty || 1;
+    const itemSellingPrice = item.sellingPrice || 0;
+    const itemGstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
+      ? Number(item.gstPercent) 
+      : defaultGst;
+
+    const itemGst = Math.round(((itemSellingPrice * q) * itemGstRate) / 100);
+    totalGst += itemGst;
+  });
+
+  return totalGst;
 }
 
 function renderPromoChips() {
@@ -493,7 +516,8 @@ window.selectPaymentMethod = function(method) {
 
     const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
     let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-    const finalTotal = subtotal + deliveryFee;
+    let gstAmount = calculateCartGstAmount(cart, storeSettings);
+    const finalTotal = subtotal + gstAmount + deliveryFee;
     const advanceFee = storeSettings.codAdvanceAmount || 1000;
     const remaining = Math.max(0, finalTotal - advanceFee);
 
@@ -518,8 +542,9 @@ async function handleCheckoutSubmit(e) {
   const custCityState = document.getElementById('custCityState').value.trim();
   const shouldSaveAddress = (document.getElementById('saveAddressToAccount') || document.getElementById('chkSaveAddress'))?.checked ?? false;
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
-  let deliveryFee = subtotal >= storeSettings.freeShippingMinOrder || subtotal === 0 ? 0 : storeSettings.deliveryCharge;
+  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+  let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
+  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -530,7 +555,7 @@ async function handleCheckoutSubmit(e) {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
   const codAdvanceFee = storeSettings.codAdvanceAmount || 1000;
   const amountToPayNow = selectedPaymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
 

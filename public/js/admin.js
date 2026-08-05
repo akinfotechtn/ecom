@@ -805,6 +805,10 @@ window.editProduct = function(id) {
   if (devEl) {
     devEl.value = (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : '';
   }
+  const gstEl = document.getElementById('prodGstPercent');
+  if (gstEl) {
+    gstEl.value = (p.gstPercent !== undefined && p.gstPercent !== null) ? p.gstPercent : '';
+  }
 
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
@@ -818,6 +822,7 @@ async function saveProductSubmit(e) {
   const id = document.getElementById('editProductId').value;
   const availVal = document.getElementById('prodAvailabilitySelect').value;
   const customDevChargeVal = document.getElementById('prodDeliveryCharge')?.value.trim();
+  const customGstVal = document.getElementById('prodGstPercent')?.value.trim();
 
   const payload = {
     productName: document.getElementById('prodName').value.trim(),
@@ -829,7 +834,8 @@ async function saveProductSubmit(e) {
     productSpec: document.getElementById('prodSpec').value.trim(),
     isCombo: document.getElementById('prodIsCombo').checked,
     inStock: availVal === 'In stock',
-    deliveryCharge: (customDevChargeVal !== '' && customDevChargeVal !== undefined) ? parseFloat(customDevChargeVal) : null
+    deliveryCharge: (customDevChargeVal !== '' && customDevChargeVal !== undefined) ? parseFloat(customDevChargeVal) : null,
+    gstPercent: (customGstVal !== '' && customGstVal !== undefined) ? parseFloat(customGstVal) : null
   };
 
   try {
@@ -880,6 +886,8 @@ async function fetchAdminSettings() {
   try {
     adminSettings = await DbService.getSettings();
     document.getElementById('cfgDeliveryCharge').value = adminSettings.deliveryCharge !== undefined ? adminSettings.deliveryCharge : 150;
+    const gstInput = document.getElementById('cfgDefaultGstPercent');
+    if (gstInput) gstInput.value = adminSettings.defaultGstPercent !== undefined ? adminSettings.defaultGstPercent : 18;
     document.getElementById('cfgFreeShippingMin').value = adminSettings.freeShippingMinOrder || 3000;
     document.getElementById('cfgCodAdvanceAmount').value = adminSettings.codAdvanceAmount || 1000;
 
@@ -913,6 +921,7 @@ async function saveStoreSettings(e) {
   const enableFreeShipping = document.getElementById('cfgEnableFreeShipping')?.checked ?? true;
   const payload = {
     deliveryCharge: parseFloat(document.getElementById('cfgDeliveryCharge').value),
+    defaultGstPercent: parseFloat(document.getElementById('cfgDefaultGstPercent')?.value) || 18,
     enableFreeShipping: enableFreeShipping,
     freeShippingMinOrder: parseFloat(document.getElementById('cfgFreeShippingMin').value) || 3000,
     codAdvanceAmount: parseFloat(document.getElementById('cfgCodAdvanceAmount').value) || 1000,
