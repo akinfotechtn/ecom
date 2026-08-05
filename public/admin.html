@@ -414,9 +414,9 @@
         <!-- COLLAPSIBLE CSV PASTE BOX FOR CATEGORIES -->
         <div id="categoryCsvPasteContainer" style="display: none; margin-top: 14px; background: #ffffff; padding: 14px; border-radius: 8px; border: 1px solid #cbd5e1;">
           <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 6px;">
-            Paste Category CSV Data (Headers: Category Name, Image Link, Delivery Charge)
+            Paste Category CSV Data (Columns: Category Name, Image URL)
           </label>
-          <textarea id="categoryCsvPasteInput" rows="5" placeholder="Category Name,Image Link,Delivery Charge&#10;CCTV Camera,images/cctv-wholesale.webp,150&#10;Printers,images/printers-wholesale.webp,200" style="width: 100%; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;"></textarea>
+          <textarea id="categoryCsvPasteInput" rows="6" placeholder="Category Name,Image URL&#10;ELECTRIC DOOR LOCK,https://realtechvision.in/cat-icons/electric-door-lock.png&#10;POE EXTENDER,https://realtechvision.in/cat-icons/poe-extender.png&#10;NETWORKING,https://realtechvision.in/cat-icons/networking.png" style="width: 100%; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;"></textarea>
           <button type="button" class="hero-btn" style="margin-top: 10px; padding: 8px 20px; font-size: 0.85rem;" onclick="importCategoryCsvText()">
             📥 Import Categories from CSV Text
           </button>
