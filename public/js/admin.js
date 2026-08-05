@@ -1024,54 +1024,6 @@ window.togglePasswordVisibility = function(inputId, btn) {
 };
 
 // 7. ORDERS HISTORY & SHIPROCKET DISPATCH
-async function fetchAdminOrders() {
-  try {
-    adminOrders = await DbService.getOrders();
-    renderOrdersTable();
-  } catch (err) {
-    console.error('Failed to load orders:', err);
-  }
-}
-
-function renderOrdersTable() {
-  const tbody = document.getElementById('adminOrdersTableBody');
-  if (!tbody) return;
-
-  if (!adminOrders.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No orders placed yet.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = adminOrders.map(o => `
-    <tr>
-      <td><strong>${o.id}</strong></td>
-      <td>${escapeHtml(o.customerName)}</td>
-      <td>${escapeHtml(o.phone)}<br><small style="color:var(--text-muted);">${escapeHtml(o.city)}, ${escapeHtml(o.pincode)}</small></td>
-      <td>
-        <span class="status-badge ${o.paymentMethod === 'COD' ? 'status-cod' : 'status-online'}">
-          ${o.paymentMethod === 'COD' ? '💵 COD (Advance Paid)' : '💳 100% Online'}
-        </span>
-      </td>
-      <td>
-        Total: <strong>₹${o.finalTotal?.toLocaleString('en-IN')}</strong><br>
-        <small style="color:var(--accent-cyan);">Paid: ₹${o.advancePaid?.toLocaleString('en-IN')}</small> |
-        <small style="color:var(--accent-orange);">Due at Delivery: ₹${o.balanceOnDelivery?.toLocaleString('en-IN')}</small>
-      </td>
-      <td>
-        <select style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;" onchange="updateOrderStatus('${o.id}', this.value)">
-          <option value="PROCESSING" ${o.status === 'PROCESSING' ? 'selected' : ''}>⏳ Processing</option>
-          <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>🚚 Shipped</option>
-          <option value="OUT FOR DELIVERY" ${o.status === 'OUT FOR DELIVERY' ? 'selected' : ''}>🚴 Out for Delivery</option>
-          <option value="DELIVERED" ${o.status === 'DELIVERED' ? 'selected' : ''}>✅ Delivered</option>
-        </select><br>
-        <button class="pill-btn" style="background:#2563eb; color:#fff; font-size:0.75rem; padding:3px 8px;" onclick="shipOrderViaShiprocket('${o.id}')">
-          🚚 Create Shiprocket Order
-        </button>
-      </td>
-      <td><small>${new Date(o.createdAt).toLocaleString('en-IN')}</small></td>
-    </tr>
-  `).join('');
-}
 
 window.shipOrderViaShiprocket = async function(orderId) {
   const order = adminOrders.find(o => o.id === orderId);

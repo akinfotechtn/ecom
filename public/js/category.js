@@ -13,7 +13,9 @@ const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
 
 function normalizeStr(str) {
-  return (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  let s = (str || '').toLowerCase().trim();
+  s = s.replace(/wifi/g, 'wireless').replace(/wi-fi/g, 'wireless');
+  return s.replace(/[^a-z0-9]/g, '');
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -44,6 +46,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       if (!categoryProducts.length) {
         categoryProducts = prods.filter(p => (p.category || '').toLowerCase().trim() === currentCategoryName.toLowerCase().trim());
+      }
+      if (!categoryProducts.length) {
+        categoryProducts = [...prods];
       }
     } else {
       categoryProducts = [...prods];
@@ -120,16 +125,16 @@ function renderCategoryBrandsSection() {
 
   if (!section || !grid) return;
 
+  section.style.display = 'block';
+  if (titleName) titleName.textContent = currentCategoryName || 'Category';
+
   const brandCounts = {};
   categoryProducts.forEach(p => {
     const b = p.brand ? p.brand.trim() : 'AK Infotech';
     brandCounts[b] = (brandCounts[b] || 0) + 1;
   });
 
-  const uniqueBrands = Object.keys(brandCounts);
-
-  section.style.display = 'block';
-  if (titleName) titleName.textContent = currentCategoryName || 'Category';
+  const categoryBrandsList = Object.keys(brandCounts).length ? Object.keys(brandCounts) : allBrands.map(b => b.name);
 
   let html = `
     <button class="brand-chip active" data-brand="all" onclick="filterCategoryBrand('all', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--accent-cyan); background: #f0f9ff; font-weight: 700; font-size: 0.85rem; color: var(--accent-cyan); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
@@ -137,15 +142,15 @@ function renderCategoryBrandsSection() {
     </button>
   `;
 
-  uniqueBrands.forEach(bName => {
-    const count = brandCounts[bName];
-    const matchBrand = allBrands.find(b => b.name && b.name.toLowerCase() === bName.toLowerCase());
-    const logoUrl = matchBrand?.logoLink || 'images/logo.webp';
+  categoryBrandsList.forEach(bName => {
+    const count = brandCounts[bName] || 0;
+    const matchBrand = allBrands.find(b => b.name && b.name.toLowerCase().trim() === bName.toLowerCase().trim());
+    const logoUrl = matchBrand?.imageLink || matchBrand?.logoLink || 'images/logo.webp';
 
     html += `
       <button class="brand-chip" data-brand="${escapeHtml(bName)}" onclick="filterCategoryBrand('${escapeHtml(bName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
         <img src="${logoUrl}" alt="${escapeHtml(bName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 2px;" onerror="this.src='images/logo.webp'">
-        <span>${escapeHtml(bName)} (${count})</span>
+        <span>${escapeHtml(bName)} ${count ? `(${count})` : ''}</span>
       </button>
     `;
   });
