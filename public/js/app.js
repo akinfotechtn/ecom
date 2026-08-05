@@ -684,6 +684,13 @@ function setupEventListeners() {
   const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
   if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', closeCheckoutModal);
 
+  const checkoutBackdrop = document.getElementById('checkoutBackdrop');
+  if (checkoutBackdrop) {
+    checkoutBackdrop.addEventListener('click', (e) => {
+      if (e.target.id === 'checkoutBackdrop') window.closeCheckoutModal();
+    });
+  }
+
   const checkoutForm = document.getElementById('checkoutForm');
   if (checkoutForm) checkoutForm.addEventListener('submit', handleCheckoutSubmit);
 
@@ -760,9 +767,9 @@ async function openCheckoutModal() {
   }
 }
 
-function closeCheckoutModal() {
-  document.getElementById('checkoutBackdrop').classList.remove('active');
-}
+window.closeCheckoutModal = function() {
+  document.getElementById('checkoutBackdrop')?.classList.remove('active');
+};
 
 // HERO AUTO-SCROLL SLIDER
 async function loadHeroBanners() {
