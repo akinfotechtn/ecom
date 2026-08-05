@@ -490,18 +490,18 @@ button {
   margin-bottom: 12px;
   flex-wrap: wrap;
   gap: 8px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  color: #0f172a;
   padding: 12px 18px;
   border-radius: 14px;
-  border: 1px solid #334155;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+  border: 1px solid #93c5fd;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.1);
 }
 
 .section-title {
   font-size: 1.25rem;
-  font-weight: 800;
-  color: #ffffff;
+  font-weight: 900;
+  color: #0f172a;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -521,18 +521,18 @@ button {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: rgba(56, 189, 248, 0.2);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: #ffffff;
+  color: #0284c7;
+  border: 1px solid #93c5fd;
   font-size: 1.05rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #38bdf8, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0284c7;
   font-weight: 900;
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
 .brand-logos-row {
