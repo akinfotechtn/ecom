@@ -371,7 +371,6 @@ function renderCart() {
   
   // Category-wise & Product-specific custom delivery charge calculation
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -382,13 +381,10 @@ function renderCart() {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
 
   const subtotalEl = document.getElementById('cartSubtotal');
   if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-
-  const gstEl = document.getElementById('cartGstAmount');
-  if (gstEl) gstEl.textContent = `+₹${gstAmount.toLocaleString('en-IN')}`;
   
   const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
@@ -516,8 +512,7 @@ window.selectPaymentMethod = function(method) {
 
     const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
     let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-    let gstAmount = calculateCartGstAmount(cart, storeSettings);
-    const finalTotal = subtotal + gstAmount + deliveryFee;
+    const finalTotal = subtotal + deliveryFee;
     const advanceFee = storeSettings.codAdvanceAmount || 1000;
     const remaining = Math.max(0, finalTotal - advanceFee);
 
@@ -544,7 +539,6 @@ async function handleCheckoutSubmit(e) {
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
@@ -555,7 +549,7 @@ async function handleCheckoutSubmit(e) {
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal + deliveryFee - discountAmount);
   const codAdvanceFee = storeSettings.codAdvanceAmount || 1000;
   const amountToPayNow = selectedPaymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
 

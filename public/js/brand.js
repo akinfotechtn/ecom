@@ -82,11 +82,78 @@ async function loadBrandData() {
     filteredProducts = [...brandProducts];
 
     renderBrandHero();
+    await renderBrandCategories();
     renderBrandCatalog();
   } catch (err) {
     console.error('Error loading brand page:', err);
   }
 }
+
+async function renderBrandCategories() {
+  const section = document.getElementById('brandCategoriesSection');
+  const grid = document.getElementById('brandCategoriesGrid');
+  const titleName = document.getElementById('brandCategoriesTitleName');
+  if (!section || !grid) return;
+
+  const displayName = brandInfo?.name || currentBrandName || 'Brand';
+  if (titleName) {
+    titleName.textContent = displayName;
+  }
+
+  const availableCatNames = [...new Set(brandProducts.map(p => p.category).filter(Boolean))];
+
+  if (!availableCatNames.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  const allCategories = await DbService.getCategories();
+  section.style.display = 'block';
+
+  let html = `
+    <button class="category-chip active" data-cat="all" onclick="filterBrandCategory('all', this)" style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--accent-cyan); background: #f0f9ff; font-weight: 800; font-size: 0.85rem; color: var(--accent-cyan); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
+      <span>🏷️ All Categories (${brandProducts.length})</span>
+    </button>
+  `;
+
+  availableCatNames.forEach(catName => {
+    const catObj = allCategories.find(c => c.name?.toLowerCase() === catName.toLowerCase());
+    const imgUrl = catObj?.imageLink || 'images/cctv-wholesale.webp';
+    const count = brandProducts.filter(p => p.category?.toLowerCase() === catName.toLowerCase()).length;
+
+    html += `
+      <button class="category-chip" data-cat="${escapeHtml(catName)}" onclick="filterBrandCategory('${escapeHtml(catName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
+        <img src="${imgUrl}" alt="${escapeHtml(catName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #f8fafc; padding: 2px;" onerror="this.src='images/cctv-wholesale.webp'">
+        <span>${escapeHtml(catName)} (${count})</span>
+      </button>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
+
+window.filterBrandCategory = function(catName, btn) {
+  const chips = document.querySelectorAll('#brandCategoriesGrid .category-chip');
+  chips.forEach(c => {
+    c.style.borderColor = '#cbd5e1';
+    c.style.background = '#ffffff';
+    c.style.color = 'var(--text-dark)';
+  });
+
+  if (btn) {
+    btn.style.borderColor = 'var(--accent-cyan)';
+    btn.style.background = '#f0f9ff';
+    btn.style.color = 'var(--accent-cyan)';
+  }
+
+  if (catName === 'all') {
+    filteredProducts = [...brandProducts];
+  } else {
+    filteredProducts = brandProducts.filter(p => p.category?.toLowerCase() === catName.toLowerCase());
+  }
+
+  renderBrandCatalog();
+};
 
 function renderBrandHero() {
   const titleEl = document.getElementById('brandPageTitle');
