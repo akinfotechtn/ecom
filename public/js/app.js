@@ -422,12 +422,13 @@ function renderCart() {
   } else {
     itemsListEl.innerHTML = cart.map(item => {
       const q = item.quantity || item.qty || 1;
+      const itemPriceWithGst = getItemPriceWithGst(item, storeSettings);
       return `
         <div class="cart-item">
           <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name">${escapeHtml(item.productName)}</div>
-            <div class="cart-item-price">₹${item.sellingPrice?.toLocaleString('en-IN')}</div>
+            <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
             <div class="cart-item-qty">
               <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
               <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
@@ -439,40 +440,43 @@ function renderCart() {
     }).join('');
   }
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+  const subtotalWithGst = cart.reduce((sum, item) => {
+    const q = item.quantity || item.qty || 1;
+    return sum + (getItemPriceWithGst(item, storeSettings) * q);
+  }, 0);
+
   const enableFreeShipping = storeSettings.enableFreeShipping !== false;
   const freeMin = storeSettings.freeShippingMinOrder || 3000;
   
   // Category-wise & Product-specific custom delivery charge calculation
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-  let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
   let discountAmount = 0;
-  if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
+  if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
     if (appliedCoupon.discountPercent) {
-      discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
+      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
     } else if (appliedCoupon.discountFlat) {
       discountAmount = appliedCoupon.discountFlat;
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotalWithGst + deliveryFee - discountAmount);
 
   const subtotalEl = document.getElementById('cartSubtotal');
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
 
   const gstEl = document.getElementById('cartGstAmount');
-  if (gstEl) gstEl.textContent = `+₹${gstAmount.toLocaleString('en-IN')}`;
+  if (gstEl) gstEl.style.display = 'none';
   
   const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
-    if (subtotal === 0) {
+    if (subtotalWithGst === 0) {
       deliveryEl.innerHTML = `₹0`;
     } else if (deliveryFee === 0) {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {
-      const needed = freeMin - subtotal;
-      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+      const needed = Math.max(0, freeMin - subtotalWithGst);
+      deliveryEl.innerHTML = `₹${deliveryFee} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : `<small style="display:block; color:var(--accent-green); font-size:0.7rem; font-weight:700;">FREE Shipping Unlocked!</small>`}`;
     } else {
       deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge calculated for catalog items</small>`;
     }
@@ -493,6 +497,13 @@ function renderCart() {
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 
   renderPromoChips();
+}
+
+function getItemPriceWithGst(item, settings = storeSettings) {
+  const basePrice = Number(item.sellingPrice || 0);
+  const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
+  const gstAmount = Math.round((basePrice * gstRate) / 100);
+  return basePrice + gstAmount;
 }
 
 function calculateCartGstAmount(cartItems, settings) {

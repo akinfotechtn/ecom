@@ -347,6 +347,13 @@ function saveCart() {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
 }
 
+function getItemPriceWithGst(item, settings = window.storeSettings || {}) {
+  const basePrice = Number(item.basePrice || item.sellingPrice || 0);
+  const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
+  const gstAmount = Math.round((basePrice * gstRate) / 100);
+  return basePrice + gstAmount;
+}
+
 function renderCart() {
   const badgeCount = document.getElementById('cartCount');
   const drawerCount = document.getElementById('cartItemCount');
@@ -355,7 +362,10 @@ function renderCart() {
   const grandTotalEl = document.getElementById('cartGrandTotal');
 
   const totalQty = cart.reduce((sum, i) => sum + (i.quantity || i.qty || 1), 0);
-  const subtotal = cart.reduce((sum, i) => sum + (i.sellingPrice * (i.quantity || i.qty || 1)), 0);
+  const subtotal = cart.reduce((sum, i) => {
+    const q = i.quantity || i.qty || 1;
+    return sum + (getItemPriceWithGst(i, window.storeSettings || {}) * q);
+  }, 0);
 
   if (badgeCount) badgeCount.textContent = totalQty;
   if (drawerCount) drawerCount.textContent = totalQty;
@@ -366,12 +376,13 @@ function renderCart() {
     } else {
       body.innerHTML = cart.map(i => {
         const q = i.quantity || i.qty || 1;
+        const itemPriceWithGst = getItemPriceWithGst(i, window.storeSettings || {});
         return `
           <div class="cart-item">
             <img src="${i.photoLink}" class="cart-item-img" alt="${escapeHtml(i.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
             <div class="cart-item-info">
               <div class="cart-item-title">${escapeHtml(i.productName)}</div>
-              <div class="cart-item-price">₹${i.sellingPrice?.toLocaleString('en-IN')}</div>
+              <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
               <div class="cart-qty-controls">
                 <button onclick="updateQty('${i.id}', -1)">-</button>
                 <span>${q}</span>
@@ -409,7 +420,7 @@ function renderCart() {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {
       const needed = freeMin - subtotal;
-      deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>`;
+      deliveryEl.innerHTML = `₹${stdDelivery} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : ''}`;
     } else {
       deliveryEl.innerHTML = `₹${stdDelivery} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge applies to all orders</small>`;
     }

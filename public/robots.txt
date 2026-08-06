@@ -1,0 +1,9 @@
+# AK Infotech Security Store - Official Robots.txt
+User-agent: *
+Allow: /
+
+# Disallow sensitive admin pages
+Disallow: /admin.html
+
+# Sitemap Location
+Sitemap: https://shop.akinfotechcctv.in/sitemap.xml

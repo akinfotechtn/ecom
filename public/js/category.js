@@ -402,7 +402,7 @@ window.addToCart = async function(productId) {
     cart[existingIndex].quantity = currentQty + 1;
     cart[existingIndex].qty = currentQty + 1;
   } else {
-    cart.push({ ...prod, sellingPrice: priceWithGst, basePrice: basePrice, quantity: 1, qty: 1 });
+    cart.push({ ...prod, quantity: 1, qty: 1 });
   }
 
   saveCart();
@@ -430,10 +430,17 @@ function saveCart() {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
 }
 
+function getItemPriceWithGst(item, settings = storeSettings) {
+  const basePrice = Number(item.basePrice || item.sellingPrice || 0);
+  const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
+  const gstAmount = Math.round((basePrice * gstRate) / 100);
+  return basePrice + gstAmount;
+}
+
 function renderCart() {
-  const container = document.getElementById('cartItemsContainer');
+  const container = document.getElementById('cartItemsContainer') || document.getElementById('cartItemsBody');
   const countEl = document.getElementById('cartCount');
-  const drawerCountEl = document.getElementById('cartDrawerCount');
+  const drawerCountEl = document.getElementById('cartDrawerCount') || document.getElementById('cartItemCount');
 
   const totalItems = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
   if (countEl) countEl.textContent = totalItems;
@@ -446,12 +453,13 @@ function renderCart() {
   } else {
     container.innerHTML = cart.map(item => {
       const q = item.quantity || item.qty || 1;
+      const itemPriceWithGst = getItemPriceWithGst(item, storeSettings);
       return `
         <div class="cart-item">
           <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-title">${escapeHtml(item.productName)}</div>
-            <div class="cart-item-price">₹${(item.sellingPrice || 0).toLocaleString('en-IN')}</div>
+            <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
             <div class="cart-qty-controls">
               <button onclick="updateCartQty('${item.id}', -1)">-</button>
               <span>${q}</span>
@@ -463,17 +471,21 @@ function renderCart() {
     }).join('');
   }
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
-  const deliveryFee = subtotal > 0 ? (storeSettings.defaultDeliveryFee || 150) : 0;
-  const finalTotal = subtotal + deliveryFee;
+  const subtotalWithGst = cart.reduce((sum, item) => {
+    const q = item.quantity || item.qty || 1;
+    return sum + (getItemPriceWithGst(item, storeSettings) * q);
+  }, 0);
+
+  const deliveryFee = subtotalWithGst > 0 ? (storeSettings.deliveryCharge || 150) : 0;
+  const finalTotal = subtotalWithGst + deliveryFee;
 
   const subtotalEl = document.getElementById('cartSubtotal');
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
 
   const deliveryEl = document.getElementById('cartDelivery');
-  if (deliveryEl) deliveryEl.textContent = `₹${deliveryFee}`;
+  if (deliveryEl) deliveryEl.textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
 
-  const grandTotalEl = document.getElementById('cartGrandTotal');
+  const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 

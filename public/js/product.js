@@ -189,14 +189,25 @@ window.buyNowDirect = function(id) {
   window.location.href = 'index.html?checkout=true';
 };
 
+function getItemPriceWithGst(item) {
+  const basePrice = Number(item.basePrice || item.sellingPrice || 0);
+  const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : 18;
+  const gstAmount = Math.round((basePrice * gstRate) / 100);
+  return basePrice + gstAmount;
+}
+
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
   if (cartCountEl) cartCountEl.textContent = totalQty;
 
-  const totalAmt = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+  const totalAmtWithGst = cart.reduce((sum, item) => {
+    const q = item.quantity || item.qty || 1;
+    return sum + (getItemPriceWithGst(item) * q);
+  }, 0);
+  
   const cartFinalTotal = document.getElementById('cartFinalTotal');
-  if (cartFinalTotal) cartFinalTotal.textContent = `₹${totalAmt.toLocaleString('en-IN')}`;
+  if (cartFinalTotal) cartFinalTotal.textContent = `₹${totalAmtWithGst.toLocaleString('en-IN')}`;
 }
 
 function setupEventListeners() {
