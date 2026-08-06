@@ -107,23 +107,34 @@ window.switchAccountTab = function(tabId, btn) {
 async function loadUserOrders(uid) {
   const container = document.getElementById('userOrdersContainer');
   if (!container) return;
-  container.innerHTML = `<div style="text-align:center; padding:16px;">⏳ Loading your orders...</div>`;
+  container.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-muted);">⏳ Loading your orders...</div>`;
 
-  // Use currentUser (tracked by listenAuthState) — auth is not imported in this file
-  const userEmail = currentUser ? currentUser.email : '';
-  userOrders = await DbService.getUserOrders(uid, userEmail);
+  try {
+    // Use currentUser (tracked by listenAuthState) — auth is not imported in this file
+    const userEmail = currentUser ? currentUser.email : '';
+    userOrders = await DbService.getUserOrders(uid, userEmail);
 
-  if (!userOrders || !userOrders.length) {
+    if (!userOrders || !userOrders.length) {
+      container.innerHTML = `
+        <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+          <div style="font-size: 2.5rem; margin-bottom: 8px;">📦</div>
+          No orders placed yet.<br>
+          <a href="index.html" class="hero-btn" style="margin-top: 14px; display: inline-block;">Browse Catalog</a>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = userOrders.map(order => generateOrderTrackingHtml(order)).join('');
+  } catch (err) {
+    console.error("loadUserOrders error:", err);
     container.innerHTML = `
-      <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
-        <div style="font-size: 2.5rem; margin-bottom: 8px;">📦</div>
-        No orders placed yet.<br>
-        <a href="index.html" class="hero-btn" style="margin-top: 14px; display: inline-block;">Browse Catalog</a>
+      <div style="text-align:center; padding: 30px 10px; background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; color:#9a3412;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">⚠️</div>
+        <strong>Could not load orders.</strong><br>
+        <span style="font-size:0.85rem;">This may be due to a temporary Firestore quota limit or network issue. Please try again in a moment.</span><br>
+        <button class="hero-btn" onclick="loadUserOrders('${uid}')" style="margin-top:14px; padding:8px 20px;">🔄 Retry</button>
       </div>`;
-    return;
   }
-
-  container.innerHTML = userOrders.map(order => generateOrderTrackingHtml(order)).join('');
 }
 
 // 2. SAVED DELIVERY ADDRESSES (CRUD)

@@ -597,40 +597,125 @@ export class DbService {
     }
   }
 
+  // Helper: timeout wrapper for Firestore promises
+  static _withTimeout(promise, ms, fallback = null) {
+    let timer;
+    const timeout = new Promise(resolve => {
+      timer = setTimeout(() => resolve(fallback), ms);
+    });
+    return Promise.race([
+      promise.then(val => { clearTimeout(timer); return val; }),
+      timeout
+    ]);
+  }
+
+  static async getUserOrders(uid, userEmail = '') {
+    try {
+      if (!uid && !userEmail) return [];
+
+      let orders = [];
+
+      // Query directly by userUid (most efficient — uses index)
+      if (uid) {
+        try {
+          const q = query(collection(db, "orders"), where("userUid", "==", uid));
+          const snap = await this._withTimeout(getDocs(q), 8000, null);
+          if (snap) {
+            orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          }
+        } catch (e) {
+          console.warn("getUserOrders by uid failed:", e.message);
+        }
+      }
+
+      // If no results by uid and we have email, try by email fields
+      if (!orders.length && userEmail) {
+        try {
+          const q2 = query(collection(db, "orders"), where("userEmail", "==", userEmail));
+          const snap2 = await this._withTimeout(getDocs(q2), 8000, null);
+          if (snap2) {
+            orders = snap2.docs.map(d => ({ id: d.id, ...d.data() }));
+          }
+        } catch (e) {
+          console.warn("getUserOrders by email failed:", e.message);
+        }
+
+        // Also try by 'email' field
+        if (!orders.length) {
+          try {
+            const q3 = query(collection(db, "orders"), where("email", "==", userEmail));
+            const snap3 = await this._withTimeout(getDocs(q3), 8000, null);
+            if (snap3) {
+              const extra = snap3.docs.map(d => ({ id: d.id, ...d.data() }));
+              // Merge, dedup by id
+              const seen = new Set(orders.map(o => o.id));
+              orders = [...orders, ...extra.filter(o => !seen.has(o.id))];
+            }
+          } catch (e) {}
+        }
+      }
+
+      orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      return orders;
+    } catch (err) {
+      console.warn("getUserOrders error:", err);
+      return [];
+    }
+  }
+
+  static async getGuestOrder(orderId, phone) {
+    try {
+      const docSnap = await this._withTimeout(getDoc(doc(db, "orders", orderId)), 8000, null);
+      if (docSnap && docSnap.exists()) {
+        const orderData = docSnap.data();
+        const orderPhone = String(orderData.phone || orderData.custPhone || '').replace(/\D/g, '');
+        const searchPhone = String(phone).replace(/\D/g, '');
+        if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
+          return orderData;
+        }
+      }
+    } catch (err) {
+      console.warn("Firestore lookup failed:", err);
+    }
+    return null;
+  }
+
+  static async trackOrderByIdOrPhone(queryStr) {
+    try {
+      const cleanStr = queryStr.trim().toUpperCase();
+      const allOrders = await this.getOrders();
+      return allOrders.filter(o => 
+        (o.id && String(o.id).toUpperCase() === cleanStr) || 
+        (o.phone && String(o.phone).includes(queryStr.trim())) ||
+        (o.razorpayOrderId && String(o.razorpayOrderId).toUpperCase() === cleanStr)
+      );
+    } catch (err) {
+      return [];
+    }
+  }
+
   static async getOrders() {
     let firestoreOrders = [];
 
-    // 1. Try Firestore
+    // 1. Try Firestore with an 8-second timeout to prevent hanging on quota exhaustion
     try {
-      const snap = await getDocs(collection(db, "orders"));
-      firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const snapPromise = getDocs(collection(db, "orders"));
+      const snap = await this._withTimeout(snapPromise, 8000, null);
+      if (snap) {
+        firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      } else {
+        console.warn("Firestore getOrders timed out (possible quota exhaustion)");
+      }
     } catch (err) {
       console.warn("Firestore getOrders failed:", err.message);
     }
 
-    // 2. Local API fallback only if on localhost and Firestore was empty
-    let localOrders = [];
-    if (!firestoreOrders.length && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-      try {
-        const res = await fetch("/api/orders");
-        if (res.ok) {
-          const data = await res.json();
-          localOrders = data.orders || [];
-        }
-      } catch (e) {}
-    }
-
-    // 3. Merge: combine both sources, deduplicate by order ID (Firestore takes priority)
     const merged = new Map();
-    for (const o of localOrders) {
-      if (o.id) merged.set(String(o.id), o);
-    }
     for (const o of firestoreOrders) {
       if (o.id) merged.set(String(o.id), o);
     }
 
     const all = Array.from(merged.values());
-    // Sort latest first
     all.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     return all;
   }

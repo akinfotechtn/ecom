@@ -1677,15 +1677,29 @@ async function getShiprocketToken() {
 async function fetchAdminOrders() {
   const tbody = document.getElementById('adminOrdersTableBody');
   if (tbody) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Loading orders from database...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Loading orders from Firestore...</td></tr>`;
   }
   try {
     adminOrders = await DbService.getOrders();
+    if (!adminOrders.length) {
+      // Could be empty DB or timeout — show helpful message
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">
+          📭 No orders found. If orders exist, Firestore may be temporarily unavailable or quota may be exceeded.<br>
+          <button class="hero-btn" onclick="fetchAdminOrdersNow()" style="margin-top:12px; padding:6px 16px; font-size:0.85rem;">🔄 Retry</button>
+        </td></tr>`;
+      }
+      return;
+    }
     renderOrdersTable();
   } catch (err) {
     console.error("Error fetching orders:", err);
     if (tbody) {
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#ef4444;">❌ Failed to load orders: ${err.message}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#ef4444;">
+        ❌ Failed to load orders: ${err.message}<br>
+        <small style="color:var(--text-muted);">This may be a Firestore quota/network issue.</small><br>
+        <button class="hero-btn" onclick="fetchAdminOrdersNow()" style="margin-top:12px; padding:6px 16px; font-size:0.85rem;">🔄 Retry</button>
+      </td></tr>`;
     }
   }
 }
