@@ -908,6 +908,11 @@ async function fetchAdminSettings() {
       toggleFreeShippingMinGroup(enableFreeChk.checked);
     }
 
+    const payShippingChk = document.getElementById('cfgPayShippingOnDelivery');
+    if (payShippingChk) {
+      payShippingChk.checked = !!adminSettings.payShippingOnDelivery;
+    }
+
     const urlInput = document.getElementById('googleSheetUrlInput');
     if (urlInput && adminSettings.googleSheetUrl) {
       urlInput.value = adminSettings.googleSheetUrl;
@@ -930,10 +935,12 @@ async function fetchAdminSettings() {
 async function saveStoreSettings(e) {
   if (e && e.preventDefault) e.preventDefault();
   const enableFreeShipping = document.getElementById('cfgEnableFreeShipping')?.checked ?? true;
+  const payShippingOnDelivery = document.getElementById('cfgPayShippingOnDelivery')?.checked ?? false;
   const payload = {
     deliveryCharge: parseFloat(document.getElementById('cfgDeliveryCharge').value),
     defaultGstPercent: parseFloat(document.getElementById('cfgDefaultGstPercent')?.value) || 18,
     enableFreeShipping: enableFreeShipping,
+    payShippingOnDelivery: payShippingOnDelivery,
     freeShippingMinOrder: parseFloat(document.getElementById('cfgFreeShippingMin').value) || 3000,
     codAdvanceAmount: parseFloat(document.getElementById('cfgCodAdvanceAmount').value) || 1000,
     googleSheetUrl: document.getElementById('googleSheetUrlInput')?.value.trim() || '',

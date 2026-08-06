@@ -457,11 +457,12 @@ function renderCart() {
     return sum + (getItemPriceWithGst(item, storeSettings) * q);
   }, 0);
 
+  const isPayOnDelivery = storeSettings.payShippingOnDelivery === true;
   const enableFreeShipping = storeSettings.enableFreeShipping !== false;
   const freeMin = storeSettings.freeShippingMinOrder || 3000;
   
   // Category-wise & Product-specific custom delivery charge calculation
-  let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
+  let deliveryFee = isPayOnDelivery ? 0 : calculateCartDeliveryFee(cart, storeSettings, storeCategories);
 
   let discountAmount = 0;
   if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
@@ -484,6 +485,8 @@ function renderCart() {
   if (deliveryEl) {
     if (subtotalWithGst === 0) {
       deliveryEl.innerHTML = `₹0`;
+    } else if (isPayOnDelivery) {
+      deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span><small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>`;
     } else if (deliveryFee === 0) {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {
@@ -556,6 +559,7 @@ function renderPromoChips() {
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {
   if (!cartItems || !cartItems.length) return 0;
+  if (settings && settings.payShippingOnDelivery) return 0;
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
   const enableFree = settings.enableFreeShipping !== false;

@@ -415,12 +415,13 @@ function renderCart() {
     discount = appliedCoupon.type === 'PERCENT' ? (subtotal * appliedCoupon.value / 100) : appliedCoupon.value;
   }
 
+  const isPayOnDelivery = (window.storeSettings && window.storeSettings.payShippingOnDelivery === true);
   const enableFreeShipping = (window.storeSettings && window.storeSettings.enableFreeShipping !== false);
   const freeMin = (window.storeSettings && window.storeSettings.freeShippingMinOrder) || 3000;
   const stdDelivery = (window.storeSettings && window.storeSettings.deliveryCharge !== undefined) ? Number(window.storeSettings.deliveryCharge) : 150;
 
-  let deliveryFee = stdDelivery;
-  if (subtotal === 0) {
+  let deliveryFee = isPayOnDelivery ? 0 : stdDelivery;
+  if (subtotal === 0 || isPayOnDelivery) {
     deliveryFee = 0;
   } else if (enableFreeShipping && subtotal >= freeMin) {
     deliveryFee = 0;
@@ -430,6 +431,8 @@ function renderCart() {
   if (deliveryEl) {
     if (subtotal === 0) {
       deliveryEl.innerHTML = `₹0`;
+    } else if (isPayOnDelivery) {
+      deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span>`;
     } else if (deliveryFee === 0) {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {

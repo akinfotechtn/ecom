@@ -495,14 +495,25 @@ function renderCart() {
     return sum + (getItemPriceWithGst(item, storeSettings) * q);
   }, 0);
 
-  const deliveryFee = subtotalWithGst > 0 ? (storeSettings.deliveryCharge || 150) : 0;
+  const isPayOnDelivery = storeSettings.payShippingOnDelivery === true;
+  const deliveryFee = (subtotalWithGst > 0 && !isPayOnDelivery) ? (storeSettings.deliveryCharge || 150) : 0;
   const finalTotal = subtotalWithGst + deliveryFee;
 
   const subtotalEl = document.getElementById('cartSubtotal');
   if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
 
   const deliveryEl = document.getElementById('cartDelivery');
-  if (deliveryEl) deliveryEl.textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+  if (deliveryEl) {
+    if (subtotalWithGst === 0) {
+      deliveryEl.innerHTML = `₹0`;
+    } else if (isPayOnDelivery) {
+      deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span>`;
+    } else if (deliveryFee === 0) {
+      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+    } else {
+      deliveryEl.innerHTML = `₹${deliveryFee}`;
+    }
+  }
 
   const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
