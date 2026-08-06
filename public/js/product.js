@@ -59,14 +59,15 @@ async function loadProductDetail(id) {
   const savings = currentProduct.price > priceWithGst ? Math.round(((currentProduct.price - priceWithGst) / currentProduct.price) * 100) : 0;
 
   const isAvailable = currentProduct.inStock !== false;
+  const inCartItem = cart.find(i => String(i.id) === String(currentProduct.id));
+  const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
 
   detailGrid.innerHTML = `
     <div class="gallery-box">
-      <img src="${currentProduct.photoLink}" alt="${escapeHtml(currentProduct.productName)}" id="mainGalleryImg" onerror="this.src='images/cctv-wholesale.webp'">
+      <img src="${currentProduct.photoLink}" alt="${escapeHtml(currentProduct.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
     </div>
-
-    <div>
-      <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+    <div class="product-info-box">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
         <span class="badge-glow">${escapeHtml(currentProduct.brand || 'AK Infotech')}</span>
         <a href="category.html?name=${encodeURIComponent(currentProduct.category)}" class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd; text-decoration:none;" title="View Category Page">${escapeHtml(currentProduct.category)}</a>
         ${currentProduct.isCombo ? `<span class="badge-glow" style="background:#fff7ed; color:#c2410c; border-color:#fdba74;">🔥 Combo Package</span>` : ''}
@@ -91,11 +92,22 @@ async function loadProductDetail(id) {
       </div>
 
       ${isAvailable ? `
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
-          <button class="btn-add-cart" style="padding: 14px 28px; font-size: 0.95rem;" onclick="addToCart('${currentProduct.id}')">
-            🛒 Add to Shopping Cart
-          </button>
-          <button class="btn-buy-now" onclick="buyNowDirect('${currentProduct.id}')">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; align-items: center;">
+          ${cartQty > 0 ? `
+            <div class="card-qty-stepper" style="height: 44px; padding: 4px;">
+              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', -1)" style="width: 36px; height: 36px; font-size: 1.1rem;">-</button>
+              <span class="card-qty-count" style="font-size: 1.1rem; min-width: 36px;">${cartQty}</span>
+              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', 1)" style="width: 36px; height: 36px; font-size: 1.1rem;">+</button>
+            </div>
+            <button class="btn-view-cart" onclick="openCartDrawer()" style="padding: 12px 20px; font-size: 0.95rem; height: 44px;">
+              🛒 View Cart
+            </button>
+          ` : `
+            <button class="btn-add-cart" style="padding: 14px 24px; font-size: 0.95rem; height: 44px;" onclick="addToCart('${currentProduct.id}')">
+              🛒 Add to Shopping Cart
+            </button>
+          `}
+          <button class="btn-buy-now" onclick="buyNowDirect('${currentProduct.id}')" style="height: 44px;">
             ⚡ Buy Now (COD / Online)
           </button>
         </div>
@@ -177,6 +189,9 @@ window.addToCart = async function(id) {
 
   localStorage.setItem('ak_cart', JSON.stringify(cart));
   renderCart();
+  if (currentProduct && String(currentProduct.id) === String(id)) {
+    loadProductDetail(currentProduct.id);
+  }
   openCartDrawer();
 };
 
@@ -194,6 +209,9 @@ window.updateCartQty = function(id, change) {
   }
   localStorage.setItem('ak_cart', JSON.stringify(cart));
   renderCart();
+  if (currentProduct && String(currentProduct.id) === String(id)) {
+    loadProductDetail(currentProduct.id);
+  }
 };
 
 window.buyNowDirect = function(id) {

@@ -217,6 +217,9 @@ function renderBrandCatalog() {
     const gstAmount = Math.round((basePrice * gstRate) / 100);
     const priceWithGst = basePrice + gstAmount;
 
+    const inCartItem = cart.find(i => String(i.id) === String(p.id));
+    const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
+
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="product.html?id=${p.id}" class="product-image-wrap">
@@ -235,11 +238,22 @@ function renderBrandCatalog() {
           </div>
 
           <div class="card-actions">
-            ${isAvailable ? `
-              <button class="btn-add-cart" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
-            ` : `
+            ${!isAvailable ? `
               <button class="btn-add-cart" disabled style="background: #94a3b8; cursor: not-allowed;">Out of Stock</button>
-            `}
+            ` : (cartQty > 0 ? `
+              <div class="card-cart-qty-wrap">
+                <div class="card-qty-stepper">
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateQty('${p.id}', -1)">-</button>
+                  <span class="card-qty-count">${cartQty}</span>
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateQty('${p.id}', 1)">+</button>
+                </div>
+                <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
+                  🛒 View Cart
+                </button>
+              </div>
+            ` : `
+              <button class="btn-add-cart" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
+            `)}
             <a href="product.html?id=${p.id}" class="btn-quick-view" style="text-decoration:none; text-align:center;">View</a>
           </div>
         </div>
@@ -340,6 +354,7 @@ window.addToCart = async function(productId) {
 
   saveCart();
   renderCart();
+  if (typeof renderBrandCatalog === 'function') renderBrandCatalog();
   openCartDrawer();
 };
 
@@ -446,6 +461,7 @@ window.updateQty = function(id, delta) {
   }
   saveCart();
   renderCart();
+  if (typeof renderBrandCatalog === 'function') renderBrandCatalog();
 };
 
 window.removeFromCart = function(id) {

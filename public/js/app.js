@@ -235,6 +235,8 @@ function renderCatalog() {
     const priceWithGst = basePrice + gstAmount;
     const savings = p.price > priceWithGst ? Math.round(((p.price - priceWithGst) / p.price) * 100) : 0;
     const isAvailable = p.inStock !== false;
+    const inCartItem = cart.find(i => String(i.id) === String(p.id));
+    const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
 
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
@@ -254,15 +256,26 @@ function renderCatalog() {
           </div>
 
           <div class="card-actions">
-            ${isAvailable ? `
-              <button class="btn-add-cart" onclick="addToCart('${p.id}')">
-                🛒 Add to Cart
-              </button>
-            ` : `
+            ${!isAvailable ? `
               <button class="btn-add-cart" disabled style="background:#cbd5e1; cursor:not-allowed; opacity:0.8;">
                 🚫 Out of Stock
               </button>
-            `}
+            ` : (cartQty > 0 ? `
+              <div class="card-cart-qty-wrap">
+                <div class="card-qty-stepper">
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', -1)">-</button>
+                  <span class="card-qty-count">${cartQty}</span>
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', 1)">+</button>
+                </div>
+                <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
+                  🛒 View Cart
+                </button>
+              </div>
+            ` : `
+              <button class="btn-add-cart" onclick="addToCart('${p.id}')">
+                🛒 Add to Cart
+              </button>
+            `)}
             <a href="product.html?id=${p.id}" class="btn-quick-view" style="display:flex; align-items:center; justify-content:center; text-decoration:none;" title="View Single Product Page">
               👁️
             </a>
@@ -379,6 +392,7 @@ window.addToCart = async function(productId) {
 
   saveCart();
   renderCart();
+  if (typeof renderProducts === 'function') renderProducts();
   openCartDrawer();
 };
 
@@ -396,6 +410,7 @@ window.updateCartQty = function(productId, change) {
   }
   saveCart();
   renderCart();
+  if (typeof renderProducts === 'function') renderProducts();
 };
 
 function saveCart() {
