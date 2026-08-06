@@ -414,20 +414,34 @@ async function triggerGoogleSheetSync() {
     return;
   }
 
+  await DbService.updateSettings({ googleSheetUrl: urlInput });
+
+  btn.disabled = true;
+  statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
+
   try {
-    await DbService.updateSettings({ googleSheetUrl: urlInput });
-
-    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
-    btn.disabled = true;
-
     const formattedUrl = normalizeGoogleSheetUrl(urlInput);
     const res = await fetch(formattedUrl);
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Check if sheet is published to web as CSV.`);
+
+    if (!res.ok) {
+      throw new Error(`Google Sheet request failed (${res.status}). Ensure sheet access is "Anyone with link can view" or "Publish to Web".`);
+    }
 
     const csvText = await res.text();
     const parsedProducts = parseCsvTextToProducts(csvText);
 
+    if (!parsedProducts || !parsedProducts.length) {
+      throw new Error("No valid product rows were found in the Google Sheet.");
+    }
+
+    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">💾 Replacing store catalog with ${parsedProducts.length} clean products...</span>`;
+
+    await DbService.bulkSyncProducts(parsedProducts, true);
+
+    statusEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">✅ Successfully synced ${parsedProducts.length} products from Google Sheet to Firebase!</span>`;
+    await fetchAdminProducts();
   } catch (err) {
+    console.error("Google Sheet sync error:", err);
     statusEl.innerHTML = `<span style="color: #ef4444;">✕ Sync Error: ${err.message}</span>`;
   } finally {
     btn.disabled = false;
