@@ -1,7 +1,7 @@
 // AK INFOTECH - ADMIN DASHBOARD JS (HERO BANNERS SLIDER CRUD & FIREBASE CLOUD FIRESTORE SYNC)
 import { DbService } from "./db-service.js";
 
-const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
+const AUTHORIZED_ADMIN_EMAILS = ['akinfotechtn@gmail.com', 'admin@akinfotechcctv.in'];
 
 let adminProducts = [];
 let adminBrands = [];
@@ -16,14 +16,34 @@ window.adminGoogleLogin = async function() {
   try {
     if (btn) btn.innerHTML = `<span style="color:#0f172a; font-weight:800;">⏳ Opening Google Sign In...</span>`;
     await DbService.loginWithGoogle();
+    // Note: if redirect flow is used, page will navigate away — no further code runs here.
+    // On return, getRedirectResult() in db-service.js and onAuthStateChanged handle the rest.
   } catch (err) {
     console.error("Admin Google Login Error:", err);
-    alert(`Google Login Error: ${err.message || err}`);
-    if (btn) {
-      btn.innerHTML = `
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px;" alt="Google">
-        <span>Sign In with Admin Google Account</span>
-      `;
+    // Only show error alert for genuine failures, not redirect navigations
+    if (err.code !== 'auth/cancelled-popup-request' && err.code !== 'auth/popup-closed-by-user') {
+      const msg = err.message || String(err);
+      if (btn) {
+        btn.innerHTML = `
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px;" alt="Google">
+          <span>⚠️ Login failed – Try Again</span>
+        `;
+        // Show inline error instead of blocking alert
+        const msgEl = document.getElementById('gatekeeperStatusMsg');
+        if (msgEl) {
+          msgEl.innerHTML = `<div style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:10px 12px; border-radius:8px; font-size:0.85rem; margin-top:8px;">❌ Sign-in failed: ${msg}</div>`;
+        }
+      } else {
+        alert(`Google Login Error: ${msg}`);
+      }
+    } else {
+      // Popup was closed/cancelled — just reset button
+      if (btn) {
+        btn.innerHTML = `
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px;" alt="Google">
+          <span>Sign In with Admin Google Account</span>
+        `;
+      }
     }
   }
 };
@@ -63,7 +83,7 @@ function setupAdminAuthGuard() {
       if (user) {
         msgEl.innerHTML = `
           <div style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:12px; border-radius:var(--radius-sm); font-size:0.88rem;">
-            Signed in as <strong>${escapeHtml(user.email)}</strong> (Unauthorized). Please sign out and sign in with <strong>akinfotecttn@gmail.com</strong>.
+            Signed in as <strong>${escapeHtml(user.email)}</strong> (Unauthorized). Please sign out and sign in with <strong>akinfotechtn@gmail.com</strong>.
           </div>
           <button id="btnGatekeeperLogout" class="pill-btn" style="margin-top:10px; color:#ef4444;">Sign Out Current Account</button>
         `;

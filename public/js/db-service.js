@@ -5,6 +5,7 @@ import {
   googleProvider,
   signInWithPopup,
   signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   collection, 
@@ -18,6 +19,18 @@ import {
   query,
   where
 } from "./firebase-config.js";
+
+// Handle redirect result on page load (for browsers that blocked popup)
+getRedirectResult(auth).then((result) => {
+  if (result && result.user) {
+    console.log('Google sign-in via redirect succeeded:', result.user.email);
+  }
+}).catch((err) => {
+  // Silently ignore - user just hasn't signed in yet via redirect
+  if (err.code !== 'auth/no-current-user') {
+    console.warn('Redirect sign-in result error:', err.code, err.message);
+  }
+});
 
 const DEFAULT_PRODUCTS = [
   {
@@ -195,11 +208,25 @@ const DEFAULT_SETTINGS = {
 export class DbService {
   // GOOGLE AUTHENTICATION
   static async loginWithGoogle() {
+    // Use redirect for mobile browsers (which block popups more aggressively)
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // Redirect flow: navigates away; getRedirectResult() at top of file handles completion
+      await signInWithRedirect(auth, googleProvider);
+      return; // Will navigate away, onAuthStateChanged fires on return
+    }
+    // Desktop: try popup first, fall back to redirect
     try {
-      return await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      return result;
     } catch (err) {
-      console.warn("signInWithPopup failed/blocked, trying signInWithRedirect:", err);
-      return await signInWithRedirect(auth, googleProvider);
+      const popupErrors = ['auth/popup-blocked', 'auth/popup-closed-by-user', 'auth/cancelled-popup-request'];
+      if (popupErrors.includes(err.code)) {
+        console.warn('Popup blocked or closed. Trying redirect flow...', err.code);
+        await signInWithRedirect(auth, googleProvider);
+        return; // Will navigate away; handled by getRedirectResult on next load
+      }
+      throw err; // Rethrow unexpected errors
     }
   }
 

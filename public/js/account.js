@@ -1,7 +1,7 @@
 // AK INFOTECH - DEDICATED USER ACCOUNT & ADDRESSES JS
 import { DbService } from "./db-service.js";
 
-const AUTHORIZED_ADMIN_EMAILS = ['akinfotecttn@gmail.com', 'akinfotechtn@gmail.com'];
+const AUTHORIZED_ADMIN_EMAILS = ['akinfotechtn@gmail.com', 'admin@akinfotechcctv.in'];
 
 let currentUser = null;
 let userAddresses = [];
