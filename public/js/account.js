@@ -109,8 +109,8 @@ async function loadUserOrders(uid) {
   if (!container) return;
   container.innerHTML = `<div style="text-align:center; padding:16px;">⏳ Loading your orders...</div>`;
 
-  const user = auth.currentUser;
-  const userEmail = user ? user.email : '';
+  // Use currentUser (tracked by listenAuthState) — auth is not imported in this file
+  const userEmail = currentUser ? currentUser.email : '';
   userOrders = await DbService.getUserOrders(uid, userEmail);
 
   if (!userOrders || !userOrders.length) {

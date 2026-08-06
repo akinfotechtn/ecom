@@ -1707,98 +1707,85 @@ function renderOrdersTable() {
   }
 
   // Sort latest orders first
-  adminOrders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  try {
+    adminOrders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  } catch (e) {}
 
-  tbody.innerHTML = adminOrders.map(o => {
-    let dateStr = 'N/A';
-    if (o.createdAt) {
-      try {
-        dateStr = new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-        if (dateStr === 'Invalid Date') dateStr = String(o.createdAt);
-      } catch (e) { dateStr = String(o.createdAt); }
-    }
-    
-    const totalAmt = Number(o.total || o.finalTotal || o.totalAmount || o.grandTotal || 0);
-    const itemCount = (o.items && Array.isArray(o.items)) ? o.items.length : 0;
-
-    // Status Badge
-    let statusClass = 'status-cod';
-    if (o.status === 'DELIVERED') statusClass = 'status-online';
-    else if (o.status === 'CANCELLED') statusClass = 'status-out';
-
-    // Shiprocket Actions & Badge
-    let srActionsHtml = '';
-    let srBadgeHtml = '';
-
-    if (o.shiprocketOrderId) {
-      srBadgeHtml = `
-        <div style="font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 4px;">
-          SR Order #${escapeHtml(o.shiprocketOrderId)}
-        </div>
-      `;
-      if (o.awbCode) {
-        srBadgeHtml += `
-          <div style="font-size: 0.72rem; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 2px;">
-            🚚 AWB: ${escapeHtml(o.awbCode)} (${escapeHtml(o.courierName || 'Courier')})
-          </div>
-        `;
-        srActionsHtml = `
-          <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 4px 10px; font-size: 0.75rem;" onclick="printShiprocketLabel('${o.id}')">
-            🏷️ Print Label
-          </button>
-        `;
-      } else {
-        srActionsHtml = `
-          <button class="hero-btn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 4px 10px; font-size: 0.75rem;" onclick="openShiprocketCourierModal('${o.id}')">
-            🚚 Select & Book Courier
-          </button>
-        `;
+  const rows = [];
+  for (const o of adminOrders) {
+    try {
+      let dateStr = 'N/A';
+      if (o.createdAt) {
+        try {
+          const d = new Date(o.createdAt);
+          dateStr = isNaN(d.getTime()) ? String(o.createdAt) : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } catch (e) { dateStr = String(o.createdAt); }
       }
-    } else {
-      srActionsHtml = `
-        <button class="hero-btn" style="background: linear-gradient(135deg, #0284c7, #2563eb); padding: 4px 10px; font-size: 0.75rem;" onclick="createShiprocketOrder('${o.id}')">
-          🚀 Create Shiprocket Order
-        </button>
-      `;
+
+      const totalAmt = Number(o.total || o.finalTotal || o.totalAmount || o.grandTotal || 0);
+      const itemCount = (o.items && Array.isArray(o.items)) ? o.items.length : 0;
+
+      let statusClass = 'status-cod';
+      if (o.status === 'DELIVERED') statusClass = 'status-online';
+      else if (o.status === 'CANCELLED') statusClass = 'status-out';
+
+      let srActionsHtml = '';
+      let srBadgeHtml = '';
+      const oId = String(o.id || '');
+
+      if (o.shiprocketOrderId) {
+        srBadgeHtml = `<div style="font-size:0.72rem;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:8px;font-weight:700;margin-top:4px;">SR Order #${escapeHtml(o.shiprocketOrderId)}</div>`;
+        if (o.awbCode) {
+          srBadgeHtml += `<div style="font-size:0.72rem;background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:8px;font-weight:700;margin-top:2px;">🚚 AWB: ${escapeHtml(o.awbCode)} (${escapeHtml(o.courierName || 'Courier')})</div>`;
+          srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);padding:4px 10px;font-size:0.75rem;" onclick="printShiprocketLabel('${oId}')">🏷️ Print Label</button>`;
+        } else {
+          srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:4px 10px;font-size:0.75rem;" onclick="openShiprocketCourierModal('${oId}')">🚚 Select &amp; Book Courier</button>`;
+        }
+      } else {
+        srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#0284c7,#2563eb);padding:4px 10px;font-size:0.75rem;" onclick="createShiprocketOrder('${oId}')">🚀 Create Shiprocket Order</button>`;
+      }
+
+      const orderIdStr = escapeHtml(o.id || 'N/A');
+      const custName = escapeHtml(o.name || o.customerName || o.fullName || 'Customer');
+      const custEmail = escapeHtml(o.email || o.userEmail || o.customerEmail || '');
+      const custPhone = escapeHtml(o.phone || o.custPhone || 'N/A');
+      const loc = [o.cityState || o.city || o.address || '', o.pincode ? `(${o.pincode})` : ''].filter(Boolean).join(' ');
+      const locationStr = escapeHtml(loc);
+
+      rows.push(`
+        <tr>
+          <td><strong style="color:var(--text-dark);">${orderIdStr}</strong>${srBadgeHtml}</td>
+          <td>
+            <div style="font-weight:700;">${custName}</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">${custEmail}</div>
+          </td>
+          <td>
+            <div style="font-size:0.85rem;">📞 ${custPhone}</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">${locationStr}</div>
+          </td>
+          <td><span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">${escapeHtml(o.paymentMethod || 'COD')}</span></td>
+          <td>
+            <strong style="color:var(--accent-cyan);">₹${totalAmt.toLocaleString('en-IN')}</strong>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${itemCount} Item(s)</div>
+          </td>
+          <td>
+            <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
+            <div style="margin-top:4px;">
+              <select style="font-size:0.75rem;padding:2px 4px;border-radius:4px;border:1px solid var(--border-color);" onchange="updateOrderStatus('${oId}', this.value)">
+                ${['PROCESSING','SHIPPED','OUT FOR DELIVERY','DELIVERED','CANCELLED'].map(s => `<option value="${s}"${(o.status||'PROCESSING')===s?' selected':''}>${s}</option>`).join('')}
+              </select>
+            </div>
+          </td>
+          <td style="font-size:0.8rem;color:var(--text-muted);">${dateStr}</td>
+          <td>${srActionsHtml}</td>
+        </tr>
+      `);
+    } catch (rowErr) {
+      console.error('Error rendering order row:', o?.id, rowErr);
+      rows.push(`<tr><td colspan="8" style="color:#ef4444;font-size:0.8rem;padding:8px;">⚠️ Error displaying order ${escapeHtml(String(o?.id || 'unknown'))}</td></tr>`);
     }
-
-    const orderIdStr = escapeHtml(o.id || 'N/A');
-    const custName = escapeHtml(o.name || o.customerName || o.fullName || o.custName || 'Customer');
-    const custEmail = escapeHtml(o.email || o.userEmail || o.customerEmail || '');
-    const custPhone = escapeHtml(o.phone || o.custPhone || 'N/A');
-    const locationStr = escapeHtml((o.cityState || o.address || o.city || '') + (o.pincode ? ` (${o.pincode})` : ''));
-
-    return `
-      <tr>
-        <td>
-          <strong style="color:var(--text-dark);">${orderIdStr}</strong>
-          ${srBadgeHtml}
-        </td>
-        <td>
-          <div style="font-weight:700;">${custName}</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">${custEmail}</div>
-        </td>
-        <td>
-          <div style="font-size:0.85rem;">📞 ${custPhone}</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">${locationStr}</div>
-        </td>
-        <td>
-          <span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">
-            ${escapeHtml(o.paymentMethod || 'COD')}
-          </span>
-        </td>
-        <td>
-          <strong style="color:var(--accent-cyan);">₹${totalAmt.toLocaleString('en-IN')}</strong>
-          <div style="font-size:0.75rem; color:var(--text-muted);">${itemCount} Items</div>
-        </td>
-        <td>
-          <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
-        </td>
-        <td style="font-size:0.8rem; color:var(--text-muted);">${dateStr}</td>
-        <td>${srActionsHtml}</td>
-      </tr>
-    `;
-  }).join('');
+  }
+  tbody.innerHTML = rows.join('');
 }
 
 window.createShiprocketOrder = async function(orderId) {
