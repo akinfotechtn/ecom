@@ -779,10 +779,54 @@ async function handleCheckoutSubmit(e) {
 // SETUP EVENT LISTENERS
 function setupEventListeners() {
   const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
+  const searchDropdown = document.getElementById('searchDropdown');
+
+  if (searchInput && searchDropdown) {
+    let searchDebounce;
+
     searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
-      renderCatalog();
+      const q = e.target.value.trim();
+      clearTimeout(searchDebounce);
+
+      if (!q) {
+        closeSearchDropdown();
+        // Reset catalog filter when cleared
+        searchQuery = '';
+        renderCatalog();
+        return;
+      }
+
+      searchDebounce = setTimeout(() => {
+        renderSearchDropdown(q);
+      }, 180);
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        // On Enter: apply filter to main catalog and close dropdown
+        searchQuery = searchInput.value;
+        renderCatalog();
+        closeSearchDropdown();
+        // Scroll to products
+        const catalogSection = document.getElementById('catalogSection') || document.getElementById('productsGrid');
+        if (catalogSection) catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (e.key === 'Escape') {
+        closeSearchDropdown();
+      }
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#searchBoxWrapper')) {
+        closeSearchDropdown();
+      }
+    });
+
+    // Re-open dropdown on focus if there's content
+    searchInput.addEventListener('focus', (e) => {
+      const q = e.target.value.trim();
+      if (q.length > 0) renderSearchDropdown(q);
     });
   }
 
@@ -1011,3 +1055,65 @@ function escapeHtml(str) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
+
+// ── LIVE SEARCH AUTOCOMPLETE ──────────────────────────────────────────────────
+function renderSearchDropdown(q) {
+  const dropdown = document.getElementById('searchDropdown');
+  const searchInput = document.getElementById('searchInput');
+  if (!dropdown || !searchInput) return;
+
+  const tokens = q.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+
+  // Filter products
+  const matched = allProducts.filter(p => {
+    const text = `${p.productName || ''} ${p.brand || ''} ${p.category || ''} ${p.productSpec || ''}`.toLowerCase();
+    return tokens.every(t => text.includes(t));
+  });
+
+  if (matched.length === 0) {
+    dropdown.innerHTML = `<div class="search-dropdown-empty">No products found for "<strong>${escapeHtml(q)}</strong>"</div>`;
+    dropdown.style.display = 'block';
+    return;
+  }
+
+  const top6 = matched.slice(0, 6);
+  const total = matched.length;
+
+  const itemsHtml = [
+    `<div class="search-dropdown-header">Products</div>`,
+    ...top6.map(p => {
+      const inStock = p.inStock !== false;
+      return `<a class="search-dropdown-item" href="product.html?id=${encodeURIComponent(p.id)}">
+        <img src="${escapeHtml(p.photoLink || 'images/logo.webp')}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/logo.webp'">
+        <div class="sdi-info">
+          <div class="sdi-name">${escapeHtml(p.productName || '')}</div>
+          <div class="sdi-brand">${escapeHtml(p.brand || '')}</div>
+          <div class="sdi-stock ${inStock ? 'in-stock' : 'out-stock'}">● ${inStock ? 'Available' : 'Out of Stock'}</div>
+        </div>
+        <div class="sdi-price">
+          <span class="sdi-price-main">₹${(p.sellingPrice || p.price || 0).toLocaleString('en-IN')}</span>
+          <span class="sdi-price-sub">GST extra</span>
+        </div>
+      </a>`;
+    }),
+    total > 6 ? `<div class="search-dropdown-footer" onclick="applySearchFromDropdown('${escapeHtml(q).replace(/'/g, "\\'")}')">See all ${total} results &nbsp;›</div>` : ''
+  ].join('');
+
+  dropdown.innerHTML = itemsHtml;
+  dropdown.style.display = 'block';
+}
+
+function closeSearchDropdown() {
+  const dropdown = document.getElementById('searchDropdown');
+  if (dropdown) dropdown.style.display = 'none';
+}
+
+window.applySearchFromDropdown = function(q) {
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = q;
+  searchQuery = q;
+  renderCatalog();
+  closeSearchDropdown();
+  const catalogSection = document.getElementById('catalogSection') || document.getElementById('productsGrid');
+  if (catalogSection) catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};

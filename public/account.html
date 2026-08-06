@@ -158,10 +158,11 @@
         Log in with your Google account to view your past orders, manage saved delivery addresses, and track live shipments.
       </p>
 
-      <button id="btnGoogleSignIn" class="hero-btn" style="padding: 12px 28px; font-size: 1rem;">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 18px; height: 18px; margin-right: 8px; vertical-align: middle;">
+      <button id="btnGoogleSignIn" class="hero-btn" style="padding: 12px 28px; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px;" alt="Google">
         Sign In with Google
       </button>
+      <div id="loginErrorMsg" style="display:none; margin-top: 12px; background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 10px 16px; border-radius: 8px; font-size: 0.88rem; max-width: 380px; margin-left: auto; margin-right: auto;"></div>
 
       <!-- Divider -->
       <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 30px 0; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">

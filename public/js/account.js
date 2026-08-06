@@ -62,17 +62,36 @@ function setupAuthState() {
     }
   });
 
-  document.getElementById('btnGoogleSignIn')?.addEventListener('click', async () => {
+  document.getElementById('btnGoogleSignIn')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const originalHtml = btn.innerHTML;
     try {
+      btn.innerHTML = `<span style="font-weight:800;">⏳ Opening Google Sign In...</span>`;
+      btn.disabled = true;
       await DbService.loginWithGoogle();
+      // If popup flow: onAuthStateChanged fires, UI updates automatically.
+      // If redirect flow: page navigates away here — no further code runs.
     } catch (err) {
-      alert(`Google Sign-In Notice: ${err.message}`);
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+      // Only show errors for genuine failures — not user-cancelled popups
+      if (err.code && ['auth/popup-closed-by-user', 'auth/cancelled-popup-request', 'auth/popup-blocked'].includes(err.code)) {
+        // User closed popup or it was redirected — silently reset
+        return;
+      }
+      const msgEl = document.getElementById('loginErrorMsg');
+      if (msgEl) {
+        msgEl.textContent = `Sign-in failed: ${err.message || err}`;
+        msgEl.style.display = 'block';
+        setTimeout(() => { msgEl.style.display = 'none'; }, 5000);
+      } else {
+        alert(`Sign-In Error: ${err.message || err}`);
+      }
     }
   });
 
   document.getElementById('btnUserLogout')?.addEventListener('click', async () => {
     await DbService.logoutUser();
-    alert('Logged out successfully.');
   });
 }
 
