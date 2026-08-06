@@ -108,6 +108,12 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       }
     }
 
+function roundPriceTo10s(val) {
+  if (isNaN(val) || val <= 0) return 0;
+  if (val < 10) return Math.round(val);
+  return Math.round(val / 10) * 10;
+}
+
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
     const baseSellingPrice = parseFloat(rawSellingPrice.replace(/[^0-9.]/g, '')) || price;
     const dealerMarginPercent = parseMarginPercentage(rawDealerMargin);
@@ -115,8 +121,8 @@ async function parseProductsFromCsv(csvTextOrUrl) {
     let finalSellingPrice = baseSellingPrice;
     if (dealerMarginPercent > 0) {
       finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
-      finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
     }
+    finalSellingPrice = roundPriceTo10s(finalSellingPrice);
 
     const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 

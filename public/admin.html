@@ -243,7 +243,7 @@
 
     <!-- TAB 2: MANAGE PRODUCTS -->
     <div class="tab-content" id="productsTab">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
         <h2 style="font-size: 1.3rem; color: var(--text-dark);">📦 Catalog Products Management</h2>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 8px 18px;" onclick="exportProductsToCsv()">
@@ -255,6 +255,17 @@
           <button class="hero-btn" style="padding: 8px 18px;" onclick="openAddProductModal()">
             + Add New Product
           </button>
+        </div>
+      </div>
+
+      <!-- LIVE SEARCH & FILTER BAR FOR PRODUCTS -->
+      <div style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; background: #f8fafc; padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div style="position: relative; flex: 1; min-width: 260px; max-width: 460px;">
+          <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;">🔍</span>
+          <input type="text" id="adminProductSearchInput" placeholder="Search catalog products by name, brand, category, spec..." style="width: 100%; padding: 8px 14px 8px 36px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.88rem; outline: none; background: #ffffff; color: var(--text-dark);">
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">
+          Showing <strong id="adminProductsCountBadge" style="color: var(--accent-cyan); font-size: 0.95rem;">0</strong> product(s)
         </div>
       </div>
 

@@ -291,6 +291,12 @@ function parseCsvToMatrix(csvText) {
   return rows;
 }
 
+function roundPriceTo10s(val) {
+  if (isNaN(val) || val <= 0) return 0;
+  if (val < 10) return Math.round(val);
+  return Math.round(val / 10) * 10;
+}
+
 function parseMarginPercentage(rawStr) {
   if (!rawStr) return 0;
   const str = String(rawStr).trim();
@@ -366,8 +372,8 @@ function parseCsvTextToProducts(csvText) {
     let finalSellingPrice = baseSellingPrice;
     if (dealerMarginPercent > 0) {
       finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
-      finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
     }
+    finalSellingPrice = roundPriceTo10s(finalSellingPrice);
 
     const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 
@@ -688,16 +694,34 @@ async function fetchAdminProducts() {
   }
 }
 
+let adminProductSearchQuery = '';
+
 function renderProductsTable() {
   const tbody = document.getElementById('adminProductsTableBody');
+  const countBadge = document.getElementById('adminProductsCountBadge');
   if (!tbody) return;
 
-  if (!adminProducts.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--text-muted);">No products in store. Add or sync products from Google Sheets.</td></tr>`;
+  let filtered = [...adminProducts];
+
+  if (adminProductSearchQuery) {
+    const q = adminProductSearchQuery.toLowerCase().trim();
+    const tokens = q.split(/\s+/).filter(Boolean);
+    filtered = filtered.filter(p => {
+      const text = `${p.productName || ''} ${p.brand || ''} ${p.category || ''} ${p.productSpec || ''} ${p.id || ''}`.toLowerCase();
+      return tokens.every(t => text.includes(t));
+    });
+  }
+
+  if (countBadge) {
+    countBadge.textContent = adminProductSearchQuery ? `${filtered.length} of ${adminProducts.length}` : `${adminProducts.length}`;
+  }
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">No matching products found.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = adminProducts.map(p => `
+  tbody.innerHTML = filtered.map(p => `
     <tr>
       <td><img src="${p.photoLink}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 6px;" onerror="this.src='images/cctv-wholesale.webp'"></td>
       <td><strong><a href="product.html?id=${p.id}" target="_blank" style="color:var(--accent-cyan);">${escapeHtml(p.productName)}</a></strong></td>
@@ -919,8 +943,8 @@ async function saveProductSubmit(e) {
   let finalSellingPrice = baseSellingPrice;
   if (dealerMarginPercent > 0) {
     finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
-    finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
   }
+  finalSellingPrice = roundPriceTo10s(finalSellingPrice);
 
   const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 
@@ -1224,6 +1248,14 @@ async function generateDynamicSitemap() {
 }
 
 function setupEventListeners() {
+  const adminSearchInput = document.getElementById('adminProductSearchInput');
+  if (adminSearchInput) {
+    adminSearchInput.addEventListener('input', (e) => {
+      adminProductSearchQuery = e.target.value;
+      renderProductsTable();
+    });
+  }
+
   const btnSync = document.getElementById('btnSyncGoogleSheet');
   if (btnSync) btnSync.addEventListener('click', triggerGoogleSheetSync);
 
