@@ -334,11 +334,10 @@ function parseCsvTextToProducts(csvText) {
   const catIdx = getColIndex(['category', 'cat', 'type']);
   const priceIdx = getColIndex(['mrp', 'price']);
   const sellingIdx = getColIndex(['sellingprice', 'saleprice', 'offerprice', 'selling', 'offer', 'sale']);
-  const dealerMarginIdx = getColIndex(['dealerextramargin', 'dealerextramarginpercent', 'dealermargin', 'extramargin', 'margin']);
-  const comboIdx = getColIndex(['iscombo', 'combo']);
-  const availIdx = getColIndex(['availability', 'stock']);
-  const deliveryIdx = getColIndex(['customdeliveryfee', 'delivery', 'shipping', 'fee']);
-
+  let dealerMarginIdx = getColIndex(['dealerextramargin', 'dealerextramarginpercent', 'dealermargin', 'extramargin', 'margin']);
+  if (dealerMarginIdx === -1 && matrix[0].length >= 8) {
+    dealerMarginIdx = 7;
+  }
   const hasMarginCol = dealerMarginIdx !== -1;
 
   const parsed = [];
@@ -354,7 +353,7 @@ function parseCsvTextToProducts(csvText) {
 
     const rawPrice = (priceIdx !== -1 ? cols[priceIdx] : cols[5]) || '0';
     const rawSelling = (sellingIdx !== -1 ? cols[sellingIdx] : cols[6]) || rawPrice;
-    const rawMargin = (dealerMarginIdx !== -1 ? cols[dealerMarginIdx] : (cols[7] && (cols[7].includes('%') || !isNaN(parseFloat(cols[7]))) ? cols[7] : '')) || '';
+    const rawMargin = (dealerMarginIdx !== -1 && cols[dealerMarginIdx] !== undefined ? cols[dealerMarginIdx] : (cols[7] || '')) || '';
 
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
     const baseSellingPrice = parseFloat(rawSelling.replace(/[^0-9.]/g, '')) || price;
@@ -368,9 +367,9 @@ function parseCsvTextToProducts(csvText) {
 
     const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 
-    const defaultComboIdx = hasMarginCol ? 8 : 7;
-    const defaultAvailIdx = hasMarginCol ? 9 : 8;
-    const defaultDeliveryIdx = hasMarginCol ? 10 : 9;
+    const defaultComboIdx = (hasMarginCol && matrix[0].length >= 9) ? 8 : 7;
+    const defaultAvailIdx = (hasMarginCol && matrix[0].length >= 10) ? 9 : 8;
+    const defaultDeliveryIdx = (hasMarginCol && matrix[0].length >= 11) ? 10 : 9;
 
     const comboVal = ((comboIdx !== -1 ? cols[comboIdx] : cols[defaultComboIdx]) || '').toLowerCase();
     const isCombo = comboVal === 'yes' || comboVal === 'true' || comboVal === '1' || category.toLowerCase().includes('combo');
@@ -411,32 +410,19 @@ async function triggerGoogleSheetSync() {
     return;
   }
 
-  await DbService.updateSettings({ googleSheetUrl: urlInput });
-
-  btn.disabled = true;
-  statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
-
   try {
+    await DbService.updateSettings({ googleSheetUrl: urlInput });
+
+    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">🔄 Connecting to Google Sheet & parsing data...</span>`;
+    btn.disabled = true;
+
     const formattedUrl = normalizeGoogleSheetUrl(urlInput);
-    const response = await fetch(formattedUrl);
+    const res = await fetch(formattedUrl);
+    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Check if sheet is published to web as CSV.`);
 
-    if (!response.ok) {
-      throw new Error(`Google Sheet request failed (${response.status}). Ensure sheet access is "Anyone with link can view" or "Publish to Web".`);
-    }
-
-    const csvText = await response.text();
+    const csvText = await res.text();
     const parsedProducts = parseCsvTextToProducts(csvText);
 
-    if (!parsedProducts.length) {
-      throw new Error("No valid product rows were found in the Google Sheet.");
-    }
-
-    statusEl.innerHTML = `<span style="color: var(--accent-cyan);">💾 Replacing store catalog with ${parsedProducts.length} clean products...</span>`;
-    
-    await DbService.bulkSyncProducts(parsedProducts, true);
-    
-    statusEl.innerHTML = `<span style="color: var(--accent-green);">✅ Successfully synced ${parsedProducts.length} products from Google Sheet to Firebase!</span>`;
-    await fetchAdminProducts();
   } catch (err) {
     statusEl.innerHTML = `<span style="color: #ef4444;">✕ Sync Error: ${err.message}</span>`;
   } finally {
@@ -858,6 +844,8 @@ window.openAddProductModal = function() {
   document.getElementById('productForm').reset();
   const devEl = document.getElementById('prodDeliveryCharge');
   if (devEl) devEl.value = '';
+  const marginEl = document.getElementById('prodDealerMarginPercent');
+  if (marginEl) marginEl.value = '';
   populateDropdowns();
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
@@ -874,7 +862,7 @@ window.editProduct = function(id) {
   document.getElementById('prodBrandSelect').value = p.brand;
   document.getElementById('prodCategorySelect').value = p.category;
   document.getElementById('prodPrice').value = p.price;
-  document.getElementById('prodSellingPrice').value = p.sellingPrice;
+  document.getElementById('prodSellingPrice').value = p.baseSellingPrice || p.sellingPrice;
   document.getElementById('prodAvailabilitySelect').value = p.inStock !== false ? 'In stock' : 'Out of stock';
   document.getElementById('prodSpec').value = p.productSpec;
   document.getElementById('prodIsCombo').checked = p.isCombo || false;
@@ -885,6 +873,10 @@ window.editProduct = function(id) {
   const gstEl = document.getElementById('prodGstPercent');
   if (gstEl) {
     gstEl.value = (p.gstPercent !== undefined && p.gstPercent !== null) ? p.gstPercent : '';
+  }
+  const marginEl = document.getElementById('prodDealerMarginPercent');
+  if (marginEl) {
+    marginEl.value = (p.dealerMarginPercent !== undefined && p.dealerMarginPercent !== null) ? p.dealerMarginPercent : '';
   }
 
   document.getElementById('productFormModalBackdrop').classList.add('active');
@@ -900,14 +892,29 @@ async function saveProductSubmit(e) {
   const availVal = document.getElementById('prodAvailabilitySelect').value;
   const customDevChargeVal = document.getElementById('prodDeliveryCharge')?.value.trim();
   const customGstVal = document.getElementById('prodGstPercent')?.value.trim();
+  const customMarginVal = document.getElementById('prodDealerMarginPercent')?.value.trim();
+
+  const price = parseFloat(document.getElementById('prodPrice').value) || 0;
+  const baseSellingPrice = parseFloat(document.getElementById('prodSellingPrice').value) || 0;
+  const dealerMarginPercent = (customMarginVal !== '' && customMarginVal !== undefined) ? (parseFloat(customMarginVal) || 0) : 0;
+
+  let finalSellingPrice = baseSellingPrice;
+  if (dealerMarginPercent > 0) {
+    finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
+    finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
+  }
+
+  const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 
   const payload = {
     productName: document.getElementById('prodName').value.trim(),
     photoLink: document.getElementById('prodPhotoLink').value.trim() || 'images/cctv-wholesale.webp',
     brand: document.getElementById('prodBrandSelect').value,
     category: document.getElementById('prodCategorySelect').value,
-    price: parseFloat(document.getElementById('prodPrice').value) || 0,
-    sellingPrice: parseFloat(document.getElementById('prodSellingPrice').value) || 0,
+    price: finalPrice,
+    sellingPrice: finalSellingPrice,
+    baseSellingPrice: baseSellingPrice,
+    dealerMarginPercent: dealerMarginPercent,
     productSpec: document.getElementById('prodSpec').value.trim(),
     isCombo: document.getElementById('prodIsCombo').checked,
     inStock: availVal === 'In stock',

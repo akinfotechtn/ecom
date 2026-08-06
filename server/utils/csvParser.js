@@ -87,7 +87,7 @@ async function parseProductsFromCsv(csvTextOrUrl) {
 
     const rawPrice = findValue(['Price', 'MRP', 'Regular Price']) || '0';
     const rawSellingPrice = findValue(['Selling Price', 'Sale Price', 'Offer Price', 'Discounted Price']) || rawPrice;
-    const rawDealerMargin = findValue([
+    let rawDealerMargin = findValue([
       'Dealer Extra Margin %',
       'Dealer Extra Margin Percent',
       'Dealer Extra Margin',
@@ -97,6 +97,16 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       'Extra Margin',
       'Margin %'
     ]);
+
+    if (!rawDealerMargin) {
+      const keys = Object.keys(row);
+      if (keys.length > 7) {
+        const val7 = row[keys[7]];
+        if (val7 !== undefined && val7 !== null) {
+          rawDealerMargin = String(val7).trim();
+        }
+      }
+    }
 
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
     const baseSellingPrice = parseFloat(rawSellingPrice.replace(/[^0-9.]/g, '')) || price;
