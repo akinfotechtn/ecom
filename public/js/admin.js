@@ -94,9 +94,11 @@ function setupAdminAuthGuard() {
         msgEl.innerHTML = `<span style="color:var(--text-muted); font-size:0.88rem;">Please sign in using your Google Admin Account.</span>`;
       }
     }
-  });
+  })
 
-  document.getElementById('btnAdminGoogleLogin')?.addEventListener('click', window.adminGoogleLogin);
+  // Note: btnAdminGoogleLogin already has onclick="adminGoogleLogin()" in HTML.
+  // DO NOT add a second addEventListener here — it would call the function twice
+  // causing auth/cancelled-popup-request to silently kill the sign-in.
 
   document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
     await DbService.logoutUser();

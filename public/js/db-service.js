@@ -215,18 +215,19 @@ export class DbService {
       await signInWithRedirect(auth, googleProvider);
       return; // Will navigate away, onAuthStateChanged fires on return
     }
-    // Desktop: try popup first, fall back to redirect
+    // Desktop: try popup first, fall back to redirect only if popup was actually blocked
     try {
       const result = await signInWithPopup(auth, googleProvider);
       return result;
     } catch (err) {
-      const popupErrors = ['auth/popup-blocked', 'auth/popup-closed-by-user', 'auth/cancelled-popup-request'];
-      if (popupErrors.includes(err.code)) {
-        console.warn('Popup blocked or closed. Trying redirect flow...', err.code);
+      if (err.code === 'auth/popup-blocked') {
+        // Browser blocked popup \u2014 redirect is the only option
+        console.warn('Popup was blocked by browser. Falling back to redirect flow...');
         await signInWithRedirect(auth, googleProvider);
-        return; // Will navigate away; handled by getRedirectResult on next load
+        return;
       }
-      throw err; // Rethrow unexpected errors
+      // For all other errors (user closed popup, network error, etc.) \u2014 let the caller handle it
+      throw err;
     }
   }
 
