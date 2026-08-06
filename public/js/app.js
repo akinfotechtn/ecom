@@ -1083,6 +1083,7 @@ function renderSearchDropdown(q) {
     `<div class="search-dropdown-header">Products</div>`,
     ...top6.map(p => {
       const inStock = p.inStock !== false;
+      const priceWithGst = getItemPriceWithGst(p, storeSettings);
       return `<a class="search-dropdown-item" href="product.html?id=${encodeURIComponent(p.id)}">
         <img src="${escapeHtml(p.photoLink || 'images/logo.webp')}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/logo.webp'">
         <div class="sdi-info">
@@ -1091,8 +1092,8 @@ function renderSearchDropdown(q) {
           <div class="sdi-stock ${inStock ? 'in-stock' : 'out-stock'}">● ${inStock ? 'Available' : 'Out of Stock'}</div>
         </div>
         <div class="sdi-price">
-          <span class="sdi-price-main">₹${(p.sellingPrice || p.price || 0).toLocaleString('en-IN')}</span>
-          <span class="sdi-price-sub">GST extra</span>
+          <span class="sdi-price-main">₹${priceWithGst.toLocaleString('en-IN')}</span>
+          <span class="sdi-price-sub">Incl. GST</span>
         </div>
       </a>`;
     }),
