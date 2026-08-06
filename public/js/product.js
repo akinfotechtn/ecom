@@ -177,7 +177,23 @@ window.addToCart = async function(id) {
 
   localStorage.setItem('ak_cart', JSON.stringify(cart));
   renderCart();
-  alert('✅ Item added to cart!');
+  openCartDrawer();
+};
+
+window.updateCartQty = function(id, change) {
+  const index = cart.findIndex(item => String(item.id) === String(id));
+  if (index > -1) {
+    const currentQty = cart[index].quantity || cart[index].qty || 1;
+    const newQty = currentQty + change;
+    if (newQty <= 0) {
+      cart.splice(index, 1);
+    } else {
+      cart[index].quantity = newQty;
+      cart[index].qty = newQty;
+    }
+  }
+  localStorage.setItem('ak_cart', JSON.stringify(cart));
+  renderCart();
 };
 
 window.buyNowDirect = function(id) {
@@ -196,35 +212,80 @@ function getItemPriceWithGst(item) {
   return basePrice + gstAmount;
 }
 
+function openCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.add('open'); drawer.classList.add('active'); }
+  if (backdrop) { backdrop.classList.add('open'); backdrop.classList.add('active'); }
+}
+
+function closeCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
+  if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
+}
+
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
+  const drawerCountEl = document.getElementById('cartItemCount') || document.getElementById('cartDrawerCount');
+
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
   if (cartCountEl) cartCountEl.textContent = totalQty;
+  if (drawerCountEl) drawerCountEl.textContent = totalQty;
 
-  const totalAmtWithGst = cart.reduce((sum, item) => {
+  const itemsListEl = document.getElementById('cartItemsBody') || document.getElementById('cartItemsList');
+  if (itemsListEl) {
+    if (!cart.length) {
+      itemsListEl.innerHTML = `
+        <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+          <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+          Your cart is empty.<br>Browse items & add to cart.
+        </div>`;
+    } else {
+      itemsListEl.innerHTML = cart.map(item => {
+        const q = item.quantity || item.qty || 1;
+        const itemPriceWithGst = getItemPriceWithGst(item);
+        return `
+          <div class="cart-item">
+            <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+            <div class="cart-item-info">
+              <div class="cart-item-name" style="font-size:0.85rem; font-weight:700; color:var(--text-dark); margin-bottom:4px;">${escapeHtml(item.productName)}</div>
+              <div class="cart-item-price" style="font-size:0.9rem; font-weight:800; color:var(--accent-cyan); font-family:var(--font-mono);">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
+              <div class="cart-item-qty" style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+                <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
+                <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
+                <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  const subtotalWithGst = cart.reduce((sum, item) => {
     const q = item.quantity || item.qty || 1;
     return sum + (getItemPriceWithGst(item) * q);
   }, 0);
-  
-  const cartFinalTotal = document.getElementById('cartFinalTotal');
-  if (cartFinalTotal) cartFinalTotal.textContent = `₹${totalAmtWithGst.toLocaleString('en-IN')}`;
+
+  const deliveryFee = subtotalWithGst > 0 ? 150 : 0;
+  const finalTotal = subtotalWithGst + deliveryFee;
+
+  const subtotalEl = document.getElementById('cartSubtotal');
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
+
+  const deliveryEl = document.getElementById('cartDelivery');
+  if (deliveryEl) deliveryEl.textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+
+  const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
+  if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 }
 
 function setupEventListeners() {
-  document.getElementById('openCartBtn')?.addEventListener('click', () => {
-    document.getElementById('cartDrawer')?.classList.add('active');
-    document.getElementById('cartBackdrop')?.classList.add('active');
-  });
-
-  document.getElementById('closeCartBtn')?.addEventListener('click', () => {
-    document.getElementById('cartDrawer')?.classList.remove('active');
-    document.getElementById('cartBackdrop')?.classList.remove('active');
-  });
-
-  document.getElementById('cartBackdrop')?.addEventListener('click', () => {
-    document.getElementById('cartDrawer')?.classList.remove('active');
-    document.getElementById('cartBackdrop')?.classList.remove('active');
-  });
+  document.getElementById('openCartBtn')?.addEventListener('click', openCartDrawer);
+  document.getElementById('closeCartBtn')?.addEventListener('click', closeCartDrawer);
+  document.getElementById('cartBackdrop')?.addEventListener('click', closeCartDrawer);
 }
 
 function escapeHtml(str) {
