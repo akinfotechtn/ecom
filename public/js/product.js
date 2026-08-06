@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  renderCart(); // Render cart instantly from localStorage
   await loadProductDetail(productId);
   renderCart();
   setupEventListeners();

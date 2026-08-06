@@ -149,8 +149,8 @@
         <span>Discount</span>
         <span id="cartDiscount">-₹0</span>
       </div>
-      <div class="cart-summary-row">
-        <span>Estimated Delivery</span>
+      <div class="cart-summary-row delivery-row">
+        <span>Delivery Charges</span>
         <span id="cartDelivery">₹150</span>
       </div>
       <div class="cart-summary-row total-row">
@@ -160,6 +160,33 @@
 
       <button class="btn-checkout" id="proceedCheckoutBtn">
         Proceed to Checkout →
+      </button>
+    </div>
+  </div>
+
+  <!-- AUTH / CHECKOUT CHOICE MODAL -->
+  <div class="modal-backdrop" id="authChoiceBackdrop">
+    <div class="modal-content" style="max-width: 480px; text-align: center; padding: 32px 24px;">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" onclick="closeAuthChoiceModal()">✕</button>
+      <div style="font-size: 2.5rem; margin-bottom: 12px;">🛒</div>
+      <h2 class="modal-title" style="margin-bottom: 8px;">How would you like to checkout?</h2>
+      <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 24px;">
+        Sign in to save addresses, view order history, and track shipments in one click. Or checkout immediately as a guest.
+      </p>
+
+      <button class="btn-checkout" onclick="checkoutWithGoogle()" style="background: linear-gradient(135deg, #0ea5e9, #2563eb) !important; margin-bottom: 14px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border: none;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px; background: white; border-radius: 50%; padding: 2px;" alt="Google Logo">
+        <span>Sign In & Checkout (Recommended)</span>
+      </button>
+
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 16px 0; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">
+        <hr style="flex: 1; border: none; border-top: 1px solid var(--border-color);">
+        <span>or</span>
+        <hr style="flex: 1; border: none; border-top: 1px solid var(--border-color);">
+      </div>
+
+      <button class="btn-checkout" onclick="checkoutAsGuest()" style="background: #f1f5f9 !important; color: var(--text-dark) !important; border: 1px solid var(--border-color) !important; box-shadow: none !important; width: 100%;">
+        👤 Continue as Guest
       </button>
     </div>
   </div>

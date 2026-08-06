@@ -6,6 +6,7 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { parseProductsFromCsv } = require('./utils/csvParser');
 const ShiprocketHelper = require('./utils/shiprocket');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -415,6 +416,157 @@ app.post('/api/orders', async (req, res) => {
     });
   } catch (err) {
     console.error('Order placement error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ORDER EMAIL NOTIFICATION ENDPOINT
+app.post('/api/send-order-email', async (req, res) => {
+  try {
+    const order = req.body;
+    if (!order || !order.id) {
+      return res.status(400).json({ success: false, message: 'Missing order details.' });
+    }
+
+    const settings = readJson(SETTINGS_FILE, {});
+    
+    // Default recipients
+    const recipients = settings.smtpRecipients || 'akinfotechtn@gmail.com, admin@akinfotechcctv.in';
+    const sender = settings.smtpSender || '"AK Infotech Store" <admin@akinfotechcctv.in>';
+
+    let transporter;
+    
+    // Check if custom SMTP is configured
+    if (settings.smtpHost && settings.smtpUser && settings.smtpPass) {
+      transporter = nodemailer.createTransport({
+        host: settings.smtpHost,
+        port: parseInt(settings.smtpPort) || 465,
+        secure: parseInt(settings.smtpPort) === 465, // true for 465, false for other ports
+        auth: {
+          user: settings.smtpUser,
+          pass: settings.smtpPass
+        }
+      });
+    } else {
+      console.warn("SMTP is not configured in settings. Go to Admin Settings to configure SMTP.");
+    }
+
+    const itemsHtml = (order.items || []).map(item => `
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+          <img src="${item.photoLink}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; vertical-align: middle; margin-right: 8px;">
+          <strong>${item.productName}</strong>
+        </td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity || item.qty || 1}</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${(item.sellingPrice || 0).toLocaleString('en-IN')}</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${((item.sellingPrice || 0) * (item.quantity || item.qty || 1)).toLocaleString('en-IN')}</td>
+      </tr>
+    `).join('');
+
+    const emailSubject = `🎉 New Order Placed: ${order.id} (₹${(order.finalTotal || 0).toLocaleString('en-IN')})`;
+    const emailBody = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff;">
+        <div style="text-align: center; border-bottom: 2px solid #0ea5e9; padding-bottom: 16px; margin-bottom: 20px;">
+          <h2 style="color: #0ea5e9; margin: 0 0 4px 0;">AK INFOTECH</h2>
+          <p style="color: #64748b; font-size: 0.9rem; margin: 0;">New Order Notification Manager</p>
+        </div>
+        
+        <h3 style="color: #0f172a; margin-top: 0;">Order Summary</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.9rem;">
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;"><strong>Order ID:</strong></td>
+            <td style="padding: 6px 0; text-align: right;"><strong>${order.id}</strong></td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;"><strong>Date & Time:</strong></td>
+            <td style="padding: 6px 0; text-align: right;">${new Date().toLocaleString('en-IN')}</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;"><strong>Payment Method:</strong></td>
+            <td style="padding: 6px 0; text-align: right;"><span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">${order.paymentMethod || 'COD'}</span></td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;"><strong>Payment Status:</strong></td>
+            <td style="padding: 6px 0; text-align: right;">${order.paymentStatus || 'PENDING'}</td>
+          </tr>
+        </table>
+
+        <h3 style="color: #0f172a; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Customer Details</h3>
+        <p style="font-size: 0.9rem; line-height: 1.5; color: #334155; margin: 0 0 20px 0;">
+          <strong>Name:</strong> ${order.customerName || order.name || 'N/A'}<br>
+          <strong>Phone:</strong> ${order.phone || order.custPhone || 'N/A'}<br>
+          <strong>Email:</strong> ${order.email || 'N/A'}<br>
+          <strong>Address:</strong> ${order.address || ''}, ${order.city || ''}, ${order.state || ''} - ${order.pincode || ''}
+        </p>
+
+        <h3 style="color: #0f172a; margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Order Items</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 20px;">
+          <thead>
+            <tr style="background: #f8fafc;">
+              <th style="padding: 8px; text-align: left; border-bottom: 2px solid #cbd5e1;">Item Name</th>
+              <th style="padding: 8px; text-align: center; border-bottom: 2px solid #cbd5e1; width: 60px;">Qty</th>
+              <th style="padding: 8px; text-align: right; border-bottom: 2px solid #cbd5e1; width: 90px;">Price</th>
+              <th style="padding: 8px; text-align: right; border-bottom: 2px solid #cbd5e1; width: 90px;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px;">
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;">Subtotal (with GST):</td>
+            <td style="padding: 6px 0; text-align: right;">₹${(order.subtotal || 0).toLocaleString('en-IN')}</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; color: #64748b;">Delivery Charges:</td>
+            <td style="padding: 6px 0; text-align: right;">${order.deliveryFee === 0 ? '<span style="color:#16a34a; font-weight:bold;">FREE</span>' : `₹${(order.deliveryFee || 0).toLocaleString('en-IN')}`}</td>
+          </tr>
+          ${order.discountAmount ? `
+          <tr>
+            <td style="padding: 6px 0; color: #16a34a;">Discount Code Applied:</td>
+            <td style="padding: 6px 0; text-align: right; color: #16a34a;">-₹${(order.discountAmount || 0).toLocaleString('en-IN')}</td>
+          </tr>
+          ` : ''}
+          <tr style="border-top: 2px solid #e2e8f0; font-size: 1.1rem; font-weight: bold;">
+            <td style="padding: 10px 0; color: #0f172a;">Grand Total Payable:</td>
+            <td style="padding: 10px 0; text-align: right; color: #0284c7;">₹${(order.finalTotal || 0).toLocaleString('en-IN')}</td>
+          </tr>
+          ${order.paymentMethod === 'COD' ? `
+          <tr style="font-size: 0.9rem; color: #64748b;">
+            <td style="padding: 6px 0;">Advance Paid Online:</td>
+            <td style="padding: 6px 0; text-align: right;">₹${(order.advancePaid || 0).toLocaleString('en-IN')}</td>
+          </tr>
+          <tr style="font-size: 0.95rem; font-weight: bold; color: #b45309; background: #fffbe6; border: 1px dashed #ffe58f;">
+            <td style="padding: 8px;">Balance Payable at Delivery:</td>
+            <td style="padding: 8px; text-align: right;">₹${(order.balanceOnDelivery || 0).toLocaleString('en-IN')}</td>
+          </tr>
+          ` : ''}
+        </table>
+
+        <div style="margin-top: 30px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+          <a href="https://wa.me/919500673207" style="display: inline-block; background: #22c55e; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 0.9rem;">
+            💬 Contact Store on WhatsApp
+          </a>
+        </div>
+      </div>
+    `;
+
+    if (transporter) {
+      await transporter.sendMail({
+        from: sender,
+        to: recipients,
+        subject: emailSubject,
+        html: emailBody
+      });
+      console.log(`✉️ Successful order email sent for order ${order.id} to ${recipients}`);
+      return res.json({ success: true, message: 'Email sent successfully via Nodemailer SMTP!' });
+    }
+
+    res.json({ success: true, message: 'SMTP not configured, order received.' });
+  } catch (err) {
+    console.error('Email sending error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });

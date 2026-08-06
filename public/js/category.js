@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   setupCartDrawer();
+  renderCart();
 
   try {
     const [prods, categories, brands, settings] = await Promise.all([

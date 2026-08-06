@@ -85,12 +85,12 @@ function setupAdminAuthGuard() {
 }
 
 async function loadAdminData() {
-  await fetchAdminSettings();
-  await fetchAdminHeroBanners();
-  await fetchAdminBrands();
-  await fetchAdminCategories();
-  await fetchAdminProducts();
-  await fetchAdminOrders();
+  try { await fetchAdminSettings(); } catch (e) { console.error("Error loading settings:", e); }
+  try { await fetchAdminHeroBanners(); } catch (e) { console.error("Error loading banners:", e); }
+  try { await fetchAdminBrands(); } catch (e) { console.error("Error loading brands:", e); }
+  try { await fetchAdminCategories(); } catch (e) { console.error("Error loading categories:", e); }
+  try { await fetchAdminProducts(); } catch (e) { console.error("Error loading products:", e); }
+  try { await fetchAdminOrders(); } catch (e) { console.error("Error loading orders:", e); }
 }
 
 window.switchAdminTab = function(tabId, btn) {
@@ -927,6 +927,20 @@ async function fetchAdminSettings() {
     document.getElementById('cfgRzpKeySecret').value = adminSettings.razorpay?.keySecret || '';
     document.getElementById('cfgSrEmail').value = adminSettings.shiprocket?.email || '';
     document.getElementById('cfgSrPassword').value = adminSettings.shiprocket?.password || '';
+
+    // Load SMTP Settings
+    const smtpHostEl = document.getElementById('cfgSmtpHost');
+    if (smtpHostEl) smtpHostEl.value = adminSettings.smtpHost || '';
+    const smtpPortEl = document.getElementById('cfgSmtpPort');
+    if (smtpPortEl) smtpPortEl.value = adminSettings.smtpPort || '';
+    const smtpUserEl = document.getElementById('cfgSmtpUser');
+    if (smtpUserEl) smtpUserEl.value = adminSettings.smtpUser || '';
+    const smtpPassEl = document.getElementById('cfgSmtpPass');
+    if (smtpPassEl) smtpPassEl.value = adminSettings.smtpPass || '';
+    const smtpSenderEl = document.getElementById('cfgSmtpSender');
+    if (smtpSenderEl) smtpSenderEl.value = adminSettings.smtpSender || '';
+    const smtpRecipientsEl = document.getElementById('cfgSmtpRecipients');
+    if (smtpRecipientsEl) smtpRecipientsEl.value = adminSettings.smtpRecipients || '';
   } catch (err) {
     console.error('Settings load error:', err);
   }
@@ -945,6 +959,12 @@ async function saveStoreSettings(e) {
     codAdvanceAmount: parseFloat(document.getElementById('cfgCodAdvanceAmount').value) || 1000,
     googleSheetUrl: document.getElementById('googleSheetUrlInput')?.value.trim() || '',
     googleSheetWebhookUrl: document.getElementById('googleSheetWebhookUrlInput')?.value.trim() || '',
+    smtpHost: document.getElementById('cfgSmtpHost')?.value.trim() || '',
+    smtpPort: parseInt(document.getElementById('cfgSmtpPort')?.value) || 465,
+    smtpUser: document.getElementById('cfgSmtpUser')?.value.trim() || '',
+    smtpPass: document.getElementById('cfgSmtpPass')?.value.trim() || '',
+    smtpSender: document.getElementById('cfgSmtpSender')?.value.trim() || '',
+    smtpRecipients: document.getElementById('cfgSmtpRecipients')?.value.trim() || '',
     razorpay: {
       keyId: document.getElementById('cfgRzpKeyId').value.trim(),
       keySecret: document.getElementById('cfgRzpKeySecret').value.trim()
@@ -1865,3 +1885,13 @@ window.printShiprocketLabel = async function(orderId) {
     alert(`Label Error: ${err.message}`);
   }
 };
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}

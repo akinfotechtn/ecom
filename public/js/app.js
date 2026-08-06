@@ -28,13 +28,31 @@ let heroAutoScrollTimer = null;
 
 // INITIALIZATION
 document.addEventListener('DOMContentLoaded', async () => {
+  renderCart(); // Render cart instantly from localStorage
   setupAuthState();
-  await fetchSettings();
+  try {
+    await fetchSettings();
+    renderCart();
+  } catch (e) {
+    console.error("fetchSettings error:", e);
+  }
   await loadHeroBanners();
   await loadBrandsAndCategories();
   await fetchProducts();
   setupEventListeners();
   renderCart();
+
+  // Check if checkout redirect exists
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('checkout') === 'true') {
+    setTimeout(() => {
+      if (!currentUser) {
+        window.openAuthChoiceModal();
+      } else {
+        openCheckoutModal();
+      }
+    }, 1200);
+  }
 });
 
 function setupAuthState() {
@@ -718,6 +736,15 @@ async function handleCheckoutSubmit(e) {
         };
 
         const savedOrder = await DbService.createOrder(orderPayload);
+        try {
+          fetch('/api/send-order-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(savedOrder)
+          }).catch(e => console.warn("Email notify failed:", e));
+        } catch (e) {
+          console.warn("Email notify trigger error:", e);
+        }
         alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${selectedPaymentMethod === 'COD' ? `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.` : 'Full Amount Paid Online.'}`);
 
         cart = [];
@@ -778,7 +805,12 @@ function setupEventListeners() {
         alert('Your cart is empty!');
         return;
       }
-      openCheckoutModal();
+      closeCartDrawer();
+      if (!currentUser) {
+        window.openAuthChoiceModal();
+      } else {
+        openCheckoutModal();
+      }
     });
   }
 
@@ -820,6 +852,39 @@ window.openCartDrawer = function() {
 window.closeCartDrawer = function() {
   document.getElementById('cartDrawer').classList.remove('active');
   document.getElementById('cartBackdrop').classList.remove('active');
+};
+
+window.openAuthChoiceModal = function() {
+  const modal = document.getElementById('authChoiceBackdrop');
+  if (modal) {
+    modal.classList.add('open');
+    modal.classList.add('active');
+  }
+};
+
+window.closeAuthChoiceModal = function() {
+  const modal = document.getElementById('authChoiceBackdrop');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.classList.remove('active');
+  }
+};
+
+window.checkoutWithGoogle = async function() {
+  try {
+    closeAuthChoiceModal();
+    await DbService.loginWithGoogle();
+    setTimeout(() => {
+      openCheckoutModal();
+    }, 1200);
+  } catch (err) {
+    alert("Sign In Error: " + (err.message || err));
+  }
+};
+
+window.checkoutAsGuest = function() {
+  closeAuthChoiceModal();
+  openCheckoutModal();
 };
 
 async function openCheckoutModal() {

@@ -1941,3 +1941,19 @@ footer {
 .btn-checkout:active {
   transform: translateY(0) !important;
 }
+
+/* Highlight Delivery Charges row */
+.cart-summary-row.delivery-row {
+  background: #f0f9ff !important;
+  border: 1.5px dashed #0284c7 !important;
+  padding: 6px 12px !important;
+  border-radius: var(--radius-md) !important;
+  margin: 4px 0 !important;
+  font-weight: 800 !important;
+  color: #0284c7 !important;
+}
+
+.cart-summary-row.delivery-row span:last-child {
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+}

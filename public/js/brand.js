@@ -12,6 +12,7 @@ let appliedCoupon = null;
 let selectedPaymentMethod = 'ONLINE';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  renderCart(); // Render cart instantly from localStorage
   setupAuthState();
   parseBrandUrl();
   await loadBrandData();
@@ -510,58 +511,7 @@ function setupEventListeners() {
     });
   }
 
-  document.getElementById('proceedCheckoutBtn')?.addEventListener('click', () => {
-    if (!cart.length) {
-      alert('Your cart is empty!');
-      return;
-    }
-    closeCartDrawer();
-    openCheckoutModal();
-  });
 }
-
-function openCheckoutModal() {
-  const backdrop = document.getElementById('checkoutBackdrop');
-  if (!backdrop) return;
-
-  backdrop.classList.add('active');
-
-  const savedGroup = document.getElementById('savedAddressGroup');
-  const savedSelect = document.getElementById('savedAddressSelect');
-
-  if (currentUser) {
-    const custEmail = document.getElementById('custEmail');
-    const custName = document.getElementById('custName');
-    if (custEmail && currentUser.email) custEmail.value = currentUser.email;
-    if (custName && currentUser.displayName) custName.value = currentUser.displayName;
-
-    if (userAddresses && userAddresses.length) {
-      savedGroup.style.display = 'block';
-      savedSelect.innerHTML = `<option value="">-- Choose a saved delivery address --</option>` +
-        userAddresses.map(a => `<option value="${a.id}">${escapeHtml(a.fullName)} - ${escapeHtml(a.street)}, ${escapeHtml(a.pincode)}</option>`).join('');
-
-      savedSelect.onchange = function() {
-        const found = userAddresses.find(a => a.id === this.value);
-        if (found) {
-          document.getElementById('custName').value = found.fullName;
-          document.getElementById('custPhone').value = found.phone;
-          document.getElementById('custAddress').value = found.street;
-          document.getElementById('custPincode').value = found.pincode;
-          document.getElementById('custCityState').value = found.cityState;
-        }
-      };
-
-      if (userAddresses[0]) {
-        savedSelect.value = userAddresses[0].id;
-        savedSelect.dispatchEvent(new Event('change'));
-      }
-    }
-  }
-}
-
-window.closeCheckoutModal = function() {
-  document.getElementById('checkoutBackdrop')?.classList.remove('active');
-};
 
 function escapeHtml(str) {
   if (!str) return '';

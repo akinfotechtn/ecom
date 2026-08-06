@@ -472,6 +472,44 @@
           <input type="number" id="cfgCodAdvanceAmount" required value="1000">
         </div>
 
+        <h3 style="font-size: 1rem; font-weight: 800; margin: 24px 0 12px; color: var(--accent-cyan);">📧 Email SMTP Server Configuration (Reliable Order Notifications)</h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+          Configure your SMTP settings (e.g. Gmail App Password or custom SMTP provider) to automatically send HTML receipt emails to <strong>akinfotechtn@gmail.com</strong> and <strong>admin@akinfotechcctv.in</strong> upon every successful order placement.
+        </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>SMTP Host (e.g. smtp.gmail.com)</label>
+            <input type="text" id="cfgSmtpHost" placeholder="smtp.gmail.com">
+          </div>
+          <div class="form-group">
+            <label>SMTP Port (usually 465 or 587)</label>
+            <input type="number" id="cfgSmtpPort" placeholder="465">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>SMTP Username (email address)</label>
+            <input type="text" id="cfgSmtpUser" placeholder="admin@akinfotechcctv.in">
+          </div>
+          <div class="form-group">
+            <label>SMTP Password / App Password</label>
+            <div style="position: relative; display: flex; align-items: center;">
+              <input type="password" id="cfgSmtpPass" placeholder="••••••••••••" style="padding-right: 42px; width: 100%;">
+              <button type="button" onclick="togglePasswordVisibility('cfgSmtpPass', this)" style="position: absolute; right: 8px; background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px;" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sender Address Header (from)</label>
+            <input type="text" id="cfgSmtpSender" placeholder='&quot;AK Infotech Store&quot; &lt;admin@akinfotechcctv.in&gt;'>
+          </div>
+          <div class="form-group">
+            <label>Recipient Emails (comma-separated)</label>
+            <input type="text" id="cfgSmtpRecipients" placeholder="akinfotechtn@gmail.com, admin@akinfotechcctv.in">
+          </div>
+        </div>
+
         <h3 style="font-size: 1rem; font-weight: 800; margin: 24px 0 12px; color: var(--accent-cyan);">💳 Razorpay Integration Keys</h3>
         <div class="form-row">
           <div class="form-group">
