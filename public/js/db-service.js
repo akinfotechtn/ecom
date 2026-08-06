@@ -208,25 +208,16 @@ const DEFAULT_SETTINGS = {
 export class DbService {
   // GOOGLE AUTHENTICATION
   static async loginWithGoogle() {
-    // Use redirect for mobile browsers (which block popups more aggressively)
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      // Redirect flow: navigates away; getRedirectResult() at top of file handles completion
-      await signInWithRedirect(auth, googleProvider);
-      return; // Will navigate away, onAuthStateChanged fires on return
-    }
-    // Desktop: try popup first, fall back to redirect only if popup was actually blocked
     try {
+      // Use signInWithPopup directly for all devices (works on mobile & desktop when triggered by click/touch event)
       const result = await signInWithPopup(auth, googleProvider);
       return result;
     } catch (err) {
       if (err.code === 'auth/popup-blocked') {
-        // Browser blocked popup \u2014 redirect is the only option
         console.warn('Popup was blocked by browser. Falling back to redirect flow...');
         await signInWithRedirect(auth, googleProvider);
         return;
       }
-      // For all other errors (user closed popup, network error, etc.) \u2014 let the caller handle it
       throw err;
     }
   }
