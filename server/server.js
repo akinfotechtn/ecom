@@ -431,8 +431,17 @@ app.post('/api/send-order-email', async (req, res) => {
     const settings = readJson(SETTINGS_FILE, {});
     
     // Default recipients
-    const recipients = settings.smtpRecipients || 'akinfotechtn@gmail.com, admin@akinfotechcctv.in';
+    const adminRecipients = settings.smtpRecipients || 'akinfotechtn@gmail.com, admin@akinfotechcctv.in';
     const sender = settings.smtpSender || '"AK Infotech Store" <admin@akinfotechcctv.in>';
+
+    // Build the final recipients list including the customer email (if provided)
+    let recipientList = [adminRecipients];
+    if (order.email && order.email.trim().length > 0) {
+      recipientList.push(order.email.trim());
+    } else if (order.userEmail && order.userEmail.trim().length > 0) {
+      recipientList.push(order.userEmail.trim());
+    }
+    const recipients = recipientList.join(', ');
 
     let transporter;
     
