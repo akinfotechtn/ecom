@@ -16,6 +16,24 @@ function normalizeGoogleSheetUrl(url) {
   return cleanUrl;
 }
 
+function parseMarginPercentage(rawStr) {
+  if (!rawStr) return 0;
+  const str = String(rawStr).trim();
+  if (!str) return 0;
+
+  const hasPercent = str.includes('%');
+  const num = parseFloat(str.replace(/[^0-9.]/g, ''));
+  if (isNaN(num) || num <= 0) return 0;
+
+  if (hasPercent) {
+    return num;
+  }
+  if (num > 0 && num <= 1) {
+    return num * 100;
+  }
+  return num;
+}
+
 /**
  * Parses raw CSV string or fetches from Google Sheet CSV URL
  */
@@ -69,9 +87,28 @@ async function parseProductsFromCsv(csvTextOrUrl) {
 
     const rawPrice = findValue(['Price', 'MRP', 'Regular Price']) || '0';
     const rawSellingPrice = findValue(['Selling Price', 'Sale Price', 'Offer Price', 'Discounted Price']) || rawPrice;
+    const rawDealerMargin = findValue([
+      'Dealer Extra Margin %',
+      'Dealer Extra Margin Percent',
+      'Dealer Extra Margin',
+      'Dealer Margin %',
+      'Dealer Margin',
+      'Extra Margin %',
+      'Extra Margin',
+      'Margin %'
+    ]);
 
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
-    const sellingPrice = parseFloat(rawSellingPrice.replace(/[^0-9.]/g, '')) || price;
+    const baseSellingPrice = parseFloat(rawSellingPrice.replace(/[^0-9.]/g, '')) || price;
+    const dealerMarginPercent = parseMarginPercentage(rawDealerMargin);
+
+    let finalSellingPrice = baseSellingPrice;
+    if (dealerMarginPercent > 0) {
+      finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
+      finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
+    }
+
+    const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
 
     const comboVal = findValue(['Is Combo', 'Is it Combo', 'IsCombo', 'Combo']).toLowerCase();
     const isCombo = comboVal === 'yes' || comboVal === 'true' || comboVal === '1' || category.toLowerCase().includes('combo') || productName.toLowerCase().includes('combo');
@@ -86,8 +123,10 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       productSpec,
       brand,
       category,
-      price: price || sellingPrice,
-      sellingPrice: sellingPrice || price,
+      price: finalPrice,
+      sellingPrice: finalSellingPrice,
+      baseSellingPrice: baseSellingPrice,
+      dealerMarginPercent: dealerMarginPercent,
       inStock,
       isCombo
     };

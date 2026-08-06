@@ -291,6 +291,24 @@ function parseCsvToMatrix(csvText) {
   return rows;
 }
 
+function parseMarginPercentage(rawStr) {
+  if (!rawStr) return 0;
+  const str = String(rawStr).trim();
+  if (!str) return 0;
+
+  const hasPercent = str.includes('%');
+  const num = parseFloat(str.replace(/[^0-9.]/g, ''));
+  if (isNaN(num) || num <= 0) return 0;
+
+  if (hasPercent) {
+    return num;
+  }
+  if (num > 0 && num <= 1) {
+    return num * 100;
+  }
+  return num;
+}
+
 function parseCsvTextToProducts(csvText) {
   const matrix = parseCsvToMatrix(csvText);
   if (matrix.length <= 1) throw new Error("CSV contains no data rows.");
@@ -299,22 +317,29 @@ function parseCsvTextToProducts(csvText) {
   
   const getColIndex = (aliases) => {
     for (const alias of aliases) {
+      const idx = headers.findIndex(h => h === alias);
+      if (idx !== -1) return idx;
+    }
+    for (const alias of aliases) {
       const idx = headers.findIndex(h => h.includes(alias));
       if (idx !== -1) return idx;
     }
     return -1;
   };
 
-  const photoIdx = getColIndex(['photo', 'image', 'link', 'url']);
-  const nameIdx = getColIndex(['name', 'title', 'product']);
-  const specIdx = getColIndex(['spec', 'description', 'detail']);
+  const photoIdx = getColIndex(['productphotolink', 'photo', 'image', 'link', 'url']);
+  const nameIdx = getColIndex(['productname', 'name', 'title', 'product']);
+  const specIdx = getColIndex(['productspec', 'spec', 'description', 'detail']);
   const brandIdx = getColIndex(['brand', 'manufacturer']);
   const catIdx = getColIndex(['category', 'cat', 'type']);
   const priceIdx = getColIndex(['mrp', 'price']);
-  const sellingIdx = getColIndex(['selling', 'offer', 'saleprice', 'sale']);
-  const comboIdx = getColIndex(['combo', 'iscombo']);
+  const sellingIdx = getColIndex(['sellingprice', 'saleprice', 'offerprice', 'selling', 'offer', 'sale']);
+  const dealerMarginIdx = getColIndex(['dealerextramargin', 'dealerextramarginpercent', 'dealermargin', 'extramargin', 'margin']);
+  const comboIdx = getColIndex(['iscombo', 'combo']);
   const availIdx = getColIndex(['availability', 'stock']);
-  const deliveryIdx = getColIndex(['delivery', 'shipping', 'fee', 'customdelivery']);
+  const deliveryIdx = getColIndex(['customdeliveryfee', 'delivery', 'shipping', 'fee']);
+
+  const hasMarginCol = dealerMarginIdx !== -1;
 
   const parsed = [];
   for (let i = 1; i < matrix.length; i++) {
@@ -329,17 +354,31 @@ function parseCsvTextToProducts(csvText) {
 
     const rawPrice = (priceIdx !== -1 ? cols[priceIdx] : cols[5]) || '0';
     const rawSelling = (sellingIdx !== -1 ? cols[sellingIdx] : cols[6]) || rawPrice;
+    const rawMargin = (dealerMarginIdx !== -1 ? cols[dealerMarginIdx] : (cols[7] && (cols[7].includes('%') || !isNaN(parseFloat(cols[7]))) ? cols[7] : '')) || '';
 
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
-    const sellingPrice = parseFloat(rawSelling.replace(/[^0-9.]/g, '')) || price;
+    const baseSellingPrice = parseFloat(rawSelling.replace(/[^0-9.]/g, '')) || price;
+    const dealerMarginPercent = parseMarginPercentage(rawMargin);
 
-    const comboVal = ((comboIdx !== -1 ? cols[comboIdx] : cols[7]) || '').toLowerCase();
+    let finalSellingPrice = baseSellingPrice;
+    if (dealerMarginPercent > 0) {
+      finalSellingPrice = baseSellingPrice + (baseSellingPrice * (dealerMarginPercent / 100));
+      finalSellingPrice = Math.round(finalSellingPrice * 100) / 100;
+    }
+
+    const finalPrice = Math.max(price, finalSellingPrice) || finalSellingPrice;
+
+    const defaultComboIdx = hasMarginCol ? 8 : 7;
+    const defaultAvailIdx = hasMarginCol ? 9 : 8;
+    const defaultDeliveryIdx = hasMarginCol ? 10 : 9;
+
+    const comboVal = ((comboIdx !== -1 ? cols[comboIdx] : cols[defaultComboIdx]) || '').toLowerCase();
     const isCombo = comboVal === 'yes' || comboVal === 'true' || comboVal === '1' || category.toLowerCase().includes('combo');
 
-    const availVal = ((availIdx !== -1 ? cols[availIdx] : cols[8]) || '').toLowerCase();
+    const availVal = ((availIdx !== -1 ? cols[availIdx] : cols[defaultAvailIdx]) || '').toLowerCase();
     const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
 
-    const rawDelivery = (deliveryIdx !== -1 ? cols[deliveryIdx] : cols[9]) || '';
+    const rawDelivery = (deliveryIdx !== -1 ? cols[deliveryIdx] : cols[defaultDeliveryIdx]) || '';
     const deliveryCharge = (rawDelivery !== '' && !isNaN(rawDelivery)) ? parseFloat(rawDelivery) : null;
 
     parsed.push({
@@ -349,8 +388,10 @@ function parseCsvTextToProducts(csvText) {
       productSpec,
       brand,
       category,
-      price: price || sellingPrice,
-      sellingPrice: sellingPrice || price,
+      price: finalPrice,
+      sellingPrice: finalSellingPrice,
+      baseSellingPrice: baseSellingPrice,
+      dealerMarginPercent: dealerMarginPercent,
       inStock,
       isCombo,
       deliveryCharge
@@ -659,7 +700,10 @@ function renderProductsTable() {
       <td><span class="badge-glow">${escapeHtml(p.brand)}</span></td>
       <td>${escapeHtml(p.category)}</td>
       <td>₹${p.price?.toLocaleString('en-IN')}</td>
-      <td style="color:var(--accent-cyan); font-weight:800;">₹${p.sellingPrice?.toLocaleString('en-IN')}</td>
+      <td style="color:var(--accent-cyan); font-weight:800;">
+        ₹${p.sellingPrice?.toLocaleString('en-IN')}
+        ${p.dealerMarginPercent ? `<br><span style="font-size:0.7rem; color:#0369a1; background:#e0f2fe; padding:1px 6px; border-radius:4px; font-weight:700;">+${p.dealerMarginPercent}% dealer margin</span>` : ''}
+      </td>
       <td>${p.isCombo ? '<span style="color:var(--accent-orange); font-weight:800;">🔥 YES</span>' : 'No'}</td>
       <td>
         ${p.inStock !== false ? `
