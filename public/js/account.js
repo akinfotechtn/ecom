@@ -106,9 +106,12 @@ window.switchAccountTab = function(tabId, btn) {
 // 1. ORDERS HISTORY & TRACKING
 async function loadUserOrders(uid) {
   const container = document.getElementById('userOrdersContainer');
-  container.innerHTML = `<div style="text-align:center; padding:16px;">Loading your orders...</div>`;
+  if (!container) return;
+  container.innerHTML = `<div style="text-align:center; padding:16px;">⏳ Loading your orders...</div>`;
 
-  userOrders = await DbService.getUserOrders(uid);
+  const user = auth.currentUser;
+  const userEmail = user ? user.email : '';
+  userOrders = await DbService.getUserOrders(uid, userEmail);
 
   if (!userOrders || !userOrders.length) {
     container.innerHTML = `
@@ -254,18 +257,39 @@ function setupEventListeners() {
 }
 
 function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/[&<>"']/g, function (m) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, function (m) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
 
 function generateOrderTrackingHtml(order) {
+  if (!order) return '';
   const status = (order.status || 'PROCESSING').toUpperCase();
   const isStep1 = true;
   const isStep2 = status === 'SHIPPED' || status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
   const isStep3 = status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
   const isStep4 = status === 'DELIVERED';
+
+  const orderIdStr = escapeHtml(order.id || 'N/A');
+  const totalAmt = Number(order.finalTotal || order.total || order.totalAmount || order.grandTotal || 0);
+
+  let dateFormatted = 'N/A';
+  if (order.createdAt) {
+    try {
+      dateFormatted = new Date(order.createdAt).toLocaleString('en-IN');
+      if (dateFormatted === 'Invalid Date') dateFormatted = String(order.createdAt);
+    } catch (e) { dateFormatted = String(order.createdAt); }
+  }
+
+  const itemsList = (order.items && Array.isArray(order.items) && order.items.length)
+    ? order.items.map(i => `${escapeHtml(i.productName || i.name || 'Item')} (x${i.quantity || i.qty || 1})`).join(', ')
+    : 'Order Items';
+
+  const custName = escapeHtml(order.customerName || order.name || order.fullName || 'Customer');
+  const addressStr = escapeHtml(order.address || order.street || '');
+  const cityStr = escapeHtml(order.city || order.cityState || '');
+  const pincodeStr = escapeHtml(order.pincode || '');
 
   const shiprocketTrackingHtml = order.awbCode ? `
     <div style="font-size: 0.8rem; background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px; border-radius: 8px; margin-top: 10px; color: #0369a1;">
@@ -276,27 +300,30 @@ function generateOrderTrackingHtml(order) {
     </div>
   ` : '';
 
+  const advancePaid = Number(order.advancePaid || 1000);
+  const balanceOnDelivery = Math.max(0, totalAmt - advancePaid);
+
   return `
     <div class="order-tracking-card" style="border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; margin-bottom: 12px; background: #ffffff;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">
         <div>
-          <div style="font-weight: 800; font-size: 1rem; color: var(--text-dark);">Order #${order.id}</div>
-          <div style="font-size: 0.78rem; color: var(--text-muted);">${new Date(order.createdAt).toLocaleString('en-IN')}</div>
+          <div style="font-weight: 800; font-size: 1rem; color: var(--text-dark);">Order #${orderIdStr}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">${dateFormatted}</div>
         </div>
         <div style="text-align: right;">
           <span class="status-badge ${order.paymentMethod === 'COD' ? 'status-cod' : 'status-online'}">
             ${order.paymentMethod === 'COD' ? '💵 COD (Advance Paid)' : '💳 Paid Online'}
           </span>
-          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px; color: var(--text-dark);">Total: ₹${order.finalTotal?.toLocaleString('en-IN')}</div>
+          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px; color: var(--text-dark);">Total: ₹${totalAmt.toLocaleString('en-IN')}</div>
         </div>
       </div>
 
       <div style="font-size: 0.82rem; margin-bottom: 8px;">
-        <strong>Items:</strong> ${order.items?.map(i => `${i.productName} (x${i.quantity || i.qty || 1})`).join(', ')}
+        <strong>Items:</strong> ${itemsList}
       </div>
 
       <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
-        📍 <strong>Ship to:</strong> ${escapeHtml(order.customerName || order.name)}, ${escapeHtml(order.address)}, ${escapeHtml(order.city || '')} - ${escapeHtml(order.pincode)}
+        📍 <strong>Ship to:</strong> ${custName}${addressStr ? `, ${addressStr}` : ''}${cityStr ? `, ${cityStr}` : ''}${pincodeStr ? ` - ${pincodeStr}` : ''}
       </div>
 
       <div class="tracking-timeline">
@@ -320,7 +347,7 @@ function generateOrderTrackingHtml(order) {
 
       ${order.paymentMethod === 'COD' ? `
         <div style="font-size: 0.8rem; background: #fff7ed; border: 1px solid #fed7aa; padding: 8px; border-radius: 6px; margin-top: 10px; color: #9a3412;">
-          👉 <strong>COD Split:</strong> ₹${order.advancePaid} Advance Paid | <strong>₹${order.balanceOnDelivery} Due at Delivery</strong>
+          👉 <strong>COD Split:</strong> ₹${advancePaid.toLocaleString('en-IN')} Advance Paid | <strong>₹${balanceOnDelivery.toLocaleString('en-IN')} Due at Delivery</strong>
         </div>
       ` : ''}
 

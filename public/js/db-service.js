@@ -548,13 +548,20 @@ export class DbService {
     return fullOrder;
   }
 
-  static async getUserOrders(uid) {
+  static async getUserOrders(uid, userEmail = '') {
     try {
-      if (!uid) return [];
-      const q = query(collection(db, "orders"), where("userUid", "==", uid));
-      const snap = await getDocs(q);
-      return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (!uid && !userEmail) return [];
+      const allOrders = await this.getOrders();
+      return allOrders.filter(o => 
+        (uid && o.userUid === uid) || 
+        (userEmail && (
+          (o.userEmail && o.userEmail.toLowerCase() === userEmail.toLowerCase()) ||
+          (o.email && o.email.toLowerCase() === userEmail.toLowerCase()) ||
+          (o.customerEmail && o.customerEmail.toLowerCase() === userEmail.toLowerCase())
+        ))
+      );
     } catch (err) {
+      console.warn("getUserOrders error:", err);
       return [];
     }
   }
@@ -571,23 +578,7 @@ export class DbService {
         }
       }
     } catch (err) {
-      console.warn("Firestore lookup failed, attempting local API fallback:", err);
-      try {
-        const res = await fetch("/api/orders");
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.orders) {
-            const found = data.orders.find(o => String(o.id) === String(orderId));
-            if (found) {
-              const orderPhone = String(found.phone || found.custPhone || '').replace(/\D/g, '');
-              const searchPhone = String(phone).replace(/\D/g, '');
-              if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
-                return found;
-              }
-            }
-          }
-        }
-      } catch (e) {}
+      console.warn("Firestore lookup failed:", err);
     }
     return null;
   }
@@ -597,9 +588,9 @@ export class DbService {
       const cleanStr = queryStr.trim().toUpperCase();
       const allOrders = await this.getOrders();
       return allOrders.filter(o => 
-        o.id.toUpperCase() === cleanStr || 
-        (o.phone && o.phone.includes(queryStr.trim())) ||
-        (o.razorpayOrderId && o.razorpayOrderId.toUpperCase() === cleanStr)
+        (o.id && String(o.id).toUpperCase() === cleanStr) || 
+        (o.phone && String(o.phone).includes(queryStr.trim())) ||
+        (o.razorpayOrderId && String(o.razorpayOrderId).toUpperCase() === cleanStr)
       );
     } catch (err) {
       return [];
@@ -608,7 +599,6 @@ export class DbService {
 
   static async getOrders() {
     let firestoreOrders = [];
-    let localOrders = [];
 
     // 1. Try Firestore
     try {
@@ -618,15 +608,16 @@ export class DbService {
       console.warn("Firestore getOrders failed:", err.message);
     }
 
-    // 2. Also check local API (in case some orders were saved there as fallback)
-    try {
-      const res = await fetch("/api/orders");
-      if (res.ok) {
-        const data = await res.json();
-        localOrders = data.orders || [];
-      }
-    } catch (e) {
-      // Server not running or network error — ignore
+    // 2. Local API fallback only if on localhost and Firestore was empty
+    let localOrders = [];
+    if (!firestoreOrders.length && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      try {
+        const res = await fetch("/api/orders");
+        if (res.ok) {
+          const data = await res.json();
+          localOrders = data.orders || [];
+        }
+      } catch (e) {}
     }
 
     // 3. Merge: combine both sources, deduplicate by order ID (Firestore takes priority)
@@ -635,7 +626,7 @@ export class DbService {
       if (o.id) merged.set(String(o.id), o);
     }
     for (const o of firestoreOrders) {
-      if (o.id) merged.set(String(o.id), o); // Overwrite local with Firestore version
+      if (o.id) merged.set(String(o.id), o);
     }
 
     const all = Array.from(merged.values());

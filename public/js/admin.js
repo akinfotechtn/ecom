@@ -1294,8 +1294,8 @@ function setupEventListeners() {
 }
 
 function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/[&<>"']/g, function (m) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, function (m) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
@@ -1710,8 +1710,17 @@ function renderOrdersTable() {
   adminOrders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
   tbody.innerHTML = adminOrders.map(o => {
-    const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
+    let dateStr = 'N/A';
+    if (o.createdAt) {
+      try {
+        dateStr = new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        if (dateStr === 'Invalid Date') dateStr = String(o.createdAt);
+      } catch (e) { dateStr = String(o.createdAt); }
+    }
     
+    const totalAmt = Number(o.total || o.finalTotal || o.totalAmount || o.grandTotal || 0);
+    const itemCount = (o.items && Array.isArray(o.items)) ? o.items.length : 0;
+
     // Status Badge
     let statusClass = 'status-cod';
     if (o.status === 'DELIVERED') statusClass = 'status-online';
@@ -1724,7 +1733,7 @@ function renderOrdersTable() {
     if (o.shiprocketOrderId) {
       srBadgeHtml = `
         <div style="font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 4px;">
-          SR Order #${o.shiprocketOrderId}
+          SR Order #${escapeHtml(o.shiprocketOrderId)}
         </div>
       `;
       if (o.awbCode) {
@@ -1753,28 +1762,34 @@ function renderOrdersTable() {
       `;
     }
 
+    const orderIdStr = escapeHtml(o.id || 'N/A');
+    const custName = escapeHtml(o.name || o.customerName || o.fullName || o.custName || 'Customer');
+    const custEmail = escapeHtml(o.email || o.userEmail || o.customerEmail || '');
+    const custPhone = escapeHtml(o.phone || o.custPhone || 'N/A');
+    const locationStr = escapeHtml((o.cityState || o.address || o.city || '') + (o.pincode ? ` (${o.pincode})` : ''));
+
     return `
       <tr>
         <td>
-          <strong style="color:var(--text-dark);">${escapeHtml(o.id)}</strong>
+          <strong style="color:var(--text-dark);">${orderIdStr}</strong>
           ${srBadgeHtml}
         </td>
         <td>
-          <div style="font-weight:700;">${escapeHtml(o.name || o.customerName || 'Customer')}</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">${escapeHtml(o.email || '')}</div>
+          <div style="font-weight:700;">${custName}</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">${custEmail}</div>
         </td>
         <td>
-          <div style="font-size:0.85rem;">📞 ${escapeHtml(o.phone || o.custPhone || 'N/A')}</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">${escapeHtml(o.cityState || o.address || '')} (${escapeHtml(o.pincode || '')})</div>
+          <div style="font-size:0.85rem;">📞 ${custPhone}</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">${locationStr}</div>
         </td>
         <td>
           <span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">
-            ${o.paymentMethod || 'COD'}
+            ${escapeHtml(o.paymentMethod || 'COD')}
           </span>
         </td>
         <td>
-          <strong style="color:var(--accent-cyan);">₹${(o.total || o.finalTotal || 0).toLocaleString('en-IN')}</strong>
-          <div style="font-size:0.75rem; color:var(--text-muted);">${(o.items || []).length} Items</div>
+          <strong style="color:var(--accent-cyan);">₹${totalAmt.toLocaleString('en-IN')}</strong>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${itemCount} Items</div>
         </td>
         <td>
           <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
