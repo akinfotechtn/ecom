@@ -1049,10 +1049,11 @@ button {
 .cart-drawer {
   position: fixed;
   top: 0;
+  bottom: 0;
   right: -100%;
   width: 100%;
   max-width: 420px;
-  height: 100vh;
+  height: 100dvh;
   background: #ffffff;
   border-left: 1px solid var(--border-color);
   z-index: 201;
@@ -1719,10 +1720,11 @@ footer {
 .cart-drawer {
   position: fixed;
   top: 0;
+  bottom: 0;
   right: -420px;
   width: 100%;
   max-width: 400px;
-  height: 100vh;
+  height: 100dvh;
   background: #ffffff;
   z-index: 9999;
   box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);

@@ -101,63 +101,7 @@ async function loadUserOrders(uid) {
     return;
   }
 
-  container.innerHTML = userOrders.map(order => {
-    const status = (order.status || 'PROCESSING').toUpperCase();
-    const isStep1 = true;
-    const isStep2 = status === 'SHIPPED' || status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
-    const isStep3 = status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
-    const isStep4 = status === 'DELIVERED';
-
-    return `
-      <div class="order-tracking-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">
-          <div>
-            <div style="font-weight: 800; font-size: 1rem; color: var(--text-dark);">Order #${order.id}</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">${new Date(order.createdAt).toLocaleString('en-IN')}</div>
-          </div>
-          <div style="text-align: right;">
-            <span class="status-badge ${order.paymentMethod === 'COD' ? 'status-cod' : 'status-online'}">
-              ${order.paymentMethod === 'COD' ? '💵 COD (Advance Paid)' : '💳 Paid Online'}
-            </span>
-            <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px; color: var(--text-dark);">Total: ₹${order.finalTotal?.toLocaleString('en-IN')}</div>
-          </div>
-        </div>
-
-        <div style="font-size: 0.82rem; margin-bottom: 8px;">
-          <strong>Items:</strong> ${order.items?.map(i => `${i.productName} (x${i.quantity})`).join(', ')}
-        </div>
-
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
-          📍 <strong>Ship to:</strong> ${escapeHtml(order.customerName)}, ${escapeHtml(order.address)}, ${escapeHtml(order.city)} - ${escapeHtml(order.pincode)}
-        </div>
-
-        <div class="tracking-timeline">
-          <div class="step-node ${isStep1 ? (isStep2 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">1</div>
-            <span>Placed</span>
-          </div>
-          <div class="step-node ${isStep2 ? (isStep3 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">2</div>
-            <span>Shipped</span>
-          </div>
-          <div class="step-node ${isStep3 ? (isStep4 ? 'completed' : 'active') : ''}">
-            <div class="step-dot">3</div>
-            <span>Out for Delivery</span>
-          </div>
-          <div class="step-node ${isStep4 ? 'completed' : ''}">
-            <div class="step-dot">4</div>
-            <span>Delivered</span>
-          </div>
-        </div>
-
-        ${order.paymentMethod === 'COD' ? `
-          <div style="font-size: 0.8rem; background: #fff7ed; border: 1px solid #fed7aa; padding: 8px; border-radius: 6px; margin-top: 10px; color: #9a3412;">
-            👉 <strong>COD Split:</strong> ₹${order.advancePaid} Advance Paid | <strong>₹${order.balanceOnDelivery} Due at Delivery</strong>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }).join('');
+  container.innerHTML = userOrders.map(order => generateOrderTrackingHtml(order)).join('');
 }
 
 // 2. SAVED DELIVERY ADDRESSES (CRUD)
@@ -296,3 +240,107 @@ function escapeHtml(str) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
+
+function generateOrderTrackingHtml(order) {
+  const status = (order.status || 'PROCESSING').toUpperCase();
+  const isStep1 = true;
+  const isStep2 = status === 'SHIPPED' || status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
+  const isStep3 = status === 'OUT FOR DELIVERY' || status === 'DELIVERED';
+  const isStep4 = status === 'DELIVERED';
+
+  const shiprocketTrackingHtml = order.awbCode ? `
+    <div style="font-size: 0.8rem; background: #f0f9ff; border: 1px solid #bae6fd; padding: 10px; border-radius: 8px; margin-top: 10px; color: #0369a1;">
+      🚚 <strong>Live Tracking:</strong> Courier: <strong>${escapeHtml(order.courierName || 'Shiprocket')}</strong> | AWB: <strong>${escapeHtml(order.awbCode)}</strong>
+      <div style="margin-top: 6px;">
+        <a href="https://shiprocket.co/tracking/${order.awbCode}" target="_blank" class="hero-btn" style="padding: 4px 10px; font-size: 0.75rem; text-decoration: none; display: inline-block; border-radius: 4px;">Track Package 🔗</a>
+      </div>
+    </div>
+  ` : '';
+
+  return `
+    <div class="order-tracking-card" style="border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; margin-bottom: 12px; background: #ffffff;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">
+        <div>
+          <div style="font-weight: 800; font-size: 1rem; color: var(--text-dark);">Order #${order.id}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">${new Date(order.createdAt).toLocaleString('en-IN')}</div>
+        </div>
+        <div style="text-align: right;">
+          <span class="status-badge ${order.paymentMethod === 'COD' ? 'status-cod' : 'status-online'}">
+            ${order.paymentMethod === 'COD' ? '💵 COD (Advance Paid)' : '💳 Paid Online'}
+          </span>
+          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 4px; color: var(--text-dark);">Total: ₹${order.finalTotal?.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.82rem; margin-bottom: 8px;">
+        <strong>Items:</strong> ${order.items?.map(i => `${i.productName} (x${i.quantity || i.qty || 1})`).join(', ')}
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+        📍 <strong>Ship to:</strong> ${escapeHtml(order.customerName || order.name)}, ${escapeHtml(order.address)}, ${escapeHtml(order.city || '')} - ${escapeHtml(order.pincode)}
+      </div>
+
+      <div class="tracking-timeline">
+        <div class="step-node ${isStep1 ? (isStep2 ? 'completed' : 'active') : ''}">
+          <div class="step-dot">1</div>
+          <span>Placed</span>
+        </div>
+        <div class="step-node ${isStep2 ? (isStep3 ? 'completed' : 'active') : ''}">
+          <div class="step-dot">2</div>
+          <span>Shipped</span>
+        </div>
+        <div class="step-node ${isStep3 ? (isStep4 ? 'completed' : 'active') : ''}">
+          <div class="step-dot">3</div>
+          <span>Out for Delivery</span>
+        </div>
+        <div class="step-node ${isStep4 ? 'completed' : ''}">
+          <div class="step-dot">4</div>
+          <span>Delivered</span>
+        </div>
+      </div>
+
+      ${order.paymentMethod === 'COD' ? `
+        <div style="font-size: 0.8rem; background: #fff7ed; border: 1px solid #fed7aa; padding: 8px; border-radius: 6px; margin-top: 10px; color: #9a3412;">
+          👉 <strong>COD Split:</strong> ₹${order.advancePaid} Advance Paid | <strong>₹${order.balanceOnDelivery} Due at Delivery</strong>
+        </div>
+      ` : ''}
+
+      ${shiprocketTrackingHtml}
+    </div>
+  `;
+}
+
+window.handleGuestTracking = async function(event) {
+  if (event && event.preventDefault) event.preventDefault();
+  const orderId = document.getElementById('guestOrderId').value.trim();
+  const phone = document.getElementById('guestPhone').value.trim();
+  const container = document.getElementById('guestOrderDetailsContainer');
+
+  if (!orderId || !phone) {
+    alert("Please fill in both the Order ID and Phone Number.");
+    return;
+  }
+
+  container.style.display = 'block';
+  container.innerHTML = `<div style="text-align:center; padding:16px;">🔍 Searching database for guest order...</div>`;
+
+  try {
+    const order = await DbService.getGuestOrder(orderId, phone);
+    if (order) {
+      container.innerHTML = `
+        <h3 style="font-size: 1.05rem; font-weight: 800; color: #0284c7; margin-bottom: 14px; border-bottom: 1.5px solid #bae6fd; padding-bottom: 6px;">📦 Guest Order Status</h3>
+        ${generateOrderTrackingHtml(order)}
+      `;
+    } else {
+      container.innerHTML = `
+        <div style="text-align:center; padding: 16px; color: #ef4444; font-weight: 700;">
+          ❌ No matching order found.<br>
+          <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">Please double check your Order ID and Phone Number.</span>
+        </div>
+      `;
+    }
+  } catch (err) {
+    console.error("Guest tracking error:", err);
+    container.innerHTML = `<div style="text-align:center; padding: 16px; color: #ef4444;">Error looking up order. Please try again.</div>`;
+  }
+};

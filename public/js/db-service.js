@@ -540,6 +540,39 @@ export class DbService {
     }
   }
 
+  static async getGuestOrder(orderId, phone) {
+    try {
+      const docSnap = await getDoc(doc(db, "orders", orderId));
+      if (docSnap.exists()) {
+        const orderData = docSnap.data();
+        const orderPhone = String(orderData.phone || orderData.custPhone || '').replace(/\D/g, '');
+        const searchPhone = String(phone).replace(/\D/g, '');
+        if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
+          return orderData;
+        }
+      }
+    } catch (err) {
+      console.warn("Firestore lookup failed, attempting local API fallback:", err);
+      try {
+        const res = await fetch("/api/orders");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.orders) {
+            const found = data.orders.find(o => String(o.id) === String(orderId));
+            if (found) {
+              const orderPhone = String(found.phone || found.custPhone || '').replace(/\D/g, '');
+              const searchPhone = String(phone).replace(/\D/g, '');
+              if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
+                return found;
+              }
+            }
+          }
+        }
+      } catch (e) {}
+    }
+    return null;
+  }
+
   static async trackOrderByIdOrPhone(queryStr) {
     try {
       const cleanStr = queryStr.trim().toUpperCase();
