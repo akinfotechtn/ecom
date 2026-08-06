@@ -362,15 +362,21 @@ function setupCartDrawer() {
   if (backdrop) backdrop.addEventListener('click', closeCartDrawer);
 }
 
-function openCartDrawer() {
-  document.getElementById('cartDrawer')?.classList.add('open');
-  document.getElementById('cartBackdrop')?.classList.add('open');
-}
+window.openCartDrawer = function() {
+  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.add('open'); drawer.classList.add('active'); }
+  if (backdrop) { backdrop.classList.add('open'); backdrop.classList.add('active'); }
+  renderCart();
+};
 
-function closeCartDrawer() {
-  document.getElementById('cartDrawer')?.classList.remove('open');
-  document.getElementById('cartBackdrop')?.classList.remove('open');
-}
+window.closeCartDrawer = function() {
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
+  if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
+};
 
 window.addToCart = async function(productId) {
   let prod = categoryProducts.find(p => String(p.id) === String(productId));

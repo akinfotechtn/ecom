@@ -455,13 +455,19 @@ window.removeFromCart = function(id) {
 };
 
 window.openCartDrawer = function() {
-  document.getElementById('cartDrawer')?.classList.add('active');
-  document.getElementById('cartBackdrop')?.classList.add('active');
+  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.add('open'); drawer.classList.add('active'); }
+  if (backdrop) { backdrop.classList.add('open'); backdrop.classList.add('active'); }
+  renderCart();
 };
 
 window.closeCartDrawer = function() {
-  document.getElementById('cartDrawer')?.classList.remove('active');
-  document.getElementById('cartBackdrop')?.classList.remove('active');
+  const drawer = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
+  if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
 };
 
 function setupEventListeners() {

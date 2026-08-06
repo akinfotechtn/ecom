@@ -212,21 +212,24 @@ function getItemPriceWithGst(item) {
   return basePrice + gstAmount;
 }
 
-function openCartDrawer() {
+window.openCartDrawer = function() {
+  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
   if (drawer) { drawer.classList.add('open'); drawer.classList.add('active'); }
   if (backdrop) { backdrop.classList.add('open'); backdrop.classList.add('active'); }
-}
+  renderCart();
+};
 
-function closeCartDrawer() {
+window.closeCartDrawer = function() {
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
   if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
   if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
-}
+};
 
 function renderCart() {
+  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
   const cartCountEl = document.getElementById('cartCount');
   const drawerCountEl = document.getElementById('cartItemCount') || document.getElementById('cartDrawerCount');
 
