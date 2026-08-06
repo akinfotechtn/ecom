@@ -389,7 +389,7 @@ window.addToCart = async function(productId) {
 
   saveCart();
   renderCart();
-  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderCatalog === 'function') renderCatalog();
   openCartDrawer();
 };
 
@@ -407,7 +407,7 @@ window.updateCartQty = function(productId, change) {
   }
   saveCart();
   renderCart();
-  if (typeof renderProducts === 'function') renderProducts();
+  if (typeof renderCatalog === 'function') renderCatalog();
 };
 
 function saveCart() {
