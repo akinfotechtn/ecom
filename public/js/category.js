@@ -289,9 +289,6 @@ function renderCategoryCatalog() {
                 🛒 Add to Cart
               </button>
             `)}
-            <a href="product.html?id=${p.id}" class="btn-quick-view" style="display:flex; align-items:center; justify-content:center; text-decoration:none;" title="View Details">
-              👁️
-            </a>
           </div>
         </div>
       </div>

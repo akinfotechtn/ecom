@@ -254,7 +254,6 @@ function renderBrandCatalog() {
             ` : `
               <button class="btn-add-cart" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
             `)}
-            <a href="product.html?id=${p.id}" class="btn-quick-view" style="text-decoration:none; text-align:center;">View</a>
           </div>
         </div>
       </div>
