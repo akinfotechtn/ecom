@@ -335,6 +335,10 @@ function parseCsvTextToProducts(csvText) {
   const priceIdx = getColIndex(['mrp', 'price']);
   const sellingIdx = getColIndex(['sellingprice', 'saleprice', 'offerprice', 'selling', 'offer', 'sale']);
   let dealerMarginIdx = getColIndex(['dealerextramargin', 'dealerextramarginpercent', 'dealermargin', 'extramargin', 'margin']);
+  const comboIdx = getColIndex(['iscombo', 'combo']);
+  const availIdx = getColIndex(['availability', 'stock', 'instock']);
+  const deliveryIdx = getColIndex(['customdeliveryfee', 'delivery', 'shipping', 'fee']);
+
   if (dealerMarginIdx === -1 && matrix[0].length >= 8) {
     dealerMarginIdx = 7;
   }
