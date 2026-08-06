@@ -166,7 +166,7 @@
       <button class="tab-btn" onclick="switchAdminTab('brandsTab', this)">🏷️ Brands & Logos</button>
       <button class="tab-btn" onclick="switchAdminTab('categoriesTab', this)">📁 Categories</button>
       <button class="tab-btn" onclick="switchAdminTab('settingsTab', this)">⚙️ Store Settings</button>
-      <button class="tab-btn" onclick="switchAdminTab('ordersTab', this)">📋 Orders History</button>
+      <button class="tab-btn" onclick="switchAdminTab('ordersTab', this); fetchAdminOrdersNow()">📋 Orders History</button>
     </div>
 
     <!-- TAB 1: GOOGLE SHEETS SYNC -->
@@ -580,7 +580,15 @@
 
     <!-- TAB 7: ORDERS HISTORY -->
     <div class="tab-content" id="ordersTab">
-      <h2 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">📋 Customer Orders & Live Status Manager</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.3rem; margin-bottom: 4px; color: var(--text-dark);">📋 Customer Orders & Live Status Manager</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Total: <strong id="ordersCountBadge" style="color: var(--accent-cyan);">0</strong> order(s) in database</p>
+        </div>
+        <button class="hero-btn" onclick="fetchAdminOrdersNow()" style="background: linear-gradient(135deg, var(--accent-cyan), #0284c7); padding: 8px 18px; font-size: 0.85rem;">
+          🔄 Refresh Orders
+        </button>
+      </div>
       <div style="overflow-x: auto;">
         <table class="data-table">
           <thead>
@@ -595,7 +603,7 @@
               <th>🚀 Shiprocket Actions</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersTableBody"></tbody>
+          <tbody id="adminOrdersTableBody"><tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">Click "Refresh Orders" to load.</td></tr></tbody>
         </table>
       </div>
     </div>

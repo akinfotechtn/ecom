@@ -1574,20 +1574,34 @@ async function getShiprocketToken() {
 }
 
 async function fetchAdminOrders() {
+  const tbody = document.getElementById('adminOrdersTableBody');
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Loading orders from database...</td></tr>`;
+  }
   try {
     adminOrders = await DbService.getOrders();
     renderOrdersTable();
   } catch (err) {
     console.error("Error fetching orders:", err);
+    if (tbody) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#ef4444;">❌ Failed to load orders: ${err.message}</td></tr>`;
+    }
   }
 }
+
+// Expose for inline onclick in admin.html (module scope doesn't expose to global)
+window.fetchAdminOrdersNow = () => fetchAdminOrders();
 
 function renderOrdersTable() {
   const tbody = document.getElementById('adminOrdersTableBody');
   if (!tbody) return;
 
+  // Update count badge if present
+  const countBadge = document.getElementById('ordersCountBadge');
+  if (countBadge) countBadge.textContent = adminOrders.length;
+
   if (!adminOrders || !adminOrders.length) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">No orders found in store database yet.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">📭 No orders found yet. Orders will appear here once customers place them.</td></tr>`;
     return;
   }
 

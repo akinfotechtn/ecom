@@ -2,10 +2,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Admin helper function (Restricts administrative rights to akinfotecttn@gmail.com & akinfotechtn@gmail.com)
+    // Admin helper function (Restricts administrative rights to akinfotechtn@gmail.com & admin@akinfotechcctv.in)
     function isAdmin() {
       return request.auth != null && 
-        (request.auth.token.email == 'akinfotecttn@gmail.com' || request.auth.token.email == 'akinfotechtn@gmail.com');
+        (request.auth.token.email == 'akinfotechtn@gmail.com' || request.auth.token.email == 'admin@akinfotechcctv.in');
     }
 
     // 1. PRODUCTS COLLECTION

@@ -616,22 +616,41 @@ export class DbService {
   }
 
   static async getOrders() {
+    let firestoreOrders = [];
+    let localOrders = [];
+
+    // 1. Try Firestore
     try {
       const snap = await getDocs(collection(db, "orders"));
-      if (!snap.empty) {
-        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      }
-      return [];
+      firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     } catch (err) {
-      try {
-        const res = await fetch("/api/orders");
-        if (res.ok) {
-          const data = await res.json();
-          return data.orders || [];
-        }
-      } catch (e) {}
-      return [];
+      console.warn("Firestore getOrders failed:", err.message);
     }
+
+    // 2. Also check local API (in case some orders were saved there as fallback)
+    try {
+      const res = await fetch("/api/orders");
+      if (res.ok) {
+        const data = await res.json();
+        localOrders = data.orders || [];
+      }
+    } catch (e) {
+      // Server not running or network error — ignore
+    }
+
+    // 3. Merge: combine both sources, deduplicate by order ID (Firestore takes priority)
+    const merged = new Map();
+    for (const o of localOrders) {
+      if (o.id) merged.set(String(o.id), o);
+    }
+    for (const o of firestoreOrders) {
+      if (o.id) merged.set(String(o.id), o); // Overwrite local with Firestore version
+    }
+
+    const all = Array.from(merged.values());
+    // Sort latest first
+    all.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    return all;
   }
 
   static async updateOrder(id, orderData) {
