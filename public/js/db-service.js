@@ -524,52 +524,51 @@ export class DbService {
   }
 
   // ORDERS
+  static saveOrderToLocalStorage(order) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('ak_local_orders') || '[]');
+      const filtered = existing.filter(o => String(o.id) !== String(order.id));
+      filtered.unshift(order);
+      localStorage.setItem('ak_local_orders', JSON.stringify(filtered.slice(0, 50)));
+    } catch (e) {}
+  }
+
+  static getOrdersFromLocalStorage() {
+    try {
+      return JSON.parse(localStorage.getItem('ak_local_orders') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
   static async createOrder(orderPayload) {
     const user = auth.currentUser;
     const orderId = orderPayload.id || `AK-${Math.floor(100000 + Math.random() * 900000)}`;
     const fullOrder = {
       ...orderPayload,
       id: orderId,
-      userUid: user ? user.uid : null,
-      userEmail: user ? user.email : orderPayload.email || '',
+      userUid: user ? user.uid : (orderPayload.userUid || null),
+      userEmail: user ? (user.email || '') : (orderPayload.email || ''),
+      customerEmail: orderPayload.email || (user ? user.email : ''),
       createdAt: new Date().toISOString(),
       status: orderPayload.status || 'PROCESSING'
     };
 
+    // Store in local storage first (instant & resilient)
+    this.saveOrderToLocalStorage(fullOrder);
+
     try {
-      await setDoc(doc(db, "orders", orderId), fullOrder);
+      await this._withTimeout(setDoc(doc(db, "orders", orderId), fullOrder), 5000, null);
     } catch (err) {
-      await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fullOrder)
-      });
+      console.warn("Firestore setDoc order failed:", err);
     }
     return fullOrder;
   }
 
-  static async getUserOrders(uid, userEmail = '') {
-    try {
-      if (!uid && !userEmail) return [];
-      const allOrders = await this.getOrders();
-      return allOrders.filter(o => 
-        (uid && o.userUid === uid) || 
-        (userEmail && (
-          (o.userEmail && o.userEmail.toLowerCase() === userEmail.toLowerCase()) ||
-          (o.email && o.email.toLowerCase() === userEmail.toLowerCase()) ||
-          (o.customerEmail && o.customerEmail.toLowerCase() === userEmail.toLowerCase())
-        ))
-      );
-    } catch (err) {
-      console.warn("getUserOrders error:", err);
-      return [];
-    }
-  }
-
   static async getGuestOrder(orderId, phone) {
     try {
-      const docSnap = await getDoc(doc(db, "orders", orderId));
-      if (docSnap.exists()) {
+      const docSnap = await this._withTimeout(getDoc(doc(db, "orders", orderId)), 5000, null);
+      if (docSnap && docSnap.exists()) {
         const orderData = docSnap.data();
         const orderPhone = String(orderData.phone || orderData.custPhone || '').replace(/\D/g, '');
         const searchPhone = String(phone).replace(/\D/g, '');
@@ -579,6 +578,16 @@ export class DbService {
       }
     } catch (err) {
       console.warn("Firestore lookup failed:", err);
+    }
+    // Check local storage fallback
+    const localOrders = this.getOrdersFromLocalStorage();
+    const found = localOrders.find(o => String(o.id) === String(orderId));
+    if (found) {
+      const orderPhone = String(found.phone || found.custPhone || '').replace(/\D/g, '');
+      const searchPhone = String(phone).replace(/\D/g, '');
+      if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
+        return found;
+      }
     }
     return null;
   }
@@ -610,112 +619,65 @@ export class DbService {
   }
 
   static async getUserOrders(uid, userEmail = '') {
+    const localOrders = this.getOrdersFromLocalStorage();
+    let firestoreOrders = [];
+
     try {
-      if (!uid && !userEmail) return [];
-
-      let orders = [];
-
-      // Query directly by userUid (most efficient — uses index)
-      if (uid) {
-        try {
-          const q = query(collection(db, "orders"), where("userUid", "==", uid));
-          const snap = await this._withTimeout(getDocs(q), 8000, null);
-          if (snap) {
-            orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          }
-        } catch (e) {
-          console.warn("getUserOrders by uid failed:", e.message);
-        }
-      }
-
-      // If no results by uid and we have email, try by email fields
-      if (!orders.length && userEmail) {
-        try {
-          const q2 = query(collection(db, "orders"), where("userEmail", "==", userEmail));
-          const snap2 = await this._withTimeout(getDocs(q2), 8000, null);
-          if (snap2) {
-            orders = snap2.docs.map(d => ({ id: d.id, ...d.data() }));
-          }
-        } catch (e) {
-          console.warn("getUserOrders by email failed:", e.message);
-        }
-
-        // Also try by 'email' field
-        if (!orders.length) {
-          try {
-            const q3 = query(collection(db, "orders"), where("email", "==", userEmail));
-            const snap3 = await this._withTimeout(getDocs(q3), 8000, null);
-            if (snap3) {
-              const extra = snap3.docs.map(d => ({ id: d.id, ...d.data() }));
-              // Merge, dedup by id
-              const seen = new Set(orders.map(o => o.id));
-              orders = [...orders, ...extra.filter(o => !seen.has(o.id))];
-            }
-          } catch (e) {}
-        }
-      }
-
-      orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-      return orders;
+      const all = await this.getOrders();
+      firestoreOrders = all;
     } catch (err) {
       console.warn("getUserOrders error:", err);
-      return [];
     }
-  }
 
-  static async getGuestOrder(orderId, phone) {
-    try {
-      const docSnap = await this._withTimeout(getDoc(doc(db, "orders", orderId)), 8000, null);
-      if (docSnap && docSnap.exists()) {
-        const orderData = docSnap.data();
-        const orderPhone = String(orderData.phone || orderData.custPhone || '').replace(/\D/g, '');
-        const searchPhone = String(phone).replace(/\D/g, '');
-        if (orderPhone.includes(searchPhone) || searchPhone.includes(orderPhone)) {
-          return orderData;
-        }
+    const mergedMap = new Map();
+    for (const o of localOrders) {
+      if (o.id) mergedMap.set(String(o.id), o);
+    }
+    for (const o of firestoreOrders) {
+      if (o.id) mergedMap.set(String(o.id), o);
+    }
+
+    const merged = Array.from(mergedMap.values());
+    
+    // Filter for this user (by uid or email)
+    const filtered = merged.filter(o => {
+      if (uid && o.userUid === uid) return true;
+      if (userEmail) {
+        const target = userEmail.toLowerCase();
+        if (o.userEmail && o.userEmail.toLowerCase() === target) return true;
+        if (o.email && o.email.toLowerCase() === target) return true;
+        if (o.customerEmail && o.customerEmail.toLowerCase() === target) return true;
       }
-    } catch (err) {
-      console.warn("Firestore lookup failed:", err);
-    }
-    return null;
-  }
+      return false;
+    });
 
-  static async trackOrderByIdOrPhone(queryStr) {
-    try {
-      const cleanStr = queryStr.trim().toUpperCase();
-      const allOrders = await this.getOrders();
-      return allOrders.filter(o => 
-        (o.id && String(o.id).toUpperCase() === cleanStr) || 
-        (o.phone && String(o.phone).includes(queryStr.trim())) ||
-        (o.razorpayOrderId && String(o.razorpayOrderId).toUpperCase() === cleanStr)
-      );
-    } catch (err) {
-      return [];
-    }
+    filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    return filtered;
   }
 
   static async getOrders() {
+    const localOrders = this.getOrdersFromLocalStorage();
     let firestoreOrders = [];
 
-    // 1. Try Firestore with an 8-second timeout to prevent hanging on quota exhaustion
     try {
       const snapPromise = getDocs(collection(db, "orders"));
-      const snap = await this._withTimeout(snapPromise, 8000, null);
+      const snap = await this._withTimeout(snapPromise, 5000, null);
       if (snap) {
         firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      } else {
-        console.warn("Firestore getOrders timed out (possible quota exhaustion)");
       }
     } catch (err) {
       console.warn("Firestore getOrders failed:", err.message);
     }
 
-    const merged = new Map();
+    const mergedMap = new Map();
+    for (const o of localOrders) {
+      if (o.id) mergedMap.set(String(o.id), o);
+    }
     for (const o of firestoreOrders) {
-      if (o.id) merged.set(String(o.id), o);
+      if (o.id) mergedMap.set(String(o.id), o);
     }
 
-    const all = Array.from(merged.values());
+    const all = Array.from(mergedMap.values());
     all.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     return all;
   }
