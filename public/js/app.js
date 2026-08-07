@@ -740,7 +740,10 @@ async function handleCheckoutSubmit(e) {
           fetch('/api/send-order-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(savedOrder)
+            body: JSON.stringify({
+              ...savedOrder,
+              settings: storeSettings
+            })
           }).catch(e => console.warn("Email notify failed:", e));
         } catch (e) {
           console.warn("Email notify trigger error:", e);

@@ -423,42 +423,46 @@ app.post('/api/orders', async (req, res) => {
 // ORDER EMAIL NOTIFICATION ENDPOINT
 app.post('/api/send-order-email', async (req, res) => {
   try {
-    const order = req.body;
+    const order = req.body || {};
     if (!order || !order.id) {
       return res.status(400).json({ success: false, message: 'Missing order details.' });
     }
 
-    const settings = readJson(SETTINGS_FILE, {});
-    
-    // Default recipients
-    const adminRecipients = settings.smtpRecipients || 'akinfotechtn@gmail.com, admin@akinfotechcctv.in';
-    const sender = settings.smtpSender || '"AK Infotech Store" <admin@akinfotechcctv.in>';
+    const localSettings = readJson(SETTINGS_FILE, {});
+    const settings = order.settings || localSettings || {};
 
-    // Build the final recipients list including the customer email (if provided)
-    let recipientList = [adminRecipients];
-    if (order.email && order.email.trim().length > 0) {
-      recipientList.push(order.email.trim());
-    } else if (order.userEmail && order.userEmail.trim().length > 0) {
-      recipientList.push(order.userEmail.trim());
+    const smtpHost = settings.smtpHost || localSettings.smtpHost || process.env.SMTP_HOST || 'smtp.zoho.in';
+    const smtpPort = parseInt(settings.smtpPort || localSettings.smtpPort || process.env.SMTP_PORT || '465');
+    const smtpUser = settings.smtpUser || localSettings.smtpUser || process.env.SMTP_USER || 'admin@akinfotechcctv.in';
+    const smtpPass = settings.smtpPass || localSettings.smtpPass || process.env.SMTP_PASS || '';
+    const rawSender = settings.smtpSender || localSettings.smtpSender || process.env.SMTP_SENDER || 'AK Infotech';
+    const adminRecipientsStr = settings.smtpRecipients || localSettings.smtpRecipients || process.env.SMTP_RECIPIENTS || 'akinfotechtn@gmail.com, admin@akinfotechcctv.in';
+
+    if (!smtpPass) {
+      console.warn("SMTP Password is missing. Cannot send order email.");
+      return res.status(200).json({ success: false, message: 'SMTP Password missing in store settings.' });
+    }
+
+    // Format Sender (From Header) so Zoho/Gmail SMTP won't reject it
+    const sender = rawSender.includes('<') ? rawSender : `"${rawSender}" <${smtpUser}>`;
+
+    // Recipient list: Admin emails + Customer email
+    const recipientList = adminRecipientsStr.split(',').map(s => s.trim()).filter(Boolean);
+    const customerEmail = (order.email || order.userEmail || order.customerEmail || '').trim();
+    if (customerEmail && !recipientList.some(e => e.toLowerCase() === customerEmail.toLowerCase())) {
+      recipientList.push(customerEmail);
     }
     const recipients = recipientList.join(', ');
 
-    let transporter;
-    
-    // Check if custom SMTP is configured
-    if (settings.smtpHost && settings.smtpUser && settings.smtpPass) {
-      transporter = nodemailer.createTransport({
-        host: settings.smtpHost,
-        port: parseInt(settings.smtpPort) || 465,
-        secure: parseInt(settings.smtpPort) === 465, // true for 465, false for other ports
-        auth: {
-          user: settings.smtpUser,
-          pass: settings.smtpPass
-        }
-      });
-    } else {
-      console.warn("SMTP is not configured in settings. Go to Admin Settings to configure SMTP.");
-    }
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass
+      }
+    });
 
     const itemsHtml = (order.items || []).map(item => `
       <tr>
