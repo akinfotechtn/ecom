@@ -270,35 +270,55 @@ export class DbService {
     this._cachedSettings = null;
   }
 
-  // PRODUCTS: Fetch all
+  // LOCAL PRODUCT CATALOG HELPERS (0 FIRESTORE READS)
+  static saveProductsToLocalStore(products) {
+    try {
+      localStorage.setItem('ak_catalog_products', JSON.stringify(products));
+      this._cachedProducts = products;
+    } catch (e) {}
+  }
+
+  static getProductsFromLocalStore() {
+    try {
+      const stored = localStorage.getItem('ak_catalog_products');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  // PRODUCTS: Fetch all (0 Firestore Reads - Blazing Fast)
   static async getProducts(forceRefresh = false) {
     if (!forceRefresh && this._cachedProducts) {
       return this._cachedProducts;
     }
-    try {
-      const snap = await getDocs(collection(db, "products"));
-      if (!snap.empty) {
-        this._cachedProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        return this._cachedProducts;
-      }
-      for (const p of DEFAULT_PRODUCTS) {
-        await setDoc(doc(db, "products", p.id), p);
-      }
-      this._cachedProducts = DEFAULT_PRODUCTS;
-      return DEFAULT_PRODUCTS;
-    } catch (err) {
-      console.warn("Firestore fallback to local:", err.message);
-      try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data = await res.json();
-          this._cachedProducts = data.products || DEFAULT_PRODUCTS;
-          return this._cachedProducts;
-        }
-      } catch (e) {}
-      this._cachedProducts = DEFAULT_PRODUCTS;
-      return DEFAULT_PRODUCTS;
+
+    // 1. Check local browser storage cache
+    const storedProducts = this.getProductsFromLocalStore();
+    if (storedProducts) {
+      this._cachedProducts = storedProducts;
+      return this._cachedProducts;
     }
+
+    // 2. Fetch static JSON file (/data/products.json)
+    try {
+      const res = await fetch("data/products.json");
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          this.saveProductsToLocalStore(data);
+          return data;
+        }
+      }
+    } catch (err) {
+      console.warn("Local products fetch failed, using default:", err);
+    }
+
+    // 3. Fallback to DEFAULT_PRODUCTS
+    this.saveProductsToLocalStore(DEFAULT_PRODUCTS);
+    return DEFAULT_PRODUCTS;
   }
 
   static async getProductById(id) {
@@ -313,53 +333,43 @@ export class DbService {
       id: customId,
       createdAt: new Date().toISOString()
     };
-    try {
-      await setDoc(doc(db, "products", customId), newProd);
-    } catch (err) {
-      await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProd)
-      });
-    }
+    const currentProducts = await this.getProducts();
+    const updated = [newProd, ...currentProducts];
+    this.saveProductsToLocalStore(updated);
     return newProd;
   }
 
   static async updateProduct(id, productData) {
-    try {
-      await setDoc(doc(db, "products", id), productData, { merge: true });
-    } catch (err) {
-      await fetch(`/api/products/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productData)
-      });
-    }
+    const currentProducts = await this.getProducts();
+    const updated = currentProducts.map(p => p.id === id ? { ...p, ...productData } : p);
+    this.saveProductsToLocalStore(updated);
   }
 
   static async deleteProduct(id) {
-    try {
-      await deleteDoc(doc(db, "products", id));
-    } catch (err) {
-      await fetch(`/api/products/${id}`, { method: "DELETE" });
-    }
+    const currentProducts = await this.getProducts();
+    const updated = currentProducts.filter(p => p.id !== id);
+    this.saveProductsToLocalStore(updated);
   }
 
-  // BULK SYNC FROM GOOGLE SHEET (REPLACES CATALOG & REMOVES DUMMY ITEMS)
+  // BULK SYNC FROM GOOGLE SHEET (REPLACES LOCAL CATALOG WITH 0 FIRESTORE READS)
   static async bulkSyncProducts(productsArray, replaceAll = true) {
     try {
+      let updated = [];
       if (replaceAll) {
-        // Delete all existing products to remove dummy items
-        const snap = await getDocs(collection(db, "products"));
-        for (const d of snap.docs) {
-          await deleteDoc(doc(db, "products", d.id));
+        updated = productsArray.map((p, idx) => ({
+          ...p,
+          id: p.id || `prod-gs-${Date.now()}-${idx}`
+        }));
+      } else {
+        const currentProducts = await this.getProducts();
+        const existingMap = new Map(currentProducts.map(p => [p.id, p]));
+        for (const p of productsArray) {
+          const docId = p.id || `prod-gs-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+          existingMap.set(docId, { ...p, id: docId });
         }
+        updated = Array.from(existingMap.values());
       }
-
-      for (const p of productsArray) {
-        const docId = p.id || `gs-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-        await setDoc(doc(db, "products", docId), p);
-      }
+      this.saveProductsToLocalStore(updated);
       return true;
     } catch (err) {
       console.error("Bulk sync error:", err);
@@ -368,7 +378,7 @@ export class DbService {
   }
 
   static async resetProductsToDefault() {
-    await this.bulkSyncProducts(DEFAULT_PRODUCTS, true);
+    this.saveProductsToLocalStore(DEFAULT_PRODUCTS);
     return DEFAULT_PRODUCTS;
   }
 
