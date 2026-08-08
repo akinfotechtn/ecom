@@ -500,6 +500,52 @@ async function uploadRawCsv() {
   }
 }
 
+// LOAD LOCAL products.json FILE DIRECTLY INTO MEMORY & LOCALSTORAGE
+window.handleLoadLocalProductsJson = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      const products = Array.isArray(data) ? data : (data.products || []);
+      if (!products.length) {
+        alert("Selected JSON file contains no product rows.");
+        return;
+      }
+
+      // Save directly to localStorage & memory (0 Firestore reads/writes)
+      localStorage.setItem('ak_local_products', JSON.stringify(products));
+      DbService._cachedProducts = products;
+      adminProducts = products;
+      renderProductsTable();
+
+      alert(`🎉 Successfully loaded ${products.length} products directly from local ${file.name}! Active on store instantly.`);
+    } catch (err) {
+      alert(`Invalid JSON file format: ${err.message}`);
+    }
+  };
+  reader.readAsText(file);
+};
+
+// DOWNLOAD / EXPORT CURRENT products.json FILE
+window.downloadCurrentProductsJson = async function() {
+  try {
+    const products = await DbService.getProducts();
+    const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'products.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (err) {
+    alert(`Export error: ${err.message}`);
+  }
+};
+
 // RETRIEVE PRODUCTS FROM FIRESTORE AND PERSIST LOCALLY
 window.retrieveFirestoreProductsToLocal = async function() {
   try {

@@ -263,16 +263,20 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
         <h2 style="font-size: 1.3rem; color: var(--text-dark);">📦 Catalog Products Management</h2>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button class="hero-btn" style="background: linear-gradient(135deg, #0284c7, #2563eb); padding: 8px 18px;" onclick="retrieveFirestoreProductsToLocal()">
-            📥 Retrieve from Firestore & Keep Local
+          <input type="file" id="localProductsJsonInput" accept=".json" style="display: none;" onchange="handleLoadLocalProductsJson(event)">
+          <button class="hero-btn" style="background: linear-gradient(135deg, #0284c7, #2563eb); padding: 8px 16px;" onclick="document.getElementById('localProductsJsonInput').click()">
+            📂 Load Local products.json
           </button>
-          <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 8px 18px;" onclick="exportProductsToCsv()">
-            📊 Export CSV for Sheets
+          <button class="hero-btn" style="background: linear-gradient(135deg, #0891b2, #0e7490); padding: 8px 16px;" onclick="downloadCurrentProductsJson()">
+            💾 Download products.json
           </button>
-          <button class="hero-btn" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 8px 18px;" id="btnToggleBulkEdit" onclick="toggleBulkEditMode()">
+          <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 8px 16px;" onclick="exportProductsToCsv()">
+            📊 Export CSV
+          </button>
+          <button class="hero-btn" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 8px 16px;" id="btnToggleBulkEdit" onclick="toggleBulkEditMode()">
             📝 Bulk Spreadsheet Edit
           </button>
-          <button class="hero-btn" style="padding: 8px 18px;" onclick="openAddProductModal()">
+          <button class="hero-btn" style="padding: 8px 16px;" onclick="openAddProductModal()">
             + Add New Product
           </button>
         </div>
