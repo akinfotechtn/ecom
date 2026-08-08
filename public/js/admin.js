@@ -1780,6 +1780,21 @@ function renderOrdersTable() {
       const loc = [o.cityState || o.city || o.address || '', o.pincode ? `(${o.pincode})` : ''].filter(Boolean).join(' ');
       const locationStr = escapeHtml(loc);
 
+      const itemsListHtml = (o.items && Array.isArray(o.items) && o.items.length > 0)
+        ? o.items.map(item => `
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px dashed #e2e8f0; font-size:0.82rem;">
+            <div style="display:flex; align-items:center; gap:8px; flex:1;">
+              <img src="${item.photoLink || 'images/logo.webp'}" style="width:36px; height:36px; object-fit:cover; border-radius:4px; border:1px solid var(--border-color);" onerror="this.src='images/logo.webp'">
+              <div>
+                <div style="font-weight:700; color:var(--text-dark);">${escapeHtml(item.productName || 'Product')}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${item.brand ? `Brand: ${escapeHtml(item.brand)} | ` : ''}Qty: <strong>${item.quantity || item.qty || 1}</strong> × ₹${Number(item.sellingPrice || item.price || 0).toLocaleString('en-IN')}</div>
+              </div>
+            </div>
+            <strong style="color:var(--text-dark);">₹${(Number(item.sellingPrice || item.price || 0) * Number(item.quantity || item.qty || 1)).toLocaleString('en-IN')}</strong>
+          </div>
+        `).join('')
+        : `<div style="font-size:0.8rem; color:var(--text-muted);">1 Item(s)</div>`;
+
       // Desktop Table Row
       rows.push(`
         <tr>
@@ -1793,9 +1808,15 @@ function renderOrdersTable() {
             <div style="font-size:0.78rem;color:var(--text-muted);">${locationStr}</div>
           </td>
           <td><span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">${escapeHtml(o.paymentMethod || 'COD')}</span></td>
-          <td>
-            <strong style="color:var(--accent-cyan);">₹${totalAmt.toLocaleString('en-IN')}</strong>
-            <div style="font-size:0.75rem;color:var(--text-muted);">${itemCount} Item(s)</div>
+          <td style="min-width: 220px;">
+            <strong style="color:var(--accent-cyan); font-size:1rem;">₹${totalAmt.toLocaleString('en-IN')}</strong>
+            <div style="margin-top:6px; background:#f8fafc; padding:8px; border-radius:6px; border:1px solid var(--border-color);">
+              ${itemsListHtml}
+              ${o.paymentMethod === 'COD' ? `
+                <div style="font-size:0.75rem; color:#b45309; font-weight:bold; margin-top:4px;">
+                  Paid: ₹${Number(o.advancePaid || 1000).toLocaleString('en-IN')} | Due: ₹${Number(o.balanceOnDelivery || 0).toLocaleString('en-IN')}
+                </div>` : ''}
+            </div>
           </td>
           <td>
             <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
@@ -1820,7 +1841,7 @@ function renderOrdersTable() {
             </div>
             <div style="text-align:right;">
               <span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">${escapeHtml(o.paymentMethod || 'COD')}</span>
-              <div style="font-size:1.1rem; font-weight:800; color:var(--accent-cyan); margin-top:2px;">₹${totalAmt.toLocaleString('en-IN')}</div>
+              <div style="font-size:1.15rem; font-weight:800; color:var(--accent-cyan); margin-top:2px;">₹${totalAmt.toLocaleString('en-IN')}</div>
             </div>
           </div>
 
@@ -1828,7 +1849,20 @@ function renderOrdersTable() {
             <div><strong>👤 ${custName}</strong> ${custEmail ? `<span style="color:var(--text-muted);">(${custEmail})</span>` : ''}</div>
             <div>📞 ${custPhone}</div>
             <div style="color:var(--text-muted); font-size:0.8rem; margin-top:2px;">📍 ${locationStr}</div>
-            <div style="color:var(--text-muted); font-size:0.8rem;">📦 ${itemCount} Item(s)</div>
+          </div>
+
+          <!-- ORDERED PRODUCTS LIST -->
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px; margin-bottom:10px;">
+            <div style="font-weight:800; font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">
+              📦 Ordered Products (${itemCount} item${itemCount > 1 ? 's' : ''}):
+            </div>
+            ${itemsListHtml}
+            ${o.paymentMethod === 'COD' ? `
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; color:#b45309; background:#fffbe6; padding:6px 8px; border-radius:4px; margin-top:8px;">
+                <span>Advance Paid: ₹${Number(o.advancePaid || 1000).toLocaleString('en-IN')}</span>
+                <span>Balance on Delivery: ₹${Number(o.balanceOnDelivery || 0).toLocaleString('en-IN')}</span>
+              </div>
+            ` : ''}
           </div>
 
           ${srBadgeHtml ? `<div style="margin-bottom:10px;">${srBadgeHtml}</div>` : ''}
