@@ -17,10 +17,15 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// File paths - Single Source of Truth
-const PRODUCTS_FILE = path.join(__dirname, '../public/data/products.json');
-const SETTINGS_FILE = path.join(__dirname, '../data/settings.json');
-const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
+// File paths - Single Unified Data Folder (public/data)
+const DATA_DIR = path.join(__dirname, '../public/data');
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 
 // Utility to read JSON
 function readJson(filePath, defaultData = []) {
