@@ -78,7 +78,7 @@ async function loadProductDetail(idOrProduct) {
     <div class="product-info-box">
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
         <span class="badge-glow">${escapeHtml(currentProduct.brand || 'AK Infotech')}</span>
-        <a href="${DbService.slugify(currentProduct.category)}.html" class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd; text-decoration:none;" title="View Category Page">${escapeHtml(currentProduct.category)}</a>
+        <a href="${DbService.getLinkPrefix()}categories/${DbService.slugify(currentProduct.category)}.html" class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd; text-decoration:none;" title="View Category Page">${escapeHtml(currentProduct.category)}</a>
         ${currentProduct.isCombo ? `<span class="badge-glow" style="background:#fff7ed; color:#c2410c; border-color:#fdba74;">🔥 Combo Package</span>` : ''}
         ${isAvailable ? `
           <span class="badge-glow" style="background:#dcfce7; color:#16a34a; border-color:#86efac;">✅ In Stock</span>
@@ -155,11 +155,11 @@ async function loadRelatedProducts(category, currentId) {
         <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
       </div>
       <div class="product-body">
-        <h3 class="product-name"><a href="${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
+        <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
         <div class="price-row">
           <span class="selling-price">₹${p.sellingPrice.toLocaleString('en-IN')}</span>
         </div>
-        <a href="${DbService.slugify(p.productName)}.html" class="btn-add-cart" style="text-decoration:none; text-align:center;">
+        <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="btn-add-cart" style="text-decoration:none; text-align:center;">
           View Details →
         </a>
       </div>

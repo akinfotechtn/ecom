@@ -56,7 +56,7 @@ function readJson(filePath, defaultData = []) {
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    
+
     // Automatically trigger Static Site Generation (SSG) if writing database files
     if (filePath === PRODUCTS_FILE || filePath === BRANDS_FILE || filePath === CATEGORIES_FILE) {
       generateStaticPages();
@@ -94,13 +94,47 @@ const BASE_PAGES = new Set([
   'local-sync.html'
 ]);
 
+function adjustPaths(html) {
+  return html
+    .replace(/href="css\//g, 'href="../css/')
+    .replace(/src="js\//g, 'src="../js/')
+    .replace(/src="images\//g, 'src="../images/')
+    .replace(/href="images\//g, 'href="../images/')
+    .replace(/href="index\.html/g, 'href="../index.html')
+    .replace(/href="account\.html/g, 'href="../account.html')
+    .replace(/href="admin\.html/g, 'href="../admin.html')
+    .replace(/href="privacy\.html/g, 'href="../privacy.html')
+    .replace(/href="terms\.html/g, 'href="../terms.html')
+    .replace(/href="refund\.html/g, 'href="../refund.html')
+    .replace(/href="category\.html/g, 'href="../category.html')
+    .replace(/href="brand\.html/g, 'href="../brand.html');
+}
+
 function cleanStaticPages() {
   try {
     const publicDir = path.join(__dirname, '../public');
+
+    // 1. Clean root public directory of non-base HTMLs
     const files = fs.readdirSync(publicDir);
     for (const file of files) {
       if (file.endsWith('.html') && !BASE_PAGES.has(file)) {
         fs.unlinkSync(path.join(publicDir, file));
+      }
+    }
+
+    // 2. Clean subdirectories
+    const subdirs = ['product', 'brands', 'categories'];
+    for (const dir of subdirs) {
+      const dirPath = path.join(publicDir, dir);
+      if (fs.existsSync(dirPath)) {
+        const subFiles = fs.readdirSync(dirPath);
+        for (const f of subFiles) {
+          if (f.endsWith('.html')) {
+            fs.unlinkSync(path.join(dirPath, f));
+          }
+        }
+      } else {
+        fs.mkdirSync(dirPath, { recursive: true });
       }
     }
   } catch (err) {
@@ -130,12 +164,13 @@ function generateStaticPages() {
         if (!p.productName) continue;
         const slug = slugify(p.productName);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public', fileName);
+        const filePath = path.join(__dirname, '../public/product', fileName);
 
         const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
         let html = productTemplate.replace('</head>', `${injectScript}\n</head>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>${p.productName} | AK Infotech Security Store</title>`);
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${p.productSpec || p.productName}">`);
+        html = adjustPaths(html);
 
         fs.writeFileSync(filePath, html, 'utf8');
       }
@@ -147,11 +182,12 @@ function generateStaticPages() {
         if (!b.name) continue;
         const slug = slugify(b.name);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public', fileName);
+        const filePath = path.join(__dirname, '../public/brands', fileName);
 
         const injectScript = `<script>window.staticBrandData = ${JSON.stringify(b)};</script>`;
         let html = brandTemplate.replace('</head>', `${injectScript}\n</head>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>${b.name} CCTV Security Products | AK Infotech</title>`);
+        html = adjustPaths(html);
 
         fs.writeFileSync(filePath, html, 'utf8');
       }
@@ -169,11 +205,12 @@ function generateStaticPages() {
         if (!c.name) continue;
         const slug = slugify(c.name);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public', fileName);
+        const filePath = path.join(__dirname, '../public/categories', fileName);
 
         const injectScript = `<script>window.staticCategoryData = ${JSON.stringify(c)};</script>`;
         let html = categoryTemplate.replace('</head>', `${injectScript}\n</head>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>Shop ${c.name} Security Systems | AK Infotech</title>`);
+        html = adjustPaths(html);
 
         fs.writeFileSync(filePath, html, 'utf8');
       }
@@ -1007,7 +1044,7 @@ app.post('/api/deploy', (req, res) => {
     // Reset ecom remote to safe URL on error too
     try {
       execSync(`git remote set-url ecom https://github.com/akinfotechtn/ecom`, { cwd: path.join(__dirname, '..') });
-    } catch (_) {}
+    } catch (_) { }
     return res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -1021,7 +1058,7 @@ app.listen(PORT, () => {
   console.log(` Storefront UI: http://localhost:${PORT}`);
   console.log(` Admin Portal : http://localhost:${PORT}/admin.html`);
   console.log(`====================================================`);
-  
+
   // Build static pages on startup
   generateStaticPages();
 });

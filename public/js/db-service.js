@@ -1,6 +1,6 @@
 // DUAL DATABASE SERVICE: FIREBASE CLOUD FIRESTORE + HERO BANNERS CRUD & AUTO-SCROLL
-import { 
-  db, 
+import {
+  db,
   auth,
   googleProvider,
   signInWithPopup,
@@ -8,13 +8,13 @@ import {
   getRedirectResult,
   signOut,
   onAuthStateChanged,
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  setDoc, 
-  addDoc, 
-  updateDoc, 
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  addDoc,
+  updateDoc,
   deleteDoc,
   query,
   where
@@ -219,6 +219,14 @@ export class DbService {
       .replace(/-+$/, '');
   }
 
+  static getLinkPrefix() {
+    const pathname = window.location.pathname;
+    if (pathname.includes('/product/') || pathname.includes('/brands/') || pathname.includes('/categories/')) {
+      return '../';
+    }
+    return '';
+  }
+
   // GOOGLE AUTHENTICATION
   static async loginWithGoogle() {
     try {
@@ -308,11 +316,11 @@ export class DbService {
             this._cachedProducts = prods;
             try {
               localStorage.setItem('ak_local_products', JSON.stringify(prods));
-            } catch (e) {}
+            } catch (e) { }
             return prods;
           }
         }
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // 2. Check localStorage fallback
@@ -325,7 +333,7 @@ export class DbService {
           return parsed;
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     this._cachedProducts = DEFAULT_PRODUCTS;
     return DEFAULT_PRODUCTS;
@@ -355,7 +363,7 @@ export class DbService {
             prods = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
           }
         }
-      } catch (e) {}
+      } catch (e) { }
     }
 
     if (!prods.length) {
@@ -373,7 +381,7 @@ export class DbService {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ products: prods })
       });
-    } catch (e) {}
+    } catch (e) { }
 
     return prods;
   }
@@ -474,7 +482,7 @@ export class DbService {
             return brands;
           }
         }
-      } catch (err) {}
+      } catch (err) { }
     }
 
     return DEFAULT_BRANDS;
@@ -562,7 +570,7 @@ export class DbService {
             return cats;
           }
         }
-      } catch (err) {}
+      } catch (err) { }
     }
 
     return DEFAULT_CATEGORIES;
@@ -648,7 +656,7 @@ export class DbService {
     if (!uid) return;
     const addressId = `addr-${Date.now()}`;
     const newAddr = { id: addressId, ...addressData, createdAt: new Date().toISOString() };
-    
+
     try {
       const existing = await this.getUserAddresses(uid);
       const updated = [newAddr, ...existing];
@@ -668,7 +676,7 @@ export class DbService {
     const updated = existing.map(a => a.id === addressId ? { ...a, ...addressData } : a);
     try {
       await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
-    } catch (e) {}
+    } catch (e) { }
     localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
   }
 
@@ -678,7 +686,7 @@ export class DbService {
     const updated = existing.filter(a => a.id !== addressId);
     try {
       await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
-    } catch (e) {}
+    } catch (e) { }
     localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
   }
 
@@ -725,7 +733,7 @@ export class DbService {
       const filtered = existing.filter(o => String(o.id) !== String(order.id));
       filtered.unshift(order);
       localStorage.setItem('ak_local_orders', JSON.stringify(filtered.slice(0, 50)));
-    } catch (e) {}
+    } catch (e) { }
   }
 
   static getOrdersFromLocalStorage() {
@@ -791,8 +799,8 @@ export class DbService {
     try {
       const cleanStr = queryStr.trim().toUpperCase();
       const allOrders = await this.getOrders();
-      return allOrders.filter(o => 
-        (o.id && String(o.id).toUpperCase() === cleanStr) || 
+      return allOrders.filter(o =>
+        (o.id && String(o.id).toUpperCase() === cleanStr) ||
         (o.phone && String(o.phone).includes(queryStr.trim())) ||
         (o.razorpayOrderId && String(o.razorpayOrderId).toUpperCase() === cleanStr)
       );
@@ -833,7 +841,7 @@ export class DbService {
     }
 
     const merged = Array.from(mergedMap.values());
-    
+
     // Filter for this user (by uid, email, or customer name)
     const filtered = merged.filter(o => {
       if (uid && o.userUid && String(o.userUid) === String(uid)) return true;

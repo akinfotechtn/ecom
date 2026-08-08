@@ -258,14 +258,14 @@ function renderCategoryCatalog() {
 
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
-        <a href="${DbService.slugify(p.productName)}.html" class="product-image-wrap">
+        <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
           <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
         </a>
         <div class="product-body">
-          <h3 class="product-name"><a href="${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
+          <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
           <p class="product-spec">${escapeHtml(p.productSpec)}</p>
 
           <div class="price-row">
