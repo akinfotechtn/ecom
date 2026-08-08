@@ -436,66 +436,70 @@ export class DbService {
     return DEFAULT_PRODUCTS;
   }
 
-  // BRANDS MANAGEMENT (ADD, EDIT, DELETE)
+  // BRANDS — derived dynamically from local products.json (no Firestore)
   static async getBrands() {
     try {
-      const snap = await getDocs(collection(db, "brands"));
-      if (!snap.empty) {
-        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const products = await this.getProducts();
+      const brandMap = {};
+      for (const p of products) {
+        if (!p.brand) continue;
+        const key = p.brand.trim();
+        if (!brandMap[key]) {
+          brandMap[key] = { id: `brand-${key.toLowerCase().replace(/\s+/g,'-')}`, name: key, count: 0 };
+        }
+        brandMap[key].count++;
       }
-      for (const b of DEFAULT_BRANDS) {
-        await setDoc(doc(db, "brands", b.id), b);
-      }
-      return DEFAULT_BRANDS;
+      const brands = Object.values(brandMap).sort((a, b) => a.name.localeCompare(b.name));
+      return brands.length > 0 ? brands : DEFAULT_BRANDS;
     } catch (err) {
       return DEFAULT_BRANDS;
     }
   }
 
   static async addBrand(brandData) {
-    const id = `brand-${Date.now()}`;
-    const newBrand = { id, ...brandData };
-    await setDoc(doc(db, "brands", id), newBrand);
-    return newBrand;
+    // No-op locally — brands come from products
+    return { id: `brand-${Date.now()}`, ...brandData };
   }
 
   static async updateBrand(id, brandData) {
-    await setDoc(doc(db, "brands", id), brandData, { merge: true });
+    // No-op locally — brands come from products
   }
 
   static async deleteBrand(id) {
-    await deleteDoc(doc(db, "brands", id));
+    // No-op locally — brands come from products
   }
 
-  // CATEGORIES MANAGEMENT (ADD, EDIT, DELETE)
+  // CATEGORIES — derived dynamically from local products.json (no Firestore)
   static async getCategories() {
     try {
-      const snap = await getDocs(collection(db, "categories"));
-      if (!snap.empty) {
-        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const products = await this.getProducts();
+      const catMap = {};
+      for (const p of products) {
+        if (!p.category) continue;
+        const key = p.category.trim();
+        if (!catMap[key]) {
+          catMap[key] = { id: `cat-${key.toLowerCase().replace(/\s+/g,'-')}`, name: key, count: 0 };
+        }
+        catMap[key].count++;
       }
-      for (const c of DEFAULT_CATEGORIES) {
-        await setDoc(doc(db, "categories", c.id), c);
-      }
-      return DEFAULT_CATEGORIES;
+      const cats = Object.values(catMap).sort((a, b) => a.name.localeCompare(b.name));
+      return cats.length > 0 ? cats : DEFAULT_CATEGORIES;
     } catch (err) {
       return DEFAULT_CATEGORIES;
     }
   }
 
   static async addCategory(catData) {
-    const id = `cat-${Date.now()}`;
-    const newCat = { id, ...catData };
-    await setDoc(doc(db, "categories", id), newCat);
-    return newCat;
+    // No-op locally — categories come from products
+    return { id: `cat-${Date.now()}`, ...catData };
   }
 
   static async updateCategory(id, catData) {
-    await setDoc(doc(db, "categories", id), catData, { merge: true });
+    // No-op locally — categories come from products
   }
 
   static async deleteCategory(id) {
-    await deleteDoc(doc(db, "categories", id));
+    // No-op locally — categories come from products
   }
 
   // USER PROFILE & DELIVERY ADDRESSES (CRUD)
