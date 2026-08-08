@@ -19,8 +19,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // File paths
 const PRODUCTS_FILE = path.join(__dirname, '../data/products.json');
-const PUBLIC_PRODUCTS_FILE = path.join(__dirname, '../public/data/products.json');
-const ROOT_PRODUCTS_FILE = path.join(__dirname, '../products.json');
 const SETTINGS_FILE = path.join(__dirname, '../data/settings.json');
 const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
 
@@ -39,10 +37,17 @@ function readJson(filePath, defaultData = []) {
   }
 }
 
-// Utility to write JSON
+// Utility to write JSON across all local product mirrors
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    // If updating products, keep all local copies in sync
+    if (filePath.includes('products.json')) {
+      const publicPath = path.join(__dirname, '../public/data/products.json');
+      const rootPath = path.join(__dirname, '../products.json');
+      try { fs.writeFileSync(publicPath, JSON.stringify(data, null, 2), 'utf8'); } catch(e){}
+      try { fs.writeFileSync(rootPath, JSON.stringify(data, null, 2), 'utf8'); } catch(e){}
+    }
     return true;
   } catch (err) {
     console.error(`Error writing ${filePath}:`, err.message);
@@ -50,18 +55,11 @@ function writeJson(filePath, data) {
   }
 }
 
-// Save products to all local project folders simultaneously
-function saveProductsLocally(products) {
-  writeJson(PRODUCTS_FILE, products);
-  writeJson(PUBLIC_PRODUCTS_FILE, products);
-  writeJson(ROOT_PRODUCTS_FILE, products);
-}
-
 // ---------------------------------------------------------
 // PRODUCTS API
 // ---------------------------------------------------------
 app.get('/api/products', (req, res) => {
-  const products = readJson(PRODUCTS_FILE, readJson(PUBLIC_PRODUCTS_FILE, []));
+  const products = readJson(PRODUCTS_FILE, []);
   const { brand, category, isCombo, search } = req.query;
 
   let filtered = [...products];
@@ -104,7 +102,7 @@ app.get('/api/products', (req, res) => {
 app.post('/api/products', (req, res) => {
   const products = readJson(PRODUCTS_FILE, []);
   const newProduct = {
-    id: req.body.id || `prod-${Date.now()}`,
+    id: `prod-${Date.now()}`,
     photoLink: req.body.photoLink || 'https://images.unsplash.com/photo-1557597774-9d273605dfa9',
     productName: req.body.productName,
     productSpec: req.body.productSpec || '',
@@ -120,16 +118,10 @@ app.post('/api/products', (req, res) => {
     return res.status(400).json({ success: false, message: 'Product name and selling price are required.' });
   }
 
-  // Check if exists or unshift
-  const existingIdx = products.findIndex(p => p.id === newProduct.id);
-  if (existingIdx >= 0) {
-    products[existingIdx] = { ...products[existingIdx], ...newProduct };
-  } else {
-    products.unshift(newProduct);
-  }
+  products.unshift(newProduct);
+  writeJson(PRODUCTS_FILE, products);
 
-  saveProductsLocally(products);
-  res.json({ success: true, message: 'Product added and saved locally.', product: newProduct });
+  res.json({ success: true, message: 'Product added successfully.', product: newProduct });
 });
 
 app.put('/api/products/:id', (req, res) => {
@@ -153,8 +145,8 @@ app.put('/api/products/:id', (req, res) => {
     isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false)
   };
 
-  saveProductsLocally(products);
-  res.json({ success: true, message: 'Product updated and saved locally.', product: products[index] });
+  writeJson(PRODUCTS_FILE, products);
+  res.json({ success: true, message: 'Product updated.', product: products[index] });
 });
 
 app.delete('/api/products/:id', (req, res) => {
@@ -166,21 +158,17 @@ app.delete('/api/products/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'Product not found.' });
   }
 
-  saveProductsLocally(products);
-  res.json({ success: true, message: 'Product deleted from local json.' });
+  writeJson(PRODUCTS_FILE, products);
+  res.json({ success: true, message: 'Product deleted.' });
 });
 
-app.post('/api/products/import-json', (req, res) => {
-  try {
-    const products = req.body?.products || req.body || [];
-    if (!Array.isArray(products) || !products.length) {
-      return res.status(400).json({ success: false, message: 'Invalid product list.' });
-    }
-    saveProductsLocally(products);
-    res.json({ success: true, message: `Successfully saved ${products.length} products to local JSON files!`, total: products.length });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+app.post('/api/products/bulk-save', (req, res) => {
+  const products = req.body?.products || req.body || [];
+  if (!Array.isArray(products)) {
+    return res.status(400).json({ success: false, message: 'Invalid products array.' });
   }
+  writeJson(PRODUCTS_FILE, products);
+  res.json({ success: true, message: `Successfully saved ${products.length} products to local JSON!`, total: products.length });
 });
 
 // ---------------------------------------------------------
@@ -198,7 +186,7 @@ app.post('/api/sync-google-sheet', async (req, res) => {
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
     // Save imported products to store
-    saveProductsLocally(parsedProducts);
+    writeJson(PRODUCTS_FILE, parsedProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -207,7 +195,7 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     res.json({
       success: true,
-      message: `Successfully synced ${parsedProducts.length} products from Google Sheet to local JSON files!`,
+      message: `Successfully synced ${parsedProducts.length} products from Google Sheet!`,
       totalSynced: parsedProducts.length,
       lastSyncedAt: settings.lastSyncedAt,
       sampleProduct: parsedProducts[0]
@@ -229,11 +217,11 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    saveProductsLocally(parsedProducts);
+    writeJson(PRODUCTS_FILE, parsedProducts);
 
     res.json({
       success: true,
-      message: `Successfully imported ${parsedProducts.length} products from CSV string to local JSON files!`,
+      message: `Successfully imported ${parsedProducts.length} products from CSV string!`,
       totalSynced: parsedProducts.length
     });
   } catch (err) {
