@@ -69,6 +69,7 @@ function renderLocalTable(products) {
       <td><span style="color: var(--text-dim); font-size: 0.82rem;">${escapeHtml(p.category || 'General')}</span></td>
       <td>₹${Number(p.price || 0).toLocaleString('en-IN')}</td>
       <td><strong style="color: var(--accent-cyan); font-size: 0.95rem;">₹${Number(p.sellingPrice || 0).toLocaleString('en-IN')}</strong></td>
+      <td><span style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;">${p.dealerMarginPercent !== undefined ? p.dealerMarginPercent : 0}%</span></td>
       <td>
         ${p.inStock !== false ? `<span style="color: #34d399; font-weight: 700; font-size: 0.8rem;">● In Stock</span>` : `<span style="color: #f87171; font-weight: 700; font-size: 0.8rem;">● Out of Stock</span>`}
       </td>
@@ -108,6 +109,8 @@ window.handleAddSingleProduct = async function(e) {
   let sellingPrice = parseFloat(sellingPriceInput?.value) || 0;
   if (!sellingPrice && price) sellingPrice = price;
 
+  const dealerMarginPercent = parseFloat(document.getElementById('addProdDealerMargin')?.value) || 0;
+
   const photoLink = document.getElementById('addProdPhoto')?.value.trim() || 'images/cctv-wholesale.webp';
   const productSpec = document.getElementById('addProdSpec')?.value.trim() || '';
   const inStock = document.getElementById('addProdInStock')?.checked !== false;
@@ -132,6 +135,7 @@ window.handleAddSingleProduct = async function(e) {
     category,
     price: price || sellingPrice,
     sellingPrice,
+    dealerMarginPercent,
     photoLink,
     productSpec,
     inStock,
@@ -170,6 +174,7 @@ window.openEditModal = function(id) {
   document.getElementById('editProdCategory').value = p.category || '';
   document.getElementById('editProdPrice').value = p.price || 0;
   document.getElementById('editProdSellingPrice').value = p.sellingPrice || 0;
+  document.getElementById('editProdDealerMargin').value = p.dealerMarginPercent || 0;
   document.getElementById('editProdPhoto').value = p.photoLink || '';
   document.getElementById('editProdSpec').value = p.productSpec || '';
   document.getElementById('editProdInStock').checked = p.inStock !== false;
@@ -195,6 +200,7 @@ window.handleSaveEdit = async function(e) {
     category: document.getElementById('editProdCategory').value.trim() || 'General',
     price: parseFloat(document.getElementById('editProdPrice').value) || 0,
     sellingPrice: parseFloat(document.getElementById('editProdSellingPrice').value) || 0,
+    dealerMarginPercent: parseFloat(document.getElementById('editProdDealerMargin').value) || 0,
     photoLink: document.getElementById('editProdPhoto').value.trim() || 'images/cctv-wholesale.webp',
     productSpec: document.getElementById('editProdSpec').value.trim(),
     inStock: document.getElementById('editProdInStock').checked,
@@ -352,6 +358,9 @@ function renderBulkTable() {
         <input type="number" class="bulk-selling" value="${p.sellingPrice || 0}" style="width: 90px; background: #0f172a; border: 1px solid var(--border-dark); color: var(--accent-cyan); font-weight: 800; padding: 4px; font-size: 0.9rem; border-radius: 4px;">
       </td>
       <td>
+        <input type="number" class="bulk-dealer-margin" value="${p.dealerMarginPercent || 0}" style="width: 80px; background: #0f172a; border: 1px solid var(--border-dark); color: #fff; padding: 4px; font-size: 0.85rem; border-radius: 4px;">
+      </td>
+      <td>
         <select class="bulk-stock" style="background: #0f172a; border: 1px solid var(--border-dark); color: #fff; padding: 4px; border-radius: 4px; font-size: 0.8rem;">
           <option value="true" ${p.inStock !== false ? 'selected' : ''}>In Stock</option>
           <option value="false" ${p.inStock === false ? 'selected' : ''}>Out of Stock</option>
@@ -383,6 +392,7 @@ window.saveAllBulkSpreadsheetEdits = async function() {
     const category = row.querySelector('.bulk-category')?.value.trim() || orig.category || 'General';
     const price = parseFloat(row.querySelector('.bulk-price')?.value) || 0;
     const sellingPrice = parseFloat(row.querySelector('.bulk-selling')?.value) || orig.sellingPrice || 0;
+    const dealerMarginPercent = parseFloat(row.querySelector('.bulk-dealer-margin')?.value) || 0;
     const inStock = row.querySelector('.bulk-stock')?.value === 'true';
     const isCombo = row.querySelector('.bulk-combo')?.value === 'true';
 
@@ -395,6 +405,7 @@ window.saveAllBulkSpreadsheetEdits = async function() {
       category,
       price,
       sellingPrice,
+      dealerMarginPercent,
       inStock,
       isCombo
     });
@@ -453,6 +464,8 @@ window.deployToGitHub = async function() {
 // --- BRANDS & CATEGORIES TAB LOGIC ---
 let localBrands = [];
 let localCategories = [];
+let editingBrandId = null;
+let editingCategoryId = null;
 
 // Tab switching
 window.switchTab = function(tabId) {
@@ -602,6 +615,7 @@ window.renderBrandsList = function() {
       <td style="font-weight: 700; color:#fff;">${escapeHtml(b.name)}</td>
       <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(b.description || '')}</td>
       <td style="text-align: right;">
+        <button class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 4px 8px; font-size: 0.78rem; margin-right: 4px;" onclick="startEditBrand('${b.id}')">✏️ Edit</button>
         <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteBrandBtn('${b.id}')">✕ Delete</button>
       </td>
     </tr>
@@ -634,13 +648,86 @@ window.renderCategoriesList = function() {
       <td style="font-weight: 700; color:#fff;">${escapeHtml(c.name)}</td>
       <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(c.description || '')}</td>
       <td style="text-align: right;">
+        <button class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 4px 8px; font-size: 0.78rem; margin-right: 4px;" onclick="startEditCategory('${c.id}')">✏️ Edit</button>
         <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteCategoryBtn('${c.id}')">✕ Delete</button>
       </td>
     </tr>
   `).join('');
 };
 
-// Add Brand submit
+// Edit & Cancel Brand functions
+window.startEditBrand = function(id) {
+  const b = localBrands.find(x => String(x.id) === String(id));
+  if (!b) return;
+  
+  editingBrandId = b.id;
+  document.getElementById('addBrandName').value = b.name || '';
+  document.getElementById('addBrandDesc').value = b.description || '';
+  document.getElementById('addBrandImageUrl').value = b.imageLink || 'images/brands/generic.png';
+  
+  const typeSelect = document.getElementById('brandImgSrcType');
+  if (typeSelect) {
+    typeSelect.value = 'url';
+    toggleBrandImageInputs();
+  }
+  
+  const btnSave = document.getElementById('btnSaveBrand');
+  if (btnSave) btnSave.textContent = '💾 Save Brand Changes';
+  
+  const btnCancel = document.getElementById('btnCancelBrandEdit');
+  if (btnCancel) btnCancel.style.display = 'inline-block';
+};
+
+window.cancelBrandEdit = function() {
+  editingBrandId = null;
+  document.getElementById('addBrandForm').reset();
+  document.getElementById('addBrandImageUrl').value = 'images/brands/generic.png';
+  document.getElementById('brandUploadStatus').textContent = '';
+  
+  const btnSave = document.getElementById('btnSaveBrand');
+  if (btnSave) btnSave.textContent = '💾 Save Brand Locally';
+  
+  const btnCancel = document.getElementById('btnCancelBrandEdit');
+  if (btnCancel) btnCancel.style.display = 'none';
+};
+
+// Edit & Cancel Category functions
+window.startEditCategory = function(id) {
+  const c = localCategories.find(x => String(x.id) === String(id));
+  if (!c) return;
+  
+  editingCategoryId = c.id;
+  document.getElementById('addCategoryName').value = c.name || '';
+  document.getElementById('addCategoryDesc').value = c.description || '';
+  document.getElementById('addCategoryImageUrl').value = c.imageLink || 'images/categories/generic.png';
+  
+  const typeSelect = document.getElementById('catImgSrcType');
+  if (typeSelect) {
+    typeSelect.value = 'url';
+    toggleCatImageInputs();
+  }
+  
+  const btnSave = document.getElementById('btnSaveCategory');
+  if (btnSave) btnSave.textContent = '💾 Save Category Changes';
+  
+  const btnCancel = document.getElementById('btnCancelCategoryEdit');
+  if (btnCancel) btnCancel.style.display = 'inline-block';
+};
+
+window.cancelCategoryEdit = function() {
+  editingCategoryId = null;
+  document.getElementById('addCategoryForm').reset();
+  document.getElementById('addCategoryImageUrl').value = 'images/categories/generic.png';
+  document.getElementById('catUploadStatus').textContent = '';
+  
+  const btnSave = document.getElementById('btnSaveCategory');
+  if (btnSave) btnSave.textContent = '💾 Save Category Locally';
+  
+  const btnCancel = document.getElementById('btnCancelCategoryEdit');
+  if (btnCancel) btnCancel.style.display = 'none';
+};
+
+// Add/Edit Brand submit
 window.handleAddBrand = async function(event) {
   event.preventDefault();
   const name = document.getElementById('addBrandName').value.trim();
@@ -649,17 +736,20 @@ window.handleAddBrand = async function(event) {
   
   if (!name) return;
   
+  const body = { name, description, imageLink };
+  if (editingBrandId) {
+    body.id = editingBrandId;
+  }
+  
   try {
     const res = await fetch('/api/brands', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, description, imageLink })
+      body: JSON.stringify(body)
     });
     
     if (res.ok) {
-      document.getElementById('addBrandForm').reset();
-      document.getElementById('addBrandImageUrl').value = 'images/brands/generic.png';
-      document.getElementById('brandUploadStatus').textContent = '';
+      cancelBrandEdit();
       alert('Brand saved successfully!');
       loadLocalBrandsAndCategories();
     } else {
@@ -671,7 +761,7 @@ window.handleAddBrand = async function(event) {
   }
 };
 
-// Add Category submit
+// Add/Edit Category submit
 window.handleAddCategory = async function(event) {
   event.preventDefault();
   const name = document.getElementById('addCategoryName').value.trim();
@@ -680,17 +770,20 @@ window.handleAddCategory = async function(event) {
   
   if (!name) return;
   
+  const body = { name, description, imageLink };
+  if (editingCategoryId) {
+    body.id = editingCategoryId;
+  }
+  
   try {
     const res = await fetch('/api/categories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, description, imageLink })
+      body: JSON.stringify(body)
     });
     
     if (res.ok) {
-      document.getElementById('addCategoryForm').reset();
-      document.getElementById('addCategoryImageUrl').value = 'images/categories/generic.png';
-      document.getElementById('catUploadStatus').textContent = '';
+      cancelCategoryEdit();
       alert('Category saved successfully!');
       loadLocalBrandsAndCategories();
     } else {

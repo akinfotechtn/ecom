@@ -374,7 +374,7 @@
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
             <div class="form-group-local">
               <label>MRP Price (₹)</label>
               <input type="number" id="addProdPrice" placeholder="e.g. 4500" value="0">
@@ -382,6 +382,10 @@
             <div class="form-group-local">
               <label>Selling Price (₹) *</label>
               <input type="number" id="addProdSellingPrice" required placeholder="e.g. 2299">
+            </div>
+            <div class="form-group-local">
+              <label>Dealer Margin %</label>
+              <input type="number" id="addProdDealerMargin" placeholder="e.g. 5" value="0">
             </div>
           </div>
 
@@ -438,13 +442,14 @@
               <th>Category</th>
               <th>MRP (₹)</th>
               <th>Selling Price (₹)</th>
+              <th>Dealer Margin</th>
               <th>Stock</th>
               <th>Combo?</th>
               <th style="text-align: right; width: 140px;">Actions</th>
             </tr>
           </thead>
           <tbody id="localProductsTableBody">
-            <tr><td colspan="9" style="text-align: center; padding: 30px; color: var(--text-dim);">⏳ Loading products from local JSON...</td></tr>
+            <tr><td colspan="10" style="text-align: center; padding: 30px; color: var(--text-dim);">⏳ Loading products from local JSON...</td></tr>
           </tbody>
         </table>
       </div>
@@ -460,6 +465,7 @@
               <th style="width: 140px;">Category</th>
               <th style="width: 90px;">MRP (₹)</th>
               <th style="width: 100px;">Selling Price (₹)</th>
+              <th style="width: 90px;">Dealer Margin %</th>
               <th style="width: 100px;">Stock</th>
               <th style="width: 80px;">Combo</th>
             </tr>
@@ -474,23 +480,7 @@
   <!-- TABS CONTENT: BRANDS & CATEGORIES -->
   <div id="brands-cats-tab" class="tab-content" style="display: none;">
       
-      <!-- TOP SYNC BAR -->
-      <div class="local-card" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-        <div>
-          <h3 style="margin: 0; color: #ffffff;">🔄 Sync Brands & Categories from Cloud Firestore</h3>
-          <p style="font-size: 0.82rem; color: var(--text-dim); margin: 4px 0 0;">
-            Download live brands and categories from Firestore database and overwrite local JSON configs.
-          </p>
-        </div>
-        <div style="display: flex; gap: 10px;">
-          <button class="btn-action btn-green" onclick="syncBrandsFromFirestoreBtn()">
-            📥 Download Brands from Firestore
-          </button>
-          <button class="btn-action btn-green" onclick="syncCategoriesFromFirestoreBtn()">
-            📥 Download Categories from Firestore
-          </button>
-        </div>
-      </div>
+
 
       <!-- MAIN BRANDS / CATS LAYOUT -->
       <div class="grid-2col">
@@ -527,9 +517,14 @@
                 <div id="brandUploadStatus" style="font-size: 0.8rem; margin-top: 4px; color: var(--accent-green);"></div>
               </div>
               
-              <button type="submit" class="btn-action" style="width: 100%; justify-content: center; margin-top: 10px;">
-                💾 Save Brand Locally
-              </button>
+              <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="submit" id="btnSaveBrand" class="btn-action" style="flex: 1; justify-content: center;">
+                  💾 Save Brand Locally
+                </button>
+                <button type="button" id="btnCancelBrandEdit" class="btn-secondary" style="display: none;" onclick="cancelBrandEdit()">
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
 
@@ -562,9 +557,14 @@
                 <div id="catUploadStatus" style="font-size: 0.8rem; margin-top: 4px; color: var(--accent-green);"></div>
               </div>
               
-              <button type="submit" class="btn-action" style="width: 100%; justify-content: center; margin-top: 10px;">
-                💾 Save Category Locally
-              </button>
+              <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="submit" id="btnSaveCategory" class="btn-action" style="flex: 1; justify-content: center;">
+                  💾 Save Category Locally
+                </button>
+                <button type="button" id="btnCancelCategoryEdit" class="btn-secondary" style="display: none;" onclick="cancelCategoryEdit()">
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
 
@@ -654,7 +654,7 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
           <div class="form-group-local">
             <label>MRP Price (₹)</label>
             <input type="number" id="editProdPrice">
@@ -662,6 +662,10 @@
           <div class="form-group-local">
             <label>Selling Price (₹) *</label>
             <input type="number" id="editProdSellingPrice" required>
+          </div>
+          <div class="form-group-local">
+            <label>Dealer Margin %</label>
+            <input type="number" id="editProdDealerMargin" placeholder="e.g. 5">
           </div>
         </div>
 
