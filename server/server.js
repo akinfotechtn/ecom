@@ -19,6 +19,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // File paths
 const PRODUCTS_FILE = path.join(__dirname, '../data/products.json');
+const PUBLIC_PRODUCTS_FILE = path.join(__dirname, '../public/data/products.json');
+const ROOT_PRODUCTS_FILE = path.join(__dirname, '../products.json');
 const SETTINGS_FILE = path.join(__dirname, '../data/settings.json');
 const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
 
@@ -26,6 +28,8 @@ const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
 function readJson(filePath, defaultData = []) {
   try {
     if (!fs.existsSync(filePath)) {
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
       return defaultData;
     }
@@ -40,12 +44,22 @@ function readJson(filePath, defaultData = []) {
 // Utility to write JSON
 function writeJson(filePath, data) {
   try {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
     console.error(`Error writing ${filePath}:`, err.message);
     return false;
   }
+}
+
+// Save products to all 3 file locations automatically
+function saveProductsToAllLocations(products) {
+  writeJson(PRODUCTS_FILE, products);
+  writeJson(PUBLIC_PRODUCTS_FILE, products);
+  writeJson(ROOT_PRODUCTS_FILE, products);
+  console.log(`💾 Saved ${products.length} products to data/products.json, public/data/products.json, and root products.json`);
 }
 
 // ---------------------------------------------------------
@@ -112,7 +126,7 @@ app.post('/api/products', (req, res) => {
   }
 
   products.unshift(newProduct);
-  writeJson(PRODUCTS_FILE, products);
+  saveProductsToAllLocations(products);
 
   res.json({ success: true, message: 'Product added successfully.', product: newProduct });
 });
@@ -138,7 +152,7 @@ app.put('/api/products/:id', (req, res) => {
     isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false)
   };
 
-  writeJson(PRODUCTS_FILE, products);
+  saveProductsToAllLocations(products);
   res.json({ success: true, message: 'Product updated.', product: products[index] });
 });
 
@@ -151,7 +165,7 @@ app.delete('/api/products/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'Product not found.' });
   }
 
-  writeJson(PRODUCTS_FILE, products);
+  saveProductsToAllLocations(products);
   res.json({ success: true, message: 'Product deleted.' });
 });
 
@@ -169,8 +183,8 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
-    // Save imported products to store
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    // Save imported products to all 3 JSON file locations automatically
+    saveProductsToAllLocations(parsedProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -201,7 +215,7 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    saveProductsToAllLocations(parsedProducts);
 
     res.json({
       success: true,
@@ -210,6 +224,18 @@ app.post('/api/upload-csv', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ success: false, message: `CSV Parsing Failed: ${err.message}` });
+  }
+});
+
+app.post('/api/products/import-json', async (req, res) => {
+  try {
+    const prods = req.body?.products || req.body || [];
+    if (Array.isArray(prods) && prods.length > 0) {
+      saveProductsToAllLocations(prods);
+    }
+    res.json({ success: true, total: prods.length });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
