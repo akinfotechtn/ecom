@@ -722,8 +722,8 @@ app.post('/api/deploy', (req, res) => {
     const authUrl = `https://${token}@github.com/akinfotechtn/ecom.git`;
     const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-    // Update origin with authenticated URL (stored in local .git/config only, not committed)
-    execSync(`git remote set-url origin ${authUrl}`, { cwd: repoRoot });
+    // Update ecom remote with authenticated URL (stored in local .git/config only, never committed)
+    execSync(`git remote set-url ecom ${authUrl}`, { cwd: repoRoot });
 
     // Stage all changes
     execSync('git add .', { cwd: repoRoot });
@@ -735,11 +735,11 @@ app.post('/api/deploy', (req, res) => {
       committed = false; // nothing new to commit
     }
 
-    // Push via origin so VS Code tracking ref updates
-    execSync('git push origin main', { cwd: repoRoot });
+    // Push via ecom remote so VS Code tracking ref updates
+    execSync('git push ecom main', { cwd: repoRoot });
 
-    // Reset origin to safe URL without token (optional but clean)
-    execSync('git remote set-url origin https://github.com/akinfotechtn/ecom.git', { cwd: repoRoot });
+    // Reset ecom remote to safe URL (without token)
+    execSync('git remote set-url ecom https://github.com/akinfotechtn/ecom', { cwd: repoRoot });
 
     const msg = committed
       ? `✅ Committed & pushed to GitHub at ${timestamp}`
@@ -748,9 +748,9 @@ app.post('/api/deploy', (req, res) => {
     return res.json({ success: true, message: msg });
   } catch (err) {
     console.error('[deploy] Error:', err.message);
-    // Reset origin to safe URL on error too
+    // Reset ecom remote to safe URL on error too
     try {
-      execSync(`git remote set-url origin https://github.com/akinfotechtn/ecom.git`, { cwd: path.join(__dirname, '..') });
+      execSync(`git remote set-url ecom https://github.com/akinfotechtn/ecom`, { cwd: path.join(__dirname, '..') });
     } catch (_) {}
     return res.status(500).json({ success: false, message: err.message });
   }
