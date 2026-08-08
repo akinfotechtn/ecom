@@ -75,7 +75,7 @@ async function loadBrandData() {
     }
 
     const allProds = await DbService.getProducts();
-    
+
     if (currentBrandName.toLowerCase() === 'all brands' || !currentBrandName) {
       brandProducts = allProds;
     } else {
@@ -135,7 +135,7 @@ async function renderBrandCategories() {
   grid.innerHTML = html;
 }
 
-window.filterBrandCategory = function(catName, btn) {
+window.filterBrandCategory = function (catName, btn) {
   const chips = document.querySelectorAll('#brandCategoriesGrid .category-chip');
   chips.forEach(c => {
     c.style.borderColor = '#cbd5e1';
@@ -191,7 +191,7 @@ function renderBrandHero() {
 const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
 
-window.changeBrandPage = function(newPage) {
+window.changeBrandPage = function (newPage) {
   currentPage = newPage;
   renderBrandCatalog();
   const mainSec = document.querySelector('.catalog-section');
@@ -332,9 +332,9 @@ function renderPaginationControls(container, totalPages) {
   container.innerHTML = html;
 }
 
-window.addToCart = async function(productId) {
+window.addToCart = async function (productId) {
   let product = brandProducts.find(p => String(p.id) === String(productId));
-  
+
   if (!product) {
     try {
       product = await DbService.getProductById(productId);
@@ -460,7 +460,7 @@ function renderCart() {
   if (grandTotalEl) grandTotalEl.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
 }
 
-window.updateQty = function(id, delta) {
+window.updateQty = function (id, delta) {
   const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
 
@@ -477,13 +477,13 @@ window.updateQty = function(id, delta) {
   if (typeof renderBrandCatalog === 'function') renderBrandCatalog();
 };
 
-window.removeFromCart = function(id) {
+window.removeFromCart = function (id) {
   cart = cart.filter(i => String(i.id) !== String(id));
   saveCart();
   renderCart();
 };
 
-window.openCartDrawer = function() {
+window.openCartDrawer = function () {
   cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
@@ -492,7 +492,7 @@ window.openCartDrawer = function() {
   renderCart();
 };
 
-window.closeCartDrawer = function() {
+window.closeCartDrawer = function () {
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
   if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }

@@ -167,7 +167,7 @@ async function loadRelatedProducts(category, currentId) {
   `).join('');
 }
 
-window.addToCart = async function(id) {
+window.addToCart = async function (id) {
   let prod = currentProduct;
   if (!prod) {
     try {
@@ -204,7 +204,7 @@ window.addToCart = async function(id) {
   openCartDrawer();
 };
 
-window.updateCartQty = function(id, change) {
+window.updateCartQty = function (id, change) {
   const index = cart.findIndex(item => String(item.id) === String(id));
   if (index > -1) {
     const currentQty = cart[index].quantity || cart[index].qty || 1;
@@ -223,7 +223,7 @@ window.updateCartQty = function(id, change) {
   }
 };
 
-window.buyNowDirect = function(id) {
+window.buyNowDirect = function (id) {
   if (currentProduct && currentProduct.inStock === false) {
     alert('Sorry, this product is currently out of stock!');
     return;
@@ -239,7 +239,7 @@ function getItemPriceWithGst(item) {
   return basePrice + gstAmount;
 }
 
-window.openCartDrawer = function() {
+window.openCartDrawer = function () {
   cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
@@ -248,7 +248,7 @@ window.openCartDrawer = function() {
   renderCart();
 };
 
-window.closeCartDrawer = function() {
+window.closeCartDrawer = function () {
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
   if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }

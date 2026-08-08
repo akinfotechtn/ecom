@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else {
         filteredProducts = categoryProducts.filter(p => {
           return (p.productName || '').toLowerCase().includes(q) ||
-                 (p.brand || '').toLowerCase().includes(q) ||
-                 (p.productSpec || '').toLowerCase().includes(q);
+            (p.brand || '').toLowerCase().includes(q) ||
+            (p.productSpec || '').toLowerCase().includes(q);
         });
       }
       currentPage = 1;
@@ -199,7 +199,7 @@ function renderCategoryBrandsSection() {
   grid.innerHTML = html;
 }
 
-window.filterCategoryBrand = function(bName, btn) {
+window.filterCategoryBrand = function (bName, btn) {
   const chips = document.querySelectorAll('#categoryBrandsGrid .brand-chip');
   chips.forEach(c => {
     c.style.borderColor = '#cbd5e1';
@@ -361,7 +361,7 @@ function renderPaginationControls(container, totalPages) {
   container.innerHTML = html;
 }
 
-window.changeCategoryPage = function(newPage) {
+window.changeCategoryPage = function (newPage) {
   currentPage = newPage;
   renderCategoryCatalog();
   window.scrollTo({ top: 300, behavior: 'smooth' });
@@ -378,7 +378,7 @@ function setupCartDrawer() {
   if (backdrop) backdrop.addEventListener('click', closeCartDrawer);
 }
 
-window.openCartDrawer = function() {
+window.openCartDrawer = function () {
   cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
@@ -387,14 +387,14 @@ window.openCartDrawer = function() {
   renderCart();
 };
 
-window.closeCartDrawer = function() {
+window.closeCartDrawer = function () {
   const drawer = document.getElementById('cartDrawer');
   const backdrop = document.getElementById('cartBackdrop');
   if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
   if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
 };
 
-window.addToCart = async function(productId) {
+window.addToCart = async function (productId) {
   let prod = categoryProducts.find(p => String(p.id) === String(productId));
   if (!prod) {
     try {
@@ -433,7 +433,7 @@ window.addToCart = async function(productId) {
   openCartDrawer();
 };
 
-window.updateCartQty = function(productId, change) {
+window.updateCartQty = function (productId, change) {
   const index = cart.findIndex(item => String(item.id) === String(productId));
   if (index > -1) {
     const currentQty = cart[index].quantity || cart[index].qty || 1;

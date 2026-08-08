@@ -150,13 +150,13 @@ async function fetchProducts() {
   }
 }
 
-window.selectBrand = function(b) {
+window.selectBrand = function (b) {
   activeBrand = b;
   renderBrandLogosStrip();
   renderCatalog();
 };
 
-window.selectCategory = function(c) {
+window.selectCategory = function (c) {
   if (c) {
     window.location.href = DbService.slugify(c) + '.html';
   } else {
@@ -167,7 +167,7 @@ window.selectCategory = function(c) {
   }
 };
 
-window.filterByComboOnly = function() {
+window.filterByComboOnly = function () {
   isComboOnly = !isComboOnly;
   if (isComboOnly) activeCategory = '';
   renderCategoryScrollRow();
@@ -177,7 +177,7 @@ window.filterByComboOnly = function() {
 const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
 
-window.changePage = function(newPage) {
+window.changePage = function (newPage) {
   currentPage = newPage;
   renderCatalog();
   const mainSec = document.querySelector('.catalog-section');
@@ -361,7 +361,7 @@ function renderPaginationControls(container, totalPages) {
   container.innerHTML = html;
 }
 
-window.resetFilters = function() {
+window.resetFilters = function () {
   activeBrand = '';
   activeCategory = '';
   isComboOnly = false;
@@ -375,9 +375,9 @@ window.resetFilters = function() {
 };
 
 // CART MANAGEMENT (PERMANENT BULLETPROOF FIX)
-window.addToCart = async function(productId) {
+window.addToCart = async function (productId) {
   let prod = allProducts.find(p => String(p.id) === String(productId));
-  
+
   if (!prod) {
     try {
       prod = await DbService.getProductById(productId);
@@ -411,7 +411,7 @@ window.addToCart = async function(productId) {
   openCartDrawer();
 };
 
-window.updateCartQty = function(productId, change) {
+window.updateCartQty = function (productId, change) {
   const index = cart.findIndex(item => String(item.id) === String(productId));
   if (index > -1) {
     const currentQty = cart[index].quantity || cart[index].qty || 1;
@@ -436,7 +436,7 @@ function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
   const drawerCountEl = document.getElementById('cartItemCount');
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
-  
+
   if (cartCountEl) cartCountEl.textContent = totalQty;
   if (drawerCountEl) drawerCountEl.textContent = totalQty;
 
@@ -478,7 +478,7 @@ function renderCart() {
   const isPayOnDelivery = storeSettings.payShippingOnDelivery === true;
   const enableFreeShipping = storeSettings.enableFreeShipping !== false;
   const freeMin = storeSettings.freeShippingMinOrder || 3000;
-  
+
   // Category-wise & Product-specific custom delivery charge calculation
   let deliveryFee = isPayOnDelivery ? 0 : calculateCartDeliveryFee(cart, storeSettings, storeCategories);
 
@@ -498,7 +498,7 @@ function renderCart() {
 
   const gstEl = document.getElementById('cartGstAmount');
   if (gstEl) gstEl.style.display = 'none';
-  
+
   const deliveryEl = document.getElementById('cartDelivery') || document.getElementById('cartDeliveryFee');
   if (deliveryEl) {
     if (subtotalWithGst === 0) {
@@ -547,8 +547,8 @@ function calculateCartGstAmount(cartItems, settings) {
   cartItems.forEach(item => {
     const q = item.quantity || item.qty || 1;
     const itemSellingPrice = item.sellingPrice || 0;
-    const itemGstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
-      ? Number(item.gstPercent) 
+    const itemGstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
+      ? Number(item.gstPercent)
       : defaultGst;
 
     const itemGst = Math.round(((itemSellingPrice * q) * itemGstRate) / 100);
@@ -608,7 +608,7 @@ function calculateCartDeliveryFee(cartItems, settings, categories = []) {
   return maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
 }
 
-window.autoApplyCoupon = function(code) {
+window.autoApplyCoupon = function (code) {
   const input = document.getElementById('couponCodeInput');
   if (input) {
     input.value = code;
@@ -618,7 +618,7 @@ window.autoApplyCoupon = function(code) {
 };
 
 // CHECKOUT & PAYMENT SELECTION
-window.selectPaymentMethod = function(method) {
+window.selectPaymentMethod = function (method) {
   selectedPaymentMethod = method;
   const optOnline = document.getElementById('optOnline');
   const optCOD = document.getElementById('optCOD');
@@ -891,17 +891,17 @@ function setupEventListeners() {
   }
 }
 
-window.openCartDrawer = function() {
+window.openCartDrawer = function () {
   document.getElementById('cartDrawer').classList.add('active');
   document.getElementById('cartBackdrop').classList.add('active');
 };
 
-window.closeCartDrawer = function() {
+window.closeCartDrawer = function () {
   document.getElementById('cartDrawer').classList.remove('active');
   document.getElementById('cartBackdrop').classList.remove('active');
 };
 
-window.openAuthChoiceModal = function() {
+window.openAuthChoiceModal = function () {
   const modal = document.getElementById('authChoiceBackdrop');
   if (modal) {
     modal.classList.add('open');
@@ -909,7 +909,7 @@ window.openAuthChoiceModal = function() {
   }
 };
 
-window.closeAuthChoiceModal = function() {
+window.closeAuthChoiceModal = function () {
   const modal = document.getElementById('authChoiceBackdrop');
   if (modal) {
     modal.classList.remove('open');
@@ -917,7 +917,7 @@ window.closeAuthChoiceModal = function() {
   }
 };
 
-window.checkoutWithGoogle = async function() {
+window.checkoutWithGoogle = async function () {
   try {
     closeAuthChoiceModal();
     await DbService.loginWithGoogle();
@@ -929,7 +929,7 @@ window.checkoutWithGoogle = async function() {
   }
 };
 
-window.checkoutAsGuest = function() {
+window.checkoutAsGuest = function () {
   closeAuthChoiceModal();
   openCheckoutModal();
 };
@@ -955,7 +955,7 @@ async function openCheckoutModal() {
       savedSelect.innerHTML = `<option value="">-- Choose a saved delivery address --</option>` +
         userAddresses.map((a, idx) => `<option value="${a.id}">${escapeHtml(a.fullName)} - ${escapeHtml(a.street)}, ${escapeHtml(a.pincode)}</option>`).join('');
 
-      savedSelect.onchange = function() {
+      savedSelect.onchange = function () {
         const selectedId = this.value;
         const found = userAddresses.find(a => a.id === selectedId);
         if (found) {
@@ -980,7 +980,7 @@ async function openCheckoutModal() {
   }
 }
 
-window.closeCheckoutModal = function() {
+window.closeCheckoutModal = function () {
   document.getElementById('checkoutBackdrop')?.classList.remove('active');
 };
 
@@ -1031,7 +1031,7 @@ function renderHeroSlider() {
   }
 }
 
-window.goToHeroSlide = function(index) {
+window.goToHeroSlide = function (index) {
   currentHeroIndex = index;
   renderHeroSlider();
   resetHeroAutoScroll();
@@ -1112,7 +1112,7 @@ function closeSearchDropdown() {
   if (dropdown) dropdown.style.display = 'none';
 }
 
-window.applySearchFromDropdown = function(q) {
+window.applySearchFromDropdown = function (q) {
   const searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = q;
   searchQuery = q;

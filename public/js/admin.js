@@ -11,7 +11,7 @@ let adminSettings = {};
 let adminOrders = [];
 let currentAdminUser = null;
 
-window.adminGoogleLogin = async function() {
+window.adminGoogleLogin = async function () {
   const btn = document.getElementById('btnAdminGoogleLogin');
   try {
     if (btn) btn.innerHTML = `<span style="color:#0f172a; font-weight:800;">⏳ Opening Google Sign In...</span>`;
@@ -115,7 +115,7 @@ async function loadAdminData() {
   try { await fetchAdminOrders(); } catch (e) { console.error("Error loading orders:", e); }
 }
 
-window.switchAdminTab = function(tabId, btn) {
+window.switchAdminTab = function (tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
@@ -193,7 +193,7 @@ async function handleAddHeroBanner(e) {
   }
 }
 
-window.editHeroBanner = function(id) {
+window.editHeroBanner = function (id) {
   const hero = adminHeroBanners.find(h => h.id === id);
   if (!hero) return;
 
@@ -208,7 +208,7 @@ window.editHeroBanner = function(id) {
   document.getElementById('editHeroModalBackdrop').classList.add('active');
 };
 
-window.closeEditHeroModal = function() {
+window.closeEditHeroModal = function () {
   document.getElementById('editHeroModalBackdrop').classList.remove('active');
 };
 
@@ -234,7 +234,7 @@ async function handleSaveHeroEdit(e) {
   }
 }
 
-window.deleteHeroBanner = async function(id) {
+window.deleteHeroBanner = async function (id) {
   if (!confirm('Are you sure you want to delete this hero slide?')) return;
   try {
     await DbService.deleteHeroBanner(id);
@@ -331,7 +331,7 @@ function parseCsvTextToProducts(csvText) {
   if (matrix.length <= 1) throw new Error("CSV contains no data rows.");
 
   const headers = matrix[0].map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
-  
+
   const getColIndex = (aliases) => {
     for (const alias of aliases) {
       const idx = headers.findIndex(h => h === alias);
@@ -476,7 +476,7 @@ async function saveGoogleSheetUrlOnly() {
   alert('✅ Google Sheet URL saved persistently!');
 }
 
-window.toggleCsvPasteBox = function() {
+window.toggleCsvPasteBox = function () {
   const box = document.getElementById('csvPasteBox');
   box.style.display = box.style.display === 'none' ? 'block' : 'none';
 };
@@ -501,7 +501,7 @@ async function uploadRawCsv() {
 }
 
 // RETRIEVE PRODUCTS FROM FIRESTORE AND PERSIST LOCALLY
-window.retrieveFirestoreProductsToLocal = async function() {
+window.retrieveFirestoreProductsToLocal = async function () {
   try {
     alert("⏳ Retrieving all products from Firestore database...");
     const products = await DbService.retrieveAndSaveFirestoreProductsLocally();
@@ -565,7 +565,7 @@ async function handleAddBrand(e) {
   }
 }
 
-window.editBrand = function(id) {
+window.editBrand = function (id) {
   const brand = adminBrands.find(b => b.id === id);
   if (!brand) return;
 
@@ -576,7 +576,7 @@ window.editBrand = function(id) {
   document.getElementById('editBrandModalBackdrop').classList.add('active');
 };
 
-window.closeEditBrandModal = function() {
+window.closeEditBrandModal = function () {
   document.getElementById('editBrandModalBackdrop').classList.remove('active');
 };
 
@@ -597,7 +597,7 @@ async function handleSaveBrandEdit(e) {
   }
 }
 
-window.deleteBrand = async function(id) {
+window.deleteBrand = async function (id) {
   if (!confirm('Delete this brand?')) return;
   try {
     await DbService.deleteBrand(id);
@@ -659,7 +659,7 @@ async function handleAddCategory(e) {
   }
 }
 
-window.editCategory = function(id) {
+window.editCategory = function (id) {
   const cat = adminCategories.find(c => c.id === id);
   if (!cat) return;
 
@@ -674,7 +674,7 @@ window.editCategory = function(id) {
   document.getElementById('editCategoryModalBackdrop').classList.add('active');
 };
 
-window.closeEditCategoryModal = function() {
+window.closeEditCategoryModal = function () {
   document.getElementById('editCategoryModalBackdrop').classList.remove('active');
 };
 
@@ -697,7 +697,7 @@ async function handleSaveCategoryEdit(e) {
   }
 }
 
-window.deleteCategory = async function(id) {
+window.deleteCategory = async function (id) {
   if (!confirm('Delete this category?')) return;
   try {
     await DbService.deleteCategory(id);
@@ -785,7 +785,7 @@ function renderProductsTable() {
 
 let isBulkEditMode = false;
 
-window.toggleBulkEditMode = function() {
+window.toggleBulkEditMode = function () {
   isBulkEditMode = !isBulkEditMode;
   const toolbar = document.getElementById('bulkEditToolbar');
   const stdTable = document.getElementById('standardTableContainer');
@@ -859,7 +859,7 @@ function renderBulkEditTable() {
   `).join('');
 }
 
-window.saveAllBulkEdits = async function() {
+window.saveAllBulkEdits = async function () {
   const rows = document.querySelectorAll('#bulkProductsTableBody tr[data-bulk-id]');
   if (!rows.length) return;
 
@@ -915,7 +915,7 @@ window.saveAllBulkEdits = async function() {
   }
 };
 
-window.openAddProductModal = function() {
+window.openAddProductModal = function () {
   document.getElementById('editProductId').value = '';
   document.getElementById('productModalTitle').textContent = 'Add New Product';
   document.getElementById('productForm').reset();
@@ -927,7 +927,7 @@ window.openAddProductModal = function() {
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
 
-window.editProduct = function(id) {
+window.editProduct = function (id) {
   const p = adminProducts.find(item => item.id === id);
   if (!p) return;
 
@@ -959,7 +959,7 @@ window.editProduct = function(id) {
   document.getElementById('productFormModalBackdrop').classList.add('active');
 };
 
-window.closeProductModal = function() {
+window.closeProductModal = function () {
   document.getElementById('productFormModalBackdrop').classList.remove('active');
 };
 
@@ -1014,7 +1014,7 @@ async function saveProductSubmit(e) {
   }
 }
 
-window.deleteProduct = async function(id) {
+window.deleteProduct = async function (id) {
   if (!confirm('Are you sure you want to delete this product?')) return;
   try {
     await DbService.deleteProduct(id);
@@ -1024,7 +1024,7 @@ window.deleteProduct = async function(id) {
   }
 };
 
-window.toggleFreeShippingMinGroup = function(enabled) {
+window.toggleFreeShippingMinGroup = function (enabled) {
   const minGroup = document.getElementById('freeShippingMinGroup');
   const label = document.getElementById('freeShippingPolicyLabel');
   if (minGroup) {
@@ -1136,7 +1136,7 @@ async function saveStoreSettings(e) {
   }
 }
 
-window.pushToGoogleSheetWebhook = async function() {
+window.pushToGoogleSheetWebhook = async function () {
   const webhookUrl = (document.getElementById('googleSheetWebhookUrlInput')?.value || adminSettings.googleSheetWebhookUrl || '').trim();
 
   if (!webhookUrl) {
@@ -1190,7 +1190,7 @@ window.pushToGoogleSheetWebhook = async function() {
   }
 };
 
-window.togglePasswordVisibility = function(inputId, btn) {
+window.togglePasswordVisibility = function (inputId, btn) {
   const input = document.getElementById(inputId);
   if (!input) return;
   if (input.type === 'password') {
@@ -1204,7 +1204,7 @@ window.togglePasswordVisibility = function(inputId, btn) {
 
 // 7. ORDERS HISTORY & SHIPROCKET DISPATCH
 
-window.shipOrderViaShiprocket = async function(orderId) {
+window.shipOrderViaShiprocket = async function (orderId) {
   const order = adminOrders.find(o => o.id === orderId);
   if (!order) return;
 
@@ -1223,7 +1223,7 @@ window.shipOrderViaShiprocket = async function(orderId) {
   }
 };
 
-window.updateOrderStatus = async function(orderId, newStatus) {
+window.updateOrderStatus = async function (orderId, newStatus) {
   try {
     const order = adminOrders.find(o => o.id === orderId);
     if (order) {
@@ -1335,7 +1335,7 @@ function escapeHtml(str) {
   });
 }
 
-window.exportProductsToCsv = function() {
+window.exportProductsToCsv = function () {
   if (!adminProducts || !adminProducts.length) {
     alert('No products available to export.');
     return;
@@ -1370,7 +1370,7 @@ window.exportProductsToCsv = function() {
 };
 
 // CATEGORY GOOGLE SHEET & CSV IMPORT LOGIC
-window.toggleCategoryCsvPasteBox = function() {
+window.toggleCategoryCsvPasteBox = function () {
   const container = document.getElementById('categoryCsvPasteContainer');
   if (container) {
     container.style.display = container.style.display === 'none' ? 'block' : 'none';
@@ -1459,7 +1459,7 @@ function parseCsvTextToCategories(csvText) {
   return categories;
 }
 
-window.importCategoryCsvText = async function() {
+window.importCategoryCsvText = async function () {
   const text = document.getElementById('categoryCsvPasteInput')?.value.trim();
   if (!text) {
     alert('Please paste Category CSV text first!');
@@ -1504,7 +1504,7 @@ window.importCategoryCsvText = async function() {
   }
 };
 
-window.syncCategoriesFromGoogleSheet = async function() {
+window.syncCategoriesFromGoogleSheet = async function () {
   let rawUrl = document.getElementById('catGoogleSheetUrlInput')?.value.trim() || adminSettings.catGoogleSheetUrl || '';
 
   if (!rawUrl) {
@@ -1557,7 +1557,7 @@ window.syncCategoriesFromGoogleSheet = async function() {
   }
 };
 
-window.clearInvalidCategories = async function() {
+window.clearInvalidCategories = async function () {
   if (!confirm('This will delete all corrupted/invalid category entries (such as code snippets or HTML tags). Proceed?')) return;
   try {
     const invalidCats = adminCategories.filter(c => {
@@ -1581,7 +1581,7 @@ window.clearInvalidCategories = async function() {
   }
 };
 
-window.exportCategoriesToCsv = function() {
+window.exportCategoriesToCsv = function () {
   if (!adminCategories || !adminCategories.length) {
     alert('No categories available to export.');
     return;
@@ -1605,7 +1605,7 @@ window.exportCategoriesToCsv = function() {
   document.body.removeChild(link);
 };
 
-window.exportDynamicSitemap = async function() {
+window.exportDynamicSitemap = async function () {
   try {
     const prods = adminProducts && adminProducts.length ? adminProducts : await DbService.getProducts();
     const brands = adminBrands && adminBrands.length ? adminBrands : await DbService.getBrands();
@@ -1758,7 +1758,7 @@ function renderOrdersTable() {
   // Sort latest orders first
   try {
     adminOrders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-  } catch (e) {}
+  } catch (e) { }
 
   const rows = [];
   const cards = [];
@@ -1845,7 +1845,7 @@ function renderOrdersTable() {
             <span class="status-badge ${statusClass}">${escapeHtml(o.status || 'PROCESSING')}</span>
             <div style="margin-top:4px;">
               <select style="font-size:0.75rem;padding:2px 4px;border-radius:4px;border:1px solid var(--border-color);" onchange="updateOrderStatus('${oId}', this.value)">
-                ${['PROCESSING','SHIPPED','OUT FOR DELIVERY','DELIVERED','CANCELLED'].map(s => `<option value="${s}"${(o.status||'PROCESSING')===s?' selected':''}>${s}</option>`).join('')}
+                ${['PROCESSING', 'SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED', 'CANCELLED'].map(s => `<option value="${s}"${(o.status || 'PROCESSING') === s ? ' selected' : ''}>${s}</option>`).join('')}
               </select>
             </div>
           </td>
@@ -1894,7 +1894,7 @@ function renderOrdersTable() {
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-size:0.78rem; font-weight:700;">Status:</span>
               <select style="font-size:0.78rem; padding:4px 6px; border-radius:4px; border:1px solid var(--border-color);" onchange="updateOrderStatus('${oId}', this.value)">
-                ${['PROCESSING','SHIPPED','OUT FOR DELIVERY','DELIVERED','CANCELLED'].map(s => `<option value="${s}"${(o.status||'PROCESSING')===s?' selected':''}>${s}</option>`).join('')}
+                ${['PROCESSING', 'SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED', 'CANCELLED'].map(s => `<option value="${s}"${(o.status || 'PROCESSING') === s ? ' selected' : ''}>${s}</option>`).join('')}
               </select>
             </div>
             <div>${srActionsHtml}</div>
@@ -1911,7 +1911,7 @@ function renderOrdersTable() {
   if (cardsContainer) cardsContainer.innerHTML = cards.join('');
 }
 
-window.createShiprocketOrder = async function(orderId) {
+window.createShiprocketOrder = async function (orderId) {
   const order = adminOrders.find(o => String(o.id) === String(orderId));
   if (!order) {
     alert("Order details not found!");
@@ -1963,7 +1963,7 @@ window.createShiprocketOrder = async function(orderId) {
     const resData = await res.json();
     if (res.ok && resData.order_id) {
       alert(`🎉 Shiprocket Order #${resData.order_id} created successfully! Shipment ID: ${resData.shipment_id}`);
-      
+
       const updateData = {
         shiprocketOrderId: resData.order_id,
         shiprocketShipmentId: resData.shipment_id,
@@ -1983,7 +1983,7 @@ window.createShiprocketOrder = async function(orderId) {
   }
 };
 
-window.openShiprocketCourierModal = async function(orderId) {
+window.openShiprocketCourierModal = async function (orderId) {
   const order = adminOrders.find(o => String(o.id) === String(orderId));
   if (!order) return;
 
@@ -2060,11 +2060,11 @@ window.openShiprocketCourierModal = async function(orderId) {
   }
 };
 
-window.closeShiprocketModal = function() {
+window.closeShiprocketModal = function () {
   document.getElementById('shiprocketModalBackdrop')?.classList.remove('open');
 };
 
-window.bookShiprocketCourier = async function(orderId, courierId, courierName) {
+window.bookShiprocketCourier = async function (orderId, courierId, courierName) {
   const order = adminOrders.find(o => String(o.id) === String(orderId));
   if (!order || !order.shiprocketShipmentId) {
     alert("Shipment ID not found. Create Shiprocket Order first!");
@@ -2114,7 +2114,7 @@ window.bookShiprocketCourier = async function(orderId, courierId, courierName) {
   }
 };
 
-window.printShiprocketLabel = async function(orderId) {
+window.printShiprocketLabel = async function (orderId) {
   const order = adminOrders.find(o => String(o.id) === String(orderId));
   if (!order || !order.shiprocketShipmentId) {
     alert("Shipment ID not found!");
