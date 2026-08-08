@@ -47,15 +47,24 @@ function setupAuthState() {
       const adminShortcutBtn = document.getElementById('adminShortcutTabBtn');
 
       if (isAdmin) {
-        adminBadgeTag.innerHTML = `<span class="badge-glow" style="background:#dcfce7; color:#16a34a;">🟢 Authorized Store Admin</span>`;
-        adminShortcutBtn.style.display = 'inline-block';
+        if (adminBadgeTag) adminBadgeTag.innerHTML = `<span class="badge-glow" style="background:#dcfce7; color:#16a34a;">🟢 Authorized Store Admin</span>`;
+        if (adminShortcutBtn) adminShortcutBtn.style.display = 'inline-block';
       } else {
-        adminBadgeTag.innerHTML = '';
-        adminShortcutBtn.style.display = 'none';
+        if (adminBadgeTag) adminBadgeTag.innerHTML = '';
+        if (adminShortcutBtn) adminShortcutBtn.style.display = 'none';
       }
 
-      await loadUserOrders(user.uid);
-      await loadUserAddresses(user.uid);
+      try {
+        await loadUserOrders(user.uid);
+      } catch (err) {
+        console.error("Failed to load user orders:", err);
+      }
+
+      try {
+        await loadUserAddresses(user.uid);
+      } catch (err) {
+        console.error("Failed to load user addresses:", err);
+      }
     } else {
       loggedOutGate.style.display = 'block';
       dashboard.style.display = 'none';
@@ -112,7 +121,8 @@ async function loadUserOrders(uid) {
   try {
     // Use currentUser (tracked by listenAuthState) — auth is not imported in this file
     const userEmail = currentUser ? currentUser.email : '';
-    userOrders = await DbService.getUserOrders(uid, userEmail);
+    const userName = currentUser ? (currentUser.displayName || '') : '';
+    userOrders = await DbService.getUserOrders(uid, userEmail, userName);
 
     if (!userOrders || !userOrders.length) {
       container.innerHTML = `

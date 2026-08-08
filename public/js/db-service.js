@@ -618,7 +618,7 @@ export class DbService {
     ]);
   }
 
-  static async getUserOrders(uid, userEmail = '') {
+  static async getUserOrders(uid, userEmail = '', userName = '') {
     const localOrders = this.getOrdersFromLocalStorage();
     let firestoreOrders = [];
 
@@ -639,14 +639,19 @@ export class DbService {
 
     const merged = Array.from(mergedMap.values());
     
-    // Filter for this user (by uid or email)
+    // Filter for this user (by uid, email, or customer name)
     const filtered = merged.filter(o => {
-      if (uid && o.userUid === uid) return true;
+      if (uid && o.userUid && String(o.userUid) === String(uid)) return true;
       if (userEmail) {
-        const target = userEmail.toLowerCase();
-        if (o.userEmail && o.userEmail.toLowerCase() === target) return true;
-        if (o.email && o.email.toLowerCase() === target) return true;
-        if (o.customerEmail && o.customerEmail.toLowerCase() === target) return true;
+        const target = userEmail.trim().toLowerCase();
+        if (o.userEmail && o.userEmail.trim().toLowerCase() === target) return true;
+        if (o.email && o.email.trim().toLowerCase() === target) return true;
+        if (o.customerEmail && o.customerEmail.trim().toLowerCase() === target) return true;
+      }
+      if (userName && userName.trim().length > 2) {
+        const nameTarget = userName.trim().toLowerCase();
+        const ordCustName = String(o.customerName || o.name || o.fullName || o.custName || '').trim().toLowerCase();
+        if (ordCustName && (ordCustName.includes(nameTarget) || nameTarget.includes(ordCustName))) return true;
       }
       return false;
     });
@@ -661,8 +666,8 @@ export class DbService {
 
     try {
       const snapPromise = getDocs(collection(db, "orders"));
-      const snap = await this._withTimeout(snapPromise, 5000, null);
-      if (snap) {
+      const snap = await this._withTimeout(snapPromise, 8000, null);
+      if (snap && snap.docs) {
         firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
     } catch (err) {
