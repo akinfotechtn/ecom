@@ -98,18 +98,30 @@ window.filterLocalProducts = function() {
 // 4. ADD SINGLE PRODUCT TO LOCAL JSON
 window.handleAddSingleProduct = async function(e) {
   e.preventDefault();
-  const name = document.getElementById('addProdName').value.trim();
-  const brand = document.getElementById('addProdBrand').value.trim() || 'Generic';
-  const category = document.getElementById('addProdCategory').value.trim() || 'General';
-  const price = parseFloat(document.getElementById('addProdPrice').value) || 0;
-  const sellingPrice = parseFloat(document.getElementById('addProdSellingPrice').value) || 0;
-  const photoLink = document.getElementById('addProdPhoto').value.trim() || 'images/cctv-wholesale.webp';
-  const productSpec = document.getElementById('addProdSpec').value.trim();
-  const inStock = document.getElementById('addProdInStock').checked;
-  const isCombo = document.getElementById('addProdIsCombo').checked;
+  const nameInput = document.getElementById('addProdName');
+  const sellingPriceInput = document.getElementById('addProdSellingPrice');
 
-  if (!name || !sellingPrice) {
-    alert("Please provide both Product Name and Selling Price!");
+  const name = nameInput ? nameInput.value.trim() : '';
+  const brand = document.getElementById('addProdBrand')?.value.trim() || 'Generic';
+  const category = document.getElementById('addProdCategory')?.value.trim() || 'General';
+  const price = parseFloat(document.getElementById('addProdPrice')?.value) || 0;
+  let sellingPrice = parseFloat(sellingPriceInput?.value) || 0;
+  if (!sellingPrice && price) sellingPrice = price;
+
+  const photoLink = document.getElementById('addProdPhoto')?.value.trim() || 'images/cctv-wholesale.webp';
+  const productSpec = document.getElementById('addProdSpec')?.value.trim() || '';
+  const inStock = document.getElementById('addProdInStock')?.checked !== false;
+  const isCombo = document.getElementById('addProdIsCombo')?.checked === true;
+
+  if (!name) {
+    alert("⚠️ Please enter a Product Name before saving!");
+    if (nameInput) nameInput.focus();
+    return;
+  }
+
+  if (!sellingPrice) {
+    alert("⚠️ Please enter a Selling Price (₹) before saving!");
+    if (sellingPriceInput) sellingPriceInput.focus();
     return;
   }
 
@@ -118,7 +130,7 @@ window.handleAddSingleProduct = async function(e) {
     productName: name,
     brand,
     category,
-    price,
+    price: price || sellingPrice,
     sellingPrice,
     photoLink,
     productSpec,
@@ -129,7 +141,10 @@ window.handleAddSingleProduct = async function(e) {
 
   localProducts.unshift(newProduct);
   localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
-  document.getElementById('addSingleProductForm').reset();
+
+  const form = document.getElementById('addSingleProductForm');
+  if (form) form.reset();
+
   renderLocalTable(localProducts);
 
   try {
@@ -138,10 +153,9 @@ window.handleAddSingleProduct = async function(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ products: localProducts })
     });
-    alert(`🎉 Successfully added "${name}" to local products.json! (Total: ${localProducts.length} products)`);
+    alert(`🎉 Successfully added "${name}" (₹${sellingPrice.toLocaleString('en-IN')}) to products.json! Total: ${localProducts.length} products.`);
   } catch (err) {
-    console.error("Bulk save error:", err);
-    alert(`🎉 Added "${name}" locally! (Total: ${localProducts.length} products)`);
+    alert(`🎉 Added "${name}" locally! Total: ${localProducts.length} products.`);
   }
 };
 
