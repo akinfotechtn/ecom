@@ -288,9 +288,25 @@ export class DbService {
           }
         }
       } catch (e) {}
+
+      // 2. Fetch from static local JSON (/data/products.json) - 0 Firestore reads
+      try {
+        const res = await fetch("/data/products.json").catch(() => fetch("/api/products"));
+        if (res.ok) {
+          const data = await res.json();
+          const prods = Array.isArray(data) ? data : (data.products || []);
+          if (prods.length > 0) {
+            this._cachedProducts = prods;
+            try {
+              localStorage.setItem('ak_local_products', JSON.stringify(prods));
+            } catch (e) {}
+            return prods;
+          }
+        }
+      } catch (e) {}
     }
 
-    // 2. Fetch from Firestore directly
+    // 3. If forceRefresh is requested, fetch from Firestore directly
     let firestoreProducts = [];
     try {
       const snapPromise = getDocs(collection(db, "products"));
@@ -302,8 +318,8 @@ export class DbService {
       console.warn("Firestore SDK getProducts failed:", err.message);
     }
 
-    // 3. Fallback to Firestore REST API if needed
-    if (!firestoreProducts.length && forceRefresh) {
+    // 4. Fallback to Firestore REST API if needed
+    if (!firestoreProducts.length) {
       try {
         const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/products");
         if (res.ok) {
@@ -322,17 +338,6 @@ export class DbService {
       } catch (e) {}
       return firestoreProducts;
     }
-
-    // 4. Fallback to /public/data/products.json or /api/products
-    try {
-      const res = await fetch("/data/products.json").catch(() => fetch("/api/products"));
-      if (res.ok) {
-        const data = await res.json();
-        const prods = Array.isArray(data) ? data : (data.products || DEFAULT_PRODUCTS);
-        this._cachedProducts = prods;
-        return prods;
-      }
-    } catch (e) {}
 
     this._cachedProducts = DEFAULT_PRODUCTS;
     return DEFAULT_PRODUCTS;
