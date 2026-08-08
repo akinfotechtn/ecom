@@ -45,10 +45,27 @@ function readJson(filePath, defaultData = []) {
   }
 }
 
-// Utility to write JSON directly to primary file
+// Utility to write JSON across all local product mirrors
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+
+    // If updating products, mirror to data/products.json and root products.json
+    if (filePath.includes('products.json')) {
+      const pathsToSync = [
+        path.join(__dirname, '../public/data/products.json'),
+        path.join(__dirname, '../data/products.json'),
+        path.join(__dirname, '../products.json')
+      ];
+
+      for (const p of pathsToSync) {
+        try {
+          const dir = path.dirname(p);
+          if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+          fs.writeFileSync(p, JSON.stringify(data, null, 2), 'utf8');
+        } catch (e) {}
+      }
+    }
     return true;
   } catch (err) {
     console.error(`Error writing ${filePath}:`, err.message);

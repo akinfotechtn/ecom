@@ -271,7 +271,7 @@ export class DbService {
   }
 
   // PRODUCTS: Fetch all (always loads directly from public/data/products.json with zero Firestore reads)
-  static async getProducts(forceRefresh = true) {
+  static async getProducts(forceRefresh = false) {
     if (!forceRefresh && this._cachedProducts && this._cachedProducts.length > 0) {
       return this._cachedProducts;
     }

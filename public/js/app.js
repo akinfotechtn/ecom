@@ -140,7 +140,7 @@ function renderCategoryScrollRow() {
 
 async function fetchProducts() {
   try {
-    allProducts = await DbService.getProducts(true);
+    allProducts = await DbService.getProducts();
     renderCatalog();
     if (allProducts.length) {
       DbService.injectProductSEO(allProducts[0]);
