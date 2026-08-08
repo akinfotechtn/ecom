@@ -563,7 +563,12 @@
           🔄 Refresh Orders
         </button>
       </div>
-      <div style="overflow-x: auto;">
+
+      <!-- MOBILE RESPONSIVE CARDS VIEW -->
+      <div id="adminOrdersCardsMobile" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px;"></div>
+
+      <!-- DESKTOP TABLE VIEW -->
+      <div class="desktop-orders-table-wrapper" style="overflow-x: auto;">
         <table class="data-table">
           <thead>
             <tr>
@@ -577,7 +582,7 @@
               <th>🚀 Shiprocket Actions</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersTableBody"><tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">Click "Refresh Orders" to load.</td></tr></tbody>
+          <tbody id="adminOrdersTableBody"><tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Loading orders...</td></tr></tbody>
         </table>
       </div>
     </div>

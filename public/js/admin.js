@@ -119,8 +119,13 @@ window.switchAdminTab = function(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-  btn.classList.add('active');
-  document.getElementById(tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
+
+  if (tabId === 'ordersTab') {
+    fetchAdminOrders();
+  }
 };
 
 // 1. HERO BANNERS & SLIDER MANAGEMENT (CRUD)
@@ -1709,14 +1714,15 @@ window.fetchAdminOrdersNow = () => fetchAdminOrders();
 
 function renderOrdersTable() {
   const tbody = document.getElementById('adminOrdersTableBody');
-  if (!tbody) return;
+  const cardsContainer = document.getElementById('adminOrdersCardsMobile');
 
   // Update count badge if present
   const countBadge = document.getElementById('ordersCountBadge');
   if (countBadge) countBadge.textContent = adminOrders.length;
 
   if (!adminOrders || !adminOrders.length) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">📭 No orders found yet. Orders will appear here once customers place them.</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">📭 No orders found yet. Orders will appear here once customers place them.</td></tr>`;
+    if (cardsContainer) cardsContainer.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); background:#f8fafc; border-radius:10px; border:1px dashed var(--border-color);">📭 No orders found yet.</div>`;
     return;
   }
 
@@ -1726,6 +1732,8 @@ function renderOrdersTable() {
   } catch (e) {}
 
   const rows = [];
+  const cards = [];
+
   for (const o of adminOrders) {
     try {
       let dateStr = 'N/A';
@@ -1766,6 +1774,7 @@ function renderOrdersTable() {
       const loc = [o.cityState || o.city || o.address || '', o.pincode ? `(${o.pincode})` : ''].filter(Boolean).join(' ');
       const locationStr = escapeHtml(loc);
 
+      // Desktop Table Row
       rows.push(`
         <tr>
           <td><strong style="color:var(--text-dark);">${orderIdStr}</strong>${srBadgeHtml}</td>
@@ -1794,12 +1803,49 @@ function renderOrdersTable() {
           <td>${srActionsHtml}</td>
         </tr>
       `);
+
+      // Mobile Responsive Card
+      cards.push(`
+        <div style="background:#ffffff; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px; box-shadow:var(--shadow-sm);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+            <div>
+              <strong style="font-size:1.05rem; color:var(--text-dark);">${orderIdStr}</strong>
+              <div style="font-size:0.78rem; color:var(--text-muted);">${dateStr}</div>
+            </div>
+            <div style="text-align:right;">
+              <span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}">${escapeHtml(o.paymentMethod || 'COD')}</span>
+              <div style="font-size:1.1rem; font-weight:800; color:var(--accent-cyan); margin-top:2px;">₹${totalAmt.toLocaleString('en-IN')}</div>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc; padding:10px 12px; border-radius:6px; margin-bottom:10px; font-size:0.85rem; line-height:1.4;">
+            <div><strong>👤 ${custName}</strong> ${custEmail ? `<span style="color:var(--text-muted);">(${custEmail})</span>` : ''}</div>
+            <div>📞 ${custPhone}</div>
+            <div style="color:var(--text-muted); font-size:0.8rem; margin-top:2px;">📍 ${locationStr}</div>
+            <div style="color:var(--text-muted); font-size:0.8rem;">📦 ${itemCount} Item(s)</div>
+          </div>
+
+          ${srBadgeHtml ? `<div style="margin-bottom:10px;">${srBadgeHtml}</div>` : ''}
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-top:1px solid var(--border-color); padding-top:10px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:0.78rem; font-weight:700;">Status:</span>
+              <select style="font-size:0.78rem; padding:4px 6px; border-radius:4px; border:1px solid var(--border-color);" onchange="updateOrderStatus('${oId}', this.value)">
+                ${['PROCESSING','SHIPPED','OUT FOR DELIVERY','DELIVERED','CANCELLED'].map(s => `<option value="${s}"${(o.status||'PROCESSING')===s?' selected':''}>${s}</option>`).join('')}
+              </select>
+            </div>
+            <div>${srActionsHtml}</div>
+          </div>
+        </div>
+      `);
     } catch (rowErr) {
       console.error('Error rendering order row:', o?.id, rowErr);
       rows.push(`<tr><td colspan="8" style="color:#ef4444;font-size:0.8rem;padding:8px;">⚠️ Error displaying order ${escapeHtml(String(o?.id || 'unknown'))}</td></tr>`);
     }
   }
-  tbody.innerHTML = rows.join('');
+
+  if (tbody) tbody.innerHTML = rows.join('');
+  if (cardsContainer) cardsContainer.innerHTML = cards.join('');
 }
 
 window.createShiprocketOrder = async function(orderId) {
