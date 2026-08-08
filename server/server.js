@@ -26,6 +26,13 @@ if (!fs.existsSync(DATA_DIR)) {
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
+const BRANDS_FILE = path.join(DATA_DIR, 'brands.json');
+const CATEGORIES_FILE = path.join(DATA_DIR, 'categories.json');
+const UPLOADS_DIR = path.join(__dirname, '../public/images/uploads');
+
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
 
 // Utility to read JSON
 function readJson(filePath, defaultData = []) {
@@ -194,6 +201,133 @@ app.post('/api/products/bulk-save', (req, res) => {
   }
   writeJson(PRODUCTS_FILE, products);
   res.json({ success: true, message: `Successfully saved ${products.length} products to local JSON!`, total: products.length });
+});
+
+// ---------------------------------------------------------
+// BRANDS API (LOCAL)
+// ---------------------------------------------------------
+app.get('/api/brands', (req, res) => {
+  const brands = readJson(BRANDS_FILE, []);
+  res.json({ success: true, brands });
+});
+
+app.post('/api/brands', (req, res) => {
+  const brands = readJson(BRANDS_FILE, []);
+  const newBrand = {
+    id: req.body.id || `brand-${Date.now()}`,
+    name: req.body.name,
+    imageLink: req.body.imageLink || 'images/brands/generic.png',
+    description: req.body.description || ''
+  };
+
+  if (!newBrand.name) {
+    return res.status(400).json({ success: false, message: 'Brand name is required.' });
+  }
+
+  // Check if exists
+  const existingIndex = brands.findIndex(b => b.id === newBrand.id || b.name.toLowerCase() === newBrand.name.toLowerCase());
+  if (existingIndex !== -1) {
+    brands[existingIndex] = { ...brands[existingIndex], ...newBrand };
+  } else {
+    brands.unshift(newBrand);
+  }
+
+  writeJson(BRANDS_FILE, brands);
+  res.json({ success: true, message: 'Brand saved successfully.', brand: newBrand });
+});
+
+app.post('/api/brands/bulk-save', (req, res) => {
+  const brands = req.body.brands || req.body || [];
+  if (!Array.isArray(brands)) {
+    return res.status(400).json({ success: false, message: 'Invalid brands array.' });
+  }
+  writeJson(BRANDS_FILE, brands);
+  res.json({ success: true, message: `Saved ${brands.length} brands.`, total: brands.length });
+});
+
+app.delete('/api/brands/:id', (req, res) => {
+  let brands = readJson(BRANDS_FILE, []);
+  brands = brands.filter(b => b.id !== req.params.id);
+  writeJson(BRANDS_FILE, brands);
+  res.json({ success: true, message: 'Brand deleted.' });
+});
+
+// ---------------------------------------------------------
+// CATEGORIES API (LOCAL)
+// ---------------------------------------------------------
+app.get('/api/categories', (req, res) => {
+  const categories = readJson(CATEGORIES_FILE, []);
+  res.json({ success: true, categories });
+});
+
+app.post('/api/categories', (req, res) => {
+  const categories = readJson(CATEGORIES_FILE, []);
+  const newCat = {
+    id: req.body.id || `cat-${Date.now()}`,
+    name: req.body.name,
+    imageLink: req.body.imageLink || 'images/categories/generic.png',
+    description: req.body.description || ''
+  };
+
+  if (!newCat.name) {
+    return res.status(400).json({ success: false, message: 'Category name is required.' });
+  }
+
+  // Check if exists
+  const existingIndex = categories.findIndex(c => c.id === newCat.id || c.name.toLowerCase() === newCat.name.toLowerCase());
+  if (existingIndex !== -1) {
+    categories[existingIndex] = { ...categories[existingIndex], ...newCat };
+  } else {
+    categories.unshift(newCat);
+  }
+
+  writeJson(CATEGORIES_FILE, categories);
+  res.json({ success: true, message: 'Category saved successfully.', category: newCat });
+});
+
+app.post('/api/categories/bulk-save', (req, res) => {
+  const categories = req.body.categories || req.body || [];
+  if (!Array.isArray(categories)) {
+    return res.status(400).json({ success: false, message: 'Invalid categories array.' });
+  }
+  writeJson(CATEGORIES_FILE, categories);
+  res.json({ success: true, message: `Saved ${categories.length} categories.`, total: categories.length });
+});
+
+app.delete('/api/categories/:id', (req, res) => {
+  let categories = readJson(CATEGORIES_FILE, []);
+  categories = categories.filter(c => c.id !== req.params.id);
+  writeJson(CATEGORIES_FILE, categories);
+  res.json({ success: true, message: 'Category deleted.' });
+});
+
+// ---------------------------------------------------------
+// IMAGE UPLOAD API (LOCAL)
+// ---------------------------------------------------------
+app.post('/api/upload', (req, res) => {
+  try {
+    const { filename, base64Data } = req.body;
+    if (!filename || !base64Data) {
+      return res.status(400).json({ success: false, message: 'Filename and base64Data are required.' });
+    }
+
+    // Remove metadata prefix if present (e.g. "data:image/png;base64,")
+    const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(cleanBase64, 'base64');
+
+    const extension = path.extname(filename) || '.png';
+    const baseName = path.basename(filename, extension);
+    const safeName = `${Date.now()}-${baseName.replace(/[^a-zA-Z0-9]/g, '_')}${extension}`;
+
+    const destPath = path.join(UPLOADS_DIR, safeName);
+    fs.writeFileSync(destPath, buffer);
+
+    const relativeUrl = `images/uploads/${safeName}`;
+    res.json({ success: true, url: relativeUrl, message: 'Image uploaded successfully.' });
+  } catch (err) {
+    console.error('Image Upload Error:', err.message);
+    res.status(500).json({ success: false, message: `Upload failed: ${err.message}` });
+  }
 });
 
 // ---------------------------------------------------------

@@ -206,6 +206,25 @@
       padding: 24px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 3px solid transparent;
+    }
+    .tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom: 3px solid var(--accent-cyan);
+    }
+    .tab-btn:hover {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -230,8 +249,15 @@
 
   <div class="local-container">
 
-    <!-- TOP ROW: GOOGLE SHEETS SYNC & ADD SINGLE PRODUCT -->
-    <div class="grid-2col">
+    <!-- TABS NAVIGATION -->
+    <div style="display: flex; gap: 15px; border-bottom: 1px solid var(--border-dark); margin-bottom: 24px; padding-bottom: 5px;">
+      <button class="tab-btn active" id="tabBtnProducts" onclick="switchTab('products-tab')">📦 Product Catalog & Sync</button>
+      <button class="tab-btn" id="tabBtnBrandsCats" onclick="switchTab('brands-cats-tab')">🏷️ Brands & Categories</button>
+    </div>
+
+    <!-- TABS CONTENT: PRODUCTS -->
+    <div id="products-tab" class="tab-content">
+      <div class="grid-2col">
 
       <!-- 1. GOOGLE SHEETS 1-CLICK SYNC -->
       <div class="local-card">
@@ -442,7 +468,162 @@
         </table>
       </div>
 
-    </div>
+    </div> <!-- Closes local-card -->
+  </div> <!-- Closes products-tab -->
+
+  <!-- TABS CONTENT: BRANDS & CATEGORIES -->
+  <div id="brands-cats-tab" class="tab-content" style="display: none;">
+      
+      <!-- TOP SYNC BAR -->
+      <div class="local-card" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div>
+          <h3 style="margin: 0; color: #ffffff;">🔄 Sync Brands & Categories from Cloud Firestore</h3>
+          <p style="font-size: 0.82rem; color: var(--text-dim); margin: 4px 0 0;">
+            Download live brands and categories from Firestore database and overwrite local JSON configs.
+          </p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-action btn-green" onclick="syncBrandsFromFirestoreBtn()">
+            📥 Download Brands from Firestore
+          </button>
+          <button class="btn-action btn-green" onclick="syncCategoriesFromFirestoreBtn()">
+            📥 Download Categories from Firestore
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN BRANDS / CATS LAYOUT -->
+      <div class="grid-2col">
+        
+        <!-- COLUMN 1: FORMS to ADD / EDIT -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          
+          <!-- ADD BRAND -->
+          <div class="local-card">
+            <h3>➕ Add / Edit Brand</h3>
+            <form id="addBrandForm" onsubmit="handleAddBrand(event)">
+              <div class="form-group-local">
+                <label>Brand Name *</label>
+                <input type="text" id="addBrandName" required placeholder="e.g. CPPlus">
+              </div>
+              <div class="form-group-local">
+                <label>Description</label>
+                <input type="text" id="addBrandDesc" placeholder="e.g. India's leading security systems brand">
+              </div>
+              <div class="form-group-local">
+                <label>Image Source</label>
+                <select id="brandImgSrcType" onchange="toggleBrandImageInputs()">
+                  <option value="url">Web URL or Relative Path</option>
+                  <option value="upload">Upload Image File</option>
+                </select>
+              </div>
+              <div class="form-group-local" id="brandImgUrlGroup">
+                <label>Image URL / Path</label>
+                <input type="text" id="addBrandImageUrl" placeholder="e.g. images/brands/cpplus.png" value="images/brands/generic.png">
+              </div>
+              <div class="form-group-local" id="brandImgUploadGroup" style="display: none;">
+                <label>Upload Image File</label>
+                <input type="file" id="brandImageFileInput" accept="image/*" onchange="uploadBrandImage(event)">
+                <div id="brandUploadStatus" style="font-size: 0.8rem; margin-top: 4px; color: var(--accent-green);"></div>
+              </div>
+              
+              <button type="submit" class="btn-action" style="width: 100%; justify-content: center; margin-top: 10px;">
+                💾 Save Brand Locally
+              </button>
+            </form>
+          </div>
+
+          <!-- ADD CATEGORY -->
+          <div class="local-card">
+            <h3>➕ Add / Edit Category</h3>
+            <form id="addCategoryForm" onsubmit="handleAddCategory(event)">
+              <div class="form-group-local">
+                <label>Category Name *</label>
+                <input type="text" id="addCategoryName" required placeholder="e.g. HD CCTV">
+              </div>
+              <div class="form-group-local">
+                <label>Description</label>
+                <input type="text" id="addCategoryDesc" placeholder="e.g. High Definition Analogue Cameras">
+              </div>
+              <div class="form-group-local">
+                <label>Image Source</label>
+                <select id="catImgSrcType" onchange="toggleCatImageInputs()">
+                  <option value="url">Web URL or Relative Path</option>
+                  <option value="upload">Upload Image File</option>
+                </select>
+              </div>
+              <div class="form-group-local" id="catImgUrlGroup">
+                <label>Image URL / Path</label>
+                <input type="text" id="addCategoryImageUrl" placeholder="e.g. images/categories/hdcctv.png" value="images/categories/generic.png">
+              </div>
+              <div class="form-group-local" id="catImgUploadGroup" style="display: none;">
+                <label>Upload Image File</label>
+                <input type="file" id="catImageFileInput" accept="image/*" onchange="uploadCatImage(event)">
+                <div id="catUploadStatus" style="font-size: 0.8rem; margin-top: 4px; color: var(--accent-green);"></div>
+              </div>
+              
+              <button type="submit" class="btn-action" style="width: 100%; justify-content: center; margin-top: 10px;">
+                💾 Save Category Locally
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- COLUMN 2: LIST VIEWS -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          
+          <!-- BRANDS LIST -->
+          <div class="local-card" style="display: flex; flex-direction: column; max-height: 480px; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin:0;">🏷️ Brands List (<span id="localBrandsCount" style="color:var(--accent-cyan);">0</span>)</h3>
+              <input type="text" id="brandSearch" placeholder="🔍 Search brands..." oninput="renderBrandsList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:6px 10px; border-radius:15px; font-size:0.8rem; width:150px; outline:none;">
+            </div>
+            <div style="overflow-y: auto; flex: 1;" class="table-container">
+              <table class="local-table" style="margin-top:0;">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Logo</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th style="text-align: right; width: 60px;">Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="localBrandsTableBody">
+                  <tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No brands loaded</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- CATEGORIES LIST -->
+          <div class="local-card" style="display: flex; flex-direction: column; max-height: 480px; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin:0;">📁 Categories List (<span id="localCategoriesCount" style="color:var(--accent-cyan);">0</span>)</h3>
+              <input type="text" id="catSearch" placeholder="🔍 Search categories..." oninput="renderCategoriesList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:6px 10px; border-radius:15px; font-size:0.8rem; width:150px; outline:none;">
+            </div>
+            <div style="overflow-y: auto; flex: 1;" class="table-container">
+              <table class="local-table" style="margin-top:0;">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Icon</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th style="text-align: right; width: 60px;">Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="localCategoriesTableBody">
+                  <tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No categories loaded</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div> <!-- End brands-cats-tab -->
 
   </div>
 

@@ -436,66 +436,180 @@ export class DbService {
     return DEFAULT_PRODUCTS;
   }
 
-  // BRANDS — derived dynamically from local products.json (no Firestore)
-  static async getBrands() {
-    try {
-      const products = await this.getProducts();
-      const brandMap = {};
-      for (const p of products) {
-        if (!p.brand) continue;
-        const key = p.brand.trim();
-        if (!brandMap[key]) {
-          brandMap[key] = { id: `brand-${key.toLowerCase().replace(/\s+/g,'-')}`, name: key, count: 0 };
-        }
-        brandMap[key].count++;
-      }
-      const brands = Object.values(brandMap).sort((a, b) => a.name.localeCompare(b.name));
-      return brands.length > 0 ? brands : DEFAULT_BRANDS;
-    } catch (err) {
-      return DEFAULT_BRANDS;
+  // BRANDS — read/write locally
+  static async getBrands(forceRefresh = false) {
+    if (!forceRefresh && this._cachedBrands && this._cachedBrands.length > 0) {
+      return this._cachedBrands;
     }
+
+    const urls = [
+      `/api/brands?t=${Date.now()}`,
+      `data/brands.json?t=${Date.now()}`,
+      `/data/brands.json?t=${Date.now()}`,
+      `/public/data/brands.json?t=${Date.now()}`,
+      `public/data/brands.json?t=${Date.now()}`
+    ];
+
+    for (const url of urls) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          const brands = Array.isArray(data) ? data : (data.brands || []);
+          if (brands && brands.length > 0) {
+            this._cachedBrands = brands;
+            return brands;
+          }
+        }
+      } catch (err) {}
+    }
+
+    return DEFAULT_BRANDS;
   }
 
   static async addBrand(brandData) {
-    // No-op locally — brands come from products
+    try {
+      const res = await fetch('/api/brands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(brandData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.brand;
+      }
+    } catch (err) {
+      console.error('Error adding brand locally:', err);
+    }
     return { id: `brand-${Date.now()}`, ...brandData };
   }
 
   static async updateBrand(id, brandData) {
-    // No-op locally — brands come from products
-  }
-
-  static async deleteBrand(id) {
-    // No-op locally — brands come from products
-  }
-
-  // CATEGORIES — derived dynamically from local products.json (no Firestore)
-  static async getCategories() {
     try {
-      const products = await this.getProducts();
-      const catMap = {};
-      for (const p of products) {
-        if (!p.category) continue;
-        const key = p.category.trim();
-        if (!catMap[key]) {
-          catMap[key] = { id: `cat-${key.toLowerCase().replace(/\s+/g,'-')}`, name: key, count: 0 };
-        }
-        catMap[key].count++;
-      }
-      const cats = Object.values(catMap).sort((a, b) => a.name.localeCompare(b.name));
-      return cats.length > 0 ? cats : DEFAULT_CATEGORIES;
+      await fetch('/api/brands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...brandData })
+      });
     } catch (err) {
-      return DEFAULT_CATEGORIES;
+      console.error('Error updating brand locally:', err);
     }
   }
 
+  static async deleteBrand(id) {
+    try {
+      await fetch(`/api/brands/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      console.error('Error deleting brand locally:', err);
+    }
+  }
+
+  // Download brands from firestore and save locally
+  static async syncBrandsFromFirestore() {
+    try {
+      const snap = await getDocs(collection(db, "brands"));
+      if (snap.empty) {
+        throw new Error("No brands found in Firestore.");
+      }
+      const brands = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const res = await fetch('/api/brands/bulk-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ brands })
+      });
+      return res.ok;
+    } catch (err) {
+      console.error("Firestore sync brands error:", err);
+      throw err;
+    }
+  }
+
+  // CATEGORIES — read/write locally
+  static async getCategories(forceRefresh = false) {
+    if (!forceRefresh && this._cachedCategories && this._cachedCategories.length > 0) {
+      return this._cachedCategories;
+    }
+
+    const urls = [
+      `/api/categories?t=${Date.now()}`,
+      `data/categories.json?t=${Date.now()}`,
+      `/data/categories.json?t=${Date.now()}`,
+      `/public/data/categories.json?t=${Date.now()}`,
+      `public/data/categories.json?t=${Date.now()}`
+    ];
+
+    for (const url of urls) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          const cats = Array.isArray(data) ? data : (data.categories || []);
+          if (cats && cats.length > 0) {
+            this._cachedCategories = cats;
+            return cats;
+          }
+        }
+      } catch (err) {}
+    }
+
+    return DEFAULT_CATEGORIES;
+  }
+
   static async addCategory(catData) {
-    // No-op locally — categories come from products
+    try {
+      const res = await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(catData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.category;
+      }
+    } catch (err) {
+      console.error('Error adding category locally:', err);
+    }
     return { id: `cat-${Date.now()}`, ...catData };
   }
 
   static async updateCategory(id, catData) {
-    // No-op locally — categories come from products
+    try {
+      await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...catData })
+      });
+    } catch (err) {
+      console.error('Error updating category locally:', err);
+    }
+  }
+
+  static async deleteCategory(id) {
+    try {
+      await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      console.error('Error deleting category locally:', err);
+    }
+  }
+
+  // Download categories from firestore and save locally
+  static async syncCategoriesFromFirestore() {
+    try {
+      const snap = await getDocs(collection(db, "categories"));
+      if (snap.empty) {
+        throw new Error("No categories found in Firestore.");
+      }
+      const categories = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const res = await fetch('/api/categories/bulk-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categories })
+      });
+      return res.ok;
+    } catch (err) {
+      console.error("Firestore sync categories error:", err);
+      throw err;
+    }
   }
 
   static async deleteCategory(id) {

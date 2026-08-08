@@ -449,3 +449,318 @@ window.deployToGitHub = async function() {
     if (btn) { btn.textContent = '🚀 Deploy to GitHub'; btn.disabled = false; }
   }
 };
+
+// --- BRANDS & CATEGORIES TAB LOGIC ---
+let localBrands = [];
+let localCategories = [];
+
+// Tab switching
+window.switchTab = function(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  
+  document.getElementById(tabId).style.display = 'block';
+  if (tabId === 'products-tab') {
+    document.getElementById('tabBtnProducts').classList.add('active');
+  } else if (tabId === 'brands-cats-tab') {
+    document.getElementById('tabBtnBrandsCats').classList.add('active');
+    loadLocalBrandsAndCategories();
+  }
+};
+
+// Toggle inputs based on select type
+window.toggleBrandImageInputs = function() {
+  const type = document.getElementById('brandImgSrcType').value;
+  if (type === 'url') {
+    document.getElementById('brandImgUrlGroup').style.display = 'block';
+    document.getElementById('brandImgUploadGroup').style.display = 'none';
+  } else {
+    document.getElementById('brandImgUrlGroup').style.display = 'none';
+    document.getElementById('brandImgUploadGroup').style.display = 'block';
+  }
+};
+
+window.toggleCatImageInputs = function() {
+  const type = document.getElementById('catImgSrcType').value;
+  if (type === 'url') {
+    document.getElementById('catImgUrlGroup').style.display = 'block';
+    document.getElementById('catImgUploadGroup').style.display = 'none';
+  } else {
+    document.getElementById('catImgUrlGroup').style.display = 'none';
+    document.getElementById('catImgUploadGroup').style.display = 'block';
+  }
+};
+
+// Handle Image uploads
+window.uploadBrandImage = async function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const url = await uploadImageBase64(file, 'brandUploadStatus');
+    // Store url in input field
+    document.getElementById('addBrandImageUrl').value = url;
+  } catch (err) {
+    alert('Upload failed: ' + err.message);
+  }
+};
+
+window.uploadCatImage = async function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const url = await uploadImageBase64(file, 'catUploadStatus');
+    document.getElementById('addCategoryImageUrl').value = url;
+  } catch (err) {
+    alert('Upload failed: ' + err.message);
+  }
+};
+
+// Helper for upload
+async function uploadImageBase64(file, statusElId) {
+  const statusEl = document.getElementById(statusElId);
+  if (statusEl) statusEl.textContent = '⏳ Uploading image...';
+  
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            base64Data: reader.result
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (statusEl) statusEl.textContent = '✅ Uploaded: ' + data.url;
+          resolve(data.url);
+        } else {
+          if (statusEl) statusEl.textContent = '❌ Upload failed: ' + data.message;
+          reject(new Error(data.message));
+        }
+      } catch (err) {
+        if (statusEl) statusEl.textContent = '❌ Error uploading.';
+        reject(err);
+      }
+    };
+    reader.onerror = () => {
+      if (statusEl) statusEl.textContent = '❌ Error reading file.';
+      reject(new Error('File reading error.'));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Load brands & categories from local API
+async function loadLocalBrandsAndCategories() {
+  try {
+    const brandRes = await fetch('/api/brands').catch(() => fetch('/data/brands.json'));
+    if (brandRes.ok) {
+      const data = await brandRes.json();
+      localBrands = data.brands || data || [];
+    }
+    
+    const catRes = await fetch('/api/categories').catch(() => fetch('/data/categories.json'));
+    if (catRes.ok) {
+      const data = await catRes.json();
+      localCategories = data.categories || data || [];
+    }
+    
+    renderBrandsList();
+    renderCategoriesList();
+  } catch (err) {
+    console.error('Error loading brands/categories:', err);
+  }
+}
+
+
+// Render Brands Table
+window.renderBrandsList = function() {
+  const query = document.getElementById('brandSearch').value.toLowerCase();
+  const tbody = document.getElementById('localBrandsTableBody');
+  const countSpan = document.getElementById('localBrandsCount');
+  
+  const filtered = localBrands.filter(b => 
+    b.name?.toLowerCase().includes(query) || 
+    b.description?.toLowerCase().includes(query)
+  );
+  
+  countSpan.textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No brands match search</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map(b => `
+    <tr>
+      <td>
+        <img src="${b.imageLink || 'images/brands/generic.png'}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${b.name}">
+      </td>
+      <td style="font-weight: 700; color:#fff;">${escapeHtml(b.name)}</td>
+      <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(b.description || '')}</td>
+      <td style="text-align: right;">
+        <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteBrandBtn('${b.id}')">✕ Delete</button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+// Render Categories Table
+window.renderCategoriesList = function() {
+  const query = document.getElementById('catSearch').value.toLowerCase();
+  const tbody = document.getElementById('localCategoriesTableBody');
+  const countSpan = document.getElementById('localCategoriesCount');
+  
+  const filtered = localCategories.filter(c => 
+    c.name?.toLowerCase().includes(query) || 
+    c.description?.toLowerCase().includes(query)
+  );
+  
+  countSpan.textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No categories match search</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map(c => `
+    <tr>
+      <td>
+        <img src="${c.imageLink || 'images/categories/generic.png'}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${c.name}">
+      </td>
+      <td style="font-weight: 700; color:#fff;">${escapeHtml(c.name)}</td>
+      <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(c.description || '')}</td>
+      <td style="text-align: right;">
+        <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteCategoryBtn('${c.id}')">✕ Delete</button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+// Add Brand submit
+window.handleAddBrand = async function(event) {
+  event.preventDefault();
+  const name = document.getElementById('addBrandName').value.trim();
+  const description = document.getElementById('addBrandDesc').value.trim();
+  const imageLink = document.getElementById('addBrandImageUrl').value.trim();
+  
+  if (!name) return;
+  
+  try {
+    const res = await fetch('/api/brands', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description, imageLink })
+    });
+    
+    if (res.ok) {
+      document.getElementById('addBrandForm').reset();
+      document.getElementById('addBrandImageUrl').value = 'images/brands/generic.png';
+      document.getElementById('brandUploadStatus').textContent = '';
+      alert('Brand saved successfully!');
+      loadLocalBrandsAndCategories();
+    } else {
+      const data = await res.json();
+      alert('Error: ' + data.message);
+    }
+  } catch (err) {
+    alert('Failed to save brand: ' + err.message);
+  }
+};
+
+// Add Category submit
+window.handleAddCategory = async function(event) {
+  event.preventDefault();
+  const name = document.getElementById('addCategoryName').value.trim();
+  const description = document.getElementById('addCategoryDesc').value.trim();
+  const imageLink = document.getElementById('addCategoryImageUrl').value.trim();
+  
+  if (!name) return;
+  
+  try {
+    const res = await fetch('/api/categories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description, imageLink })
+    });
+    
+    if (res.ok) {
+      document.getElementById('addCategoryForm').reset();
+      document.getElementById('addCategoryImageUrl').value = 'images/categories/generic.png';
+      document.getElementById('catUploadStatus').textContent = '';
+      alert('Category saved successfully!');
+      loadLocalBrandsAndCategories();
+    } else {
+      const data = await res.json();
+      alert('Error: ' + data.message);
+    }
+  } catch (err) {
+    alert('Failed to save category: ' + err.message);
+  }
+};
+
+// Delete Brand
+window.deleteBrandBtn = async function(id) {
+  if (!confirm('Are you sure you want to delete this brand?')) return;
+  try {
+    const res = await fetch(`/api/brands/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      loadLocalBrandsAndCategories();
+    } else {
+      alert('Delete failed.');
+    }
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+// Delete Category
+window.deleteCategoryBtn = async function(id) {
+  if (!confirm('Are you sure you want to delete this category?')) return;
+  try {
+    const res = await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      loadLocalBrandsAndCategories();
+    } else {
+      alert('Delete failed.');
+    }
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+// Sync from Firestore Buttons
+window.syncBrandsFromFirestoreBtn = async function() {
+  if (!confirm('This will download all brands from Cloud Firestore and overwrite your local brands.json. Continue?')) return;
+  try {
+    const { DbService } = await import('./db-service.js');
+    const success = await DbService.syncBrandsFromFirestore();
+    if (success) {
+      alert('✅ Successfully downloaded brands from Firestore and saved locally!');
+      loadLocalBrandsAndCategories();
+    } else {
+      alert('❌ Failed to download brands.');
+    }
+  } catch (err) {
+    alert('❌ Error: ' + err.message);
+  }
+};
+
+window.syncCategoriesFromFirestoreBtn = async function() {
+  if (!confirm('This will download all categories from Cloud Firestore and overwrite your local categories.json. Continue?')) return;
+  try {
+    const { DbService } = await import('./db-service.js');
+    const success = await DbService.syncCategoriesFromFirestore();
+    if (success) {
+      alert('✅ Successfully downloaded categories from Firestore and saved locally!');
+      loadLocalBrandsAndCategories();
+    } else {
+      alert('❌ Failed to download categories.');
+    }
+  } catch (err) {
+    alert('❌ Error: ' + err.message);
+  }
+};
