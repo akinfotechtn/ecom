@@ -263,6 +263,9 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
         <h2 style="font-size: 1.3rem; color: var(--text-dark);">📦 Catalog Products Management</h2>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="hero-btn" style="background: linear-gradient(135deg, #0284c7, #2563eb); padding: 8px 18px;" onclick="retrieveFirestoreProductsToLocal()">
+            📥 Retrieve from Firestore & Keep Local
+          </button>
           <button class="hero-btn" style="background: linear-gradient(135deg, #16a34a, #15803d); padding: 8px 18px;" onclick="exportProductsToCsv()">
             📊 Export CSV for Sheets
           </button>

@@ -270,35 +270,119 @@ export class DbService {
     this._cachedSettings = null;
   }
 
-  // PRODUCTS: Fetch all
+  // PRODUCTS: Fetch all (prioritizes local cache & JSON for 0 Firestore reads)
   static async getProducts(forceRefresh = false) {
-    if (!forceRefresh && this._cachedProducts) {
+    if (!forceRefresh && this._cachedProducts && this._cachedProducts.length > 0) {
       return this._cachedProducts;
     }
-    try {
-      const snap = await getDocs(collection(db, "products"));
-      if (!snap.empty) {
-        this._cachedProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        return this._cachedProducts;
-      }
-      for (const p of DEFAULT_PRODUCTS) {
-        await setDoc(doc(db, "products", p.id), p);
-      }
-      this._cachedProducts = DEFAULT_PRODUCTS;
-      return DEFAULT_PRODUCTS;
-    } catch (err) {
-      console.warn("Firestore fallback to local:", err.message);
+
+    // 1. Check localStorage for saved local products (Instant 0ms, 0 Firestore reads)
+    if (!forceRefresh) {
       try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data = await res.json();
-          this._cachedProducts = data.products || DEFAULT_PRODUCTS;
-          return this._cachedProducts;
+        const local = localStorage.getItem('ak_local_products');
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this._cachedProducts = parsed;
+            return parsed;
+          }
         }
       } catch (e) {}
-      this._cachedProducts = DEFAULT_PRODUCTS;
-      return DEFAULT_PRODUCTS;
     }
+
+    // 2. Fetch from Firestore directly
+    let firestoreProducts = [];
+    try {
+      const snapPromise = getDocs(collection(db, "products"));
+      const snap = await this._withTimeout(snapPromise, 5000, null);
+      if (snap && snap.docs && snap.docs.length > 0) {
+        firestoreProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+    } catch (err) {
+      console.warn("Firestore SDK getProducts failed:", err.message);
+    }
+
+    // 3. Fallback to Firestore REST API if needed
+    if (!firestoreProducts.length && forceRefresh) {
+      try {
+        const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/products");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.documents && Array.isArray(json.documents)) {
+            firestoreProducts = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (firestoreProducts.length > 0) {
+      this._cachedProducts = firestoreProducts;
+      try {
+        localStorage.setItem('ak_local_products', JSON.stringify(firestoreProducts));
+      } catch (e) {}
+      return firestoreProducts;
+    }
+
+    // 4. Fallback to /public/data/products.json or /api/products
+    try {
+      const res = await fetch("/data/products.json").catch(() => fetch("/api/products"));
+      if (res.ok) {
+        const data = await res.json();
+        const prods = Array.isArray(data) ? data : (data.products || DEFAULT_PRODUCTS);
+        this._cachedProducts = prods;
+        return prods;
+      }
+    } catch (e) {}
+
+    this._cachedProducts = DEFAULT_PRODUCTS;
+    return DEFAULT_PRODUCTS;
+  }
+
+  // RETRIEVE PRODUCTS FROM FIRESTORE AND PERSIST LOCALLY
+  static async retrieveAndSaveFirestoreProductsLocally() {
+    let prods = [];
+
+    // 1. Try Firestore SDK
+    try {
+      const snap = await getDocs(collection(db, "products"));
+      if (snap && snap.docs && snap.docs.length > 0) {
+        prods = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+    } catch (e) {
+      console.warn("Firestore SDK fetch:", e);
+    }
+
+    // 2. Try REST API
+    if (!prods.length) {
+      try {
+        const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/products");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.documents) {
+            prods = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!prods.length) {
+      prods = DEFAULT_PRODUCTS;
+    }
+
+    // Save to localStorage & cache
+    localStorage.setItem('ak_local_products', JSON.stringify(prods));
+    this._cachedProducts = prods;
+
+    // Send to local backend server if active
+    try {
+      await fetch('/api/products/import-json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: prods })
+      });
+    } catch (e) {}
+
+    return prods;
   }
 
   static async getProductById(id) {

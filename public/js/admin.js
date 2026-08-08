@@ -500,6 +500,30 @@ async function uploadRawCsv() {
   }
 }
 
+// RETRIEVE PRODUCTS FROM FIRESTORE AND PERSIST LOCALLY
+window.retrieveFirestoreProductsToLocal = async function() {
+  try {
+    alert("⏳ Retrieving all products from Firestore database...");
+    const products = await DbService.retrieveAndSaveFirestoreProductsLocally();
+    adminProducts = products;
+    renderAdminProductsTable();
+
+    // Trigger download of products.json so the user has the local file
+    const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'products.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    alert(`🎉 Successfully retrieved ${products.length} products from Firestore and saved locally to your browser! Zero Firestore reads will be needed going forward.`);
+  } catch (err) {
+    alert(`Failed to retrieve products: ${err.message}`);
+  }
+};
+
 // 3. BRANDS MANAGEMENT (FULL CRUD: ADD, EDIT, DELETE)
 async function fetchAdminBrands() {
   adminBrands = await DbService.getBrands();
