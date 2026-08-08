@@ -1,5 +1,18 @@
 [
   {
+    "id": "prod-1786200510597",
+    "productName": "test",
+    "brand": "Generic",
+    "category": "HD CCTV",
+    "price": 3000,
+    "sellingPrice": 3000,
+    "photoLink": "images/cctv-wholesale.webp",
+    "productSpec": "",
+    "inStock": true,
+    "isCombo": false,
+    "createdAt": "2026-08-08T14:48:30.597Z"
+  },
+  {
     "id": "gs-1786196255380-1",
     "photoLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1783955380/realconnect/products/eq1zgiae7jzp6fnsdk2h.png",
     "productName": "Qubo 2K Prime 3MP PTZ",
