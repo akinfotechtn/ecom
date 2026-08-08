@@ -117,6 +117,25 @@ app.get('/api/products', (req, res) => {
   });
 });
 
+// BULK SAVE - called by local-sync.js when adding/editing single products
+app.post('/api/products/bulk-save', (req, res) => {
+  try {
+    const products = req.body.products;
+    if (!Array.isArray(products)) {
+      return res.status(400).json({ success: false, message: 'Expected { products: [...] }' });
+    }
+    const ok = writeJson(PRODUCTS_FILE, products);
+    if (!ok) {
+      return res.status(500).json({ success: false, message: 'Failed to write products.json' });
+    }
+    console.log(`[bulk-save] Saved ${products.length} products to disk.`);
+    return res.json({ success: true, message: `Saved ${products.length} products.`, total: products.length });
+  } catch (err) {
+    console.error('[bulk-save] Error:', err.message);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.post('/api/products', (req, res) => {
   if (Array.isArray(req.body.products)) {
     writeJson(PRODUCTS_FILE, req.body.products);
