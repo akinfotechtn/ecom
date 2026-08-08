@@ -139,12 +139,14 @@ window.handleAddSingleProduct = async function(e) {
     }
 
     localProducts.unshift(newProduct);
+    localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
     document.getElementById('addSingleProductForm').reset();
     renderLocalTable(localProducts);
     alert(`🎉 Successfully added "${name}" to local products.json!`);
   } catch (err) {
     // Fallback: save to local memory & trigger bulk save
     localProducts.unshift(newProduct);
+    localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
     await saveAllBulkToServer();
     renderLocalTable(localProducts);
     alert(`🎉 Added "${name}" directly to local JSON!`);
@@ -194,6 +196,7 @@ window.handleSaveEdit = async function(e) {
   };
 
   localProducts[index] = updated;
+  localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
 
   try {
     await fetch(`/api/products/${id}`, {
@@ -217,6 +220,7 @@ window.deleteLocalProduct = async function(id) {
   if (!confirm(`Are you sure you want to delete "${p.productName}" from local JSON?`)) return;
 
   localProducts = localProducts.filter(x => String(x.id) !== String(id));
+  localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
 
   try {
     await fetch(`/api/products/${id}`, { method: 'DELETE' });

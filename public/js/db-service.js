@@ -270,53 +270,43 @@ export class DbService {
     this._cachedSettings = null;
   }
 
-  // PRODUCTS: Fetch all (prioritizes local cache & JSON for 0 Firestore reads)
+  // PRODUCTS: Fetch all (always loads latest public/data/products.json with zero Firestore reads)
   static async getProducts(forceRefresh = false) {
-    if (!forceRefresh && this._cachedProducts && this._cachedProducts.length > 0) {
+    // 1. Fetch from static local JSON (/data/products.json) with cache-busting
+    try {
+      const res = await fetch(`/data/products.json?t=${Date.now()}`).catch(() => fetch(`/api/products?t=${Date.now()}`));
+      if (res.ok) {
+        const data = await res.json();
+        const prods = Array.isArray(data) ? data : (data.products || []);
+        if (prods.length > 0) {
+          this._cachedProducts = prods;
+          try {
+            localStorage.setItem('ak_local_products', JSON.stringify(prods));
+          } catch (e) {}
+          return prods;
+        }
+      }
+    } catch (e) {}
+
+    // 2. Check localStorage fallback
+    try {
+      const local = localStorage.getItem('ak_local_products');
+      if (local) {
+        const parsed = JSON.parse(local);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this._cachedProducts = parsed;
+          return parsed;
+        }
+      }
+    } catch (e) {}
+
+    if (this._cachedProducts && this._cachedProducts.length > 0) {
       return this._cachedProducts;
     }
 
-    // 1. Check localStorage for saved local products (Instant 0ms, 0 Firestore reads)
-    if (!forceRefresh) {
-      try {
-        const local = localStorage.getItem('ak_local_products');
-        if (local) {
-          const parsed = JSON.parse(local);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            this._cachedProducts = parsed;
-            return parsed;
-          }
-        }
-      } catch (e) {}
-
-      // 2. Fetch from static local JSON (/data/products.json) - 0 Firestore reads
-      try {
-        const res = await fetch("/data/products.json").catch(() => fetch("/api/products"));
-        if (res.ok) {
-          const data = await res.json();
-          const prods = Array.isArray(data) ? data : (data.products || []);
-          if (prods.length > 0) {
-            this._cachedProducts = prods;
-            try {
-              localStorage.setItem('ak_local_products', JSON.stringify(prods));
-            } catch (e) {}
-            return prods;
-          }
-        }
-      } catch (e) {}
-    }
-
-    // 3. If forceRefresh is requested, fetch from Firestore directly
-    let firestoreProducts = [];
-    try {
-      const snapPromise = getDocs(collection(db, "products"));
-      const snap = await this._withTimeout(snapPromise, 5000, null);
-      if (snap && snap.docs && snap.docs.length > 0) {
-        firestoreProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      }
-    } catch (err) {
-      console.warn("Firestore SDK getProducts failed:", err.message);
-    }
+    this._cachedProducts = DEFAULT_PRODUCTS;
+    return DEFAULT_PRODUCTS;
+  }
 
     // 4. Fallback to Firestore REST API if needed
     if (!firestoreProducts.length) {
