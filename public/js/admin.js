@@ -1669,10 +1669,10 @@ async function getShiprocketToken() {
     }
   }
 
-  const res = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
+  const res = await fetch('/api/shiprocket', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ action: 'login', email, password })
   });
 
   if (!res.ok) {
@@ -1931,13 +1931,10 @@ window.createShiprocketOrder = async function(orderId) {
       weight: 0.5
     };
 
-    const res = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
+    const res = await fetch('/api/shiprocket', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'create_order', token, payload })
     });
 
     const resData = await res.json();
@@ -1992,8 +1989,17 @@ window.openShiprocketCourierModal = async function(orderId) {
     const deliveryPincode = order.pincode || "603202";
     const isCod = order.paymentMethod === 'COD' ? 1 : 0;
 
-    const res = await fetch(`https://apiv2.shiprocket.in/v1/external/courier/serviceability/?pickup_postcode=${pickupPincode}&delivery_postcode=${deliveryPincode}&weight=0.5&cod=${isCod}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+    const res = await fetch('/api/shiprocket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'get_couriers',
+        token,
+        pickup_postcode: pickupPincode,
+        delivery_postcode: deliveryPincode,
+        weight: 0.5,
+        cod: isCod
+      })
     });
 
     const data = await res.json();
@@ -2047,13 +2053,12 @@ window.bookShiprocketCourier = async function(orderId, courierId, courierName) {
     const token = await getShiprocketToken();
 
     // 1. Assign AWB
-    const awbRes = await fetch('https://apiv2.shiprocket.in/v1/external/courier/assign/awb', {
+    const awbRes = await fetch('/api/shiprocket', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        action: 'generate_awb',
+        token,
         shipment_id: order.shiprocketShipmentId,
         courier_id: courierId
       })
@@ -2065,16 +2070,6 @@ window.bookShiprocketCourier = async function(orderId, courierId, courierName) {
     if (awbRes.ok && awbData.response && awbData.response.data && awbData.response.data.awb_code) {
       awbCode = awbData.response.data.awb_code;
     }
-
-    // 2. Schedule Pickup
-    await fetch('https://apiv2.shiprocket.in/v1/external/courier/generate/pickup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ shipment_id: [order.shiprocketShipmentId] })
-    }).catch(e => console.warn("Pickup schedule fallback:", e));
 
     const updateData = {
       awbCode: awbCode,
@@ -2105,13 +2100,14 @@ window.printShiprocketLabel = async function(orderId) {
 
   try {
     const token = await getShiprocketToken();
-    const res = await fetch('https://apiv2.shiprocket.in/v1/external/courier/generate/label', {
+    const res = await fetch('/api/shiprocket', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ shipment_id: [order.shiprocketShipmentId] })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'generate_label',
+        token,
+        shipment_id: order.shiprocketShipmentId
+      })
     });
 
     const data = await res.json();

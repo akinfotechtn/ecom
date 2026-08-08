@@ -58,6 +58,24 @@
     .tab-content.active {
       display: block;
     }
+    @media (min-width: 769px) {
+      #adminOrdersCardsMobile {
+        display: none !important;
+      }
+      .desktop-orders-table-wrapper {
+        display: block !important;
+      }
+    }
+    @media (max-width: 768px) {
+      #adminOrdersCardsMobile {
+        display: flex !important;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .desktop-orders-table-wrapper {
+        display: none !important;
+      }
+    }
     .data-table {
       width: 100%;
       border-collapse: collapse;

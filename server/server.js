@@ -584,13 +584,74 @@ app.post('/api/send-order-email', async (req, res) => {
   }
 });
 
-// Shiprocket Pincode Check API
-app.post('/api/shiprocket/check-pincode', async (req, res) => {
-  const settings = readJson(SETTINGS_FILE, {});
-  const { pincode } = req.body;
-  const shiprocketHelper = new ShiprocketHelper(settings.shiprocket?.email, settings.shiprocket?.password);
-  const result = await shiprocketHelper.checkPincode(pincode);
-  res.json(result);
+// Shiprocket Full Proxy API (Fixes CORS on client-side requests)
+app.post('/api/shiprocket', async (req, res) => {
+  try {
+    const { action, email, password, token, payload, shipment_id, courier_id, pickup_postcode, delivery_postcode, weight, cod } = req.body || {};
+
+    if (action === 'login') {
+      const loginRes = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await loginRes.json();
+      return res.status(loginRes.status).json(data);
+    }
+
+    if (action === 'create_order') {
+      const orderRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await orderRes.json();
+      return res.status(orderRes.status).json(data);
+    }
+
+    if (action === 'get_couriers') {
+      const url = `https://apiv2.shiprocket.in/v1/external/courier/serviceability?pickup_postcode=${pickup_postcode || '603202'}&delivery_postcode=${delivery_postcode || '600001'}&weight=${weight || 0.5}&cod=${cod ? 1 : 0}`;
+      const courierRes = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await courierRes.json();
+      return res.status(courierRes.status).json(data);
+    }
+
+    if (action === 'generate_awb') {
+      const awbRes = await fetch('https://apiv2.shiprocket.in/v1/external/courier/assign/awb', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ shipment_id, courier_id })
+      });
+      const data = await awbRes.json();
+      return res.status(awbRes.status).json(data);
+    }
+
+    if (action === 'generate_label') {
+      const labelRes = await fetch('https://apiv2.shiprocket.in/v1/external/courier/generate/label', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ shipment_id: [shipment_id] })
+      });
+      const data = await labelRes.json();
+      return res.status(labelRes.status).json(data);
+    }
+
+    return res.status(400).json({ success: false, message: `Unknown Shiprocket action: ${action}` });
+  } catch (err) {
+    console.error("Shiprocket proxy error:", err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // ---------------------------------------------------------

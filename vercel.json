@@ -4,6 +4,10 @@
     {
       "source": "/api/send-order-email",
       "destination": "/api/send-order-email.js"
+    },
+    {
+      "source": "/api/shiprocket",
+      "destination": "/api/shiprocket.js"
     }
   ]
 }
