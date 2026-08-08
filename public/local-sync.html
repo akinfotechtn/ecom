@@ -224,6 +224,7 @@
       <span class="badge-local">🟢 100% Local Mode Active</span>
       <button class="btn-secondary" onclick="downloadProductsJsonBackup()">📥 Download products.json</button>
       <button class="btn-secondary" onclick="loadLocalProducts()">🔄 Reload</button>
+      <button class="btn-action" id="btnDeploy" onclick="deployToGitHub()" style="background: linear-gradient(135deg, #16a34a, #15803d); border: none; padding: 8px 16px; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">🚀 Deploy to GitHub</button>
     </div>
   </header>
 
@@ -280,11 +281,70 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="form-group-local">
               <label>Brand</label>
-              <input type="text" id="addProdBrand" placeholder="e.g. Gopix" value="Generic">
+              <select id="addProdBrand">
+                <option value="CPPlus">CPPlus</option>
+                <option value="Dahua">Dahua</option>
+                <option value="D-Link">D-Link</option>
+                <option value="ESSL">ESSL</option>
+                <option value="EZVIZ">EZVIZ</option>
+                <option value="Folla">Folla</option>
+                <option value="Fyber">Fyber</option>
+                <option value="Generic" selected>Generic</option>
+                <option value="Gopix">Gopix</option>
+                <option value="Hikvision">Hikvision</option>
+                <option value="Krystaa">Krystaa</option>
+                <option value="Maxxion">Maxxion</option>
+                <option value="Prama">Prama</option>
+                <option value="Qubo">Qubo</option>
+                <option value="Seagate">Seagate</option>
+                <option value="Toshiba">Toshiba</option>
+                <option value="Trueview">Trueview</option>
+                <option value="WD">WD</option>
+                <option value="Yadon">Yadon</option>
+              </select>
             </div>
             <div class="form-group-local">
               <label>Category</label>
-              <input type="text" id="addProdCategory" placeholder="e.g. CCTV Camera" value="CCTV Camera">
+              <select id="addProdCategory">
+                <option value="4G CCTV">4G CCTV</option>
+                <option value="ACCESSORIES">Accessories</option>
+                <option value="ADAPTORS">Adaptors</option>
+                <option value="ANDROID BOX">Android Box</option>
+                <option value="BIOMETRIC">Biometric</option>
+                <option value="CABLE">Cable</option>
+                <option value="CASH COUNTING MACHINES">Cash Counting Machines</option>
+                <option value="CAT 6 CABLES">CAT 6 Cables</option>
+                <option value="CCTV ACCESSORIES">CCTV Accessories</option>
+                <option value="CCTV CABLES">CCTV Cables</option>
+                <option value="CCTV RACK">CCTV Rack</option>
+                <option value="COMBO PACKS">Combo Packs</option>
+                <option value="DESKTOP SWITCH">Desktop Switch</option>
+                <option value="ELECTRIC DOOR LOCK">Electric Door Lock</option>
+                <option value="FAN">Fan</option>
+                <option value="HARD DISK">Hard Disk</option>
+                <option value="HD CAMERA">HD Camera</option>
+                <option value="HD CCTV" selected>HD CCTV</option>
+                <option value="HD DVR">HD DVR</option>
+                <option value="HDMI CABLE">HDMI Cable</option>
+                <option value="IP CCTV">IP CCTV</option>
+                <option value="JUNCTION BOX">Junction Box</option>
+                <option value="LED TV">LED TV</option>
+                <option value="MEDIA CONVERTOR">Media Convertor</option>
+                <option value="MEMORY CARD">Memory Card</option>
+                <option value="NETWORKING">Networking</option>
+                <option value="PC UPS">PC UPS</option>
+                <option value="POE EXTENDER">PoE Extender</option>
+                <option value="POE SWITCH">PoE Switch</option>
+                <option value="POWER MANAGER">Power Manager</option>
+                <option value="POWER SUPPLY">Power Supply</option>
+                <option value="PRINTERS">Printers</option>
+                <option value="SMART PLUG">Smart Plug</option>
+                <option value="UPS">UPS</option>
+                <option value="VIDEO DOOR BELL">Video Door Bell</option>
+                <option value="WIFI CAMERA">Wi-Fi Camera</option>
+                <option value="WIFI CCTV">Wi-Fi CCTV</option>
+                <option value="WIFI NVR">Wi-Fi NVR</option>
+              </select>
             </div>
           </div>
 

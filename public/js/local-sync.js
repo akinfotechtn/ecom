@@ -429,3 +429,23 @@ window.downloadProductsJsonBackup = function() {
   link.click();
   document.body.removeChild(link);
 };
+
+// 10. DEPLOY TO GITHUB
+window.deployToGitHub = async function() {
+  const btn = document.getElementById('btnDeploy');
+  if (btn) { btn.textContent = '⏳ Deploying...'; btn.disabled = true; }
+
+  try {
+    const res = await fetch('/api/deploy', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      alert(`✅ Deployed to GitHub!\n\n${data.message}`);
+    } else {
+      alert(`❌ Deploy failed:\n${data.message}`);
+    }
+  } catch (err) {
+    alert('❌ Could not reach server to deploy. Make sure the local server is running.');
+  } finally {
+    if (btn) { btn.textContent = '🚀 Deploy to GitHub'; btn.disabled = false; }
+  }
+};

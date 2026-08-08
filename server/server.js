@@ -696,6 +696,38 @@ app.post('/api/shiprocket', async (req, res) => {
 });
 
 // ---------------------------------------------------------
+// DEPLOY TO GITHUB
+// ---------------------------------------------------------
+const { execSync } = require('child_process');
+
+app.post('/api/deploy', (req, res) => {
+  try {
+    const repoRoot = path.join(__dirname, '..');
+    const token = process.env.GITHUB_TOKEN || '';
+    const remote = token
+      ? `https://${token}@github.com/akinfotechtn/ecom.git`
+      : 'origin';
+    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    execSync('git add .', { cwd: repoRoot });
+
+    let commitMsg = `[Local Deploy] Product catalog updated - ${timestamp}`;
+    try {
+      execSync(`git commit -m "${commitMsg}"`, { cwd: repoRoot });
+    } catch (e) {
+      return res.json({ success: true, message: 'Nothing new to commit. Already up to date.' });
+    }
+
+    execSync(`git push ${remote} main`, { cwd: repoRoot });
+
+    return res.json({ success: true, message: `Pushed to GitHub at ${timestamp}` });
+  } catch (err) {
+    console.error('[deploy] Error:', err.message);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ---------------------------------------------------------
 // START SERVER
 // ---------------------------------------------------------
 app.listen(PORT, () => {

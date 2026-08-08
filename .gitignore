@@ -8,3 +8,6 @@ yarn-debug.log*
 yarn-error.log*
 .vscode/
 .idea/
+
+# Local batch scripts (contain env vars/tokens)
+*.bat
