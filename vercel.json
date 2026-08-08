@@ -8,6 +8,10 @@
     {
       "source": "/api/shiprocket",
       "destination": "/api/shiprocket.js"
+    },
+    {
+      "source": "/api/products/import-json",
+      "destination": "/api/sync-products.js"
     }
   ]
 }

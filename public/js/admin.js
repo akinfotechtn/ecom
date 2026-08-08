@@ -506,7 +506,7 @@ window.retrieveFirestoreProductsToLocal = async function() {
     alert("⏳ Retrieving all products from Firestore database...");
     const products = await DbService.retrieveAndSaveFirestoreProductsLocally();
     adminProducts = products;
-    renderAdminProductsTable();
+    renderProductsTable();
 
     // Trigger download of products.json so the user has the local file
     const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
