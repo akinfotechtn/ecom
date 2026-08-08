@@ -1,5 +1,18 @@
 [
   {
+    "id": "prod-1786196993259",
+    "productName": "Printer",
+    "brand": "CPPlus",
+    "category": "HD CCTV",
+    "price": 55000,
+    "sellingPrice": 50000,
+    "photoLink": "images/cctv-wholesale.webp",
+    "productSpec": "",
+    "inStock": true,
+    "isCombo": false,
+    "createdAt": "2026-08-08T13:49:53.259Z"
+  },
+  {
     "id": "gs-1786196255380-1",
     "photoLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1783955380/realconnect/products/eq1zgiae7jzp6fnsdk2h.png",
     "productName": "Qubo 2K Prime 3MP PTZ",
