@@ -17,8 +17,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// File paths
-const PRODUCTS_FILE = path.join(__dirname, '../data/products.json');
+// File paths - Single Source of Truth
+const PRODUCTS_FILE = path.join(__dirname, '../public/data/products.json');
 const SETTINGS_FILE = path.join(__dirname, '../data/settings.json');
 const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
 
@@ -37,17 +37,10 @@ function readJson(filePath, defaultData = []) {
   }
 }
 
-// Utility to write JSON across all local product mirrors
+// Utility to write JSON directly to primary file
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    // If updating products, keep all local copies in sync
-    if (filePath.includes('products.json')) {
-      const publicPath = path.join(__dirname, '../public/data/products.json');
-      const rootPath = path.join(__dirname, '../products.json');
-      try { fs.writeFileSync(publicPath, JSON.stringify(data, null, 2), 'utf8'); } catch(e){}
-      try { fs.writeFileSync(rootPath, JSON.stringify(data, null, 2), 'utf8'); } catch(e){}
-    }
     return true;
   } catch (err) {
     console.error(`Error writing ${filePath}:`, err.message);

@@ -1,5 +1,17 @@
 [
   {
+    "id": "prod-1786192299704",
+    "photoLink": "images/cctv-wholesale.webp",
+    "productName": "test",
+    "productSpec": "hsvhsvchsq",
+    "brand": "Bgvgv",
+    "category": "CCTV Camera",
+    "price": 5000,
+    "sellingPrice": 3500,
+    "inStock": true,
+    "isCombo": false
+  },
+  {
     "id": "gs-1786057874228-1",
     "dealerMarginPercent": 5,
     "price": 4490,
