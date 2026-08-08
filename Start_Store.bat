@@ -1,9 +1,9 @@
 @echo off
-title AK Info Ecom - Server & Admin Launcher
+title AK Info Ecom - Local Server & Admin Launcher
 color 0A
 
 echo ========================================================
-echo        AK INFO ECOM - E-COMMERCE STORE LAUNCHER
+echo        AK INFO ECOM - LOCAL STORE & ADMIN LAUNCHER
 echo ========================================================
 echo.
 
@@ -18,17 +18,17 @@ if %errorlevel% neq 0 (
 )
 
 if not exist "node_modules" (
-    echo [INFO] Installing required dependencies (Express, Razorpay, Axios, CSV Parser)...
+    echo [INFO] Installing required dependencies...
     call npm install
     echo.
 )
 
-echo [INFO] Starting AK Info Ecom Express Server on http://localhost:3000 ...
-echo [INFO] Opening Storefront and Admin Panel in web browser...
+echo [INFO] Starting AK Info Ecom Local Express Server on http://localhost:3000 ...
+echo [INFO] Opening Admin Panel and Storefront in Google Chrome...
 echo.
 
-start "" "http://localhost:3000"
 start "" "http://localhost:3000/admin.html"
+start "" "http://localhost:3000"
 
 node server/server.js
 

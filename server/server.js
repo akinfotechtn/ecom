@@ -28,8 +28,6 @@ const ORDERS_FILE = path.join(__dirname, '../data/orders.json');
 function readJson(filePath, defaultData = []) {
   try {
     if (!fs.existsSync(filePath)) {
-      const dir = path.dirname(filePath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
       return defaultData;
     }
@@ -44,8 +42,6 @@ function readJson(filePath, defaultData = []) {
 // Utility to write JSON
 function writeJson(filePath, data) {
   try {
-    const dir = path.dirname(filePath);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
@@ -54,19 +50,18 @@ function writeJson(filePath, data) {
   }
 }
 
-// Save products to all 3 file locations automatically
-function saveProductsToAllLocations(products) {
+// Save products to all local project folders simultaneously
+function saveProductsLocally(products) {
   writeJson(PRODUCTS_FILE, products);
   writeJson(PUBLIC_PRODUCTS_FILE, products);
   writeJson(ROOT_PRODUCTS_FILE, products);
-  console.log(`💾 Saved ${products.length} products to data/products.json, public/data/products.json, and root products.json`);
 }
 
 // ---------------------------------------------------------
 // PRODUCTS API
 // ---------------------------------------------------------
 app.get('/api/products', (req, res) => {
-  const products = readJson(PRODUCTS_FILE, []);
+  const products = readJson(PRODUCTS_FILE, readJson(PUBLIC_PRODUCTS_FILE, []));
   const { brand, category, isCombo, search } = req.query;
 
   let filtered = [...products];
@@ -109,7 +104,7 @@ app.get('/api/products', (req, res) => {
 app.post('/api/products', (req, res) => {
   const products = readJson(PRODUCTS_FILE, []);
   const newProduct = {
-    id: `prod-${Date.now()}`,
+    id: req.body.id || `prod-${Date.now()}`,
     photoLink: req.body.photoLink || 'https://images.unsplash.com/photo-1557597774-9d273605dfa9',
     productName: req.body.productName,
     productSpec: req.body.productSpec || '',
@@ -125,10 +120,16 @@ app.post('/api/products', (req, res) => {
     return res.status(400).json({ success: false, message: 'Product name and selling price are required.' });
   }
 
-  products.unshift(newProduct);
-  saveProductsToAllLocations(products);
+  // Check if exists or unshift
+  const existingIdx = products.findIndex(p => p.id === newProduct.id);
+  if (existingIdx >= 0) {
+    products[existingIdx] = { ...products[existingIdx], ...newProduct };
+  } else {
+    products.unshift(newProduct);
+  }
 
-  res.json({ success: true, message: 'Product added successfully.', product: newProduct });
+  saveProductsLocally(products);
+  res.json({ success: true, message: 'Product added and saved locally.', product: newProduct });
 });
 
 app.put('/api/products/:id', (req, res) => {
@@ -152,8 +153,8 @@ app.put('/api/products/:id', (req, res) => {
     isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false)
   };
 
-  saveProductsToAllLocations(products);
-  res.json({ success: true, message: 'Product updated.', product: products[index] });
+  saveProductsLocally(products);
+  res.json({ success: true, message: 'Product updated and saved locally.', product: products[index] });
 });
 
 app.delete('/api/products/:id', (req, res) => {
@@ -165,8 +166,21 @@ app.delete('/api/products/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'Product not found.' });
   }
 
-  saveProductsToAllLocations(products);
-  res.json({ success: true, message: 'Product deleted.' });
+  saveProductsLocally(products);
+  res.json({ success: true, message: 'Product deleted from local json.' });
+});
+
+app.post('/api/products/import-json', (req, res) => {
+  try {
+    const products = req.body?.products || req.body || [];
+    if (!Array.isArray(products) || !products.length) {
+      return res.status(400).json({ success: false, message: 'Invalid product list.' });
+    }
+    saveProductsLocally(products);
+    res.json({ success: true, message: `Successfully saved ${products.length} products to local JSON files!`, total: products.length });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // ---------------------------------------------------------
@@ -183,8 +197,8 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
-    // Save imported products to all 3 JSON file locations automatically
-    saveProductsToAllLocations(parsedProducts);
+    // Save imported products to store
+    saveProductsLocally(parsedProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -193,7 +207,7 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     res.json({
       success: true,
-      message: `Successfully synced ${parsedProducts.length} products from Google Sheet!`,
+      message: `Successfully synced ${parsedProducts.length} products from Google Sheet to local JSON files!`,
       totalSynced: parsedProducts.length,
       lastSyncedAt: settings.lastSyncedAt,
       sampleProduct: parsedProducts[0]
@@ -215,27 +229,15 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    saveProductsToAllLocations(parsedProducts);
+    saveProductsLocally(parsedProducts);
 
     res.json({
       success: true,
-      message: `Successfully imported ${parsedProducts.length} products from CSV string!`,
+      message: `Successfully imported ${parsedProducts.length} products from CSV string to local JSON files!`,
       totalSynced: parsedProducts.length
     });
   } catch (err) {
     res.status(500).json({ success: false, message: `CSV Parsing Failed: ${err.message}` });
-  }
-});
-
-app.post('/api/products/import-json', async (req, res) => {
-  try {
-    const prods = req.body?.products || req.body || [];
-    if (Array.isArray(prods) && prods.length > 0) {
-      saveProductsToAllLocations(prods);
-    }
-    res.json({ success: true, total: prods.length });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
   }
 });
 

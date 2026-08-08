@@ -55,24 +55,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // STRICT ADMIN AUTHENTICATION GUARD
 function setupAdminAuthGuard() {
-  const isLocalServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-  // Automatically grant full admin access on local server execution (Start_Store.bat)
-  if (isLocalServer) {
-    const gatekeeperEl = document.getElementById('adminGatekeeper');
-    const mainPanelEl = document.getElementById('adminMainPanel');
-    const statusLabel = document.getElementById('adminUserStatus');
-    const emailLabel = document.getElementById('adminEmailLabel');
-
-    if (gatekeeperEl) gatekeeperEl.style.display = 'none';
-    if (mainPanelEl) mainPanelEl.style.display = 'block';
-    if (statusLabel) statusLabel.innerHTML = `<span style="color:var(--accent-green);">🟢 Localhost Admin Mode</span>`;
-    if (emailLabel) emailLabel.textContent = 'Admin (Local Server)';
-
-    loadAdminData();
-    return;
-  }
-
   DbService.listenAuthState(async (user) => {
     currentAdminUser = user;
     const gatekeeperEl = document.getElementById('adminGatekeeper');
@@ -517,52 +499,6 @@ async function uploadRawCsv() {
     alert(`Import error: ${err.message}`);
   }
 }
-
-// LOAD LOCAL products.json FILE DIRECTLY INTO MEMORY & LOCALSTORAGE
-window.handleLoadLocalProductsJson = function(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = async function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      const products = Array.isArray(data) ? data : (data.products || []);
-      if (!products.length) {
-        alert("Selected JSON file contains no product rows.");
-        return;
-      }
-
-      // Save directly to localStorage & memory (0 Firestore reads/writes)
-      localStorage.setItem('ak_local_products', JSON.stringify(products));
-      DbService._cachedProducts = products;
-      adminProducts = products;
-      renderProductsTable();
-
-      alert(`🎉 Successfully loaded ${products.length} products directly from local ${file.name}! Active on store instantly.`);
-    } catch (err) {
-      alert(`Invalid JSON file format: ${err.message}`);
-    }
-  };
-  reader.readAsText(file);
-};
-
-// DOWNLOAD / EXPORT CURRENT products.json FILE
-window.downloadCurrentProductsJson = async function() {
-  try {
-    const products = await DbService.getProducts();
-    const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'products.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (err) {
-    alert(`Export error: ${err.message}`);
-  }
-};
 
 // RETRIEVE PRODUCTS FROM FIRESTORE AND PERSIST LOCALLY
 window.retrieveFirestoreProductsToLocal = async function() {
