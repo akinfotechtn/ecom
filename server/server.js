@@ -31,11 +31,14 @@ const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 function readJson(filePath, defaultData = []) {
   try {
     if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
       return defaultData;
     }
     const raw = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(raw);
+    if (!raw || !raw.trim()) return defaultData;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed && Array.isArray(parsed.products)) return parsed.products;
+    return defaultData;
   } catch (err) {
     console.error(`Error reading ${filePath}:`, err.message);
     return defaultData;
@@ -98,10 +101,15 @@ app.get('/api/products', (req, res) => {
 });
 
 app.post('/api/products', (req, res) => {
+  if (Array.isArray(req.body.products)) {
+    writeJson(PRODUCTS_FILE, req.body.products);
+    return res.json({ success: true, message: 'Products saved successfully.', total: req.body.products.length });
+  }
+
   const products = readJson(PRODUCTS_FILE, []);
   const newProduct = {
-    id: `prod-${Date.now()}`,
-    photoLink: req.body.photoLink || 'https://images.unsplash.com/photo-1557597774-9d273605dfa9',
+    id: req.body.id || `prod-${Date.now()}`,
+    photoLink: req.body.photoLink || 'images/cctv-wholesale.webp',
     productName: req.body.productName,
     productSpec: req.body.productSpec || '',
     brand: req.body.brand || 'Generic',
@@ -119,7 +127,7 @@ app.post('/api/products', (req, res) => {
   products.unshift(newProduct);
   writeJson(PRODUCTS_FILE, products);
 
-  res.json({ success: true, message: 'Product added successfully.', product: newProduct });
+  res.json({ success: true, message: 'Product added successfully.', product: newProduct, total: products.length });
 });
 
 app.put('/api/products/:id', (req, res) => {

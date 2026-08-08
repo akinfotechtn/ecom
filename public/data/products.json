@@ -1,13 +1,13 @@
 [
   {
-    "id": "prod-1786193465172",
+    "id": "prod-1786194199555",
     "photoLink": "images/cctv-wholesale.webp",
     "productName": "gotest",
     "productSpec": "",
     "brand": "Generic",
     "category": "CCTV Camera",
     "price": 5000,
-    "sellingPrice": 2500,
+    "sellingPrice": 3000,
     "inStock": true,
     "isCombo": false
   }

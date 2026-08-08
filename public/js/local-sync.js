@@ -127,29 +127,21 @@ window.handleAddSingleProduct = async function(e) {
     createdAt: new Date().toISOString()
   };
 
+  localProducts.unshift(newProduct);
+  localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
+  document.getElementById('addSingleProductForm').reset();
+  renderLocalTable(localProducts);
+
   try {
-    const res = await fetch('/api/products', {
+    await fetch('/api/products/bulk-save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProduct)
+      body: JSON.stringify({ products: localProducts })
     });
-
-    if (!res.ok) {
-      throw new Error(`Server returned error ${res.status}`);
-    }
-
-    localProducts.unshift(newProduct);
-    localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
-    document.getElementById('addSingleProductForm').reset();
-    renderLocalTable(localProducts);
-    alert(`🎉 Successfully added "${name}" to local products.json!`);
+    alert(`🎉 Successfully added "${name}" to local products.json! (Total: ${localProducts.length} products)`);
   } catch (err) {
-    // Fallback: save to local memory & trigger bulk save
-    localProducts.unshift(newProduct);
-    localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
-    await saveAllBulkToServer();
-    renderLocalTable(localProducts);
-    alert(`🎉 Added "${name}" directly to local JSON!`);
+    console.error("Bulk save error:", err);
+    alert(`🎉 Added "${name}" locally! (Total: ${localProducts.length} products)`);
   }
 };
 
