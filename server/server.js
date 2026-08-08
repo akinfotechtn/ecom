@@ -56,10 +56,132 @@ function readJson(filePath, defaultData = []) {
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    
+    // Automatically trigger Static Site Generation (SSG) if writing database files
+    if (filePath === PRODUCTS_FILE || filePath === BRANDS_FILE || filePath === CATEGORIES_FILE) {
+      generateStaticPages();
+    }
     return true;
   } catch (err) {
     console.error(`Error writing ${filePath}:`, err.message);
     return false;
+  }
+}
+
+function slugify(text) {
+  if (!text) return '';
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
+
+const BASE_PAGES = new Set([
+  'index.html',
+  'product.html',
+  'brand.html',
+  'category.html',
+  'account.html',
+  'admin.html',
+  'privacy.html',
+  'terms.html',
+  'refund.html',
+  'local-sync.html'
+]);
+
+function cleanStaticPages() {
+  try {
+    const publicDir = path.join(__dirname, '../public');
+    const files = fs.readdirSync(publicDir);
+    for (const file of files) {
+      if (file.endsWith('.html') && !BASE_PAGES.has(file)) {
+        fs.unlinkSync(path.join(publicDir, file));
+      }
+    }
+  } catch (err) {
+    console.error('[SSG] Error cleaning static pages:', err.message);
+  }
+}
+
+function generateStaticPages() {
+  try {
+    cleanStaticPages();
+
+    const products = readJson(PRODUCTS_FILE, []);
+    const brands = readJson(BRANDS_FILE, []);
+    const categories = readJson(CATEGORIES_FILE, []);
+
+    const productTemplatePath = path.join(__dirname, '../public/product.html');
+    const brandTemplatePath = path.join(__dirname, '../public/brand.html');
+    const categoryTemplatePath = path.join(__dirname, '../public/category.html');
+
+    const productTemplate = fs.existsSync(productTemplatePath) ? fs.readFileSync(productTemplatePath, 'utf8') : '';
+    const brandTemplate = fs.existsSync(brandTemplatePath) ? fs.readFileSync(brandTemplatePath, 'utf8') : '';
+    const categoryTemplate = fs.existsSync(categoryTemplatePath) ? fs.readFileSync(categoryTemplatePath, 'utf8') : '';
+
+    // 1. Generate Product pages
+    if (productTemplate) {
+      for (const p of products) {
+        if (!p.productName) continue;
+        const slug = slugify(p.productName);
+        const fileName = `${slug}.html`;
+        const filePath = path.join(__dirname, '../public', fileName);
+
+        const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
+        let html = productTemplate.replace('</head>', `${injectScript}\n</head>`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>${p.productName} | AK Infotech Security Store</title>`);
+        html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${p.productSpec || p.productName}">`);
+
+        fs.writeFileSync(filePath, html, 'utf8');
+      }
+    }
+
+    // 2. Generate Brand pages
+    if (brandTemplate) {
+      for (const b of brands) {
+        if (!b.name) continue;
+        const slug = slugify(b.name);
+        const fileName = `${slug}.html`;
+        const filePath = path.join(__dirname, '../public', fileName);
+
+        const injectScript = `<script>window.staticBrandData = ${JSON.stringify(b)};</script>`;
+        let html = brandTemplate.replace('</head>', `${injectScript}\n</head>`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>${b.name} CCTV Security Products | AK Infotech</title>`);
+
+        fs.writeFileSync(filePath, html, 'utf8');
+      }
+    }
+
+    // 3. Generate Category pages
+    if (categoryTemplate) {
+      // Add combo-packs category dynamically as well
+      const allCats = [...categories];
+      if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
+        allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/generic.png' });
+      }
+
+      for (const c of allCats) {
+        if (!c.name) continue;
+        const slug = slugify(c.name);
+        const fileName = `${slug}.html`;
+        const filePath = path.join(__dirname, '../public', fileName);
+
+        const injectScript = `<script>window.staticCategoryData = ${JSON.stringify(c)};</script>`;
+        let html = categoryTemplate.replace('</head>', `${injectScript}\n</head>`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>Shop ${c.name} Security Systems | AK Infotech</title>`);
+
+        fs.writeFileSync(filePath, html, 'utf8');
+      }
+    }
+
+    console.log(`[SSG] Generated pages: ${products.length} products, ${brands.length} brands, ${categories.length} categories.`);
+  } catch (err) {
+    console.error('[SSG] Generation error:', err.message);
   }
 }
 
@@ -899,4 +1021,7 @@ app.listen(PORT, () => {
   console.log(` Storefront UI: http://localhost:${PORT}`);
   console.log(` Admin Portal : http://localhost:${PORT}/admin.html`);
   console.log(`====================================================`);
+  
+  // Build static pages on startup
+  generateStaticPages();
 });

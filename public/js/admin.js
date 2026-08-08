@@ -759,7 +759,7 @@ function renderProductsTable() {
   tbody.innerHTML = filtered.map(p => `
     <tr>
       <td><img src="${p.photoLink}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 6px;" onerror="this.src='images/cctv-wholesale.webp'"></td>
-      <td><strong><a href="product.html?id=${p.id}" target="_blank" style="color:var(--accent-cyan);">${escapeHtml(p.productName)}</a></strong></td>
+      <td><strong><a href="${DbService.slugify(p.productName)}.html" target="_blank" style="color:var(--accent-cyan);">${escapeHtml(p.productName)}</a></strong></td>
       <td><span class="badge-glow">${escapeHtml(p.brand)}</span></td>
       <td>${escapeHtml(p.category)}</td>
       <td>₹${p.price?.toLocaleString('en-IN')}</td>
@@ -1255,12 +1255,12 @@ async function generateDynamicSitemap() {
 
     // Dynamic brand pages
     brands.forEach(b => {
-      xml += `  <url><loc>${baseUrl}/brand.html?name=${encodeURIComponent(b.name)}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>\n`;
+      xml += `  <url><loc>${baseUrl}/${DbService.slugify(b.name)}.html</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>\n`;
     });
 
     // Dynamic product pages
     products.forEach(p => {
-      xml += `  <url><loc>${baseUrl}/product.html?id=${encodeURIComponent(p.id)}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>\n`;
+      xml += `  <url><loc>${baseUrl}/${DbService.slugify(p.productName)}.html</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>\n`;
     });
 
     xml += `</urlset>`;
@@ -1636,9 +1636,8 @@ window.exportDynamicSitemap = async function() {
     // Brands Pages
     brands.forEach(b => {
       if (!b.name) return;
-      const encodedName = encodeURIComponent(b.name);
       xmlLines.push('  <url>');
-      xmlLines.push(`    <loc>${baseUrl}/brand.html?name=${encodedName}</loc>`);
+      xmlLines.push(`    <loc>${baseUrl}/${DbService.slugify(b.name)}.html</loc>`);
       xmlLines.push(`    <lastmod>${today}</lastmod>`);
       xmlLines.push('    <changefreq>daily</changefreq>');
       xmlLines.push('    <priority>0.9</priority>');
@@ -1647,9 +1646,9 @@ window.exportDynamicSitemap = async function() {
 
     // Products Pages
     prods.forEach(p => {
-      if (!p.id) return;
+      if (!p.id || !p.productName) return;
       xmlLines.push('  <url>');
-      xmlLines.push(`    <loc>${baseUrl}/product.html?id=${p.id}</loc>`);
+      xmlLines.push(`    <loc>${baseUrl}/${DbService.slugify(p.productName)}.html</loc>`);
       xmlLines.push(`    <lastmod>${today}</lastmod>`);
       xmlLines.push('    <changefreq>daily</changefreq>');
       xmlLines.push('    <priority>0.8</priority>');

@@ -206,6 +206,19 @@ const DEFAULT_SETTINGS = {
 };
 
 export class DbService {
+  static slugify(text) {
+    if (!text) return '';
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  }
+
   // GOOGLE AUTHENTICATION
   static async loginWithGoogle() {
     try {

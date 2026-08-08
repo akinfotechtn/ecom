@@ -110,7 +110,7 @@ function renderBrandLogosStrip() {
       <span style="font-weight: 800; font-size: 0.82rem; color: var(--accent-cyan);">ALL BRANDS</span>
     </a>
   ` + storeBrands.map(b => `
-    <a href="brand.html?name=${encodeURIComponent(b.name)}" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
+    <a href="${DbService.slugify(b.name)}.html" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
       <img src="${b.imageLink || 'images/logo.webp'}" alt="${escapeHtml(b.name)}" onerror="this.src='images/logo.webp'">
       <span>${escapeHtml(b.name)}</span>
     </a>
@@ -126,12 +126,12 @@ function renderCategoryScrollRow() {
       <div style="font-size: 1.2rem;">🏠</div>
       <span>All Categories</span>
     </div>
-    <a href="category.html?name=Combo%20Packs" class="category-scroll-card" style="text-decoration:none;">
+    <a href="combo-packs.html" class="category-scroll-card" style="text-decoration:none;">
       <div style="font-size: 1.3rem;">🔥</div>
       <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
     </a>
   ` + storeCategories.map(c => `
-    <a href="category.html?name=${encodeURIComponent(c.name)}" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
+    <a href="${DbService.slugify(c.name)}.html" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
       <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">
       <span>${escapeHtml(c.name)}</span>
     </a>
@@ -158,7 +158,7 @@ window.selectBrand = function(b) {
 
 window.selectCategory = function(c) {
   if (c) {
-    window.location.href = `category.html?name=${encodeURIComponent(c)}`;
+    window.location.href = DbService.slugify(c) + '.html';
   } else {
     activeCategory = '';
     isComboOnly = false;
@@ -258,14 +258,14 @@ function renderCatalog() {
 
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
-        <a href="product.html?id=${p.id}" class="product-image-wrap">
+        <a href="${DbService.slugify(p.productName)}.html" class="product-image-wrap">
           <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
         </a>
         <div class="product-body">
-          <h3 class="product-name"><a href="product.html?id=${p.id}" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
+          <h3 class="product-name"><a href="${DbService.slugify(p.productName)}.html" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
 
           <div class="price-row">
             <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
@@ -1087,7 +1087,7 @@ function renderSearchDropdown(q) {
     ...top6.map(p => {
       const inStock = p.inStock !== false;
       const priceWithGst = getItemPriceWithGst(p, storeSettings);
-      return `<a class="search-dropdown-item" href="product.html?id=${encodeURIComponent(p.id)}">
+      return `<a class="search-dropdown-item" href="${DbService.slugify(p.productName)}.html">
         <img src="${escapeHtml(p.photoLink || 'images/logo.webp')}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/logo.webp'">
         <div class="sdi-info">
           <div class="sdi-name">${escapeHtml(p.productName || '')}</div>
