@@ -718,11 +718,18 @@ export class DbService {
     try {
       await setDoc(doc(db, "settings", "store_config"), newSettings, { merge: true });
     } catch (err) {
+      console.warn("Firestore settings update failed, falling back:", err);
+    }
+    
+    // Always sync to local server settings.json to keep backend credentials in sync
+    try {
       await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSettings)
       });
+    } catch (err) {
+      console.error("Local settings sync failed:", err);
     }
   }
 

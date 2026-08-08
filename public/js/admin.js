@@ -1046,6 +1046,18 @@ window.toggleFreeShippingMinGroup = function (enabled) {
 async function fetchAdminSettings() {
   try {
     adminSettings = await DbService.getSettings();
+    
+    // Auto-sync fetched settings to local server settings.json to keep backend updated
+    try {
+      await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(adminSettings)
+      });
+    } catch (err) {
+      console.warn("Could not sync loaded settings locally:", err);
+    }
+
     document.getElementById('cfgDeliveryCharge').value = adminSettings.deliveryCharge !== undefined ? adminSettings.deliveryCharge : 150;
     const gstInput = document.getElementById('cfgDefaultGstPercent');
     if (gstInput) gstInput.value = adminSettings.defaultGstPercent !== undefined ? adminSettings.defaultGstPercent : 18;
