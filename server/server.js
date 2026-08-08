@@ -703,24 +703,41 @@ const { execSync } = require('child_process');
 app.post('/api/deploy', (req, res) => {
   try {
     const repoRoot = path.join(__dirname, '..');
-    const token = process.env.GITHUB_TOKEN || '';
-    const remote = token
-      ? `https://${token}@github.com/akinfotechtn/ecom.git`
-      : 'origin';
+
+    // Read token from local .deploy.env file (gitignored)
+    let token = process.env.GITHUB_TOKEN || '';
+    const deployEnvPath = path.join(__dirname, '.deploy.env');
+    if (!token && fs.existsSync(deployEnvPath)) {
+      const lines = fs.readFileSync(deployEnvPath, 'utf8').split('\n');
+      for (const line of lines) {
+        const [key, val] = line.trim().split('=');
+        if (key === 'GITHUB_TOKEN' && val) { token = val.trim(); break; }
+      }
+    }
+
+    if (!token) {
+      return res.status(400).json({ success: false, message: 'No GITHUB_TOKEN found. Add it to server/.deploy.env' });
+    }
+
+    const remote = `https://${token}@github.com/akinfotechtn/ecom.git`;
     const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
     execSync('git add .', { cwd: repoRoot });
 
-    let commitMsg = `[Local Deploy] Product catalog updated - ${timestamp}`;
+    let committed = true;
     try {
-      execSync(`git commit -m "${commitMsg}"`, { cwd: repoRoot });
+      execSync(`git commit -m "[Deploy] Products updated - ${timestamp}"`, { cwd: repoRoot });
     } catch (e) {
-      return res.json({ success: true, message: 'Nothing new to commit. Already up to date.' });
+      committed = false; // nothing to commit
     }
 
     execSync(`git push ${remote} main`, { cwd: repoRoot });
 
-    return res.json({ success: true, message: `Pushed to GitHub at ${timestamp}` });
+    const msg = committed
+      ? `Committed & pushed to GitHub at ${timestamp}`
+      : `Nothing new to commit — pushed existing changes to GitHub at ${timestamp}`;
+
+    return res.json({ success: true, message: msg });
   } catch (err) {
     console.error('[deploy] Error:', err.message);
     return res.status(500).json({ success: false, message: err.message });

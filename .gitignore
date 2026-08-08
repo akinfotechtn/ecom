@@ -11,3 +11,7 @@ yarn-error.log*
 
 # Local batch scripts (contain env vars/tokens)
 *.bat
+
+# Local deploy credentials (never commit)
+server/.deploy.env
+.deploy.env
