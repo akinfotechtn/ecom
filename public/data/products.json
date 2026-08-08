@@ -1,18 +1,5 @@
 [
   {
-    "id": "prod-1786197349017",
-    "productName": "printer",
-    "brand": "Generic",
-    "category": "HD CCTV",
-    "price": 5000,
-    "sellingPrice": 500,
-    "photoLink": "images/cctv-wholesale.webp",
-    "productSpec": "",
-    "inStock": true,
-    "isCombo": false,
-    "createdAt": "2026-08-08T13:55:49.017Z"
-  },
-  {
     "id": "gs-1786196255380-1",
     "photoLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1783955380/realconnect/products/eq1zgiae7jzp6fnsdk2h.png",
     "productName": "Qubo 2K Prime 3MP PTZ",
