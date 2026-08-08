@@ -1,18 +1,5 @@
 [
   {
-    "id": "prod-1786195719927",
-    "productName": "gotest",
-    "brand": "Generic",
-    "category": "CCTV Camera",
-    "price": 3000,
-    "sellingPrice": 3000,
-    "photoLink": "images/cctv-wholesale.webp",
-    "productSpec": "",
-    "inStock": true,
-    "isCombo": false,
-    "createdAt": "2026-08-08T13:28:39.927Z"
-  },
-  {
     "id": "gs-1786057874228-1",
     "dealerMarginPercent": 5,
     "price": 4490,
