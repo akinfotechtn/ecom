@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script>
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = urlParams.get('name') || urlParams.get('brand');
+      const isDynamicPage = window.location.pathname.endsWith('brand.html') || window.location.pathname.endsWith('brand');
+      if (name && isDynamicPage) {
+        if (name.toLowerCase() === 'all brands') {
+          return;
+        }
+        const slug = name.toString().toLowerCase().trim()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]+/g, '')
+          .replace(/\-\-+/g, '-')
+          .replace(/^-+/, '')
+          .replace(/-+$/, '');
+        window.location.replace('brands/' + slug + '.html');
+      }
+    })();
+  </script>
   <title id="brandPageTitle">Brand Products | AK Infotech Security Store</title>
   <meta name="description" id="brandPageMeta" content="Explore official brand CCTV cameras, DVR/NVR, Wireless systems, and accessories at wholesale & retail prices at AK Infotech.">
 
