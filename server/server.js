@@ -216,9 +216,103 @@ function generateStaticPages() {
       }
     }
 
+    // Generate sitemap.xml and robots.txt
+    generateSitemapAndRobots(products, brands, categories);
+
     console.log(`[SSG] Generated pages: ${products.length} products, ${brands.length} brands, ${categories.length} categories.`);
   } catch (err) {
     console.error('[SSG] Generation error:', err.message);
+  }
+}
+
+function generateSitemapAndRobots(products, brands, categories) {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Read siteUrl from settings if possible, otherwise use fallback
+    const settings = readJson(SETTINGS_FILE, {});
+    const siteUrl = (settings.baseUrl || 'https://shop.akinfotechcctv.in').replace(/\/$/, '');
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // 1. Root / Core pages
+    const corePages = [
+      'index.html',
+      'product.html',
+      'brand.html',
+      'category.html',
+      'account.html',
+      'privacy.html',
+      'terms.html',
+      'refund.html'
+    ];
+    for (const page of corePages) {
+      xml += `  <url>\n`;
+      xml += `    <loc>${siteUrl}/${page}</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>${page === 'index.html' ? '1.0' : '0.8'}</priority>\n`;
+      xml += `  </url>\n`;
+    }
+
+    // 2. Product pages
+    for (const p of products) {
+      if (!p.productName) continue;
+      const slug = slugify(p.productName);
+      xml += `  <url>\n`;
+      xml += `    <loc>${siteUrl}/product/${slug}.html</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>0.8</priority>\n`;
+      xml += `  </url>\n`;
+    }
+
+    // 3. Brand pages
+    for (const b of brands) {
+      if (!b.name) continue;
+      const slug = slugify(b.name);
+      xml += `  <url>\n`;
+      xml += `    <loc>${siteUrl}/brands/${slug}.html</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>0.9</priority>\n`;
+      xml += `  </url>\n`;
+    }
+
+    // 4. Category pages
+    const allCats = [...categories];
+    if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
+      allCats.push({ id: 'cat-combo', name: 'Combo Packs' });
+    }
+    for (const c of allCats) {
+      if (!c.name) continue;
+      const slug = slugify(c.name);
+      xml += `  <url>\n`;
+      xml += `    <loc>${siteUrl}/categories/${slug}.html</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>0.9</priority>\n`;
+      xml += `  </url>\n`;
+    }
+
+    xml += `</urlset>`;
+    
+    fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), xml, 'utf8');
+    console.log('[SSG] Generated sitemap.xml');
+
+    // Generate robots.txt
+    let robots = `User-agent: *\n`;
+    robots += `Allow: /\n`;
+    robots += `Disallow: /admin.html\n`;
+    robots += `Disallow: /local-sync.html\n`;
+    robots += `Sitemap: ${siteUrl}/sitemap.xml\n`;
+
+    fs.writeFileSync(path.join(__dirname, '../public/robots.txt'), robots, 'utf8');
+    console.log('[SSG] Generated robots.txt');
+
+  } catch (err) {
+    console.error('[SSG] Error generating sitemap/robots:', err.message);
   }
 }
 

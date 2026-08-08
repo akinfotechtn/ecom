@@ -1610,7 +1610,7 @@ window.exportDynamicSitemap = async function () {
     const prods = adminProducts && adminProducts.length ? adminProducts : await DbService.getProducts();
     const brands = adminBrands && adminBrands.length ? adminBrands : await DbService.getBrands();
 
-    const baseUrl = 'https://shop.akinfotechcctv.in';
+    const baseUrl = (typeof adminSettings !== 'undefined' && adminSettings?.baseUrl || 'https://shop.akinfotechcctv.in').replace(/\/$/, '');
     const today = new Date().toISOString().split('T')[0];
 
     const xmlLines = [];
@@ -1637,7 +1637,19 @@ window.exportDynamicSitemap = async function () {
     brands.forEach(b => {
       if (!b.name) return;
       xmlLines.push('  <url>');
-      xmlLines.push(`    <loc>${baseUrl}/${DbService.slugify(b.name)}.html</loc>`);
+      xmlLines.push(`    <loc>${baseUrl}/brands/${DbService.slugify(b.name)}.html</loc>`);
+      xmlLines.push(`    <lastmod>${today}</lastmod>`);
+      xmlLines.push('    <changefreq>daily</changefreq>');
+      xmlLines.push('    <priority>0.9</priority>');
+      xmlLines.push('  </url>');
+    });
+
+    // Categories Pages
+    const categories = adminCategories && adminCategories.length ? adminCategories : [];
+    categories.forEach(c => {
+      if (!c.name) return;
+      xmlLines.push('  <url>');
+      xmlLines.push(`    <loc>${baseUrl}/categories/${DbService.slugify(c.name)}.html</loc>`);
       xmlLines.push(`    <lastmod>${today}</lastmod>`);
       xmlLines.push('    <changefreq>daily</changefreq>');
       xmlLines.push('    <priority>0.9</priority>');
@@ -1648,7 +1660,7 @@ window.exportDynamicSitemap = async function () {
     prods.forEach(p => {
       if (!p.id || !p.productName) return;
       xmlLines.push('  <url>');
-      xmlLines.push(`    <loc>${baseUrl}/${DbService.slugify(p.productName)}.html</loc>`);
+      xmlLines.push(`    <loc>${baseUrl}/product/${DbService.slugify(p.productName)}.html</loc>`);
       xmlLines.push(`    <lastmod>${today}</lastmod>`);
       xmlLines.push('    <changefreq>daily</changefreq>');
       xmlLines.push('    <priority>0.8</priority>');
