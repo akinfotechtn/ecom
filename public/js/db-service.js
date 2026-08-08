@@ -660,18 +660,62 @@ export class DbService {
     return filtered;
   }
 
+  static _parseFirestoreRestDoc(doc) {
+    if (!doc || !doc.fields) return null;
+    const fields = doc.fields;
+    const obj = { id: doc.name.split('/').pop() };
+    for (const [key, val] of Object.entries(fields)) {
+      if (val.stringValue !== undefined) obj[key] = val.stringValue;
+      else if (val.integerValue !== undefined) obj[key] = parseInt(val.integerValue);
+      else if (val.doubleValue !== undefined) obj[key] = parseFloat(val.doubleValue);
+      else if (val.booleanValue !== undefined) obj[key] = val.booleanValue;
+      else if (val.arrayValue !== undefined) {
+        obj[key] = (val.arrayValue.values || []).map(v => {
+          if (v.mapValue && v.mapValue.fields) {
+            const item = {};
+            for (const [k2, v2] of Object.entries(v.mapValue.fields)) {
+              if (v2.stringValue !== undefined) item[k2] = v2.stringValue;
+              else if (v2.integerValue !== undefined) item[k2] = parseInt(v2.integerValue);
+              else if (v2.doubleValue !== undefined) item[k2] = parseFloat(v2.doubleValue);
+              else if (v2.booleanValue !== undefined) item[k2] = v2.booleanValue;
+            }
+            return item;
+          }
+          return v.stringValue || v.integerValue || v;
+        });
+      }
+    }
+    return obj;
+  }
+
   static async getOrders() {
     const localOrders = this.getOrdersFromLocalStorage();
     let firestoreOrders = [];
 
+    // 1. Try Firestore SDK
     try {
       const snapPromise = getDocs(collection(db, "orders"));
-      const snap = await this._withTimeout(snapPromise, 8000, null);
-      if (snap && snap.docs) {
+      const snap = await this._withTimeout(snapPromise, 5000, null);
+      if (snap && snap.docs && snap.docs.length > 0) {
         firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       }
     } catch (err) {
-      console.warn("Firestore getOrders failed:", err.message);
+      console.warn("Firestore SDK getOrders failed:", err.message);
+    }
+
+    // 2. If SDK was empty or timed out, query Firestore REST API directly (100% reliable)
+    if (!firestoreOrders.length) {
+      try {
+        const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/orders");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.documents && Array.isArray(json.documents)) {
+            firestoreOrders = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
+          }
+        }
+      } catch (restErr) {
+        console.warn("Firestore REST getOrders failed:", restErr);
+      }
     }
 
     const mergedMap = new Map();
