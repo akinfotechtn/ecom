@@ -55,6 +55,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // STRICT ADMIN AUTHENTICATION GUARD
 function setupAdminAuthGuard() {
+  const isLocalServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  // Automatically grant full admin access on local server execution (Start_Store.bat)
+  if (isLocalServer) {
+    const gatekeeperEl = document.getElementById('adminGatekeeper');
+    const mainPanelEl = document.getElementById('adminMainPanel');
+    const statusLabel = document.getElementById('adminUserStatus');
+    const emailLabel = document.getElementById('adminEmailLabel');
+
+    if (gatekeeperEl) gatekeeperEl.style.display = 'none';
+    if (mainPanelEl) mainPanelEl.style.display = 'block';
+    if (statusLabel) statusLabel.innerHTML = `<span style="color:var(--accent-green);">🟢 Localhost Admin Mode</span>`;
+    if (emailLabel) emailLabel.textContent = 'Admin (Local Server)';
+
+    loadAdminData();
+    return;
+  }
+
   DbService.listenAuthState(async (user) => {
     currentAdminUser = user;
     const gatekeeperEl = document.getElementById('adminGatekeeper');
