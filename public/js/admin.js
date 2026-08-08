@@ -121,7 +121,13 @@ window.switchAdminTab = function(tabId, btn) {
 
   if (btn) btn.classList.add('active');
   const target = document.getElementById(tabId);
-  if (target) target.classList.add('active');
+  if (target) {
+    target.classList.add('active');
+    // On mobile / narrow screens, automatically scroll down to the active tab
+    setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 40);
+  }
 
   if (tabId === 'ordersTab') {
     fetchAdminOrders();
