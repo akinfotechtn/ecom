@@ -272,13 +272,17 @@ export class DbService {
 
   // PRODUCTS: Fetch all (always loads latest public/data/products.json with zero Firestore reads)
   static async getProducts(forceRefresh = false) {
+    if (!forceRefresh && this._cachedProducts && this._cachedProducts.length > 0) {
+      return this._cachedProducts;
+    }
+
     // 1. Fetch from static local JSON (/data/products.json) with cache-busting
     try {
       const res = await fetch(`/data/products.json?t=${Date.now()}`).catch(() => fetch(`/api/products?t=${Date.now()}`));
       if (res.ok) {
         const data = await res.json();
         const prods = Array.isArray(data) ? data : (data.products || []);
-        if (prods.length > 0) {
+        if (prods && prods.length > 0) {
           this._cachedProducts = prods;
           try {
             localStorage.setItem('ak_local_products', JSON.stringify(prods));
@@ -286,7 +290,9 @@ export class DbService {
           return prods;
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("Local products fetch:", e);
+    }
 
     // 2. Check localStorage fallback
     try {
@@ -302,31 +308,6 @@ export class DbService {
 
     if (this._cachedProducts && this._cachedProducts.length > 0) {
       return this._cachedProducts;
-    }
-
-    this._cachedProducts = DEFAULT_PRODUCTS;
-    return DEFAULT_PRODUCTS;
-  }
-
-    // 4. Fallback to Firestore REST API if needed
-    if (!firestoreProducts.length) {
-      try {
-        const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/products");
-        if (res.ok) {
-          const json = await res.json();
-          if (json.documents && Array.isArray(json.documents)) {
-            firestoreProducts = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
-          }
-        }
-      } catch (e) {}
-    }
-
-    if (firestoreProducts.length > 0) {
-      this._cachedProducts = firestoreProducts;
-      try {
-        localStorage.setItem('ak_local_products', JSON.stringify(firestoreProducts));
-      } catch (e) {}
-      return firestoreProducts;
     }
 
     this._cachedProducts = DEFAULT_PRODUCTS;
