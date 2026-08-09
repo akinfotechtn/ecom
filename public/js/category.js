@@ -419,7 +419,7 @@ function setupCartDrawer() {
         alert('Your cart is empty!');
         return;
       }
-      window.location.href = 'index.html?checkout=true';
+      window.location.href = DbService.getLinkPrefix() + 'index.html?checkout=true';
     });
   }
 }
