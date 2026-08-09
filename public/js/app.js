@@ -1181,19 +1181,6 @@ window.applySearchFromDropdown = function (q) {
 // ---------------------------------------------------------
 // HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
 // ---------------------------------------------------------
-let activeFeaturedCategory = 'all';
-
-window.filterFeatured = function (category, btn) {
-  activeFeaturedCategory = category;
-  
-  // Update active pill button style
-  const buttons = document.querySelectorAll('#featuredFilters .pill-btn');
-  buttons.forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  
-  renderFeaturedProducts();
-};
-
 window.renderFeaturedProducts = function () {
   const grid = document.getElementById('featuredGrid');
   const section = document.getElementById('featuredSection');
@@ -1209,19 +1196,6 @@ window.renderFeaturedProducts = function () {
 
   // Show the featured section container
   section.style.display = 'block';
-
-  // Apply sub-category filter inside featured products list
-  if (activeFeaturedCategory !== 'all') {
-    featuredList = featuredList.filter(p => p.category?.toLowerCase() === activeFeaturedCategory.toLowerCase());
-  }
-
-  if (!featuredList.length) {
-    grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">No featured items found in "${activeFeaturedCategory}" category.</p>
-      </div>`;
-    return;
-  }
 
   grid.innerHTML = featuredList.map(p => {
     const basePrice = p.sellingPrice || 0;

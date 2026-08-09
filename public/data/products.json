@@ -2223,7 +2223,8 @@
     "baseSellingPrice": 2900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": true
   },
   {
     "id": "gs-1786196255381-160",
@@ -2447,7 +2448,8 @@
     "baseSellingPrice": 1725,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": true
   },
   {
     "id": "gs-1786196255382-176",
@@ -2461,7 +2463,8 @@
     "baseSellingPrice": 2150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": true
   },
   {
     "id": "gs-1786196255382-177",
