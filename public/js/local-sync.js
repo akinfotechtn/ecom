@@ -1,8 +1,20 @@
 let localProducts = [];
 let isBulkMode = false;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadLocalProducts();
+  try {
+    const res = await fetch('/api/settings');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.settings && data.settings.googleSheetUrl) {
+        const input = document.getElementById('localSheetUrlInput');
+        if (input) input.value = data.settings.googleSheetUrl;
+      }
+    }
+  } catch (e) {
+    console.warn('Could not load settings for URL pre-fill');
+  }
 });
 
 function escapeHtml(str) {
@@ -248,11 +260,6 @@ window.syncGoogleSheetLocal = async function() {
   const url = document.getElementById('localSheetUrlInput').value.trim();
   const statusEl = document.getElementById('localSyncStatus');
   const btn = document.getElementById('btnLocalSyncSheet');
-
-  if (!url) {
-    alert("Please enter a Google Sheet URL first!");
-    return;
-  }
 
   btn.disabled = true;
   statusEl.innerHTML = `<span style="color: var(--accent-cyan);">⏳ Downloading and parsing Google Sheet CSV...</span>`;

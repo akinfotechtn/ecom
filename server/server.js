@@ -43,9 +43,14 @@ function readJson(filePath, defaultData = []) {
     const raw = fs.readFileSync(filePath, 'utf8');
     if (!raw || !raw.trim()) return defaultData;
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) return parsed;
-    if (parsed && Array.isArray(parsed.products)) return parsed.products;
-    return defaultData;
+    
+    if (Array.isArray(defaultData)) {
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed && Array.isArray(parsed.products)) return parsed.products;
+      return defaultData;
+    }
+    
+    return parsed || defaultData;
   } catch (err) {
     console.error(`Error reading ${filePath}:`, err.message);
     return defaultData;
