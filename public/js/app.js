@@ -529,6 +529,23 @@ function renderCart() {
   const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
 
+  // Populate coupon field visual state if already applied
+  const inputEl = document.getElementById('cartCouponInput');
+  const msgEl = document.getElementById('cartPromoMsg');
+  if (inputEl && msgEl) {
+    if (appliedCoupon) {
+      inputEl.value = appliedCoupon.code;
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--accent-green)';
+      msgEl.textContent = `Coupon ${appliedCoupon.code} applied!`;
+    } else {
+      // Clear visual state if no coupon is active
+      if (!inputEl.value) {
+        msgEl.style.display = 'none';
+      }
+    }
+  }
+
   renderPromoChips();
 }
 
@@ -858,6 +875,40 @@ function setupEventListeners() {
       } else {
         openCheckoutModal();
       }
+    });
+  }
+
+  const applyCartCouponBtn = document.getElementById('applyCartCouponBtn');
+  if (applyCartCouponBtn) {
+    applyCartCouponBtn.addEventListener('click', () => {
+      const inputEl = document.getElementById('cartCouponInput');
+      const msgEl = document.getElementById('cartPromoMsg');
+      const code = inputEl ? inputEl.value.trim().toUpperCase() : '';
+      if (!code) {
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = 'Please enter a coupon code!';
+        }
+        return;
+      }
+      const found = storeSettings.discountCoupons?.find(c => c.code === code);
+      if (found) {
+        appliedCoupon = found;
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = 'var(--accent-green)';
+          msgEl.textContent = `Coupon ${code} applied successfully!`;
+        }
+      } else {
+        appliedCoupon = null;
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = 'Invalid coupon code!';
+        }
+      }
+      renderCart();
     });
   }
 

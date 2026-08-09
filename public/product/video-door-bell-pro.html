@@ -190,6 +190,15 @@
     </div>
 
     <div class="cart-summary-footer">
+      <!-- Promo Code Section -->
+      <div class="promo-code-section" style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="cartCouponInput" placeholder="Enter Coupon Code" style="flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: #f8fafc; color: var(--text-dark);">
+          <button id="applyCartCouponBtn" style="background: var(--bg-dark); color: #ffffff; border: none; padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">Apply</button>
+        </div>
+        <div id="cartPromoMsg" style="font-size: 0.78rem; margin-top: 6px; display: none; font-weight: 700;"></div>
+      </div>
+
       <div class="cart-summary-row">
         <span>Subtotal</span>
         <span id="cartSubtotal">₹0</span>
@@ -208,9 +217,9 @@
         <span id="cartGrandTotal">₹0</span>
       </div>
 
-      <a href="../index.html?checkout=true" class="btn-checkout" style="display:block; text-align:center; text-decoration:none;">
+      <button class="btn-checkout" id="proceedCheckoutBtn">
         Proceed to Checkout →
-      </a>
+      </button>
     </div>
   </div>
 

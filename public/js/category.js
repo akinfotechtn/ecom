@@ -6,6 +6,7 @@ let filteredProducts = [];
 let allCategories = [];
 let allBrands = [];
 let storeSettings = {};
+let appliedCoupon = null;
 let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
 
 const ITEMS_PER_PAGE = 12;
@@ -376,6 +377,52 @@ function setupCartDrawer() {
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
   if (backdrop) backdrop.addEventListener('click', closeCartDrawer);
+
+  const applyCartCouponBtn = document.getElementById('applyCartCouponBtn');
+  if (applyCartCouponBtn) {
+    applyCartCouponBtn.addEventListener('click', () => {
+      const inputEl = document.getElementById('cartCouponInput');
+      const msgEl = document.getElementById('cartPromoMsg');
+      const code = inputEl ? inputEl.value.trim().toUpperCase() : '';
+      if (!code) {
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = 'Please enter a coupon code!';
+        }
+        return;
+      }
+      const coupons = storeSettings.discountCoupons || [];
+      const found = coupons.find(c => c.code === code);
+      if (found) {
+        appliedCoupon = found;
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = 'var(--accent-green)';
+          msgEl.textContent = `Coupon ${code} applied successfully!`;
+        }
+      } else {
+        appliedCoupon = null;
+        if (msgEl) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#ef4444';
+          msgEl.textContent = 'Invalid coupon code!';
+        }
+      }
+      renderCart();
+    });
+  }
+
+  const proceedBtn = document.getElementById('proceedCheckoutBtn');
+  if (proceedBtn) {
+    proceedBtn.addEventListener('click', () => {
+      if (!cart.length) {
+        alert('Your cart is empty!');
+        return;
+      }
+      window.location.href = 'index.html?checkout=true';
+    });
+  }
 }
 
 window.openCartDrawer = function () {
@@ -454,40 +501,81 @@ function saveCart() {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
 }
 
+function calculateCartDeliveryFee(cartItems, settings, categories = []) {
+  if (!cartItems || !cartItems.length) return 0;
+  if (settings && settings.payShippingOnDelivery) return 0;
+
+  const subtotal = cartItems.reduce((sum, item) => sum + (Number(item.sellingPrice || 0) * (item.quantity || item.qty || 1)), 0);
+  const enableFree = settings.enableFreeShipping !== false;
+  const freeMin = settings.freeShippingMinOrder || 3000;
+
+  if (enableFree && subtotal >= freeMin) {
+    return 0;
+  }
+
+  let maxDeliveryCharge = 0;
+  cartItems.forEach(item => {
+    let itemFee = 0;
+    if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
+      itemFee = Number(item.deliveryCharge);
+    } else {
+      const matchCat = categories.find(c => c.name?.toLowerCase() === item.category?.toLowerCase());
+      if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
+        itemFee = Number(matchCat.deliveryCharge);
+      } else {
+        itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
+      }
+    }
+    if (itemFee > maxDeliveryCharge) {
+      maxDeliveryCharge = itemFee;
+    }
+  });
+
+  return maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
+}
+
 function getItemPriceWithGst(item, settings = storeSettings) {
-  const basePrice = Number(item.basePrice || item.sellingPrice || 0);
+  const basePrice = Number(item.sellingPrice || 0);
   const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
   const gstAmount = Math.round((basePrice * gstRate) / 100);
   return basePrice + gstAmount;
 }
 
 function renderCart() {
-  const container = document.getElementById('cartItemsContainer') || document.getElementById('cartItemsBody');
-  const countEl = document.getElementById('cartCount');
-  const drawerCountEl = document.getElementById('cartDrawerCount') || document.getElementById('cartItemCount');
+  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+  const cartCountEl = document.getElementById('cartCount');
+  const drawerCountEl = document.getElementById('cartItemCount');
 
-  const totalItems = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
-  if (countEl) countEl.textContent = totalItems;
-  if (drawerCountEl) drawerCountEl.textContent = totalItems;
+  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
+  if (cartCountEl) cartCountEl.textContent = totalQty;
+  if (drawerCountEl) drawerCountEl.textContent = totalQty;
 
-  if (!container) return;
+  const itemsListEl = document.getElementById('cartItemsBody');
+  if (!itemsListEl) return;
+
+  const settings = storeSettings || {};
+  const categories = allCategories || [];
 
   if (!cart.length) {
-    container.innerHTML = `<div class="empty-cart-msg">Your shopping cart is currently empty.</div>`;
+    itemsListEl.innerHTML = `
+      <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+        Your cart is empty.<br>Browse items & add to cart.
+      </div>`;
   } else {
-    container.innerHTML = cart.map(item => {
+    itemsListEl.innerHTML = cart.map(item => {
       const q = item.quantity || item.qty || 1;
-      const itemPriceWithGst = getItemPriceWithGst(item, storeSettings);
+      const itemPriceWithGst = getItemPriceWithGst(item, settings);
       return `
         <div class="cart-item">
           <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
           <div class="cart-item-info">
-            <div class="cart-item-title">${escapeHtml(item.productName)}</div>
+            <div class="cart-item-name">${escapeHtml(item.productName)}</div>
             <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
-            <div class="cart-qty-controls">
-              <button onclick="updateCartQty('${item.id}', -1)">-</button>
-              <span>${q}</span>
-              <button onclick="updateCartQty('${item.id}', 1)">+</button>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
+              <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
+              <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
             </div>
           </div>
         </div>
@@ -497,12 +585,25 @@ function renderCart() {
 
   const subtotalWithGst = cart.reduce((sum, item) => {
     const q = item.quantity || item.qty || 1;
-    return sum + (getItemPriceWithGst(item, storeSettings) * q);
+    return sum + (getItemPriceWithGst(item, settings) * q);
   }, 0);
 
-  const isPayOnDelivery = storeSettings.payShippingOnDelivery === true;
-  const deliveryFee = (subtotalWithGst > 0 && !isPayOnDelivery) ? (storeSettings.deliveryCharge || 150) : 0;
-  const finalTotal = subtotalWithGst + deliveryFee;
+  const isPayOnDelivery = settings.payShippingOnDelivery === true;
+  const enableFreeShipping = settings.enableFreeShipping !== false;
+  const freeMin = settings.freeShippingMinOrder || 3000;
+
+  let deliveryFee = isPayOnDelivery ? 0 : calculateCartDeliveryFee(cart, settings, categories);
+
+  let discountAmount = 0;
+  if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
+    if (appliedCoupon.discountPercent) {
+      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
+    } else if (appliedCoupon.discountFlat) {
+      discountAmount = appliedCoupon.discountFlat;
+    }
+  }
+
+  const finalTotal = Math.max(0, subtotalWithGst + deliveryFee - discountAmount);
 
   const subtotalEl = document.getElementById('cartSubtotal');
   if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
@@ -512,16 +613,46 @@ function renderCart() {
     if (subtotalWithGst === 0) {
       deliveryEl.innerHTML = `₹0`;
     } else if (isPayOnDelivery) {
-      deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span>`;
+      deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span><small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>`;
     } else if (deliveryFee === 0) {
       deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+    } else if (enableFreeShipping) {
+      const needed = Math.max(0, freeMin - subtotalWithGst);
+      deliveryEl.innerHTML = `₹${deliveryFee} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : `<small style="display:block; color:var(--accent-green); font-size:0.7rem; font-weight:700;">FREE Shipping Unlocked!</small>`}`;
     } else {
-      deliveryEl.innerHTML = `₹${deliveryFee}`;
+      deliveryEl.innerHTML = `₹${deliveryFee} <small style="display:block; color:var(--text-muted); font-size:0.7rem;">Delivery charge calculated for catalog items</small>`;
     }
   }
 
-  const grandTotalEl = document.getElementById('cartGrandTotal') || document.getElementById('cartFinalTotal');
+  const discountRow = document.getElementById('discountRow');
+  if (discountRow) {
+    if (discountAmount > 0) {
+      discountRow.style.display = 'flex';
+      const discEl = document.getElementById('cartDiscount');
+      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+    } else {
+      discountRow.style.display = 'none';
+    }
+  }
+
+  const grandTotalEl = document.getElementById('cartGrandTotal');
   if (grandTotalEl) grandTotalEl.textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+
+  // Populate coupon field visual state if already applied
+  const inputEl = document.getElementById('cartCouponInput');
+  const msgEl = document.getElementById('cartPromoMsg');
+  if (inputEl && msgEl) {
+    if (appliedCoupon) {
+      inputEl.value = appliedCoupon.code;
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--accent-green)';
+      msgEl.textContent = `Coupon ${appliedCoupon.code} applied!`;
+    } else {
+      if (!inputEl.value) {
+        msgEl.style.display = 'none';
+      }
+    }
+  }
 }
 
 function escapeHtml(str) {

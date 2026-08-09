@@ -892,17 +892,28 @@ app.post('/api/send-order-email', async (req, res) => {
       }
     });
 
-    const itemsHtml = (order.items || []).map(item => `
-      <tr>
-        <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-          <img src="${item.photoLink}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; vertical-align: middle; margin-right: 8px;">
-          <strong>${item.productName}</strong>
-        </td>
-        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity || item.qty || 1}</td>
-        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${(item.sellingPrice || 0).toLocaleString('en-IN')}</td>
-        <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${((item.sellingPrice || 0) * (item.quantity || item.qty || 1)).toLocaleString('en-IN')}</td>
-      </tr>
-    `).join('');
+    let computedSubtotalWithGst = 0;
+    const itemsHtml = (order.items || []).map(item => {
+      const basePrice = Number(item.sellingPrice || 0);
+      const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
+      const gstAmount = Math.round((basePrice * gstPercent) / 100);
+      const itemPriceWithGst = basePrice + gstAmount;
+      const qty = Number(item.quantity || item.qty || 1);
+      const itemTotalWithGst = itemPriceWithGst * qty;
+      computedSubtotalWithGst += itemTotalWithGst;
+
+      return `
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+            <img src="${item.photoLink}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; vertical-align: middle; margin-right: 8px;">
+            <strong>${item.productName}</strong>
+          </td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${qty}</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${itemPriceWithGst.toLocaleString('en-IN')}</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${itemTotalWithGst.toLocaleString('en-IN')}</td>
+        </tr>
+      `;
+    }).join('');
 
     const emailSubject = `🎉 New Order Placed: ${order.id} (₹${(order.finalTotal || 0).toLocaleString('en-IN')})`;
     const emailBody = `
@@ -957,8 +968,8 @@ app.post('/api/send-order-email', async (req, res) => {
 
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px;">
           <tr>
-            <td style="padding: 6px 0; color: #64748b;">Subtotal (with GST):</td>
-            <td style="padding: 6px 0; text-align: right;">₹${(order.subtotal || 0).toLocaleString('en-IN')}</td>
+            <td style="padding: 6px 0; color: #64748b;">Subtotal (incl. GST):</td>
+            <td style="padding: 6px 0; text-align: right;">₹${computedSubtotalWithGst.toLocaleString('en-IN')}</td>
           </tr>
           <tr>
             <td style="padding: 6px 0; color: #64748b;">Delivery Charges:</td>
