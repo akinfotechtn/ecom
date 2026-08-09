@@ -115,7 +115,8 @@ function adjustPaths(html) {
     .replace(/href="terms\.html/g, 'href="../terms.html')
     .replace(/href="refund\.html/g, 'href="../refund.html')
     .replace(/href="category\.html/g, 'href="../category.html')
-    .replace(/href="brand\.html/g, 'href="../brand.html');
+    .replace(/href="brand\.html/g, 'href="../brand.html')
+    .replace(/href="cart\.html/g, 'href="../cart.html');
 }
 
 function cleanStaticPages() {
