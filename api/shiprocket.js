@@ -77,6 +77,33 @@ module.exports = async function handler(req, res) {
       return res.status(labelRes.status).json(data);
     }
 
+    if (action === 'cancel_order') {
+      const { ids, awbs } = req.body || {};
+      let cancelRes;
+      if (awbs && awbs.length) {
+        cancelRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/cancel/shipment/awbs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ awbs })
+        });
+      } else {
+        const orderIds = ids ? (Array.isArray(ids) ? ids : [ids]) : [];
+        cancelRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/cancel', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ ids: orderIds })
+        });
+      }
+      const data = await cancelRes.json();
+      return res.status(cancelRes.status).json(data);
+    }
+
     return res.status(400).json({ success: false, message: `Unknown Shiprocket action: ${action}` });
   } catch (err) {
     console.error("Shiprocket proxy error:", err);

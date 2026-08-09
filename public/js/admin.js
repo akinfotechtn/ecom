@@ -2079,12 +2079,18 @@ function renderOrdersTable() {
         srBadgeHtml = `<div class="status-badge" style="font-size:0.75rem; background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-weight:700;">🚀 SR Order #${escapeHtml(o.shiprocketOrderId)}</div>`;
         if (o.awbCode) {
           srBadgeHtml += `<div class="status-badge" style="font-size:0.75rem; background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; font-weight:700; margin-top:4px; display:block;">🚚 AWB: ${escapeHtml(o.awbCode)} (${escapeHtml(o.courierName || 'Courier')})</div>`;
-          srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#16a34a,#15803d); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%;" onclick="printShiprocketLabel('${oId}')">🏷️ Print Label</button>`;
+          srActionsHtml = `
+            <button class="hero-btn" style="background:linear-gradient(135deg,#16a34a,#15803d); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%; cursor:pointer;" onclick="printShiprocketLabel('${oId}')">🏷️ Print Label</button>
+            <button class="hero-btn" style="background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; padding:6px 12px; font-size:0.75rem; border-radius:var(--radius-sm); font-weight:700; width:100%; cursor:pointer;" onclick="reverseShiprocketOrder('${oId}')">↩️ Reset / Cancel SR Order</button>
+          `;
         } else {
-          srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%;" onclick="openShiprocketCourierModal('${oId}')">🚚 Book Courier</button>`;
+          srActionsHtml = `
+            <button class="hero-btn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%; cursor:pointer;" onclick="openShiprocketCourierModal('${oId}')">🚚 Book Courier</button>
+            <button class="hero-btn" style="background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; padding:6px 12px; font-size:0.75rem; border-radius:var(--radius-sm); font-weight:700; width:100%; cursor:pointer;" onclick="reverseShiprocketOrder('${oId}')">↩️ Reset / Cancel SR Order</button>
+          `;
         }
       } else {
-        srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#0284c7,#2563eb); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%;" onclick="createShiprocketOrder('${oId}')">🚀 Create Shiprocket Order</button>`;
+        srActionsHtml = `<button class="hero-btn" style="background:linear-gradient(135deg,#0284c7,#2563eb); padding:8px 16px; font-size:0.8rem; border-radius:var(--radius-sm); border:none; color:white; font-weight:700; width:100%; cursor:pointer;" onclick="createShiprocketOrder('${oId}')">🚀 Create Shiprocket Order</button>`;
       }
 
       const orderIdStr = escapeHtml(o.id || 'N/A');
@@ -2238,6 +2244,14 @@ window.createShiprocketOrder = async function (orderId) {
     alert(`🚀 Initiating Shiprocket Order Creation for ${orderId}...`);
     const token = await getShiprocketToken();
 
+    const finalOrderTotal = Number(
+      order.finalTotal !== undefined ? order.finalTotal :
+      (order.totalAmount !== undefined ? order.totalAmount :
+      (order.grandTotal !== undefined ? order.grandTotal :
+      (order.total !== undefined ? order.total :
+      (order.subtotal || 0))))
+    );
+
     const orderItems = (order.items || []).map(item => {
       const basePrice = Number(item.sellingPrice || item.price || 0);
       const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
@@ -2249,30 +2263,47 @@ window.createShiprocketOrder = async function (orderId) {
       return {
         name: item.productName || 'CCTV Security Equipment',
         sku: item.id || `SKU-${Date.now()}`,
-        units: item.quantity || item.qty || 1,
-        selling_price: itemPriceWithGst || 1000
+        units: Number(item.quantity || item.qty || 1),
+        selling_price: itemPriceWithGst,
+        discount: 0
       };
     });
 
     const dateFormatted = new Date().toISOString().replace('T', ' ').substring(0, 16);
 
+    const rawName = (order.name || order.customerName || order.fullName || "Customer").trim();
+    const nameParts = rawName.split(' ');
+    const firstName = nameParts[0] || "Customer";
+    const lastName = nameParts.slice(1).join(' ') || "";
+
+    let city = order.city || "";
+    let state = order.state || "";
+    if ((!city || !state) && order.cityState) {
+      const csParts = order.cityState.split(',');
+      if (!city) city = csParts[0]?.trim() || "Chennai";
+      if (!state) state = csParts[1]?.trim() || "Tamil Nadu";
+    }
+    if (!city) city = "Chennai";
+    if (!state) state = "Tamil Nadu";
+
     const payload = {
       order_id: order.id,
       order_date: dateFormatted,
-      pickup_location: "Primary",
-      billing_customer_name: order.name || order.customerName || "Customer",
-      billing_last_name: "",
-      billing_address: order.address || "GST Road",
-      billing_city: order.cityState ? order.cityState.split(',')[0] : "Chengalpattu",
+      pickup_location: adminSettings.shiprocket?.pickupLocation || "Primary",
+      billing_customer_name: firstName,
+      billing_last_name: lastName,
+      billing_address: order.address || order.street || "Main Road",
+      billing_address_2: "",
+      billing_city: city,
       billing_pincode: order.pincode || "603202",
-      billing_state: order.cityState && order.cityState.includes(',') ? order.cityState.split(',')[1].trim() : "Tamil Nadu",
+      billing_state: state,
       billing_country: "India",
-      billing_email: order.email || "akinfotechtn@gmail.com",
-      billing_phone: order.phone || "9500673207",
+      billing_email: order.email || order.userEmail || order.customerEmail || "akinfotechtn@gmail.com",
+      billing_phone: order.phone || order.custPhone || "9500673207",
       shipping_is_billing: true,
-      order_items: orderItems.length ? orderItems : [{ name: "Security Equipment", sku: "SEC-1", units: 1, selling_price: order.total || 1000 }],
+      order_items: orderItems.length ? orderItems : [{ name: "Security Equipment", sku: "SEC-1", units: 1, selling_price: finalOrderTotal }],
       payment_method: order.paymentMethod === 'COD' ? 'COD' : 'Prepaid',
-      sub_total: order.total || 1000,
+      sub_total: finalOrderTotal,
       length: 10,
       breadth: 10,
       height: 10,
@@ -2305,6 +2336,65 @@ window.createShiprocketOrder = async function (orderId) {
     }
   } catch (err) {
     alert(`Shiprocket Order Error: ${err.message}`);
+  }
+};
+
+window.reverseShiprocketOrder = async function (orderId) {
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
+  if (!order) {
+    alert("Order details not found!");
+    return;
+  }
+
+  const srOrderId = order.shiprocketOrderId;
+  const awbCode = order.awbCode;
+
+  if (!confirm(`Are you sure you want to cancel and reverse Shiprocket Order for ${orderId} (SR #${srOrderId})?\n\nThis will attempt to cancel the shipment on Shiprocket and reset the Shiprocket integration for this order in your dashboard.`)) {
+    return;
+  }
+
+  try {
+    const token = await getShiprocketToken();
+    if (token && srOrderId) {
+      try {
+        const payload = awbCode ? { awbs: [awbCode] } : { ids: [srOrderId] };
+        const res = await fetch('/api/shiprocket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'cancel_order',
+            token,
+            ...payload
+          })
+        });
+        const resData = await res.json();
+        console.log("Shiprocket cancel response:", resData);
+      } catch (apiErr) {
+        console.warn("Shiprocket cancellation API warning:", apiErr);
+      }
+    }
+
+    const resetData = {
+      shiprocketOrderId: null,
+      shiprocketShipmentId: null,
+      awbCode: null,
+      courierName: null,
+      shiprocketStatus: null
+    };
+
+    await DbService.updateOrder(order.id, resetData);
+    
+    // Update local order object
+    delete order.shiprocketOrderId;
+    delete order.shiprocketShipmentId;
+    delete order.awbCode;
+    delete order.courierName;
+    delete order.shiprocketStatus;
+
+    renderOrdersTable();
+    alert(`✅ Shiprocket Order #${srOrderId} reversed and reset successfully for ${orderId}! You can now create a new Shiprocket order whenever you are ready.`);
+  } catch (err) {
+    alert(`Error resetting Shiprocket order: ${err.message}`);
   }
 };
 
