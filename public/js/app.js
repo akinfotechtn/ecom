@@ -513,7 +513,11 @@ function renderCart() {
     } else if (isPayOnDelivery) {
       deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span><small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>`;
     } else if (deliveryFee === 0) {
-      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+      if (typeof appliedCoupon !== 'undefined' && appliedCoupon && (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY')) {
+        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800; font-size: 0.8rem;">We will parcel your product in Rathi meena or MSS. You should Pickup from there</span>`;
+      } else {
+        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+      }
     } else if (enableFreeShipping) {
       const needed = Math.max(0, freeMin - subtotalWithGst);
       deliveryEl.innerHTML = `₹${deliveryFee} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : `<small style="display:block; color:var(--accent-green); font-size:0.7rem; font-weight:700;">FREE Shipping Unlocked!</small>`}`;
@@ -566,7 +570,7 @@ function renderCart() {
       inputEl.value = appliedCoupon.code;
       msgEl.style.display = 'block';
       msgEl.style.color = 'var(--accent-green)';
-      msgEl.textContent = `Coupon ${appliedCoupon.code} applied!`;
+      msgEl.innerHTML = `Coupon <b>${appliedCoupon.code}</b> applied! <button type="button" onclick="window.removeCartCoupon()" style="background:none; border:none; color:#ef4444; font-weight:800; cursor:pointer; font-size:0.75rem; margin-left:8px; padding:2px 6px; background:#fee2e2; border-radius:4px;">✕ Remove</button>`;
     } else {
       // Clear visual state if no coupon is active
       if (!inputEl.value) {

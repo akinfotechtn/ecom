@@ -408,7 +408,11 @@ function renderCart() {
     } else if (isPayOnDelivery) {
       deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span><small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>`;
     } else if (deliveryFee === 0) {
-      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+      if (typeof appliedCoupon !== 'undefined' && appliedCoupon && (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY')) {
+        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800; font-size: 0.8rem;">We will parcel your product in Rathi meena or MSS. You should Pickup from there</span>`;
+      } else {
+        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
+      }
     } else if (enableFreeShipping) {
       const needed = Math.max(0, freeMin - subtotalWithGst);
       deliveryEl.innerHTML = `₹${deliveryFee} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : `<small style="display:block; color:var(--accent-green); font-size:0.7rem; font-weight:700;">FREE Shipping Unlocked!</small>`}`;
@@ -461,8 +465,9 @@ function renderCart() {
       inputEl.value = appliedCoupon.code;
       msgEl.style.display = 'block';
       msgEl.style.color = 'var(--accent-green)';
-      msgEl.textContent = `Coupon ${appliedCoupon.code} applied!`;
-    } else {
+      msgEl.innerHTML = `Coupon <b>${appliedCoupon.code}</b> applied! <button type="button" onclick="window.removeCartCoupon()" style="background:none; border:none; color:#ef4444; font-weight:800; cursor:pointer; font-size:0.75rem; margin-left:8px; padding:2px 6px; background:#fee2e2; border-radius:4px;">✕ Remove</button>`;
+    }
+  if (typeof renderPromoChips === "function") renderPromoChips(); else {
       if (!inputEl.value) {
         msgEl.style.display = 'none';
       }
@@ -681,3 +686,45 @@ window.removeCartCoupon = function() {
   if (msgEl) msgEl.style.display = 'none';
   if (typeof renderCart === 'function') renderCart();
 };
+
+
+function renderPromoChips() {
+  const container = document.querySelector('.coupon-quick-chips');
+  if (!container) return;
+  const storeSettingsObj = typeof storeSettings !== 'undefined' ? storeSettings : (typeof window.storeSettings !== 'undefined' ? window.storeSettings : {});
+  const activeCoupons = (storeSettingsObj.discountCoupons || []).filter(c => c.showInCart === true);
+  if (!activeCoupons.length) {
+    container.style.display = 'none';
+  } else {
+    container.style.display = 'flex';
+    const escapeHtmlFn = typeof escapeHtml === 'function' ? escapeHtml : (str) => {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    };
+    container.innerHTML = `<span class="chip-label">Promo Codes:</span>` + activeCoupons.map(c => `
+      <button type="button" class="coupon-chip" onclick="window.autoApplyCheckoutCoupon ? window.autoApplyCheckoutCoupon('${escapeHtmlFn(c.code)}') : (window.applyCartCoupon ? window.applyCartCoupon('${escapeHtmlFn(c.code)}') : null)">
+        🎟️ ${escapeHtmlFn(c.code)}
+      </button>
+    `).join('');
+    
+    // Also if window.autoApplyCheckoutCoupon is not available globally, we can use applyCartCouponBtn click trick or define a global wrapper:
+    if (!window.applyCartCoupon_global_wrapper) {
+      window.applyCartCoupon_global_wrapper = function(code) {
+        const inputEl = document.getElementById('cartCouponInput');
+        if (inputEl) {
+          inputEl.value = code;
+          const applyBtn = document.getElementById('applyCartCouponBtn');
+          if (applyBtn) applyBtn.click();
+        }
+      };
+    }
+    
+    container.innerHTML = `<span class="chip-label">Promo Codes:</span>` + activeCoupons.map(c => `
+      <button type="button" class="coupon-chip" onclick="window.applyCartCoupon_global_wrapper('${escapeHtmlFn(c.code)}')">
+        🎟️ ${escapeHtmlFn(c.code)}
+      </button>
+    `).join('');
+  }
+}
