@@ -187,11 +187,14 @@ function renderCategoryBrandsSection() {
   categoryBrandsList.forEach(bName => {
     const count = brandCounts[bName] || 0;
     const matchBrand = allBrands.find(b => b.name && b.name.toLowerCase().trim() === bName.toLowerCase().trim());
-    const logoUrl = matchBrand?.imageLink || matchBrand?.logoLink || 'images/logo.webp';
+    let logoUrl = matchBrand?.imageLink || matchBrand?.logoLink || 'images/logo.webp';
+    if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+      logoUrl = DbService.getLinkPrefix() + logoUrl;
+    }
 
     html += `
       <button class="brand-chip" data-brand="${escapeHtml(bName)}" onclick="filterCategoryBrand('${escapeHtml(bName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
-        <img src="${logoUrl}" alt="${escapeHtml(bName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 2px;" onerror="this.src='images/logo.webp'">
+        <img src="${logoUrl}" alt="${escapeHtml(bName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 2px;" onerror="this.src='${DbService.getLinkPrefix()}images/logo.webp'">
         <span>${escapeHtml(bName)} ${count ? `(${count})` : ''}</span>
       </button>
     `;
