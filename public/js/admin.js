@@ -2091,7 +2091,12 @@ function renderOrdersTable() {
       const custName = escapeHtml(o.name || o.customerName || o.fullName || 'Customer');
       const custEmail = escapeHtml(o.email || o.userEmail || o.customerEmail || '');
       const custPhone = escapeHtml(o.phone || o.custPhone || 'N/A');
-      const loc = [o.cityState || o.city || o.address || '', o.pincode ? `(${o.pincode})` : ''].filter(Boolean).join(' ');
+      const fullAddressParts = [];
+      if (o.address || o.street) fullAddressParts.push(o.address || o.street);
+      if (o.city) fullAddressParts.push(o.city);
+      if (o.state) fullAddressParts.push(o.state);
+      if (o.pincode) fullAddressParts.push(o.pincode);
+      const loc = fullAddressParts.filter(Boolean).join(', ');
       const locationStr = escapeHtml(loc);
 
       const itemsListHtml = (o.items && Array.isArray(o.items) && o.items.length > 0)

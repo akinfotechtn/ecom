@@ -654,20 +654,53 @@ export class DbService {
 
   static async addUserAddress(uid, addressData) {
     if (!uid) return;
-    const addressId = `addr-${Date.now()}`;
-    const newAddr = { id: addressId, ...addressData, createdAt: new Date().toISOString() };
 
     try {
       const existing = await this.getUserAddresses(uid);
+      const isDuplicate = existing.some(addr => {
+        const matchStreet = (addr.street || addr.address || '').toLowerCase().trim() === (addressData.street || addressData.address || '').toLowerCase().trim();
+        const matchPincode = (addr.pincode || '').toLowerCase().trim() === (addressData.pincode || '').toLowerCase().trim();
+        const matchCityState = (addr.cityState || '').toLowerCase().trim() === (addressData.cityState || '').toLowerCase().trim();
+        const matchName = (addr.fullName || addr.name || '').toLowerCase().trim() === (addressData.fullName || addressData.name || '').toLowerCase().trim();
+        const matchPhone = (addr.phone || '').toLowerCase().trim() === (addressData.phone || '').toLowerCase().trim();
+        return matchStreet && matchPincode && matchCityState && matchName && matchPhone;
+      });
+
+      if (isDuplicate) {
+        console.log("Address already exists, skipping duplicate save.");
+        // Return the existing duplicate address
+        return existing.find(addr => {
+          const matchStreet = (addr.street || addr.address || '').toLowerCase().trim() === (addressData.street || addressData.address || '').toLowerCase().trim();
+          const matchPincode = (addr.pincode || '').toLowerCase().trim() === (addressData.pincode || '').toLowerCase().trim();
+          const matchCityState = (addr.cityState || '').toLowerCase().trim() === (addressData.cityState || '').toLowerCase().trim();
+          return matchStreet && matchPincode && matchCityState;
+        });
+      }
+
+      const addressId = `addr-${Date.now()}`;
+      const newAddr = { id: addressId, ...addressData, createdAt: new Date().toISOString() };
       const updated = [newAddr, ...existing];
       await setDoc(doc(db, "users", uid), { addresses: updated }, { merge: true });
       localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(updated));
+      return newAddr;
     } catch (err) {
       const local = JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
+      const isDuplicate = local.some(addr => {
+        const matchStreet = (addr.street || addr.address || '').toLowerCase().trim() === (addressData.street || addressData.address || '').toLowerCase().trim();
+        const matchPincode = (addr.pincode || '').toLowerCase().trim() === (addressData.pincode || '').toLowerCase().trim();
+        const matchCityState = (addr.cityState || '').toLowerCase().trim() === (addressData.cityState || '').toLowerCase().trim();
+        const matchName = (addr.fullName || addr.name || '').toLowerCase().trim() === (addressData.fullName || addressData.name || '').toLowerCase().trim();
+        const matchPhone = (addr.phone || '').toLowerCase().trim() === (addressData.phone || '').toLowerCase().trim();
+        return matchStreet && matchPincode && matchCityState && matchName && matchPhone;
+      });
+      if (isDuplicate) return;
+
+      const addressId = `addr-${Date.now()}`;
+      const newAddr = { id: addressId, ...addressData, createdAt: new Date().toISOString() };
       local.unshift(newAddr);
       localStorage.setItem(`ak_addresses_${uid}`, JSON.stringify(local));
+      return newAddr;
     }
-    return newAddr;
   }
 
   static async updateUserAddress(uid, addressId, addressData) {

@@ -830,6 +830,7 @@
                 alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.` : 'Full Amount Paid Online.'}`);
 
                 localStorage.removeItem('ak_cart');
+                localStorage.removeItem('ak_applied_coupon');
                 window.cart = [];
                 window.location.href = 'account.html?order=' + savedOrder.id;
               } else {

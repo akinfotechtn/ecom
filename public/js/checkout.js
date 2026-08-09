@@ -40,7 +40,15 @@ function getSettings() {
 }
 
 function getAppliedCoupon() {
-    return window.appliedCoupon || null;
+    if (window.appliedCoupon) return window.appliedCoupon;
+    try {
+        var saved = localStorage.getItem('ak_applied_coupon');
+        if (saved) {
+            window.appliedCoupon = JSON.parse(saved);
+            return window.appliedCoupon;
+        }
+    } catch (e) {}
+    return null;
 }
 
 function getItemPrice(item) {
@@ -158,6 +166,7 @@ function _refreshAll() {
         renderCartItems('checkoutItemsContainer', false);
     }
     renderSummary();
+    renderPromoChipsUI();
     _updateBadge();
 }
 
@@ -269,6 +278,20 @@ function renderSummary() {
             promoRow.style.display = 'none';
         }
     }
+
+    var msg = document.getElementById('couponMsg') || document.getElementById('checkoutPromoMsg');
+    if (msg) {
+        if (coupon) {
+            if (subtotal >= (coupon.minOrderAmount || 0)) {
+                _couponMsg(msg, '✓ Coupon "' + coupon.code + '" applied!', true);
+            } else {
+                _couponMsg(msg, 'Coupon "' + coupon.code + '" requires min order of ' + fmt(coupon.minOrderAmount) + '.', false);
+            }
+        } else if (!msg.innerHTML.includes('Invalid') && !msg.innerHTML.includes('expired') && !msg.innerHTML.includes('enter')) {
+            msg.innerHTML = '';
+            msg.style.display = 'none';
+        }
+    }
 }
 
 function _setEl(id, val) {
@@ -299,24 +322,35 @@ window.applyCoupon = function () {
     if (!c) {
         _couponMsg(msg, 'Invalid or expired coupon code.', false);
         window.appliedCoupon = null;
+        localStorage.removeItem('ak_applied_coupon');
     } else {
         window.appliedCoupon = c;
+        localStorage.setItem('ak_applied_coupon', JSON.stringify(c));
         input.value = '';
         _couponMsg(msg, '✓ Coupon "' + c.code + '" applied!', true);
     }
     renderSummary();
+    renderPromoChipsUI();
 };
 
 window.removeCoupon = function () {
     window.appliedCoupon = null;
-    var msg = document.getElementById('couponMsg');
-    if (msg) msg.style.display = 'none';
+    localStorage.removeItem('ak_applied_coupon');
+    var msg = document.getElementById('couponMsg') || document.getElementById('checkoutPromoMsg');
+    if (msg) {
+        msg.innerHTML = '';
+        msg.style.display = 'none';
+    }
     renderSummary();
     renderPromoChipsUI();
 };
 
 function _couponMsg(el, text, success) {
-    el.textContent = text;
+    if (success) {
+        el.innerHTML = text + ' <button onclick="removeCoupon()" style="background:none; border:none; color:#ef4444; font-weight:800; cursor:pointer; font-size:0.75rem; margin-left:8px; padding:2px 6px; background:#fee2e2; border-radius:4px;">✕ Remove</button>';
+    } else {
+        el.textContent = text;
+    }
     el.style.color = success ? '#10b981' : '#ef4444';
     el.style.display = 'block';
 }
@@ -329,10 +363,19 @@ function renderPromoChipsUI() {
 
     var settings = getSettings();
     var coupons = settings.discountCoupons || [];
+    
+    // Calculate subtotal to check eligibility
+    var cart = getCart();
+    var subtotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+        subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
+    }
+
     var visible = [];
     for (var i = 0; i < coupons.length; i++) {
-        if (coupons[i].showInCart && coupons[i].isActive !== false) {
-            visible.push(coupons[i]);
+        var c = coupons[i];
+        if (c.showInCart && c.isActive !== false && subtotal >= (c.minOrderAmount || 0)) {
+            visible.push(c);
         }
     }
 
@@ -348,8 +391,10 @@ function renderPromoChipsUI() {
         var label = c.discountPercent ? '−' + c.discountPercent + '%'
             : c.discountFlat ? '−₹' + c.discountFlat
             : 'Free Delivery';
-        html += '<button onclick="document.getElementById(\'couponInput\').value=\'' + c.code + '\'; applyCoupon();" ' +
-            'style="padding:4px 12px; border:1.5px dashed var(--accent-cyan); border-radius:20px; background:#f0f9ff; color:var(--accent-cyan); font-size:0.78rem; font-weight:700; cursor:pointer;">' +
+        var inputId = document.getElementById('couponInput') ? 'couponInput' : 'checkoutCouponInput';
+        var btnClick = 'document.getElementById(\'' + inputId + '\').value=\'' + c.code + '\'; applyCoupon();';
+        html += '<button onclick="' + btnClick + '" ' +
+            'style="padding:4px 12px; border:1.5px dashed var(--accent-cyan); border-radius:20px; background:#f0f9ff; color:var(--accent-cyan); font-size:0.78rem; font-weight:700; cursor:pointer; margin-right:6px; margin-bottom:6px;">' +
             c.code + ' ' + label + '</button>';
     }
     container.innerHTML = html;
