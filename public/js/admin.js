@@ -2100,16 +2100,27 @@ function renderOrdersTable() {
       const locationStr = escapeHtml(loc);
 
       const itemsListHtml = (o.items && Array.isArray(o.items) && o.items.length > 0)
-        ? o.items.map(item => `
+        ? o.items.map(item => {
+          const basePrice = Number(item.sellingPrice || item.price || 0);
+          const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
+            ? Number(item.gstPercent) 
+            : (adminSettings.defaultGstPercent !== undefined ? Number(adminSettings.defaultGstPercent) : 18);
+          const gstAmount = Math.round((basePrice * gstPercent) / 100);
+          const itemPriceWithGst = basePrice + gstAmount;
+          const qty = Number(item.quantity || item.qty || 1);
+          const itemTotalWithGst = itemPriceWithGst * qty;
+
+          return `
           <div class="order-item-row">
             <img src="${item.photoLink || 'images/logo.webp'}" class="order-item-img" onerror="this.src='images/logo.webp'">
             <div class="order-item-details">
               <div class="order-item-name" title="${escapeHtml(item.productName || 'Product')}">${escapeHtml(item.productName || 'Product')}</div>
-              <div class="order-item-meta">${item.brand ? `Brand: ${escapeHtml(item.brand)} | ` : ''}Qty: <strong>${item.quantity || item.qty || 1}</strong> × ₹${Number(item.sellingPrice || item.price || 0).toLocaleString('en-IN')}</div>
+              <div class="order-item-meta">${item.brand ? `Brand: ${escapeHtml(item.brand)} | ` : ''}Qty: <strong>${qty}</strong> × ₹${itemPriceWithGst.toLocaleString('en-IN')} <span style="font-size:0.7rem; color:var(--text-muted);">(incl. ${gstPercent}% GST)</span></div>
             </div>
-            <div class="order-item-total">₹${(Number(item.sellingPrice || item.price || 0) * Number(item.quantity || item.qty || 1)).toLocaleString('en-IN')}</div>
+            <div class="order-item-total">₹${itemTotalWithGst.toLocaleString('en-IN')}</div>
           </div>
-        `).join('')
+        `;
+        }).join('')
         : `<div style="font-size:0.85rem; color:var(--text-muted); padding:8px 0;">No items in order</div>`;
 
       const paymentMethodBadge = `<span class="status-badge ${o.paymentMethod === 'ONLINE' ? 'status-online' : 'status-cod'}" style="font-size:0.75rem;">${escapeHtml(o.paymentMethod || 'COD')}</span>`;
@@ -2162,7 +2173,7 @@ function renderOrdersTable() {
               </div>
               <div class="order-summary-box">
                 <div class="order-summary-row" style="font-weight: 800; font-size: 1rem; color:var(--text-dark);">
-                  <span>Total Amount</span>
+                  <span>Total Amount (incl. Tax)</span>
                   <span style="color:var(--accent-blue); font-size:1.15rem;">₹${totalAmt.toLocaleString('en-IN')}</span>
                 </div>
                 ${o.paymentMethod === 'COD' ? `
@@ -2227,12 +2238,21 @@ window.createShiprocketOrder = async function (orderId) {
     alert(`🚀 Initiating Shiprocket Order Creation for ${orderId}...`);
     const token = await getShiprocketToken();
 
-    const orderItems = (order.items || []).map(item => ({
-      name: item.productName || 'CCTV Security Equipment',
-      sku: item.id || `SKU-${Date.now()}`,
-      units: item.quantity || item.qty || 1,
-      selling_price: item.sellingPrice || 1000
-    }));
+    const orderItems = (order.items || []).map(item => {
+      const basePrice = Number(item.sellingPrice || item.price || 0);
+      const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
+        ? Number(item.gstPercent) 
+        : (adminSettings.defaultGstPercent !== undefined ? Number(adminSettings.defaultGstPercent) : 18);
+      const gstAmount = Math.round((basePrice * gstPercent) / 100);
+      const itemPriceWithGst = basePrice + gstAmount;
+
+      return {
+        name: item.productName || 'CCTV Security Equipment',
+        sku: item.id || `SKU-${Date.now()}`,
+        units: item.quantity || item.qty || 1,
+        selling_price: itemPriceWithGst || 1000
+      };
+    });
 
     const dateFormatted = new Date().toISOString().replace('T', ' ').substring(0, 16);
 

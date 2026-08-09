@@ -59,17 +59,30 @@ module.exports = async function handler(req, res) {
       }
     });
 
-    const itemsHtml = (order.items || []).map(item => `
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
-          <img src="${item.photoLink || 'https://shop.akinfotechcctv.in/images/logo.webp'}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 10px;">
-          <strong>${item.productName}</strong>
-        </td>
-        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: center;">${item.quantity || item.qty || 1}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">₹${Number(item.sellingPrice || item.price || 0).toLocaleString('en-IN')}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">₹${(Number(item.sellingPrice || item.price || 0) * Number(item.quantity || item.qty || 1)).toLocaleString('en-IN')}</td>
-      </tr>
-    `).join('');
+    let computedSubtotalWithGst = 0;
+    const itemsHtml = (order.items || []).map(item => {
+      const basePrice = Number(item.sellingPrice || item.price || 0);
+      const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') 
+        ? Number(item.gstPercent) 
+        : (settings.defaultGstPercent !== undefined ? Number(settings.defaultGstPercent) : 18);
+      const gstAmount = Math.round((basePrice * gstPercent) / 100);
+      const itemPriceWithGst = basePrice + gstAmount;
+      const qty = Number(item.quantity || item.qty || 1);
+      const itemTotalWithGst = itemPriceWithGst * qty;
+      computedSubtotalWithGst += itemTotalWithGst;
+
+      return `
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+            <img src="${item.photoLink || 'https://shop.akinfotechcctv.in/images/logo.webp'}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 10px;">
+            <strong>${item.productName}</strong>
+          </td>
+          <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: center;">${qty}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">₹${itemPriceWithGst.toLocaleString('en-IN')}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">₹${itemTotalWithGst.toLocaleString('en-IN')}</td>
+        </tr>
+      `;
+    }).join('');
 
     const customerName = order.customerName || order.name || order.fullName || 'Customer';
     const emailSubject = `🎉 Order Confirmation #${order.id} - AK Infotech`;
@@ -132,7 +145,7 @@ module.exports = async function handler(req, res) {
         <table style="width: 100%; border-collapse: collapse; font-size: 0.92rem; margin-top: 10px;">
           <tr>
             <td style="padding: 6px 0; color: #64748b;">Subtotal (Incl. GST):</td>
-            <td style="padding: 6px 0; text-align: right;">₹${Number(order.subtotal || order.finalTotal || 0).toLocaleString('en-IN')}</td>
+            <td style="padding: 6px 0; text-align: right;">₹${computedSubtotalWithGst.toLocaleString('en-IN')}</td>
           </tr>
           <tr>
             <td style="padding: 6px 0; color: #64748b;">Delivery Charge:</td>
