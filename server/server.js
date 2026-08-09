@@ -608,8 +608,21 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
+    // Merge existing features (like isFeatured) to imported products
+    const existingProducts = readJson(PRODUCTS_FILE, []);
+    const mergedProducts = parsedProducts.map(p => {
+      const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
+      if (match) {
+        return {
+          ...p,
+          isFeatured: match.isFeatured === true
+        };
+      }
+      return p;
+    });
+
     // Save imported products to store
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    writeJson(PRODUCTS_FILE, mergedProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -640,7 +653,18 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    const existingProducts = readJson(PRODUCTS_FILE, []);
+    const mergedProducts = parsedProducts.map(p => {
+      const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
+      if (match) {
+        return {
+          ...p,
+          isFeatured: match.isFeatured === true
+        };
+      }
+      return p;
+    });
+    writeJson(PRODUCTS_FILE, mergedProducts);
 
     res.json({
       success: true,
