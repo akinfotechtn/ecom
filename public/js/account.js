@@ -474,10 +474,7 @@ function renderCart() {
 }
 
 window.openCartDrawer = function () {
-  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
-  document.getElementById('cartDrawer')?.classList.add('active');
-  document.getElementById('cartBackdrop')?.classList.add('active');
-  renderCart();
+  window.location.href = DbService.getLinkPrefix() + 'cart.html';
 };
 
 window.closeCartDrawer = function () {

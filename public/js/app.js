@@ -1,5 +1,6 @@
 // AK INFOTECH - FRONTEND APP (CHECKOUT SAVED ADDRESSES & ACCOUNT PAGE LINKING)
 import { DbService } from "./db-service.js";
+window.DbService = DbService;
 
 let allProducts = [];
 let storeBrands = [];
@@ -105,6 +106,7 @@ window.signInWithGoogle = function () {
 async function loadBrandsAndCategories() {
   storeBrands = await DbService.getBrands();
   storeCategories = await DbService.getCategories();
+  window.storeCategories = storeCategories;
   renderBrandLogosStrip();
   renderCategoryScrollRow();
 }
@@ -1237,7 +1239,7 @@ window.applySearchFromDropdown = function (q) {
 // HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
 // ---------------------------------------------------------
 window.openCartDrawer = function openCartDrawer() {
-  window.location.href = 'cart.html';
+  window.location.href = DbService.getLinkPrefix() + 'cart.html';
 };
 
 window.renderFeaturedProducts = function () {

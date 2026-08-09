@@ -173,9 +173,45 @@ function renderSummary() {
         subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
     }
 
-    // Delivery
-    var delivery = cart.length > 0 ? (settings.deliveryCharge || 150) : 0;
+    // Delivery calculation
+    var isPayOnDelivery = settings.payShippingOnDelivery === true;
+    var delivery = 0;
     var isFreeDelivery = false;
+    
+    if (cart.length > 0) {
+        if (isPayOnDelivery) {
+            delivery = 0;
+        } else {
+            // Category-wise & Product-specific custom delivery charge calculation
+            var maxDeliveryCharge = 0;
+            var categories = window.storeCategories || [];
+            for (var i = 0; i < cart.length; i++) {
+                var item = cart[i];
+                var itemFee = 0;
+                if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
+                    itemFee = Number(item.deliveryCharge);
+                } else {
+                    var matchCat = null;
+                    var itemCatName = (item.category || '').toLowerCase();
+                    for (var j = 0; j < categories.length; j++) {
+                        if ((categories[j].name || '').toLowerCase() === itemCatName) {
+                            matchCat = categories[j];
+                            break;
+                        }
+                    }
+                    if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
+                        itemFee = Number(matchCat.deliveryCharge);
+                    } else {
+                        itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
+                    }
+                }
+                if (itemFee > maxDeliveryCharge) {
+                    maxDeliveryCharge = itemFee;
+                }
+            }
+            delivery = maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
+        }
+    }
 
     // Promo discount
     var promoDiscount = 0;
@@ -190,7 +226,8 @@ function renderSummary() {
 
     // Free shipping threshold
     var freeMin = settings.freeShippingMinOrder || 3000;
-    if (!isFreeDelivery && cart.length > 0 && subtotal >= freeMin) {
+    var enableFreeShipping = settings.enableFreeShipping !== false;
+    if (!isFreeDelivery && enableFreeShipping && cart.length > 0 && subtotal >= freeMin) {
         delivery = 0;
     }
 
@@ -205,14 +242,17 @@ function renderSummary() {
         if (cart.length === 0) {
             delivEl.textContent = fmt(0);
         } else if (isFreeDelivery) {
-            delivEl.innerHTML = '<span style="color:#ef4444; font-size:0.82rem; line-height:1.4; display:block; font-weight:700;">' +
-                'Your order will be shipped via Rathimeena or MSS Cargo.<br>' +
+            delivEl.innerHTML = '<span style="color:#16a34a; font-size:0.82rem; line-height:1.4; display:block; font-weight:700;">' +
+                'You got Free Shipping! Your order will be shipped via Rathimeena or MSS Cargo.<br>' +
                 'Kindly pick it up from their nearest local branch.</span>';
+        } else if (isPayOnDelivery) {
+            delivEl.innerHTML = '<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span>' +
+                '<small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>';
         } else if (delivery === 0) {
             delivEl.innerHTML = '<span style="color:#10b981; font-weight:800;">FREE 🎉</span>';
         } else {
             var needed = Math.max(0, freeMin - subtotal);
-            delivEl.innerHTML = fmt(delivery) + (needed > 0
+            delivEl.innerHTML = fmt(delivery) + (needed > 0 && enableFreeShipping
                 ? '<small style="display:block; color:var(--text-muted); font-size:0.72rem;">Add ' + fmt(needed) + ' more for Free Delivery!</small>'
                 : '');
         }
@@ -239,37 +279,32 @@ function _setEl(id, val) {
 // ─── COUPON ──────────────────────────────────────────────────────────────────
 
 window.applyCoupon = function () {
-    var input = document.getElementById('couponInput');
-    var msg = document.getElementById('couponMsg');
+    var input = document.getElementById('couponInput') || document.getElementById('checkoutCouponInput');
+    var msg = document.getElementById('couponMsg') || document.getElementById('checkoutPromoMsg');
     if (!input || !msg) return;
 
     var code = input.value.trim().toUpperCase();
     if (!code) { _couponMsg(msg, 'Please enter a coupon code.', false); return; }
 
-    if (typeof DbService !== 'undefined' && DbService.getCoupons) {
-        DbService.getCoupons().then(function (coupons) {
-            var c = null;
-            for (var i = 0; i < coupons.length; i++) {
-                if (coupons[i].code.toUpperCase() === code && coupons[i].isActive) {
-                    c = coupons[i];
-                    break;
-                }
-            }
-            if (!c) {
-                _couponMsg(msg, 'Invalid or expired coupon code.', false);
-                window.appliedCoupon = null;
-            } else {
-                window.appliedCoupon = c;
-                input.value = '';
-                _couponMsg(msg, '✓ Coupon "' + c.code + '" applied!', true);
-            }
-            renderSummary();
-        }).catch(function () {
-            _couponMsg(msg, 'Could not verify coupon. Please try again.', false);
-        });
-    } else {
-        _couponMsg(msg, 'Coupon service unavailable. Try again shortly.', false);
+    var settings = getSettings();
+    var coupons = settings.discountCoupons || [];
+    var c = null;
+    for (var i = 0; i < coupons.length; i++) {
+        if (coupons[i].code.toUpperCase() === code && coupons[i].isActive !== false) {
+            c = coupons[i];
+            break;
+        }
     }
+
+    if (!c) {
+        _couponMsg(msg, 'Invalid or expired coupon code.', false);
+        window.appliedCoupon = null;
+    } else {
+        window.appliedCoupon = c;
+        input.value = '';
+        _couponMsg(msg, '✓ Coupon "' + c.code + '" applied!', true);
+    }
+    renderSummary();
 };
 
 window.removeCoupon = function () {

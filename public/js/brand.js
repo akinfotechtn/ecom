@@ -596,12 +596,7 @@ window.removeFromCart = function (id) {
 };
 
 window.openCartDrawer = function () {
-  cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
-  const drawer = document.getElementById('cartDrawer');
-  const backdrop = document.getElementById('cartBackdrop');
-  if (drawer) { drawer.classList.add('open'); drawer.classList.add('active'); }
-  if (backdrop) { backdrop.classList.add('open'); backdrop.classList.add('active'); }
-  renderCart();
+  window.location.href = DbService.getLinkPrefix() + 'cart.html';
 };
 
 window.closeCartDrawer = function () {

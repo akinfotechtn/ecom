@@ -390,13 +390,28 @@
                 <input type="tel" id="custPhone" required placeholder="9876543210" maxlength="10">
               </div>
               <div class="co-form-group">
-                <label>Pincode *</label>
-                <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
+                <label>Email Address *</label>
+                <input type="email" id="custEmail" required placeholder="e.g. name@domain.com">
               </div>
             </div>
             <div class="co-form-group">
               <label>Delivery Address *</label>
               <textarea id="custAddress" required placeholder="House No, Street, Area, Landmark" rows="3"></textarea>
+            </div>
+            <div class="co-form-row">
+              <div class="co-form-group">
+                <label>Pincode *</label>
+                <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
+              </div>
+              <div class="co-form-group">
+                <label>City & State *</label>
+                <input type="text" id="custCityState" required placeholder="e.g. Chennai, Tamil Nadu">
+              </div>
+            </div>
+            
+            <div class="co-form-group" style="display:flex; align-items:center; gap:8px; margin-top:12px; margin-bottom:12px;">
+              <input type="checkbox" id="chkSaveAddress" style="width:auto; margin:0;" checked>
+              <label for="chkSaveAddress" style="margin:0; font-size:0.85rem; font-weight:700; cursor:pointer;">Save address to my account</label>
             </div>
 
             <div class="co-card-title" style="margin-top: 24px;">
@@ -539,15 +554,66 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-init.js"></script>
-  <script src="js/db-service.js"></script>
   <script type="module" src="js/app.js"></script>
   <script src="js/checkout.js"></script>
   <script>
     /* ── Checkout page specific logic ──────────────── */
 
+    // Auto-detect auth state and populate addresses
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check auth state
+      var checkAuthAttempts = 0;
+      var authInterval = setInterval(function () {
+        checkAuthAttempts++;
+        if ((window.DbService && window.DbService.listenAuthState) || checkAuthAttempts > 30) {
+          clearInterval(authInterval);
+          if (window.DbService && window.DbService.listenAuthState) {
+            window.DbService.listenAuthState(function (user) {
+              if (user) {
+                window.currentUser = user;
+                showDeliveryStep();
+                var nameEl = document.getElementById('custName');
+                if (nameEl && !nameEl.value) nameEl.value = user.displayName || '';
+                var emailEl = document.getElementById('custEmail');
+                if (emailEl && !emailEl.value) emailEl.value = user.email || '';
+
+                // Load saved addresses
+                if (window.DbService.getUserAddresses) {
+                  window.DbService.getUserAddresses(user.uid).then(function (addresses) {
+                    var group = document.getElementById('savedAddressGroup');
+                    var select = document.getElementById('savedAddressSelect');
+                    if (group && select && addresses && addresses.length > 0) {
+                      group.style.display = 'block';
+                      var optionsHtml = '<option value="">-- Use New Address --</option>';
+                      for (var i = 0; i < addresses.length; i++) {
+                        var labelText = (addresses[i].fullName || addresses[i].name || 'Address') + ' (' + (addresses[i].pincode || '') + ')';
+                        optionsHtml += '<option value="' + i + '">' + labelText + '</option>';
+                      }
+                      select.innerHTML = optionsHtml;
+                      select.onchange = function () {
+                        var val = select.value;
+                        if (val !== '') {
+                          var a = addresses[parseInt(val)];
+                          if (document.getElementById('custName')) document.getElementById('custName').value = a.fullName || a.name || '';
+                          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = a.phone || '';
+                          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = a.pincode || '';
+                          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = a.street || a.address || '';
+                          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = a.cityState || '';
+                        }
+                      };
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      }, 200);
+    });
+
     window.checkoutWithGoogle = function () {
-      if (typeof DbService !== 'undefined' && DbService.loginWithGoogle) {
-        DbService.loginWithGoogle()
+      if (window.DbService && window.DbService.loginWithGoogle) {
+        window.DbService.loginWithGoogle()
           .then(function () {
             showDeliveryStep();
             if (window.currentUser) {
@@ -600,47 +666,208 @@
 
       const btn = document.getElementById('payOrderSubmitBtn');
       btn.disabled = true;
-      btn.textContent = 'Processing…';
+      btn.textContent = 'Processing Payment...';
 
+      const custName = document.getElementById('custName').value.trim();
+      const custPhone = document.getElementById('custPhone').value.trim();
+      const custEmail = document.getElementById('custEmail').value.trim();
+      const custAddress = document.getElementById('custAddress').value.trim();
+      const custPincode = document.getElementById('custPincode').value.trim();
+      const custCityState = document.getElementById('custCityState').value.trim();
+      const shouldSaveAddress = document.getElementById('chkSaveAddress')?.checked ?? false;
+
+      // Expose to window or get from settings
+      const settings = window.storeSettings || { deliveryCharge: 150, freeShippingMinOrder: 3000, codAdvanceAmount: 1000 };
+      const categories = window.storeCategories || [];
+      const appliedCoupon = window.appliedCoupon || null;
+
+      // 1. Calculate final values matching older app.js logic
+      const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+
+      // Delivery Charges
+      var isPayOnDelivery = settings.payShippingOnDelivery === true;
+      var deliveryFee = 0;
+      var isFreeDelivery = false;
+      if (cart.length > 0) {
+        if (isPayOnDelivery) {
+          deliveryFee = 0;
+        } else {
+          var maxDeliveryCharge = 0;
+          for (var i = 0; i < cart.length; i++) {
+            var item = cart[i];
+            var itemFee = 0;
+            if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
+              itemFee = Number(item.deliveryCharge);
+            } else {
+              var matchCat = null;
+              var itemCatName = (item.category || '').toLowerCase();
+              for (var j = 0; j < categories.length; j++) {
+                if ((categories[j].name || '').toLowerCase() === itemCatName) {
+                  matchCat = categories[j];
+                  break;
+                }
+              }
+              if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
+                itemFee = Number(matchCat.deliveryCharge);
+              } else {
+                itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
+              }
+            }
+            if (itemFee > maxDeliveryCharge) {
+              maxDeliveryCharge = itemFee;
+            }
+          }
+          deliveryFee = maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
+        }
+      }
+
+      // GST amount
+      var defaultGst = settings.defaultGstPercent !== undefined ? settings.defaultGstPercent : 18;
+      var gstAmount = 0;
+      cart.forEach(item => {
+        const q = item.quantity || item.qty || 1;
+        const itemSellingPrice = item.sellingPrice || 0;
+        const itemGstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
+          ? Number(item.gstPercent)
+          : defaultGst;
+        const itemGst = Math.round(((itemSellingPrice * q) * itemGstRate) / 100);
+        gstAmount += itemGst;
+      });
+
+      // Discount
+      var discountAmount = 0;
+      if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
+        if (appliedCoupon.discountPercent) {
+          discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
+        } else if (appliedCoupon.discountFlat) {
+          discountAmount = appliedCoupon.discountFlat;
+        } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
+          isFreeDelivery = true;
+          deliveryFee = 0;
+        }
+      }
+
+      // Free shipping threshold
+      var freeMin = settings.freeShippingMinOrder || 3000;
+      var enableFreeShipping = settings.enableFreeShipping !== false;
+      if (!isFreeDelivery && enableFreeShipping && cart.length > 0 && subtotal >= freeMin) {
+        deliveryFee = 0;
+      }
+
+      const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+      const codAdvanceFee = settings.codAdvanceAmount || 1000;
       const paymentMethod = document.getElementById('optOnline').classList.contains('selected') ? 'ONLINE' : 'COD';
+      const amountToPayNow = paymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
 
-      const orderData = {
-        userId: window.currentUser ? window.currentUser.uid : 'GUEST',
-        customerInfo: {
-          name: document.getElementById('custName').value,
-          phone: document.getElementById('custPhone').value,
-          pincode: document.getElementById('custPincode').value,
-          address: document.getElementById('custAddress').value
-        },
-        items: cart.map(item => ({
-          id: item.id,
-          name: item.productName || item.name,
-          price: Number(item.sellingPrice || item.price || 0),
-          gstPercent: item.gstPercent || 18,
-          quantity: item.quantity || item.qty || 1
-        })),
-        paymentMethod,
-        couponCode: window.appliedCoupon ? window.appliedCoupon.code : null,
-        status: 'PENDING',
-        createdAt: new Date().toISOString()
-      };
+      // Save address if logged in and checkbox checked
+      if (window.currentUser && shouldSaveAddress && window.DbService && window.DbService.addUserAddress) {
+        try {
+          await window.DbService.addUserAddress(window.currentUser.uid, {
+            fullName: custName,
+            phone: custPhone,
+            street: custAddress,
+            pincode: custPincode,
+            cityState: custCityState
+          });
+        } catch (err) {
+          console.warn("Address save warning:", err);
+        }
+      }
 
       try {
-        if (typeof DbService !== 'undefined' && DbService.placeOrder) {
-          const orderId = await DbService.placeOrder(orderData);
-          localStorage.removeItem('ak_cart');
-          window.cart = [];
-          window.location.href = 'account.html?order=' + orderId;
+        const rzpKeyId = settings.razorpay?.keyId || 'rzp_test_sampleKey123';
+        const isTestMode = rzpKeyId.includes('sampleKey') || rzpKeyId.includes('test');
+
+        const options = {
+          key: rzpKeyId,
+          amount: Math.round(amountToPayNow * 100),
+          currency: 'INR',
+          name: 'AK INFOTECH',
+          description: paymentMethod === 'COD'
+            ? `₹${codAdvanceFee} Mandatory COD Advance Payment`
+            : 'Full Order Payment',
+          handler: async function (response) {
+            const remainingBalance = paymentMethod === 'COD' ? Math.max(0, finalTotal - codAdvanceFee) : 0;
+
+            const orderPayload = {
+              customerName: custName,
+              phone: custPhone,
+              email: custEmail || (window.currentUser ? window.currentUser.email : ''),
+              userUid: window.currentUser ? window.currentUser.uid : null,
+              address: custAddress,
+              pincode: custPincode,
+              city: custCityState.split(',')[0]?.trim() || 'Chennai',
+              state: custCityState.split(',')[1]?.trim() || 'Tamil Nadu',
+              items: cart,
+              paymentMethod: paymentMethod,
+              paymentStatus: paymentMethod === 'COD' ? `ADVANCE_PAID_₹${codAdvanceFee}` : 'PAID_ONLINE',
+              paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
+              razorpayOrderId: response.razorpay_order_id || '',
+              subtotal,
+              deliveryFee,
+              discountAmount,
+              finalTotal,
+              advancePaid: paymentMethod === 'COD' ? codAdvanceFee : finalTotal,
+              balanceOnDelivery: remainingBalance,
+              status: 'PROCESSING'
+            };
+
+            try {
+              if (window.DbService && window.DbService.createOrder) {
+                const savedOrder = await window.DbService.createOrder(orderPayload);
+                try {
+                  fetch('/api/send-order-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      ...savedOrder,
+                      settings: settings
+                    })
+                  }).catch(e => console.warn("Email notify failed:", e));
+                } catch (e) {
+                  console.warn("Email notify trigger error:", e);
+                }
+                alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.` : 'Full Amount Paid Online.'}`);
+
+                localStorage.removeItem('ak_cart');
+                window.cart = [];
+                window.location.href = 'account.html?order=' + savedOrder.id;
+              } else {
+                throw new Error('Database service unavailable');
+              }
+            } catch (dbErr) {
+              console.error('Db createOrder failed:', dbErr);
+              alert('Successfully paid, but failed to record in DB. Contact us on WhatsApp with details!');
+            }
+          },
+          prefill: {
+            name: custName,
+            email: custEmail || (window.currentUser ? window.currentUser.email : ''),
+            contact: custPhone
+          },
+          theme: { color: '#06b6d4' }
+        };
+
+        if (isTestMode) {
+          if (confirm(`[TEST SIMULATION MODE]\nClick OK to simulate successful Razorpay Payment of ₹${amountToPayNow} (${paymentMethod === 'COD' ? `₹${codAdvanceFee} COD Advance` : 'Full Online Payment'}).`)) {
+            options.handler({ razorpay_payment_id: `pay_sim_${Date.now()}` });
+          } else {
+            btn.disabled = false;
+            btn.textContent = 'Pay & Place Order →';
+          }
         } else {
-          // Fallback
-          localStorage.removeItem('ak_cart');
-          window.cart = [];
-          alert('Order placed successfully! Check your orders in My Account.');
-          window.location.href = 'account.html';
+          if (typeof window.Razorpay !== 'undefined') {
+            const rzpInstance = new window.Razorpay(options);
+            rzpInstance.open();
+          } else {
+            alert('Razorpay Payment Gateway is loading, please try again in a few seconds.');
+            btn.disabled = false;
+            btn.textContent = 'Pay & Place Order →';
+          }
         }
       } catch (err) {
-        console.error('Order error:', err);
-        alert('Something went wrong. Please try again or contact us on WhatsApp.');
+        console.error('Payment initialization error:', err);
+        alert('Checkout error: ' + err.message);
         btn.disabled = false;
         btn.textContent = 'Pay & Place Order →';
       }
