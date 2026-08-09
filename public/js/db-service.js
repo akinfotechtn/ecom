@@ -862,28 +862,16 @@ export class DbService {
   }
 
   static async getUserOrders(uid, userEmail = '', userName = '') {
-    const localOrders = this.getOrdersFromLocalStorage();
-    let firestoreOrders = [];
-
+    let orders = [];
     try {
-      const all = await this.getOrders();
-      firestoreOrders = all;
+      orders = await this.getOrders();
     } catch (err) {
       console.warn("getUserOrders error:", err);
+      orders = this.getOrdersFromLocalStorage();
     }
-
-    const mergedMap = new Map();
-    for (const o of localOrders) {
-      if (o.id) mergedMap.set(String(o.id), o);
-    }
-    for (const o of firestoreOrders) {
-      if (o.id) mergedMap.set(String(o.id), o);
-    }
-
-    const merged = Array.from(mergedMap.values());
 
     // Filter for this user (by uid, email, or customer name)
-    const filtered = merged.filter(o => {
+    const filtered = orders.filter(o => {
       if (uid && o.userUid && String(o.userUid) === String(uid)) return true;
       if (userEmail) {
         const target = userEmail.trim().toLowerCase();
@@ -934,33 +922,55 @@ export class DbService {
   static async getOrders() {
     const localOrders = this.getOrdersFromLocalStorage();
     let firestoreOrders = [];
+    let querySuccessful = false;
 
     // 1. Try Firestore SDK
     try {
       const snapPromise = getDocs(collection(db, "orders"));
       const snap = await this._withTimeout(snapPromise, 5000, null);
-      if (snap && snap.docs && snap.docs.length > 0) {
+      if (snap && snap.docs) {
         firestoreOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        querySuccessful = true;
       }
     } catch (err) {
       console.warn("Firestore SDK getOrders failed:", err.message);
     }
 
-    // 2. If SDK was empty or timed out, query Firestore REST API directly (100% reliable)
-    if (!firestoreOrders.length) {
+    // 2. If SDK timed out or failed, query Firestore REST API directly (100% reliable)
+    if (!querySuccessful) {
       try {
         const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/orders");
         if (res.ok) {
           const json = await res.json();
           if (json.documents && Array.isArray(json.documents)) {
             firestoreOrders = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
+          } else {
+            firestoreOrders = [];
           }
+          querySuccessful = true;
+        } else if (res.status === 404) {
+          // 404 from Firestore REST API means the collection has 0 documents (empty collection)
+          firestoreOrders = [];
+          querySuccessful = true;
         }
       } catch (restErr) {
         console.warn("Firestore REST getOrders failed:", restErr);
       }
     }
 
+    // If query was successful, synchronize localOrders by removing deleted ones
+    if (querySuccessful) {
+      const firestoreIds = new Set(firestoreOrders.map(o => String(o.id)));
+      const syncedLocal = localOrders.filter(o => firestoreIds.has(String(o.id)));
+      if (syncedLocal.length !== localOrders.length) {
+        try {
+          localStorage.setItem('ak_local_orders', JSON.stringify(syncedLocal));
+        } catch (e) {}
+      }
+      return firestoreOrders; // Firestore is the single source of truth when online!
+    }
+
+    // Fallback if offline / failed to query Firestore entirely
     const mergedMap = new Map();
     for (const o of localOrders) {
       if (o.id) mergedMap.set(String(o.id), o);
