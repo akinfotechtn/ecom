@@ -1119,26 +1119,33 @@ app.post('/api/deploy', (req, res) => {
     }
 
     const authUrl = `https://${token}@github.com/akinfotechtn/ecom.git`;
+    const safeUrl = `https://github.com/akinfotechtn/ecom.git`;
     const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
     // Update ecom remote with authenticated URL (stored in local .git/config only, never committed)
-    execSync(`git remote set-url ecom ${authUrl}`, { cwd: repoRoot });
+    try {
+      execSync(`git remote set-url ecom ${authUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+    } catch (e) {
+      execSync(`git remote add ecom ${authUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+    }
 
     // Stage all changes
-    execSync('git add .', { cwd: repoRoot });
+    execSync('git add .', { cwd: repoRoot, stdio: 'pipe' });
 
     let committed = true;
     try {
-      execSync(`git commit -m "[Deploy] Products updated - ${timestamp}"`, { cwd: repoRoot });
+      execSync(`git commit -m "[Deploy] Products updated - ${timestamp}"`, { cwd: repoRoot, stdio: 'pipe' });
     } catch (e) {
       committed = false; // nothing new to commit
     }
 
     // Push via ecom remote so VS Code tracking ref updates
-    execSync('git push ecom main', { cwd: repoRoot });
+    execSync('git push ecom main', { cwd: repoRoot, stdio: 'pipe' });
 
     // Reset ecom remote to safe URL (without token)
-    execSync('git remote set-url ecom https://github.com/akinfotechtn/ecom', { cwd: repoRoot });
+    try {
+      execSync(`git remote set-url ecom ${safeUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+    } catch (e) {}
 
     const msg = committed
       ? `✅ Committed & pushed to GitHub at ${timestamp}`
@@ -1149,7 +1156,7 @@ app.post('/api/deploy', (req, res) => {
     console.error('[deploy] Error:', err.message);
     // Reset ecom remote to safe URL on error too
     try {
-      execSync(`git remote set-url ecom https://github.com/akinfotechtn/ecom`, { cwd: path.join(__dirname, '..') });
+      execSync(`git remote set-url ecom https://github.com/akinfotechtn/ecom.git`, { cwd: path.join(__dirname, '..'), stdio: 'pipe' });
     } catch (_) { }
     return res.status(500).json({ success: false, message: err.message });
   }
