@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
 
 :root {
-  --bg-main: #f8fafc;
+  --bg-main: #f1f5f9;
   --bg-card: #ffffff;
   --bg-card-hover: #ffffff;
   --bg-input: #f1f5f9;
@@ -571,19 +571,20 @@ button {
 }
 
 .trust-badge-card {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
 }
 
 .trust-badge-icon {
   font-size: 1.2rem;
-  background: #f0f9ff;
+  background: #f1f5f9 !important;
+  color: #475569 !important;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -607,9 +608,14 @@ button {
 }
 
 /* ELEGANT & BEAUTIFUL SECTION HEADERS (SHOP BY BRANDS & CATEGORIES) */
-.brand-showcase-section, .filter-section {
-  width: 100%;
-  padding: 24px 12px 0;
+.brand-showcase-section, .filter-section, .featured-section {
+  background: var(--bg-card);
+  margin: 12px 10px;
+  padding: 16px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  width: calc(100% - 20px);
 }
 
 .section-title-row {
@@ -773,11 +779,7 @@ button {
   color: var(--accent-cyan);
 }
 
-/* FILTER SECTION */
-.filter-section {
-  width: 100%;
-  padding: 16px 12px 0;
-}
+/* FILTER SECTION HEADER */
 
 .section-title-row {
   display: flex;
@@ -855,8 +857,13 @@ button {
 
 /* PRODUCT CATALOG GRID */
 .catalog-section {
-  width: 100%;
-  padding: 16px 12px 30px;
+  background: var(--bg-card);
+  margin: 12px 10px 24px;
+  padding: 16px 12px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  width: calc(100% - 20px);
   flex: 1;
 }
 
@@ -2087,4 +2094,13 @@ footer {
 .cart-summary-row.delivery-row span:last-child {
   font-size: 0.95rem !important;
   font-weight: 900 !important;
+}
+
+/* Centered Layout container for Desktop screens */
+@media (min-width: 1200px) {
+  .hero, .brand-showcase-section, .filter-section, .featured-section, .catalog-section, .trust-badges-strip {
+    max-width: 1200px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }

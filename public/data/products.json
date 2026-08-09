@@ -10441,7 +10441,8 @@
     "baseSellingPrice": 10900,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": true
   },
   {
     "id": "gs-1786283145981-747",
@@ -10455,7 +10456,8 @@
     "baseSellingPrice": 8250,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": true
   },
   {
     "id": "gs-1786283145981-748",
@@ -10469,7 +10471,8 @@
     "baseSellingPrice": 6800,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": true
   },
   {
     "id": "gs-1786283145981-749",
@@ -10483,6 +10486,7 @@
     "baseSellingPrice": 9600,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": true
   }
 ]

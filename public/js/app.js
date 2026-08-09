@@ -1263,6 +1263,11 @@ window.renderFeaturedProducts = function () {
   let featuredList = (allProducts || []).filter(p => p.isFeatured === true);
 
   if (!featuredList.length) {
+    // Fallback: show the first 4 products as featured if none are explicitly set
+    featuredList = (allProducts || []).slice(0, 4);
+  }
+
+  if (!featuredList.length) {
     section.style.display = 'none';
     return;
   }
