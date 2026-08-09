@@ -414,11 +414,16 @@ export class DbService {
     try {
       await setDoc(doc(db, "products", id), productData, { merge: true });
     } catch (err) {
+      console.warn("Firestore product update failed:", err);
+    }
+    try {
       await fetch(`/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData)
       });
+    } catch (err) {
+      console.warn("Local product API update failed:", err);
     }
   }
 

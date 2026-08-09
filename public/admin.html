@@ -462,6 +462,48 @@
         </div>
       </div>
 
+      <!-- FEATURED SOURCE CONFIGURATION -->
+      <div style="background: #ffffff; border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--border-color); margin-bottom: 24px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-dark); font-weight: 800;">⚙️ Featured Products Source Mode</h3>
+        
+        <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; color: var(--text-dark);">
+            <input type="radio" name="featuredMode" value="MANUAL" checked onchange="handleFeaturedModeChange()" style="width: 16px; height: 16px; margin: 0;">
+            Manual Checklist
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; color: var(--text-dark);">
+            <input type="radio" name="featuredMode" value="CATEGORY" onchange="handleFeaturedModeChange()" style="width: 16px; height: 16px; margin: 0;">
+            Display Entire Category
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; color: var(--text-dark);">
+            <input type="radio" name="featuredMode" value="BRAND" onchange="handleFeaturedModeChange()" style="width: 16px; height: 16px; margin: 0;">
+            Display Entire Brand
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+          <!-- Category dropdown selection -->
+          <div id="featuredCategorySelectGroup" style="display: none; flex-direction: column; gap: 4px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Select Category</label>
+            <select id="featuredSourceCategory" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.88rem; width: 220px; background: #ffffff; color: var(--text-dark);">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <!-- Brand dropdown selection -->
+          <div id="featuredBrandSelectGroup" style="display: none; flex-direction: column; gap: 4px;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Select Brand</label>
+            <select id="featuredSourceBrand" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.88rem; width: 220px; background: #ffffff; color: var(--text-dark);">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <button class="hero-btn" onclick="saveFeaturedSourceSettings()" style="background: linear-gradient(135deg, var(--accent-cyan), #0284c7); padding: 10px 20px; font-size: 0.85rem; border-radius: var(--radius-md); margin-top: auto; border: none; cursor: pointer; color: #ffffff;">
+            💾 Save Source Mode
+          </button>
+        </div>
+      </div>
+
       <!-- PRODUCTS LIST TABLE -->
       <div class="table-container" style="background: #ffffff; border-radius: var(--radius-lg); padding: 16px; border: 1px solid var(--border-color); max-height: 550px; overflow-y: auto; overflow-x: auto;">
         <table class="data-table" style="width: 100%; border-collapse: collapse;">

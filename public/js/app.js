@@ -143,7 +143,17 @@ function renderFeaturedProducts() {
   const section = document.getElementById('featuredSection');
   if (!grid || !section) return;
 
-  const featured = allProducts.filter(p => p.featured === true || p.isFeatured === true);
+  const mode = storeSettings.featuredSourceMode || 'MANUAL';
+  let featured = [];
+  if (mode === 'CATEGORY') {
+    const targetCat = (storeSettings.featuredSourceCategory || '').toLowerCase();
+    featured = allProducts.filter(p => p.category?.toLowerCase() === targetCat);
+  } else if (mode === 'BRAND') {
+    const targetBrand = (storeSettings.featuredSourceBrand || '').toLowerCase();
+    featured = allProducts.filter(p => p.brand?.toLowerCase() === targetBrand);
+  } else {
+    featured = allProducts.filter(p => p.featured === true || p.isFeatured === true);
+  }
   if (!featured.length) {
     section.style.display = 'none';
   } else {

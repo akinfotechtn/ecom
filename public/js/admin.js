@@ -2581,6 +2581,36 @@ window.fetchAdminFeaturedProducts = async function () {
   try {
     adminFeaturedProductsList = await DbService.getProducts();
     adminFeaturedProductsList.sort((a, b) => (a.productName || '').localeCompare(b.productName || ''));
+    
+    // Extract unique categories and brands
+    const categories = [...new Set(adminFeaturedProductsList.map(p => p.category).filter(Boolean))].sort();
+    const brands = [...new Set(adminFeaturedProductsList.map(p => p.brand).filter(Boolean))].sort();
+    
+    const catSelect = document.getElementById('featuredSourceCategory');
+    if (catSelect) {
+      catSelect.innerHTML = categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+    }
+    const brandSelect = document.getElementById('featuredSourceBrand');
+    if (brandSelect) {
+      brandSelect.innerHTML = brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+    }
+
+    // Set configured values
+    const mode = adminSettings.featuredSourceMode || 'MANUAL';
+    const modeRadios = document.getElementsByName('featuredMode');
+    modeRadios.forEach(r => {
+      if (r.value === mode) r.checked = true;
+    });
+
+    if (adminSettings.featuredSourceCategory && catSelect) {
+      catSelect.value = adminSettings.featuredSourceCategory;
+    }
+    if (adminSettings.featuredSourceBrand && brandSelect) {
+      brandSelect.value = adminSettings.featuredSourceBrand;
+    }
+
+    window.handleFeaturedModeChange();
+    
     window.renderAdminFeaturedProductsList();
   } catch (err) {
     tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Failed to load products: ${err.message}</td></tr>`;
@@ -2658,5 +2688,44 @@ window.toggleProductFeatured = async function (productId, checkboxEl) {
       prod.isFeatured = !isChecked;
     }
     alert(`Error updating featured product status: ${err.message}`);
+  }
+};
+
+window.handleFeaturedModeChange = function () {
+  const mode = document.querySelector('input[name="featuredMode"]:checked')?.value || 'MANUAL';
+  const catGroup = document.getElementById('featuredCategorySelectGroup');
+  const brandGroup = document.getElementById('featuredBrandSelectGroup');
+  
+  if (!catGroup || !brandGroup) return;
+
+  if (mode === 'CATEGORY') {
+    catGroup.style.display = 'flex';
+    brandGroup.style.display = 'none';
+  } else if (mode === 'BRAND') {
+    catGroup.style.display = 'none';
+    brandGroup.style.display = 'flex';
+  } else {
+    catGroup.style.display = 'none';
+    brandGroup.style.display = 'none';
+  }
+};
+
+window.saveFeaturedSourceSettings = async function () {
+  const mode = document.querySelector('input[name="featuredMode"]:checked')?.value || 'MANUAL';
+  const cat = document.getElementById('featuredSourceCategory')?.value || '';
+  const brand = document.getElementById('featuredSourceBrand')?.value || '';
+
+  const payload = {
+    featuredSourceMode: mode,
+    featuredSourceCategory: cat,
+    featuredSourceBrand: brand
+  };
+
+  try {
+    await DbService.updateSettings(payload);
+    Object.assign(adminSettings, payload);
+    alert("✅ Featured source configuration saved successfully!");
+  } catch (err) {
+    alert(`Error saving configuration: ${err.message}`);
   }
 };

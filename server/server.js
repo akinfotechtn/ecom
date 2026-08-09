@@ -363,11 +363,20 @@ app.get('/api/products', (req, res) => {
 // BULK SAVE - called by local-sync.js when adding/editing single products
 app.post('/api/products/bulk-save', (req, res) => {
   try {
-    const products = req.body.products;
-    if (!Array.isArray(products)) {
+    const incomingProducts = req.body.products;
+    if (!Array.isArray(incomingProducts)) {
       return res.status(400).json({ success: false, message: 'Expected { products: [...] }' });
     }
-    const ok = writeJson(PRODUCTS_FILE, products);
+    const currentProducts = readJson(PRODUCTS_FILE, []);
+    const merged = incomingProducts.map(p => {
+      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
+      return {
+        ...p,
+        featured: p.featured ?? (existing ? existing.featured : false),
+        isFeatured: p.isFeatured ?? (existing ? existing.isFeatured : false)
+      };
+    });
+    const ok = writeJson(PRODUCTS_FILE, merged);
     if (!ok) {
       return res.status(500).json({ success: false, message: 'Failed to write products.json' });
     }
@@ -381,8 +390,17 @@ app.post('/api/products/bulk-save', (req, res) => {
 
 app.post('/api/products', (req, res) => {
   if (Array.isArray(req.body.products)) {
-    writeJson(PRODUCTS_FILE, req.body.products);
-    return res.json({ success: true, message: 'Products saved successfully.', total: req.body.products.length });
+    const currentProducts = readJson(PRODUCTS_FILE, []);
+    const merged = req.body.products.map(p => {
+      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
+      return {
+        ...p,
+        featured: p.featured ?? (existing ? existing.featured : false),
+        isFeatured: p.isFeatured ?? (existing ? existing.isFeatured : false)
+      };
+    });
+    writeJson(PRODUCTS_FILE, merged);
+    return res.json({ success: true, message: 'Products saved successfully.', total: merged.length });
   }
 
   const products = readJson(PRODUCTS_FILE, []);
@@ -427,7 +445,9 @@ app.put('/api/products/:id', (req, res) => {
     price: parseFloat(req.body.price) ?? products[index].price,
     sellingPrice: parseFloat(req.body.sellingPrice) ?? products[index].sellingPrice,
     inStock: req.body.inStock ?? products[index].inStock,
-    isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false)
+    isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false),
+    featured: req.body.featured ?? products[index].featured,
+    isFeatured: req.body.isFeatured ?? products[index].isFeatured
   };
 
   writeJson(PRODUCTS_FILE, products);
@@ -597,8 +617,17 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
-    // Save imported products to store
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    // Save imported products to store (preserving featured status)
+    const currentProducts = readJson(PRODUCTS_FILE, []);
+    const merged = parsedProducts.map(p => {
+      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
+      return {
+        ...p,
+        featured: existing ? (existing.featured === true) : false,
+        isFeatured: existing ? (existing.isFeatured === true) : false
+      };
+    });
+    writeJson(PRODUCTS_FILE, merged);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -629,7 +658,16 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    writeJson(PRODUCTS_FILE, parsedProducts);
+    const currentProducts = readJson(PRODUCTS_FILE, []);
+    const merged = parsedProducts.map(p => {
+      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
+      return {
+        ...p,
+        featured: existing ? (existing.featured === true) : false,
+        isFeatured: existing ? (existing.isFeatured === true) : false
+      };
+    });
+    writeJson(PRODUCTS_FILE, merged);
 
     res.json({
       success: true,
