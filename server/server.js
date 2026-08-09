@@ -97,7 +97,8 @@ const BASE_PAGES = new Set([
   'terms.html',
   'refund.html',
   'local-sync.html',
-  'checkout.html'
+  'checkout.html',
+  'cart.html'
 ]);
 
 function adjustPaths(html) {
@@ -250,6 +251,7 @@ function generateSitemapAndRobots(products, brands, categories) {
       'brand.html',
       'category.html',
       'account.html',
+      'cart.html',
       'checkout.html',
       'privacy.html',
       'terms.html',

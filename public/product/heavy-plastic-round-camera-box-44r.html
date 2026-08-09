@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <a href="../cart.html" class="nav-btn cart-btn" id="openCartBtn" style="text-decoration:none;">
+        <a href="cart.html" class="nav-btn cart-btn" id="openCartBtn" style="text-decoration:none;">
           🛒 <span>Cart</span>
           <span class="cart-count" id="cartCount">0</span>
         </a>
@@ -165,104 +165,6 @@
       <div class="product-grid" id="relatedProductsGrid"></div>
     </section>
   </main>
-
-  <!-- BASE CART DRAWER -->
-  <div class="cart-drawer-backdrop" id="cartBackdrop"></div>
-  <div class="cart-drawer" id="cartDrawer">
-    <div class="cart-header">
-      <h3>🛒 Shopping Cart (<span id="cartItemCount">0</span>)</h3>
-      <button class="close-btn" id="closeCartBtn">✕</button>
-    </div>
-
-    <div class="cart-items-body" id="cartItemsBody">
-      <div style="text-align: center; color: var(--text-muted); margin-top: 40px;">
-        Your cart is empty.
-      </div>
-    </div>
-
-    <div class="cart-summary-footer">
-      <!-- Promo Code Section -->
-      <div class="promo-code-section" style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
-        <div style="display: flex; gap: 8px;">
-          <input type="text" id="cartCouponInput" placeholder="Enter Coupon Code" style="flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: #f8fafc; color: var(--text-dark);">
-          <button id="applyCartCouponBtn" style="background: transparent; color: #0284c7; border: none; padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;">Apply</button>
-        </div>
-        <div id="cartPromoMsg" style="font-size: 0.78rem; margin-top: 6px; display: none; font-weight: 700;"></div>
-        <div class="coupon-quick-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;"></div>
-      </div>
-
-      <div class="cart-summary-row">
-        <span>Subtotal</span>
-        <span id="cartSubtotal">₹0</span>
-      </div>
-
-      <div class="cart-summary-row" id="discountRow" style="display: none; color: var(--accent-green);">
-        <span>Discount</span>
-        <span id="cartDiscount">-₹0</span>
-      </div>
-      <div class="cart-summary-row delivery-row">
-        <span>Delivery Charges</span>
-        <span id="cartDelivery">₹150</span>
-      </div>
-      <div class="cart-summary-row total-row">
-        <span>Total Payable</span>
-        <span id="cartGrandTotal">₹0</span>
-      </div>
-
-      <button class="btn-checkout" id="proceedCheckoutBtn">
-        Proceed to Checkout →
-      </button>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="site-footer" style="background: #0f172a; color: #94a3b8; padding: 40px 20px 80px; margin-top: 50px; border-top: 1px solid #1e293b;">
-    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px;">
-      
-      <!-- COL 1: STORE IDENTITY & ADDRESS -->
-      <div>
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-          <img src="../images/logo.webp" alt="AK Infotech Logo" style="width: 38px; height: 38px; border-radius: 8px;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9';">
-          <span style="font-weight: 900; font-size: 1.2rem; color: #ffffff; letter-spacing: 0.5px;">AK INFOTECH</span>
-        </div>
-        <p style="font-size: 0.85rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 14px;">
-          Authorized Wholesale & Retail Supplier of Hikvision, CP Plus, Dahua, Maxxion, Realtime, Trueview & Qubo security electronics in Mount Road, Chennai.
-        </p>
-        <div style="font-size: 0.84rem; line-height: 1.6; color: #94a3b8;">
-          📍 <strong>Address:</strong> No.19, Shop No: F22 & F23, 1st Floor, Uno Arcade A/C Complex, Meeran Sahib Street, Mount Road, Chennai - 600002, Tamil Nadu, India.
-        </div>
-      </div>
-
-      <!-- COL 2: CONTACT & OPERATIONAL HOURS -->
-      <div>
-        <h4 style="font-size: 1rem; font-weight: 800; color: #ffffff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">📞 Contact & Hours</h4>
-        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 1.8; color: #cbd5e1;">
-          <li>📞 <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/919500673207" target="_blank" style="color: #38bdf8; text-decoration: none;">+91 9500673207</a></li>
-          <li>✉️ <strong>Email:</strong> <a href="mailto:akinfotechtn@gmail.com" style="color: #38bdf8; text-decoration: none;">akinfotechtn@gmail.com</a></li>
-          <li>🕒 <strong>Working Hours:</strong> Mon - Sat: 10:00 AM - 7:30 PM (Sun Closed)</li>
-          <li>📜 <strong>GSTIN:</strong> <span style="color: #38bdf8; font-weight: 700;">33CPAPA9563H1Z1</span> (Eligible for B2B ITC Claims)</li>
-        </ul>
-      </div>
-
-      <!-- COL 3: LEGAL & QUICK POLICIES -->
-      <div>
-        <h4 style="font-size: 1rem; font-weight: 800; color: #ffffff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">📜 Customer Policies</h4>
-        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 2; color: #cbd5e1;">
-          <li><a href="../terms.html" style="color: #cbd5e1; text-decoration: none;">📜 Terms & Conditions</a></li>
-          <li><a href="../privacy.html" style="color: #cbd5e1; text-decoration: none;">🔒 Privacy Policy</a></li>
-          <li><a href="../refund.html" style="color: #cbd5e1; text-decoration: none;">↩️ Return & Refund Policy</a></li>
-          <li><a href="../account.html" style="color: #cbd5e1; text-decoration: none;">👤 My Account & Orders</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-    <!-- BOTTOM COPYRIGHT BAR -->
-    <div style="max-width: 1200px; margin: 30px auto 0; padding-top: 20px; border-top: 1px solid #1e293b; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #64748b; gap: 10px;">
-      <div>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved. | <a href="../terms.html" style="color: #38bdf8; text-decoration: none;">Terms</a> · <a href="../privacy.html" style="color: #38bdf8; text-decoration: none;">Privacy</a> · <a href="../refund.html" style="color: #38bdf8; text-decoration: none;">Returns</a></div>
-      <div>Mount Road, Chennai's Wholesale CCTV & Security Electronics Hub.</div>
-    </div>
-  </footer>
 
   <!-- MOBILE / BOTTOM NAVIGATION BAR -->
   <nav class="mobile-bottom-nav">
