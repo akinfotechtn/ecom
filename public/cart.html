@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Shopping Cart – AK Infotech Security Store</title>
+  <meta name="description" content="View and manage your shopping cart at AK Infotech – Chennai's Wholesale CCTV & Security Systems Distributor.">
+  <link rel="icon" type="image/webp" href="images/logo.webp">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Cart Page Styles ───────────────────────────────────── */
+    .cart-page-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .cart-page-title {
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: var(--text-dark);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cart-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .cart-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Left – items card */
+    .cart-items-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .cart-items-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-items-header span {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Right – summary card */
+    .cart-summary-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      position: sticky;
+      top: 80px;
+    }
+
+    .cart-summary-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .summ-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+    }
+
+    .summ-row span:first-child { color: var(--text-muted); }
+    .summ-row span:last-child { font-weight: 700; color: var(--text-dark); text-align:right; max-width:60%; }
+
+    .summ-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px solid var(--border-color);
+      margin-top: 14px;
+      padding-top: 14px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    .summ-total-row span:last-child { color: var(--accent-cyan); font-size: 1.3rem; }
+
+    /* Coupon */
+    .coupon-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .coupon-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .coupon-row input:focus { border-color: var(--accent-cyan); }
+
+    .coupon-row button {
+      padding: 10px 16px;
+      background: var(--text-dark);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .coupon-row button:hover { opacity: 0.85; }
+
+    #couponMsg {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 6px;
+      display: none;
+    }
+
+    #couponChips {
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    /* CTA */
+    .btn-proceed {
+      display: block;
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      background: var(--accent-cyan);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(14,165,233,0.25);
+    }
+    .btn-proceed:hover { background: #0284c7; transform: translateY(-1px); }
+
+    .continue-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .continue-link:hover { color: var(--accent-cyan); }
+
+    /* Trust badges */
+    .trust-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+      justify-content: center;
+    }
+    .trust-badge {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--accent-cyan); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP UTILITY STRIP -->
+  <div class="announcement-bar">
+    <div class="announcement-left">
+      <span class="badge-glow">AK INFOTECH DEALS</span>
+      <span>⚡ Cash on Delivery (COD): Pay ₹1,000 Advance &amp; Remaining at Delivery!</span>
+    </div>
+    <div class="announcement-right">
+      <span>📞 WhatsApp Orders: <a href="https://wa.me/919500673207" target="_blank"
+          style="color:inherit; text-decoration:none;"><strong>+91 9500673207</strong></a></span>
+      <span>🚚 Shiprocket Express Dispatch</span>
+      <span>🛡️ 100% Genuine Warranty</span>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER / NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">
+        <img src="images/logo.webp" alt="AK Infotech Logo" class="logo-img"
+          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9';">
+        <span>AK INFOTECH</span>
+      </a>
+
+      <!-- SEARCH BOX -->
+      <div class="search-box" id="searchBoxWrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search CCTV Cameras, DVRs, Combos, Specs..."
+          autocomplete="off">
+        <div id="searchDropdown" class="search-dropdown" style="display:none;"></div>
+      </div>
+
+      <!-- NAV ACTIONS -->
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+        <div class="desktop-nav-dropdown" style="position: relative; display: inline-block;">
+          <button class="nav-btn" onclick="toggleDesktopNavMenu()"
+            style="background: var(--bg-glass); border: 1px solid var(--border-color); color: var(--text-dark); font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 14px; border-radius: var(--radius-md);">
+            ☰ <span>Menu</span>
+          </button>
+          <div id="desktopNavMenu"
+            style="display: none; position: absolute; right: 0; top: 46px; background: #ffffff; min-width: 200px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); border-radius: var(--radius-md); z-index: 10000; overflow: hidden; text-align: left;">
+            <a href="index.html"
+              style="display: block; padding: 12px 16px; color: var(--text-dark); text-decoration: none; font-weight: 700; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">🏠 Home / Catalog</a>
+            <a href="account.html"
+              style="display: block; padding: 12px 16px; color: var(--text-dark); text-decoration: none; font-weight: 700; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">👤 My Account / Orders</a>
+            <a href="privacy.html"
+              style="display: block; padding: 10px 16px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">🛡️ Privacy Policy</a>
+            <a href="terms.html"
+              style="display: block; padding: 10px 16px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">📄 Terms of Service</a>
+            <a href="refund.html"
+              style="display: block; padding: 10px 16px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">💵 Refund Policy</a>
+          </div>
+        </div>
+        <a href="cart.html" class="nav-btn cart-btn" style="text-decoration:none;">
+          🛒 <span>Cart</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── CART PAGE BODY ─────────────────────────────────────────── -->
+  <div class="cart-page-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> › Shopping Cart
+    </div>
+
+    <h1 class="cart-page-title">🛒 Shopping Cart</h1>
+
+    <div class="cart-grid">
+
+      <!-- LEFT: Cart Items -->
+      <div>
+        <div class="cart-items-card">
+          <div class="cart-items-header">
+            <strong>Your Items</strong>
+            <span id="cartItemCountLabel"></span>
+          </div>
+          <div id="cartItemsContainer"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Order Summary -->
+      <div>
+        <div class="cart-summary-card">
+          <div class="cart-summary-title">Order Summary</div>
+
+          <div class="summ-row">
+            <span>Subtotal (incl. GST)</span>
+            <span id="summSubtotal">₹0</span>
+          </div>
+
+          <div class="summ-row" id="summPromoRow" style="display:none; color: #10b981;">
+            <span style="color:#10b981;">Promo Discount</span>
+            <span id="summPromoAmt" style="color:#10b981;">−₹0</span>
+          </div>
+
+          <div class="summ-row">
+            <span>Delivery Charges</span>
+            <span id="summDelivery">—</span>
+          </div>
+
+          <div class="summ-total-row">
+            <span>Total Payable</span>
+            <span id="summTotal">₹0</span>
+          </div>
+
+          <!-- Coupon -->
+          <div class="coupon-row">
+            <input type="text" id="couponInput" placeholder="Promo Code">
+            <button onclick="applyCoupon()">Apply</button>
+          </div>
+          <div id="couponMsg"></div>
+          <div id="couponChips" style="display:flex;"></div>
+
+          <!-- CTA -->
+          <a href="checkout.html" class="btn-proceed">Proceed to Checkout →</a>
+          <a href="index.html" class="continue-link">← Continue Shopping</a>
+
+          <!-- Trust badges -->
+          <div class="trust-row">
+            <div class="trust-badge">🔒 Secure Checkout</div>
+            <div class="trust-badge">🛡️ 100% Genuine</div>
+            <div class="trust-badge">🚚 Fast Dispatch</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RICH FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="images/logo.webp" alt="AK Infotech" class="footer-logo-img">
+          <span>AK INFOTECH</span>
+        </a>
+        <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; margin-top: 4px;">
+          Authorized Wholesale &amp; Retail Security Systems Distributor. Specializing in 4K CCTV, Biometrics,
+          Networking &amp; All-in-One Surveillance Kits.
+        </p>
+        <div class="footer-social-links">
+          <a href="https://www.facebook.com/p/AK-Infotech-61551839859994/" target="_blank" rel="noopener"
+            class="footer-social-btn" title="Facebook">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/akinfotech/" target="_blank" rel="noopener" class="footer-social-btn"
+            title="Instagram">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="https://wa.me/919500673207" target="_blank" rel="noopener" class="footer-social-btn"
+            title="WhatsApp Support">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.15 4.2 4.293-1.125z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">📍 Showroom Location</h4>
+        <ul class="footer-info-list">
+          <li><span class="footer-info-icon">🏢</span><span>No.19, Shop No: F22 &amp; F23, 1st Floor, Uno Arcade A/C Complex, Meeran Sahib Street, Mount Road, Chennai - 600002</span></li>
+          <li><span class="footer-info-icon">📞</span><span><strong>Phone / WhatsApp:</strong> +91 9500673207</span></li>
+          <li><span class="footer-info-icon">✉️</span><span><strong>Email:</strong> akinfotechtn@gmail.com</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">⏰ Hours &amp; Trade Info</h4>
+        <ul class="footer-info-list">
+          <li><span class="footer-info-icon">🕒</span><span><strong>Working Hours:</strong><br>Mon - Sat: 10:00 AM - 7:30 PM<br>(Sunday Closed)</span></li>
+          <li><span class="footer-info-icon">📜</span><span><strong>GSTIN:</strong> 33CPAPA9563H1Z1<br>(Eligible for B2B ITC Claims)</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">🔗 Quick Navigation</h4>
+        <ul class="footer-info-list">
+          <li><a href="terms.html" style="color: #cbd5e1; text-decoration: none;">📜 Terms &amp; Conditions</a></li>
+          <li><a href="privacy.html" style="color: #cbd5e1; text-decoration: none;">🔒 Privacy Policy</a></li>
+          <li><a href="refund.html" style="color: #cbd5e1; text-decoration: none;">↩️ Return &amp; Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <div>&copy; 2026 <strong>AK Infotech</strong>. All rights reserved. | <a href="terms.html"
+          style="color: #38bdf8; text-decoration: none;">Terms</a> · <a href="privacy.html"
+          style="color: #38bdf8; text-decoration: none;">Privacy</a> · <a href="refund.html"
+          style="color: #38bdf8; text-decoration: none;">Returns</a></div>
+      <div>Mount Road, Chennai's Wholesale CCTV &amp; Security Electronics Hub.</div>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-nav-item">
+      <span class="mobile-nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="category.html" class="mobile-nav-item">
+      <span class="mobile-nav-icon">📁</span>
+      <span>Categories</span>
+    </a>
+    <a href="brand.html" class="mobile-nav-item">
+      <span class="mobile-nav-icon">🏷️</span>
+      <span>Brands</span>
+    </a>
+    <a href="account.html" class="mobile-nav-item" id="bottomProfileLink">
+      <span class="mobile-nav-icon" id="bottomProfileAvatar">👤</span>
+      <span id="bottomProfileText">Account</span>
+    </a>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <script src="js/checkout.js"></script>
+  <script>
+    // Update item count label
+    document.addEventListener('DOMContentLoaded', () => {
+      function updateLabel() {
+        const cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+        const label = document.getElementById('cartItemCountLabel');
+        if (label) label.textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
+      }
+      updateLabel();
+      window.addEventListener('cartUpdated', updateLabel);
+    });
+
+    function toggleDesktopNavMenu() {
+      const menu = document.getElementById('desktopNavMenu');
+      if (menu) menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+    document.addEventListener('click', function (e) {
+      const dropdown = document.querySelector('.desktop-nav-dropdown');
+      const menu = document.getElementById('desktopNavMenu');
+      if (dropdown && menu && !dropdown.contains(e.target)) menu.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
