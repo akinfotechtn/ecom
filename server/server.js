@@ -96,7 +96,8 @@ const BASE_PAGES = new Set([
   'privacy.html',
   'terms.html',
   'refund.html',
-  'local-sync.html'
+  'local-sync.html',
+  'checkout.html'
 ]);
 
 function adjustPaths(html) {
@@ -108,6 +109,7 @@ function adjustPaths(html) {
     .replace(/href="index\.html/g, 'href="../index.html')
     .replace(/href="account\.html/g, 'href="../account.html')
     .replace(/href="admin\.html/g, 'href="../admin.html')
+    .replace(/href="checkout\.html/g, 'href="../checkout.html')
     .replace(/href="privacy\.html/g, 'href="../privacy.html')
     .replace(/href="terms\.html/g, 'href="../terms.html')
     .replace(/href="refund\.html/g, 'href="../refund.html')
@@ -248,6 +250,7 @@ function generateSitemapAndRobots(products, brands, categories) {
       'brand.html',
       'category.html',
       'account.html',
+      'checkout.html',
       'privacy.html',
       'terms.html',
       'refund.html'

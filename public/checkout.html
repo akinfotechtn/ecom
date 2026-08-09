@@ -105,101 +105,166 @@
   </header>
 
   <!-- 1. CATEGORY SHOWCASE STRIP (SHOP BY CATEGORIES) -->
-  <section class="filter-section" style="padding: 24px 0 16px;">
-    <div class="wordart-header-box">
-      <span class="wordart-badge">📁 EXPLORE CATALOG</span>
-      <h2 class="wordart-title">Shop By <span class="wordart-gradient-text">CATEGORIES</span></h2>
-    </div>
-    <div class="category-scroll-row" id="categoryScrollRow"></div>
-  </section>
-
-  <!-- FEATURED PRODUCTS SECTION -->
-  <section class="featured-section" id="featuredSection" style="padding: 32px 0 24px; background: #f8fafc; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); display: none;">
-    <div class="wordart-header-box" style="margin-bottom: 20px;">
-      <span class="wordart-badge">⭐ HANDPICKED BESTSELLERS</span>
-      <h2 class="wordart-title">Featured <span class="wordart-gradient-text">PRODUCTS</span></h2>
-    </div>
-
-    <div class="product-grid" id="featuredGrid">
-      <!-- Dynamic featured products mapping -->
-    </div>
-  </section>
-
-  <!-- 2. TRUST BADGES STRIP WITH LIGHT BACKGROUND COLORS -->
-  <section class="trust-badges-strip" style="margin: 16px 0 24px; padding: 0 16px;">
-    <div class="trust-badge-card"
-      style="background: #f0f9ff; border: 1px solid #bae6fd; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.12); border-radius: 12px; padding: 12px 14px;">
-      <div class="trust-badge-icon"
-        style="background: #e0f2fe; color: #0284c7; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-        🚚</div>
-      <div>
-        <div class="trust-badge-title" style="color: #0369a1; font-weight: 800; font-size: 0.82rem;">Express Shiprocket
-          Delivery</div>
-        <div class="trust-badge-sub" style="color: #0284c7; font-size: 0.72rem; margin-top: 2px;">Fast dispatch across
-          all India pin codes</div>
+  <section class="filter-  <div class="checkout-page-container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 400px; gap: 30px; align-items: start;">
+    <!-- LEFT: CART ITEMS -->
+    <div class="checkout-left">
+      <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 20px;">Shopping Cart</h1>
+      <div id="checkoutCartItems" style="background: #fff; border-radius: 12px; border: 1px solid var(--border-color); padding: 20px; min-height: 200px;">
+        <!-- Cart items will be rendered here -->
       </div>
     </div>
-    <div class="trust-badge-card"
-      style="background: #f5f3ff; border: 1px solid #ddd6fe; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.12); border-radius: 12px; padding: 12px 14px;">
-      <div class="trust-badge-icon"
-        style="background: #ede9fe; color: #6d28d9; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-        🔒</div>
-      <div>
-        <div class="trust-badge-title" style="color: #5b21b6; font-weight: 800; font-size: 0.82rem;">Secure Razorpay
-          Payments</div>
-        <div class="trust-badge-sub" style="color: #6d28d9; font-size: 0.72rem; margin-top: 2px;">100% Safe UPI, Cards &
-          Netbanking</div>
+    
+    <!-- RIGHT: SUMMARY & CHECKOUT FORM -->
+    <div class="checkout-right">
+      <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; position: sticky; top: 80px;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 20px;">Order Summary</h2>
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="checkoutSubtotal">₹0</span>
+        </div>
+        <div class="cart-summary-row" id="checkoutGstRow">
+          <span>GST</span>
+          <span id="checkoutGst">₹0</span>
+        </div>
+        <div class="cart-summary-row discount-row" id="checkoutDiscountRow" style="display: none;">
+          <span>Promo Discount</span>
+          <span id="checkoutDiscount">-₹0</span>
+          <br><button onclick="removePromoCode()" style="font-size: 0.7rem; color: #ef4444; background: none; border: none; cursor: pointer; padding: 0; margin-top: 4px;">Remove</button>
+        </div>
+        <div class="cart-summary-row delivery-row">
+          <span>Delivery Charges</span>
+          <span id="checkoutDelivery">₹150</span>
+        </div>
+        <div class="cart-summary-row total-row" style="border-top: 1px solid var(--border-color); margin-top: 12px; padding-top: 12px; font-size: 1.2rem; font-weight: 800;">
+          <span>Total Payable</span>
+          <span id="checkoutGrandTotal" style="color: var(--accent-cyan);">₹0</span>
+        </div>
+        
+        <div style="margin-top: 24px; display: flex; gap: 10px;">
+          <input type="text" id="checkoutCouponInput" placeholder="Promo Code" style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; text-transform: uppercase;">
+          <button class="btn-secondary" onclick="applyCheckoutCoupon()" style="padding: 10px 16px;">Apply</button>
+        </div>
+        <div id="checkoutPromoMsg" style="margin-top: 8px; font-size: 0.8rem; font-weight: 700; display: none;"></div>
+        
+        <!-- CHECKOUT OPTIONS / FORM -->
+        <div id="checkoutAuthChoice" style="margin-top: 30px;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">Proceed to Checkout</h3>
+          <button class="btn-checkout" onclick="checkoutWithGoogle()" style="background: #2563eb !important; margin-bottom: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; box-shadow: none;">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px; background: white; border-radius: 50%; padding: 2px;">
+            <span>Sign In & Checkout</span>
+          </button>
+          <button class="btn-checkout" onclick="checkoutAsGuest()" style="background: #f1f5f9 !important; color: var(--text-dark) !important; border: 1px solid var(--border-color) !important; box-shadow: none !important; width: 100%;">
+            Continue as Guest
+          </button>
+        </div>
+        
+        <!-- THE ACTUAL FORM (Hidden initially) -->
+        <div id="checkoutFormContainer" style="display: none; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 16px;">Delivery Details</h3>
+          
+          <div id="savedAddressGroup" style="display: none; margin-bottom: 16px; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px; border-radius: var(--radius-md);">
+            <label style="font-size: 0.82rem; font-weight: 700; color: var(--accent-cyan); display: block; margin-bottom: 6px;">📍 Select Saved Address</label>
+            <select id="savedAddressSelect" style="width: 100%; padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.88rem;"></select>
+          </div>
+          
+          <form id="mainCheckoutForm">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="custName" required placeholder="John Doe">
+            </div>
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Phone *</label>
+                <input type="tel" id="custPhone" required placeholder="9876543210">
+              </div>
+              <div class="form-group">
+                <label>Pincode *</label>
+                <input type="text" id="custPincode" required placeholder="600001">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Delivery Address *</label>
+              <textarea id="custAddress" required placeholder="House No, Street, Landmark" rows="3"></textarea>
+            </div>
+            
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 20px 0 12px;">Payment Method</h3>
+            <div class="payment-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+              <div class="payment-option-card selected" id="optOnline" onclick="selectPaymentMethod('ONLINE')" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 6px;">💳</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Pay Online</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">UPI, Cards, NetBanking</div>
+              </div>
+              <div class="payment-option-card" id="optCOD" onclick="selectPaymentMethod('COD')" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 6px;">🚚</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Cash on Delivery</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Pay ₹1,000 Advance</div>
+              </div>
+            </div>
+            
+            <div id="codAdvanceBanner" style="display: none; background: #fff7ed; border: 1px solid #fed7aa; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 0.82rem; color: #9a3412;">
+              <div style="font-weight: 800; margin-bottom: 4px;">⚡ COD Terms:</div>
+              <div>
+                👉 Paid Now (Advance): <span style="color: var(--accent-cyan);">₹1,000</span><br>
+                👉 Payable to Courier: <span style="color: var(--accent-green);" id="codBalanceText">₹0</span>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn-checkout" id="payOrderSubmitBtn" style="width: 100%;">
+              Pay & Place Order →
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="trust-badge-card"
-      style="background: #ecfdf5; border: 1px solid #a7f3d0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12); border-radius: 12px; padding: 12px 14px;">
-      <div class="trust-badge-icon"
-        style="background: #d1fae5; color: #059669; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-        💵</div>
-      <div>
-        <div class="trust-badge-title" style="color: #047857; font-weight: 800; font-size: 0.82rem;">Cash on Delivery
-          Available</div>
-        <div class="trust-badge-sub" style="color: #059669; font-size: 0.72rem; margin-top: 2px;">Pay ₹1,000 Advance &
-          balance at delivery</div>
-      </div>
-    </div>
-    <div class="trust-badge-card"
-      style="background: #fffbeb; border: 1px solid #fde68a; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12); border-radius: 12px; padding: 12px 14px;">
-      <div class="trust-badge-icon"
-        style="background: #fef3c7; color: #d97706; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-        🛡️</div>
-      <div>
-        <div class="trust-badge-title" style="color: #b45309; font-weight: 800; font-size: 0.82rem;">100% Genuine Brand
-          Warranty</div>
-        <div class="trust-badge-sub" style="color: #d97706; font-size: 0.72rem; margin-top: 2px;">Official replacement
-          warranty</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. BRAND SHOWCASE STRIP (SHOP BY BRANDS) -->
-  <section class="brand-showcase-section" style="padding: 24px 0 16px;">
-    <div class="wordart-header-box">
-      <span class="wordart-badge">🏷️ AUTHORIZED DISTRIBUTORS</span>
-      <h2 class="wordart-title">Shop By <span class="wordart-gradient-text">BRANDS</span></h2>
-    </div>
-    <div class="brand-logos-row" id="brandLogosRow"></div>
-  </section>
-
-  <!-- PRODUCT CATALOG GRID -->
-  <main class="catalog-section">
-    <div class="product-grid" id="productGrid">
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
-        Loading products catalog...
-      </div>
-    </div>
-    <div class="pagination-bar" id="homepagePaginationBar"
-      style="display: none; justify-content: center; align-items: center; gap: 8px; margin: 32px 0 16px; flex-wrap: wrap;">
-    </div>
-  </main>
-
-  <!-- MOBILE BOTTOM NAVIGATION BAR -->
-  <nav class="mobile-bottom-nav">
+  </div>
+  
+  <style>
+    @media (max-width: 768px) {
+      .checkout-page-container {
+        grid-template-columns: 1fr !important;
+      }
+      .checkout-right > div {
+        position: static !important;
+      }
+    }
+    
+    .checkout-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .checkout-item:last-child {
+      border-bottom: none;
+    }
+    .checkout-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    .checkout-item-details {
+      flex: 1;
+    }
+    .checkout-item-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .checkout-item-price {
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+    .payment-option-card.selected {
+      border-color: var(--accent-cyan) !important;
+      background: #f0f9ff !important;
+      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2) !important;
+    }
+  </style>
+  <!-- RICH FOOTER WITH AK INFOTECH COMPANY DETAILS -->nav">
     <a href="index.html" class="mobile-nav-item active">
       <span class="mobile-nav-icon">🏠</span>
       <span>Home</span>
@@ -335,7 +400,13 @@
     </a>
   </nav>
 
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/db-service.js"></script>
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/checkout.js"></script>
   <script>
     function toggleDesktopNavMenu() {
       const menu = document.getElementById('desktopNavMenu');

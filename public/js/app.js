@@ -436,10 +436,12 @@ function saveCart() {
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');
   const drawerCountEl = document.getElementById('cartItemCount');
+  const mobileCartCountEl = document.getElementById('mobileCartCount');
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || item.qty || 1), 0);
 
   if (cartCountEl) cartCountEl.textContent = totalQty;
   if (drawerCountEl) drawerCountEl.textContent = totalQty;
+  if (mobileCartCountEl) mobileCartCountEl.textContent = totalQty;
 
   const itemsListEl = document.getElementById('cartItemsBody') || document.getElementById('cartItemsList');
   if (!itemsListEl) return;
@@ -995,10 +997,6 @@ function setupEventListeners() {
   }
 }
 
-window.openCartDrawer = function () {
-  document.getElementById('cartDrawer').classList.add('active');
-  document.getElementById('cartBackdrop').classList.add('active');
-};
 
 window.closeCartDrawer = function () {
   document.getElementById('cartDrawer').classList.remove('active');
@@ -1229,6 +1227,10 @@ window.applySearchFromDropdown = function (q) {
 // ---------------------------------------------------------
 // HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
 // ---------------------------------------------------------
+window.openCartDrawer = function () {
+  window.location.href = DbService.getLinkPrefix() + 'checkout.html';
+};
+
 window.renderFeaturedProducts = function () {
   const grid = document.getElementById('featuredGrid');
   const section = document.getElementById('featuredSection');

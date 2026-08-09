@@ -246,7 +246,7 @@ window.buyNowDirect = function (id) {
     return;
   }
   addToCart(id);
-  window.location.href = DbService.getLinkPrefix() + 'index.html?checkout=true';
+  window.location.href = DbService.getLinkPrefix() + 'checkout.html';
 };
 
 function getItemPriceWithGst(item) {
@@ -499,7 +499,7 @@ function setupEventListeners() {
         alert('Your cart is empty!');
         return;
       }
-      window.location.href = DbService.getLinkPrefix() + 'index.html?checkout=true';
+      window.location.href = DbService.getLinkPrefix() + 'checkout.html';
     });
   }
 }
