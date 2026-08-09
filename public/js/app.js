@@ -19,6 +19,7 @@ let searchQuery = '';
 let currentUser = null;
 let userAddresses = [];
 let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+window.cart = cart;
 let appliedCoupon = null;
 let selectedPaymentMethod = 'ONLINE'; // ONLINE or COD
 
@@ -429,7 +430,8 @@ window.updateCartQty = function (productId, change) {
   if (typeof renderCatalog === 'function') renderCatalog();
 };
 
-function saveCart() {
+window.saveCart = function saveCart() {
+    window.cart = cart;
   localStorage.setItem('ak_cart', JSON.stringify(cart));
 }
 
