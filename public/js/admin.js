@@ -2579,7 +2579,7 @@ window.fetchAdminFeaturedProducts = async function () {
   if (!tableBody) return;
 
   try {
-    adminFeaturedProductsList = await DbService.getProducts();
+    adminFeaturedProductsList = await DbService.retrieveAndSaveFirestoreProductsLocally();
     adminFeaturedProductsList.sort((a, b) => (a.productName || '').localeCompare(b.productName || ''));
     
     // Extract unique categories and brands
