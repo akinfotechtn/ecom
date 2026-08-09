@@ -907,9 +907,11 @@
       if (type === 'FREE_DELIVERY') {
         valGroup.style.display = 'none';
         valInput.removeAttribute('required');
+        valInput.disabled = true;
       } else {
         valGroup.style.display = 'block';
         valInput.setAttribute('required', 'true');
+        valInput.disabled = false;
         valLabel.textContent = type === 'PERCENT' ? 'Discount Value (%)' : 'Discount Value (₹)';
       }
     }

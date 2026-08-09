@@ -2456,12 +2456,14 @@ window.handleCouponTypeChange = function (value) {
     if (valueGroup) valueGroup.style.display = 'none';
     if (valueInput) {
       valueInput.required = false;
+      valueInput.disabled = true;
       valueInput.value = '0';
     }
   } else {
     if (valueGroup) valueGroup.style.display = 'block';
     if (valueInput) {
       valueInput.required = true;
+      valueInput.disabled = false;
       if (valueInput.value === '0') valueInput.value = '';
     }
     if (valueLabel) {
