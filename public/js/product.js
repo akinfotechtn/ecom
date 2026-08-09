@@ -109,7 +109,12 @@ async function loadProductDetail(idOrProduct) {
 
       <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
         <div style="font-size:0.8rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">📋 Product Overview & Specifications:</div>
-        <div class="product-text-formatted" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.')}</div>
+        <div class="product-text-formatted" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.').split('\n').map(line => {
+          if (line.trim().startsWith('*')) {
+            return '<span style="color: #ef4444; font-weight: 700;">' + escapeHtml(line) + '</span>';
+          }
+          return escapeHtml(line);
+        }).join('\n')}</div>
       </div>
 
       ${isAvailable ? `
