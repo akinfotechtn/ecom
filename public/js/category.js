@@ -617,14 +617,12 @@ function renderCart() {
   if (deliveryEl) {
     if (subtotalWithGst === 0) {
       deliveryEl.innerHTML = `₹0`;
+        } else if (typeof appliedCoupon !== 'undefined' && appliedCoupon && (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY')) {
+      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 700; font-size: 0.85rem; line-height: 1.4; display: block;">Your order will be shipped via Rathimeena or MSS. Kindly pick it up from their nearest local branch.</span>`;
     } else if (isPayOnDelivery) {
       deliveryEl.innerHTML = `<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span><small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>`;
     } else if (deliveryFee === 0) {
-      if (typeof appliedCoupon !== 'undefined' && appliedCoupon && (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY')) {
-        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800; font-size: 0.8rem;">We will parcel your product in Rathi meena or MSS. You should Pickup from there</span>`;
-      } else {
-        deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
-      }
+      deliveryEl.innerHTML = `<span style="color: var(--accent-green); font-weight: 800;">FREE 🎉</span>`;
     } else if (enableFreeShipping) {
       const needed = Math.max(0, freeMin - subtotalWithGst);
       deliveryEl.innerHTML = `₹${deliveryFee} ${needed > 0 ? `<small style="display:block; color:var(--text-muted); font-size:0.7rem;">Add ₹${needed.toLocaleString('en-IN')} more for FREE Delivery!</small>` : `<small style="display:block; color:var(--accent-green); font-size:0.7rem; font-weight:700;">FREE Shipping Unlocked!</small>`}`;
