@@ -11,7 +11,8 @@
     "baseSellingPrice": 1990,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "gs-1786265528351-2",
@@ -25,7 +26,8 @@
     "baseSellingPrice": 2790,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "gs-1786265528352-3",

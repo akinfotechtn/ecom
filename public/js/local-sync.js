@@ -982,7 +982,7 @@ window.renderCurrentFeaturedTable = function() {
           <span style="font-size:0.8rem; color:var(--text-dim);">${p.brand || 'N/A'}</span>
         </td>
         <td style="text-align:center;">
-          <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444;" onclick="removeProductFeatured('${p.id}')">Remove</button>
+          <button type="button" class="btn-secondary" style="color: #ef4444; border-color: #ef4444;" onclick="event.preventDefault(); removeProductFeatured('${p.id}')">Remove</button>
         </td>
       </tr>
     `;
@@ -1009,6 +1009,8 @@ window.makeSelectedFeatured = async function() {
   });
 
   if (changed) {
+    renderCurrentFeaturedTable();
+    filterLocalFeaturedList();
     await saveFeaturedChanges();
   }
 };
@@ -1018,6 +1020,10 @@ window.removeProductFeatured = async function(id) {
   if (idx === -1) return;
   
   localProducts[idx].isFeatured = false;
+  // Instantly reflect in UI
+  renderCurrentFeaturedTable();
+  filterLocalFeaturedList();
+  
   await saveFeaturedChanges();
 };
 
@@ -1033,7 +1039,7 @@ window.saveFeaturedChanges = async function() {
   }
     
   try {
-    const response = await fetch('/api/products', {
+    const response = await fetch('/api/products/bulk-save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ products: localProducts })
