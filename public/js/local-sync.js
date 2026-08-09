@@ -909,8 +909,7 @@ window.renderFeaturedTable = function(products) {
   const countLabel = document.getElementById('featuredCountLabel');
   
   if (countLabel) {
-    const featuredCount = localProducts.filter(p => p.isFeatured).length;
-    countLabel.textContent = `Showing ${products.length} products (${featuredCount} total featured)`;
+    countLabel.textContent = `Showing ${products.length} available products`;
   }
   
   if (!tbody) return;
@@ -922,6 +921,9 @@ window.renderFeaturedTable = function(products) {
   
   let html = '';
   products.forEach(p => {
+    // Only show non-featured in this list
+    if (p.isFeatured) return;
+
     const imgSrc = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `/${p.photoLink}`) : '/images/placeholder.jpg';
     html += `
       <tr>
@@ -939,62 +941,127 @@ window.renderFeaturedTable = function(products) {
           <span style="font-size:0.8rem; color:var(--text-dim);">${p.brand || 'N/A'}</span>
         </td>
         <td style="text-align:center;">
-          <input type="checkbox" style="width:20px; height:20px; cursor:pointer;" ${p.isFeatured ? 'checked' : ''} onchange="toggleProductFeatured('${p.id}', this.checked)">
+          <input type="checkbox" class="make-featured-checkbox" data-id="${p.id}" style="width:20px; height:20px; cursor:pointer;">
         </td>
       </tr>
     `;
   });
   
   tbody.innerHTML = html;
+
+  renderCurrentFeaturedTable();
 };
 
-window.toggleProductFeatured = async function(id, isChecked) {
-  // Update local array
+window.renderCurrentFeaturedTable = function() {
+  const tbody = document.getElementById('currentFeaturedTableBody');
+  if (!tbody) return;
+
+  const featured = localProducts.filter(p => p.isFeatured);
+
+  if (featured.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: var(--text-dim);">No products currently featured.</td></tr>';
+    return;
+  }
+
+  let html = '';
+  featured.forEach(p => {
+    const imgSrc = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `/${p.photoLink}`) : '/images/placeholder.jpg';
+    html += `
+      <tr>
+        <td>
+          <img src="${imgSrc}" style="width:40px; height:40px; object-fit:contain; border-radius:4px; border:1px solid #475569;" onerror="this.src='/images/placeholder.jpg'">
+        </td>
+        <td>
+          <div style="font-weight:600; font-size:0.9rem; color:#fff;">${p.productName || 'Unnamed'}</div>
+          <div style="font-size:0.75rem; color:var(--text-dim);">ID: ${p.id || 'N/A'}</div>
+        </td>
+        <td>
+          <span style="background:#0f172a; padding:2px 6px; border-radius:4px; font-size:0.75rem; border:1px solid var(--border-dark); color:#fff;">${p.category || 'N/A'}</span>
+        </td>
+        <td>
+          <span style="font-size:0.8rem; color:var(--text-dim);">${p.brand || 'N/A'}</span>
+        </td>
+        <td style="text-align:center;">
+          <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444;" onclick="removeProductFeatured('${p.id}')">Remove</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+};
+
+window.makeSelectedFeatured = async function() {
+  const checkboxes = document.querySelectorAll('.make-featured-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert('Please select at least one product to make featured.');
+    return;
+  }
+
+  let changed = false;
+  checkboxes.forEach(cb => {
+    const id = cb.getAttribute('data-id');
+    const idx = localProducts.findIndex(p => String(p.id) === String(id));
+    if (idx !== -1) {
+      localProducts[idx].isFeatured = true;
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    await saveFeaturedChanges();
+  }
+};
+
+window.removeProductFeatured = async function(id) {
   const idx = localProducts.findIndex(p => String(p.id) === String(id));
   if (idx === -1) return;
   
-  localProducts[idx].isFeatured = isChecked;
-  
-  // Persist to local storage
+  localProducts[idx].isFeatured = false;
+  await saveFeaturedChanges();
+};
+
+window.saveFeaturedChanges = async function() {
   localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
   
-  // Re-render table count
-  filterLocalFeaturedList();
-  
-  // Show saving toast
   const label = document.getElementById('featuredCountLabel');
+  let oldText = 'Showing products';
   if (label) {
-    const oldText = label.textContent;
+    oldText = label.textContent;
     label.textContent = 'Saving & Rebuilding site...';
     label.style.color = '#e67e22'; // orange
+  }
     
-    try {
-      // POST back to server to update products.json
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ products: localProducts })
-      });
-      
-      if (!response.ok) throw new Error('Failed to save to products.json');
-      
+  try {
+    const response = await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ products: localProducts })
+    });
+    
+    if (!response.ok) throw new Error('Failed to save to products.json');
+    
+    if (label) {
       label.textContent = 'Saved! Live in ~2s';
       label.style.color = '#27ae60'; // green
-      
-      setTimeout(() => {
-        filterLocalFeaturedList();
-        label.style.color = 'var(--text-dim)';
-      }, 2500);
-      
-    } catch (error) {
-      console.error(error);
-      alert('Failed to save featured status to file! Check server logs.');
-      // Revert the check
-      localProducts[idx].isFeatured = !isChecked;
-      localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
+    }
+    
+    setTimeout(() => {
       filterLocalFeaturedList();
+      if (label) {
+        label.style.color = 'var(--text-dim)';
+      }
+    }, 2500);
+    
+  } catch (error) {
+    console.error(error);
+    alert('Failed to save featured status to file! Check server logs.');
+    // We don't revert here easily for bulk, just reload
+    filterLocalFeaturedList();
+    if (label) {
       label.textContent = oldText;
       label.style.color = 'var(--text-dim)';
     }
   }
 };
+
