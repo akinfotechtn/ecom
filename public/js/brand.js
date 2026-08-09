@@ -482,21 +482,12 @@ function renderCart() {
 
   let discountAmount = 0;
   if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
-    const type = appliedCoupon.type;
-    if (type === 'FREE_DELIVERY') {
+    if (appliedCoupon.discountPercent) {
+      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
+    } else if (appliedCoupon.discountFlat) {
+      discountAmount = appliedCoupon.discountFlat;
+    } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
       deliveryFee = 0;
-      discountAmount = 0;
-    } else if (type === 'FLAT') {
-      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
-    } else if (type === 'PERCENTAGE') {
-      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
-      discountAmount = Math.round((subtotalWithGst * pct) / 100);
-    } else {
-      if (appliedCoupon.discountPercent) {
-        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
-      } else if (appliedCoupon.discountFlat) {
-        discountAmount = Number(appliedCoupon.discountFlat);
-      }
     }
   }
 

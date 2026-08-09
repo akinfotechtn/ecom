@@ -363,20 +363,11 @@ app.get('/api/products', (req, res) => {
 // BULK SAVE - called by local-sync.js when adding/editing single products
 app.post('/api/products/bulk-save', (req, res) => {
   try {
-    const incomingProducts = req.body.products;
-    if (!Array.isArray(incomingProducts)) {
+    const products = req.body.products;
+    if (!Array.isArray(products)) {
       return res.status(400).json({ success: false, message: 'Expected { products: [...] }' });
     }
-    const currentProducts = readJson(PRODUCTS_FILE, []);
-    const merged = incomingProducts.map(p => {
-      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
-      return {
-        ...p,
-        featured: p.featured ?? (existing ? existing.featured : false),
-        isFeatured: p.isFeatured ?? (existing ? existing.isFeatured : false)
-      };
-    });
-    const ok = writeJson(PRODUCTS_FILE, merged);
+    const ok = writeJson(PRODUCTS_FILE, products);
     if (!ok) {
       return res.status(500).json({ success: false, message: 'Failed to write products.json' });
     }
@@ -390,17 +381,8 @@ app.post('/api/products/bulk-save', (req, res) => {
 
 app.post('/api/products', (req, res) => {
   if (Array.isArray(req.body.products)) {
-    const currentProducts = readJson(PRODUCTS_FILE, []);
-    const merged = req.body.products.map(p => {
-      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
-      return {
-        ...p,
-        featured: p.featured ?? (existing ? existing.featured : false),
-        isFeatured: p.isFeatured ?? (existing ? existing.isFeatured : false)
-      };
-    });
-    writeJson(PRODUCTS_FILE, merged);
-    return res.json({ success: true, message: 'Products saved successfully.', total: merged.length });
+    writeJson(PRODUCTS_FILE, req.body.products);
+    return res.json({ success: true, message: 'Products saved successfully.', total: req.body.products.length });
   }
 
   const products = readJson(PRODUCTS_FILE, []);
@@ -446,7 +428,6 @@ app.put('/api/products/:id', (req, res) => {
     sellingPrice: parseFloat(req.body.sellingPrice) ?? products[index].sellingPrice,
     inStock: req.body.inStock ?? products[index].inStock,
     isCombo: req.body.isCombo ?? (req.body.category?.toLowerCase().includes('combo') || false),
-    featured: req.body.featured ?? products[index].featured,
     isFeatured: req.body.isFeatured ?? products[index].isFeatured
   };
 
@@ -617,17 +598,8 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
-    // Save imported products to store (preserving featured status)
-    const currentProducts = readJson(PRODUCTS_FILE, []);
-    const merged = parsedProducts.map(p => {
-      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
-      return {
-        ...p,
-        featured: existing ? (existing.featured === true) : false,
-        isFeatured: existing ? (existing.isFeatured === true) : false
-      };
-    });
-    writeJson(PRODUCTS_FILE, merged);
+    // Save imported products to store
+    writeJson(PRODUCTS_FILE, parsedProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
@@ -658,16 +630,7 @@ app.post('/api/upload-csv', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(csvText);
-    const currentProducts = readJson(PRODUCTS_FILE, []);
-    const merged = parsedProducts.map(p => {
-      const existing = currentProducts.find(curr => curr.id === p.id || curr.productName === p.productName);
-      return {
-        ...p,
-        featured: existing ? (existing.featured === true) : false,
-        isFeatured: existing ? (existing.isFeatured === true) : false
-      };
-    });
-    writeJson(PRODUCTS_FILE, merged);
+    writeJson(PRODUCTS_FILE, parsedProducts);
 
     res.json({
       success: true,
@@ -706,7 +669,7 @@ app.put('/api/settings', (req, res) => {
       password: req.body.shiprocket?.password || currentSettings.shiprocket?.password || '',
       channelId: req.body.shiprocket?.channelId || currentSettings.shiprocket?.channelId || ''
     },
-    discountCoupons: req.body.discountCoupons !== undefined ? req.body.discountCoupons : (currentSettings.discountCoupons || [])
+    discountCoupons: req.body.discountCoupons || currentSettings.discountCoupons || []
   };
 
   writeJson(SETTINGS_FILE, updatedSettings);

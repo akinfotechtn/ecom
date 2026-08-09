@@ -478,6 +478,10 @@ window.switchTab = function(tabId) {
   } else if (tabId === 'brands-cats-tab') {
     document.getElementById('tabBtnBrandsCats').classList.add('active');
     loadLocalBrandsAndCategories();
+  } else if (tabId === 'featured-tab') {
+    document.getElementById('tabBtnFeatured').classList.add('active');
+    populateFeaturedFilters();
+    filterLocalFeaturedList();
   }
 };
 
@@ -855,5 +859,135 @@ window.syncCategoriesFromFirestoreBtn = async function() {
     }
   } catch (err) {
     alert('❌ Error: ' + err.message);
+  }
+};
+
+// ==========================================
+// FEATURED PRODUCTS MANAGER
+// ==========================================
+
+window.populateFeaturedFilters = function() {
+  const catSelect = document.getElementById('filterFeaturedCat');
+  const brandSelect = document.getElementById('filterFeaturedBrand');
+  
+  const categories = [...new Set(localProducts.map(p => p.category))].filter(Boolean).sort();
+  const brands = [...new Set(localProducts.map(p => p.brand))].filter(Boolean).sort();
+  
+  let catHtml = '<option value="all">All Categories</option>';
+  categories.forEach(c => { catHtml += `<option value="${c}">${c}</option>`; });
+  if(catSelect) catSelect.innerHTML = catHtml;
+  
+  let brandHtml = '<option value="all">All Brands</option>';
+  brands.forEach(b => { brandHtml += `<option value="${b}">${b}</option>`; });
+  if(brandSelect) brandSelect.innerHTML = brandHtml;
+};
+
+window.filterLocalFeaturedList = function() {
+  const query = (document.getElementById('searchFeaturedInput')?.value || '').toLowerCase();
+  const cat = document.getElementById('filterFeaturedCat')?.value || 'all';
+  const brand = document.getElementById('filterFeaturedBrand')?.value || 'all';
+  
+  const filtered = localProducts.filter(p => {
+    const matchesSearch = p.productName?.toLowerCase().includes(query) || p.id?.toLowerCase().includes(query);
+    const matchesCat = cat === 'all' || p.category === cat;
+    const matchesBrand = brand === 'all' || p.brand === brand;
+    return matchesSearch && matchesCat && matchesBrand;
+  });
+  
+  renderFeaturedTable(filtered);
+};
+
+window.renderFeaturedTable = function(products) {
+  const tbody = document.getElementById('localFeaturedTableBody');
+  const countLabel = document.getElementById('featuredCountLabel');
+  
+  if (countLabel) {
+    const featuredCount = localProducts.filter(p => p.isFeatured).length;
+    countLabel.textContent = `Showing ${products.length} products (${featuredCount} total featured)`;
+  }
+  
+  if (!tbody) return;
+  
+  if (products.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: var(--text-dim);">No products found matching filters.</td></tr>';
+    return;
+  }
+  
+  let html = '';
+  products.forEach(p => {
+    const imgSrc = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `/${p.photoLink}`) : '/images/placeholder.jpg';
+    html += `
+      <tr>
+        <td>
+          <img src="${imgSrc}" style="width:40px; height:40px; object-fit:contain; border-radius:4px; border:1px solid #475569;" onerror="this.src='/images/placeholder.jpg'">
+        </td>
+        <td>
+          <div style="font-weight:600; font-size:0.9rem; color:#fff;">${p.productName || 'Unnamed'}</div>
+          <div style="font-size:0.75rem; color:var(--text-dim);">ID: ${p.id || 'N/A'}</div>
+        </td>
+        <td>
+          <span style="background:#0f172a; padding:2px 6px; border-radius:4px; font-size:0.75rem; border:1px solid var(--border-dark); color:#fff;">${p.category || 'N/A'}</span>
+        </td>
+        <td>
+          <span style="font-size:0.8rem; color:var(--text-dim);">${p.brand || 'N/A'}</span>
+        </td>
+        <td style="text-align:center;">
+          <input type="checkbox" style="width:20px; height:20px; cursor:pointer;" ${p.isFeatured ? 'checked' : ''} onchange="toggleProductFeatured('${p.id}', this.checked)">
+        </td>
+      </tr>
+    `;
+  });
+  
+  tbody.innerHTML = html;
+};
+
+window.toggleProductFeatured = async function(id, isChecked) {
+  // Update local array
+  const idx = localProducts.findIndex(p => String(p.id) === String(id));
+  if (idx === -1) return;
+  
+  localProducts[idx].isFeatured = isChecked;
+  
+  // Persist to local storage
+  localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
+  
+  // Re-render table count
+  filterLocalFeaturedList();
+  
+  // Show saving toast
+  const label = document.getElementById('featuredCountLabel');
+  if (label) {
+    const oldText = label.textContent;
+    label.textContent = 'Saving & Rebuilding site...';
+    label.style.color = '#e67e22'; // orange
+    
+    try {
+      // POST back to server to update products.json
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: localProducts })
+      });
+      
+      if (!response.ok) throw new Error('Failed to save to products.json');
+      
+      label.textContent = 'Saved! Live in ~2s';
+      label.style.color = '#27ae60'; // green
+      
+      setTimeout(() => {
+        filterLocalFeaturedList();
+        label.style.color = 'var(--text-dim)';
+      }, 2500);
+      
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save featured status to file! Check server logs.');
+      // Revert the check
+      localProducts[idx].isFeatured = !isChecked;
+      localStorage.setItem('ak_local_products', JSON.stringify(localProducts));
+      filterLocalFeaturedList();
+      label.textContent = oldText;
+      label.style.color = 'var(--text-dim)';
+    }
   }
 };

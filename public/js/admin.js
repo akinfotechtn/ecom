@@ -155,10 +155,13 @@ window.switchAdminTab = function (tabId, btn) {
 
   if (tabId === 'ordersTab') {
     fetchAdminOrders();
-  } else if (tabId === 'couponsTab') {
-    window.fetchAdminCoupons();
-  } else if (tabId === 'featuredTab') {
-    window.fetchAdminFeaturedProducts();
+  }
+  if (tabId === 'couponsTab') {
+    renderCouponsList();
+  }
+  if (tabId === 'featuredTab') {
+    populateFeaturedFilters();
+    filterAdminFeaturedList();
   }
 };
 
@@ -1164,7 +1167,8 @@ async function saveStoreSettings(e) {
     shiprocket: {
       email: document.getElementById('cfgSrEmail')?.value.trim() || 'akinfotechtn@gmail.com',
       password: document.getElementById('cfgSrPassword')?.value.trim() || ''
-    }
+    },
+    discountCoupons: adminSettings.discountCoupons || []
   };
 
   try {
@@ -1366,9 +1370,6 @@ function setupEventListeners() {
 
   const settingsForm = document.getElementById('settingsForm');
   if (settingsForm) settingsForm.addEventListener('submit', saveStoreSettings);
-
-  const couponForm = document.getElementById('couponForm');
-  if (couponForm) couponForm.addEventListener('submit', handleSaveCouponSubmit);
 }
 
 function escapeHtml(str) {
@@ -2346,63 +2347,72 @@ window.printShiprocketLabel = async function (orderId) {
 };
 
 // ---------------------------------------------------------
-// 10. COUPONS MANAGEMENT & Persist settings.discountCoupons
+// DISCOUNT COUPON CODE GENERATOR FOR ADMIN
 // ---------------------------------------------------------
-window.fetchAdminCoupons = function () {
-  const tableBody = document.getElementById('couponsTableBody');
-  if (!tableBody) return;
+window.handleCouponTypeChange = function (value) {
+  const valueGroup = document.getElementById('couponValueGroup');
+  const valueLabel = document.getElementById('couponValueLabel');
+  const valueInput = document.getElementById('couponValue');
+
+  if (value === 'FREE_DELIVERY') {
+    if (valueGroup) valueGroup.style.display = 'none';
+    if (valueInput) {
+      valueInput.required = false;
+      valueInput.value = '0';
+    }
+  } else {
+    if (valueGroup) valueGroup.style.display = 'block';
+    if (valueInput) {
+      valueInput.required = true;
+      if (valueInput.value === '0') valueInput.value = '';
+    }
+    if (valueLabel) {
+      valueLabel.textContent = value === 'PERCENT' ? 'Discount Value (%)' : 'Discount Value (₹)';
+    }
+  }
+};
+
+window.renderCouponsList = function () {
+  const tbody = document.getElementById('adminCouponsTableBody');
+  if (!tbody) return;
 
   const coupons = adminSettings.discountCoupons || [];
   if (!coupons.length) {
-    tableBody.innerHTML = `
+    tbody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">
-          🎟️ No coupon codes generated yet. Click "Create New Coupon" to get started.
-        </td>
-      </tr>`;
+        <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-muted);">No coupons configured yet.</td>
+      </tr>
+    `;
     return;
   }
 
-  tableBody.innerHTML = coupons.map((c, index) => {
-    let typeLabel = '';
-    let valLabel = '';
-
-    if (c.type === 'FREE_DELIVERY') {
-      typeLabel = '🚚 Free Delivery';
-      valLabel = 'Free Shipping';
-    } else if (c.type === 'FLAT') {
-      typeLabel = '₹ Flat Discount';
-      valLabel = `₹${(c.discountFlat || c.value || 0).toLocaleString('en-IN')}`;
-    } else if (c.type === 'PERCENTAGE') {
-      typeLabel = '% Percentage Discount';
-      valLabel = `${(c.discountPercent || c.value || 0)}% Off`;
-    } else {
-      if (c.discountPercent) {
-        typeLabel = '% Percentage Discount';
-        valLabel = `${c.discountPercent}% Off`;
-      } else {
-        typeLabel = '₹ Flat Discount';
-        valLabel = `₹${(c.discountFlat || 0)}`;
-      }
+  tbody.innerHTML = coupons.map((c, index) => {
+    let typeText = 'Percentage-wise';
+    let valText = `${c.discountPercent || 0}%`;
+    if (c.type === 'FLAT' || c.discountFlat) {
+      typeText = 'Flat Amount';
+      valText = `₹${c.discountFlat || 0}`;
+    } else if (c.type === 'FREE_DELIVERY' || c.freeDelivery) {
+      typeText = 'Free Delivery';
+      valText = '🚚 FREE';
     }
 
     const isActive = c.active !== false;
+    const statusHtml = isActive 
+      ? `<span style="background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 800; font-size: 0.78rem;">Active</span>`
+      : `<span style="background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-weight: 800; font-size: 0.78rem;">Inactive</span>`;
 
     return `
       <tr style="border-bottom: 1px solid var(--border-color);">
-        <td style="padding: 12px 8px; font-weight: 700; font-family: var(--font-mono); color: var(--text-dark);">${escapeHtml(c.code)}</td>
-        <td style="padding: 12px 8px;">${typeLabel}</td>
-        <td style="padding: 12px 8px; text-align: right; font-weight: bold; color: var(--accent-cyan);">${valLabel}</td>
-        <td style="padding: 12px 8px; text-align: right;">₹${(c.minOrderAmount || 0).toLocaleString('en-IN')}</td>
-        <td style="padding: 12px 8px; text-align: center;">
-          <span class="status-badge" style="background: ${isActive ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}; color: ${isActive ? '#10b981' : '#ef4444'}; font-weight: 800; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; cursor: pointer;" onclick="toggleCouponActive(${index})">
-            ${isActive ? 'Active' : 'Inactive'}
-          </span>
-        </td>
-        <td style="padding: 12px 8px; text-align: center;">
-          <div style="display: flex; gap: 8px; justify-content: center;">
-            <button class="qty-btn" style="background: var(--bg-dark); color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;" onclick="openEditCouponModal(${index})">✏️ Edit</button>
-            <button class="qty-btn" style="background: #ef4444; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;" onclick="deleteCoupon(${index})">🗑️ Delete</button>
+        <td style="padding: 10px 8px; font-weight: 800; font-family: monospace; font-size: 0.95rem;">${escapeHtml(c.code)}</td>
+        <td style="padding: 10px 8px; color: var(--text-muted);">${typeText}</td>
+        <td style="padding: 10px 8px; font-weight: 700; color: var(--accent-cyan); font-family: monospace;">${valText}</td>
+        <td style="padding: 10px 8px; font-family: monospace;">₹${(c.minOrderAmount || 0).toLocaleString('en-IN')}</td>
+        <td style="padding: 10px 8px; text-align: center;">${statusHtml}</td>
+        <td style="padding: 10px 8px; text-align: center;">
+          <div style="display: flex; gap: 6px; justify-content: center;">
+            <button class="pill-btn" onclick="editCoupon(${index})" style="padding: 4px 8px; font-size: 0.75rem; border-color: rgba(56, 189, 248, 0.4); color: var(--accent-cyan);">✏️ Edit</button>
+            <button class="pill-btn" onclick="deleteCoupon(${index})" style="padding: 4px 8px; font-size: 0.75rem; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">❌ Delete</button>
           </div>
         </td>
       </tr>
@@ -2410,322 +2420,281 @@ window.fetchAdminCoupons = function () {
   }).join('');
 };
 
-window.openAddCouponModal = function () {
-  const modal = document.getElementById('couponModalBackdrop');
-  if (modal) {
-    document.getElementById('couponModalTitle').textContent = '➕ Create New Coupon';
-    document.getElementById('couponEditIndex').value = '';
-    document.getElementById('couponCode').value = '';
-    document.getElementById('couponType').value = 'PERCENTAGE';
-    document.getElementById('couponValue').value = '';
-    document.getElementById('couponMinOrder').value = '0';
-    document.getElementById('couponActive').checked = true;
-    
-    window.handleCouponTypeChange();
-    modal.classList.add('active');
-  }
-};
+window.saveCoupon = async function (e) {
+  if (e && e.preventDefault) e.preventDefault();
 
-window.openEditCouponModal = function (index) {
-  const modal = document.getElementById('couponModalBackdrop');
-  const coupons = adminSettings.discountCoupons || [];
-  const c = coupons[index];
-  if (!modal || !c) return;
+  const codeInput = document.getElementById('couponCode');
+  const typeSelect = document.getElementById('couponType');
+  const valueInput = document.getElementById('couponValue');
+  const minAmountInput = document.getElementById('couponMinAmount');
+  const activeChk = document.getElementById('couponActive');
+  const editIdxInput = document.getElementById('couponEditIndex');
 
-  document.getElementById('couponModalTitle').textContent = '✏️ Edit Coupon';
-  document.getElementById('couponEditIndex').value = index;
-  document.getElementById('couponCode').value = c.code || '';
-  
-  let type = c.type;
-  if (!type) {
-    type = c.discountPercent ? 'PERCENTAGE' : 'FLAT';
+  const code = codeInput.value.trim().toUpperCase().replace(/\s+/g, '');
+  const type = typeSelect.value;
+  const val = Number(valueInput.value) || 0;
+  const minAmount = Number(minAmountInput.value) || 0;
+  const active = activeChk.checked;
+  const editIdx = editIdxInput.value;
+
+  if (!code) {
+    alert('Please enter a coupon code!');
+    return;
   }
-  document.getElementById('couponType').value = type;
-  
-  let val = 0;
-  if (type === 'PERCENTAGE') {
-    val = c.discountPercent || c.value || 0;
+
+  const coupons = [...(adminSettings.discountCoupons || [])];
+
+  // Prepare coupon object structure matching app.js expectations
+  const newCoupon = {
+    code,
+    type,
+    minOrderAmount: minAmount,
+    active
+  };
+
+  if (type === 'PERCENT') {
+    newCoupon.discountPercent = val;
+    newCoupon.discountFlat = null;
+    newCoupon.freeDelivery = null;
   } else if (type === 'FLAT') {
-    val = c.discountFlat || c.value || 0;
+    newCoupon.discountFlat = val;
+    newCoupon.discountPercent = null;
+    newCoupon.freeDelivery = null;
+  } else if (type === 'FREE_DELIVERY') {
+    newCoupon.freeDelivery = true;
+    newCoupon.discountPercent = null;
+    newCoupon.discountFlat = null;
   }
-  document.getElementById('couponValue').value = val;
-  document.getElementById('couponMinOrder').value = c.minOrderAmount || 0;
-  document.getElementById('couponActive').checked = c.active !== false;
 
-  window.handleCouponTypeChange();
-  modal.classList.add('active');
-};
-
-window.closeCouponModal = function () {
-  const modal = document.getElementById('couponModalBackdrop');
-  if (modal) modal.classList.remove('active');
-};
-
-window.handleCouponTypeChange = function () {
-  const type = document.getElementById('couponType').value;
-  const valGroup = document.getElementById('couponValueGroup');
-  const valInput = document.getElementById('couponValue');
-  const valLabel = document.getElementById('couponValueLabel');
-
-  if (!valGroup || !valInput || !valLabel) return;
-
-  if (type === 'FREE_DELIVERY') {
-    valGroup.style.display = 'none';
-    valInput.required = false;
-    valInput.value = '0';
+  if (editIdx !== '') {
+    // Update existing
+    const idx = parseInt(editIdx);
+    coupons[idx] = newCoupon;
   } else {
-    valGroup.style.display = 'block';
-    valInput.required = true;
-    if (type === 'PERCENTAGE') {
-      valLabel.textContent = 'Discount Value (%)';
-      valInput.placeholder = 'e.g. 10';
-    } else {
-      valLabel.textContent = 'Discount Value (₹)';
-      valInput.placeholder = 'e.g. 150';
+    // Add new
+    // Check duplicates
+    if (coupons.some(c => c.code === code)) {
+      alert(`Coupon code ${code} already exists!`);
+      return;
+    }
+    coupons.push(newCoupon);
+  }
+
+  // Update global settings
+  adminSettings.discountCoupons = coupons;
+
+  try {
+    const submitBtn = document.getElementById('couponSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving...';
+
+    await DbService.updateSettings(adminSettings);
+    
+    alert('✅ Coupons updated and saved successfully!');
+    resetCouponForm();
+    renderCouponsList();
+  } catch (err) {
+    alert(`Failed to save coupon: ${err.message}`);
+  } finally {
+    const submitBtn = document.getElementById('couponSubmitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = editIdx !== '' ? 'Save Changes' : 'Create Coupon';
     }
   }
 };
 
-window.toggleCouponActive = async function (index) {
+window.editCoupon = function (index) {
   const coupons = adminSettings.discountCoupons || [];
-  if (!coupons[index]) return;
+  const c = coupons[index];
+  if (!c) return;
 
-  coupons[index].active = coupons[index].active === false ? true : false;
-  adminSettings.discountCoupons = coupons;
+  document.getElementById('couponFormTitle').textContent = '✏️ Edit Coupon';
+  document.getElementById('couponEditIndex').value = index;
+
+  document.getElementById('couponCode').value = c.code;
+  document.getElementById('couponType').value = c.type || (c.discountFlat ? 'FLAT' : c.freeDelivery ? 'FREE_DELIVERY' : 'PERCENT');
   
-  await DbService.updateSettings({ discountCoupons: coupons });
-  window.fetchAdminCoupons();
+  const valInput = document.getElementById('couponValue');
+  if (c.type === 'FREE_DELIVERY' || c.freeDelivery) {
+    valInput.value = '0';
+  } else {
+    valInput.value = c.discountPercent || c.discountFlat || '';
+  }
+
+  document.getElementById('couponMinAmount').value = c.minOrderAmount || 0;
+  document.getElementById('couponActive').checked = c.active !== false;
+
+  handleCouponTypeChange(document.getElementById('couponType').value);
+
+  document.getElementById('couponSubmitBtn').textContent = 'Save Changes';
+  document.getElementById('couponCancelBtn').style.display = 'block';
 };
 
 window.deleteCoupon = async function (index) {
   const coupons = adminSettings.discountCoupons || [];
-  if (!coupons[index]) return;
+  const c = coupons[index];
+  if (!c) return;
 
-  if (!confirm(`Are you sure you want to delete coupon code "${coupons[index].code}"?`)) return;
-
-  coupons.splice(index, 1);
-  adminSettings.discountCoupons = coupons;
-  
-  await DbService.updateSettings({ discountCoupons: coupons });
-  window.fetchAdminCoupons();
-};
-
-window.handleSaveCouponSubmit = async function (e) {
-  e.preventDefault();
-  
-  const editIndexStr = document.getElementById('couponEditIndex').value;
-  const code = document.getElementById('couponCode').value.trim().toUpperCase();
-  const type = document.getElementById('couponType').value;
-  const val = Number(document.getElementById('couponValue').value);
-  const minOrder = Number(document.getElementById('couponMinOrder').value || 0);
-  const active = document.getElementById('couponActive').checked;
-
-  if (!code) {
-    alert("Please enter a coupon code!");
+  if (!confirm(`Are you sure you want to delete coupon ${c.code}?`)) {
     return;
   }
 
-  const coupons = adminSettings.discountCoupons || [];
-  
-  const couponObj = {
-    code,
-    type,
-    minOrderAmount: minOrder,
-    active
-  };
+  const updatedCoupons = coupons.filter((_, i) => i !== index);
+  adminSettings.discountCoupons = updatedCoupons;
 
-  if (type === 'PERCENTAGE') {
-    couponObj.discountPercent = val;
-    couponObj.value = val;
-  } else if (type === 'FLAT') {
-    couponObj.discountFlat = val;
-    couponObj.value = val;
-  } else {
-    couponObj.discountPercent = 0;
-    couponObj.discountFlat = 0;
-    couponObj.value = 0;
-  }
-
-  if (editIndexStr !== '') {
-    const idx = parseInt(editIndexStr);
-    coupons[idx] = couponObj;
-  } else {
-    if (coupons.some(c => c.code === code)) {
-      alert(`Coupon code "${code}" already exists!`);
-      return;
-    }
-    coupons.push(couponObj);
-  }
-
-  adminSettings.discountCoupons = coupons;
-  
   try {
-    await DbService.updateSettings({ discountCoupons: coupons });
-    window.closeCouponModal();
-    window.fetchAdminCoupons();
-    alert("✅ Coupon saved successfully!");
+    await DbService.updateSettings(adminSettings);
+    alert('❌ Coupon deleted successfully!');
+    resetCouponForm();
+    renderCouponsList();
   } catch (err) {
-    alert(`Error saving coupon: ${err.message}`);
+    alert(`Failed to delete coupon: ${err.message}`);
   }
 };
 
-// ---------------------------------------------------------
-// 11. FEATURED PRODUCTS SELECTION & Persist to products collection
-// ---------------------------------------------------------
-let adminFeaturedProductsList = [];
+window.resetCouponForm = function () {
+  document.getElementById('couponFormTitle').textContent = '➕ Create New Coupon';
+  document.getElementById('couponEditIndex').value = '';
+  document.getElementById('couponForm').reset();
+  
+  handleCouponTypeChange('PERCENT');
 
-window.fetchAdminFeaturedProducts = async function () {
-  const tableBody = document.getElementById('featuredTableBody');
-  if (!tableBody) return;
-
-  try {
-    adminFeaturedProductsList = await DbService.retrieveAndSaveFirestoreProductsLocally();
-    adminFeaturedProductsList.sort((a, b) => (a.productName || '').localeCompare(b.productName || ''));
-    
-    // Extract unique categories and brands
-    const categories = [...new Set(adminFeaturedProductsList.map(p => p.category).filter(Boolean))].sort();
-    const brands = [...new Set(adminFeaturedProductsList.map(p => p.brand).filter(Boolean))].sort();
-    
-    const catSelect = document.getElementById('featuredSourceCategory');
-    if (catSelect) {
-      catSelect.innerHTML = categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-    }
-    const brandSelect = document.getElementById('featuredSourceBrand');
-    if (brandSelect) {
-      brandSelect.innerHTML = brands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
-    }
-
-    // Set configured values
-    const mode = adminSettings.featuredSourceMode || 'MANUAL';
-    const modeRadios = document.getElementsByName('featuredMode');
-    modeRadios.forEach(r => {
-      if (r.value === mode) r.checked = true;
-    });
-
-    if (adminSettings.featuredSourceCategory && catSelect) {
-      catSelect.value = adminSettings.featuredSourceCategory;
-    }
-    if (adminSettings.featuredSourceBrand && brandSelect) {
-      brandSelect.value = adminSettings.featuredSourceBrand;
-    }
-
-    window.handleFeaturedModeChange();
-    
-    window.renderAdminFeaturedProductsList();
-  } catch (err) {
-    tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Failed to load products: ${err.message}</td></tr>`;
-  }
+  document.getElementById('couponSubmitBtn').textContent = 'Create Coupon';
+  document.getElementById('couponCancelBtn').style.display = 'none';
 };
 
-window.renderAdminFeaturedProductsList = function (filteredList = null) {
-  const tableBody = document.getElementById('featuredTableBody');
-  if (!tableBody) return;
+// ---------------------------------------------------------
+// FEATURED PRODUCTS SELECTION TABS & FILTERS FOR ADMIN
+// ---------------------------------------------------------
+window.populateFeaturedFilters = function () {
+  const catSelect = document.getElementById('filterFeaturedCat');
+  const brandSelect = document.getElementById('filterFeaturedBrand');
+  if (!catSelect || !brandSelect) return;
 
-  const list = filteredList || adminFeaturedProductsList;
+  // Extract unique categories and brands from current products
+  const uniqueCats = [...new Set(adminProducts.map(p => p.category).filter(Boolean))].sort();
+  const uniqueBrands = [...new Set(adminProducts.map(p => p.brand).filter(Boolean))].sort();
+
+  // Keep "All" and append dynamically loaded options
+  catSelect.innerHTML = '<option value="all">All Categories</option>' + 
+    uniqueCats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+
+  brandSelect.innerHTML = '<option value="all">All Brands</option>' + 
+    uniqueBrands.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+};
+
+window.filterAdminFeaturedList = function () {
+  const searchInput = document.getElementById('searchFeaturedInput');
+  const catSelect = document.getElementById('filterFeaturedCat');
+  const brandSelect = document.getElementById('filterFeaturedBrand');
+  const countLabel = document.getElementById('featuredCountLabel');
+
+  const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+  const activeCat = catSelect ? catSelect.value : 'all';
+  const activeBrand = brandSelect ? brandSelect.value : 'all';
+
+  let filtered = [...adminProducts];
+
+  // Apply search query
+  if (q) {
+    filtered = filtered.filter(p => 
+      (p.productName || '').toLowerCase().includes(q) ||
+      (p.productSpec || '').toLowerCase().includes(q) ||
+      (p.id || '').toLowerCase().includes(q)
+    );
+  }
+
+  // Apply category filter
+  if (activeCat !== 'all') {
+    filtered = filtered.filter(p => (p.category || '').toLowerCase() === activeCat.toLowerCase());
+  }
+
+  // Apply brand filter
+  if (activeBrand !== 'all') {
+    filtered = filtered.filter(p => (p.brand || '').toLowerCase() === activeBrand.toLowerCase());
+  }
+
+  if (countLabel) {
+    countLabel.textContent = `Showing ${filtered.length} of ${adminProducts.length} products`;
+  }
+
+  renderAdminFeaturedTable(filtered);
+};
+
+function renderAdminFeaturedTable(list) {
+  const tbody = document.getElementById('adminFeaturedTableBody');
+  if (!tbody) return;
+
   if (!list.length) {
-    tableBody.innerHTML = `
+    tbody.innerHTML = `
       <tr>
-        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 24px;">
-          🔍 No products found.
-        </td>
-      </tr>`;
+        <td colspan="5" style="text-align: center; padding: 30px; color: var(--text-muted);">No matching products found.</td>
+      </tr>
+    `;
     return;
   }
 
-  tableBody.innerHTML = list.map(p => {
-    const isFeatured = p.featured === true || p.isFeatured === true;
+  tbody.innerHTML = list.map(p => {
+    const isFeatured = p.isFeatured === true;
     return `
-      <tr style="border-bottom: 1px solid var(--border-color);">
-        <td style="padding: 10px 8px;">
-          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/cctv-wholesale.webp'" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+      <tr style="border-bottom: 1px solid var(--border-color); hover: background-color #f8fafc;">
+        <td style="padding: 8px;">
+          <img src="${p.photoLink}" alt="" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-color);" onerror="this.src='images/logo.webp'">
         </td>
-        <td style="padding: 10px 8px; font-weight: 700; color: var(--text-dark);">${escapeHtml(p.productName)}</td>
-        <td style="padding: 10px 8px;">${escapeHtml(p.brand || 'N/A')}</td>
-        <td style="padding: 10px 8px;">${escapeHtml(p.category || 'N/A')}</td>
-        <td style="padding: 10px 8px; text-align: center;">
-          <input type="checkbox" ${isFeatured ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;" onchange="toggleProductFeatured('${p.id}', this)">
+        <td style="padding: 8px;">
+          <div style="font-weight: 700; color: var(--text-dark);">${escapeHtml(p.productName)}</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-family: monospace;">ID: ${escapeHtml(p.id)}</div>
+        </td>
+        <td style="padding: 8px; color: var(--text-muted); font-weight: 700;">${escapeHtml(p.category || 'N/A')}</td>
+        <td style="padding: 8px; color: var(--accent-cyan); font-weight: 700;">${escapeHtml(p.brand || 'N/A')}</td>
+        <td style="padding: 8px; text-align: center;">
+          <input type="checkbox" 
+                 class="featured-checkbox" 
+                 ${isFeatured ? 'checked' : ''} 
+                 onchange="toggleProductFeatured('${p.id}', this)" 
+                 style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-cyan);">
         </td>
       </tr>
     `;
   }).join('');
-};
+}
 
-window.filterAdminFeaturedProducts = function () {
-  const query = document.getElementById('featuredSearchInput').value.toLowerCase().trim();
-  if (!query) {
-    window.renderAdminFeaturedProductsList(adminFeaturedProductsList);
-    return;
-  }
-
-  const tokens = query.split(/\s+/);
-  const filtered = adminFeaturedProductsList.filter(p => {
-    const text = `${p.productName} ${p.brand} ${p.category}`.toLowerCase();
-    return tokens.every(t => text.includes(t));
-  });
-
-  window.renderAdminFeaturedProductsList(filtered);
-};
-
-window.toggleProductFeatured = async function (productId, checkboxEl) {
-  const isChecked = checkboxEl.checked;
-  
-  const prod = adminFeaturedProductsList.find(p => String(p.id) === String(productId));
-  if (prod) {
-    prod.featured = isChecked;
-    prod.isFeatured = isChecked;
-  }
+window.toggleProductFeatured = async function (productId, checkbox) {
+  const isChecked = checkbox.checked;
+  const originalLabel = document.getElementById('featuredCountLabel');
+  const originalText = originalLabel ? originalLabel.textContent : '';
 
   try {
-    await DbService.updateProduct(productId, { 
-      featured: isChecked,
-      isFeatured: isChecked
+    if (originalLabel) originalLabel.textContent = '💾 Saving status...';
+    checkbox.disabled = true;
+
+    const res = await fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isFeatured: isChecked })
     });
-    console.log(`Product ${productId} featured toggled to ${isChecked}`);
-  } catch (err) {
-    checkboxEl.checked = !isChecked;
-    if (prod) {
-      prod.featured = !isChecked;
-      prod.isFeatured = !isChecked;
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || 'Failed to update product featured status');
     }
-    alert(`Error updating featured product status: ${err.message}`);
-  }
-};
 
-window.handleFeaturedModeChange = function () {
-  const mode = document.querySelector('input[name="featuredMode"]:checked')?.value || 'MANUAL';
-  const catGroup = document.getElementById('featuredCategorySelectGroup');
-  const brandGroup = document.getElementById('featuredBrandSelectGroup');
-  
-  if (!catGroup || !brandGroup) return;
+    // Update in-memory cache
+    const p = adminProducts.find(item => item.id === productId);
+    if (p) p.isFeatured = isChecked;
 
-  if (mode === 'CATEGORY') {
-    catGroup.style.display = 'flex';
-    brandGroup.style.display = 'none';
-  } else if (mode === 'BRAND') {
-    catGroup.style.display = 'none';
-    brandGroup.style.display = 'flex';
-  } else {
-    catGroup.style.display = 'none';
-    brandGroup.style.display = 'none';
-  }
-};
-
-window.saveFeaturedSourceSettings = async function () {
-  const mode = document.querySelector('input[name="featuredMode"]:checked')?.value || 'MANUAL';
-  const cat = document.getElementById('featuredSourceCategory')?.value || '';
-  const brand = document.getElementById('featuredSourceBrand')?.value || '';
-
-  const payload = {
-    featuredSourceMode: mode,
-    featuredSourceCategory: cat,
-    featuredSourceBrand: brand
-  };
-
-  try {
-    await DbService.updateSettings(payload);
-    Object.assign(adminSettings, payload);
-    alert("✅ Featured source configuration saved successfully!");
+    if (originalLabel) {
+      originalLabel.textContent = '✅ Saved! Static storefront pages auto-regenerated.';
+      setTimeout(() => {
+        if (originalLabel) originalLabel.textContent = originalText;
+      }, 2000);
+    }
   } catch (err) {
-    alert(`Error saving configuration: ${err.message}`);
+    alert(`Error updating product: ${err.message}`);
+    checkbox.checked = !isChecked; // revert state
+    if (originalLabel) originalLabel.textContent = originalText;
+  } finally {
+    checkbox.disabled = false;
   }
 };

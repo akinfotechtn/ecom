@@ -138,87 +138,11 @@ function renderCategoryScrollRow() {
   `).join('');
 }
 
-function renderFeaturedProducts() {
-  const grid = document.getElementById('featuredProductGrid');
-  const section = document.getElementById('featuredSection');
-  if (!grid || !section) return;
-
-  const mode = storeSettings.featuredSourceMode || 'MANUAL';
-  let featured = [];
-  if (mode === 'CATEGORY') {
-    const targetCat = (storeSettings.featuredSourceCategory || '').toLowerCase();
-    featured = allProducts.filter(p => p.category?.toLowerCase() === targetCat);
-  } else if (mode === 'BRAND') {
-    const targetBrand = (storeSettings.featuredSourceBrand || '').toLowerCase();
-    featured = allProducts.filter(p => p.brand?.toLowerCase() === targetBrand);
-  } else {
-    featured = allProducts.filter(p => p.featured === true || p.isFeatured === true);
-  }
-  if (!featured.length) {
-    section.style.display = 'none';
-  } else {
-    section.style.display = 'block';
-    grid.innerHTML = featured.map(p => {
-      const basePrice = p.sellingPrice || 0;
-      const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : (storeSettings.defaultGstPercent !== undefined ? storeSettings.defaultGstPercent : 18);
-      const gstAmount = Math.round((basePrice * gstRate) / 100);
-      const priceWithGst = basePrice + gstAmount;
-      const savings = p.price > priceWithGst ? Math.round(((p.price - priceWithGst) / p.price) * 100) : 0;
-      const isAvailable = p.inStock !== false;
-      const inCartItem = cart.find(i => String(i.id) === String(p.id));
-      const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
-
-      return `
-        <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
-          <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
-            <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
-            <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
-            ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
-            ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
-          </a>
-          <div class="product-body">
-            <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
-
-            <div class="price-row">
-              <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
-              ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
-              ${savings > 0 ? `<span class="discount-tag">${savings}% OFF</span>` : ''}
-            </div>
-
-            <div class="card-actions">
-              ${!isAvailable ? `
-                <button class="btn-add-cart" disabled style="background:#cbd5e1; cursor:not-allowed; opacity:0.8;">
-                  🚫 Out of Stock
-                </button>
-              ` : (cartQty > 0 ? `
-                <div class="card-cart-qty-wrap">
-                  <div class="card-qty-stepper">
-                    <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', -1)">-</button>
-                    <span class="card-qty-count">${cartQty}</span>
-                    <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', 1)">+</button>
-                  </div>
-                  <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
-                    🛒 View Cart
-                  </button>
-                </div>
-              ` : `
-                <button class="btn-add-cart" onclick="addToCart('${p.id}')">
-                  🛒 Add to Cart
-                </button>
-              `)}
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
 async function fetchProducts() {
   try {
     allProducts = await DbService.getProducts();
-    renderFeaturedProducts();
     renderCatalog();
+    renderFeaturedProducts();
     if (allProducts.length) {
       DbService.injectProductSEO(allProducts[0]);
     }
@@ -561,21 +485,12 @@ function renderCart() {
 
   let discountAmount = 0;
   if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
-    const type = appliedCoupon.type;
-    if (type === 'FREE_DELIVERY') {
+    if (appliedCoupon.discountPercent) {
+      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
+    } else if (appliedCoupon.discountFlat) {
+      discountAmount = appliedCoupon.discountFlat;
+    } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
       deliveryFee = 0;
-      discountAmount = 0;
-    } else if (type === 'FLAT') {
-      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
-    } else if (type === 'PERCENTAGE') {
-      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
-      discountAmount = Math.round((subtotalWithGst * pct) / 100);
-    } else {
-      if (appliedCoupon.discountPercent) {
-        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
-      } else if (appliedCoupon.discountFlat) {
-        discountAmount = Number(appliedCoupon.discountFlat);
-      }
     }
   }
 
@@ -635,7 +550,6 @@ function renderCart() {
   }
 
   renderPromoChips();
-  if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
 }
 
 function getItemPriceWithGst(item, settings = storeSettings) {
@@ -771,24 +685,14 @@ async function handleCheckoutSubmit(e) {
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
   let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
-  const subtotalWithGst = subtotal + gstAmount;
   let discountAmount = 0;
-  if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
-    const type = appliedCoupon.type;
-    if (type === 'FREE_DELIVERY') {
+  if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
+    if (appliedCoupon.discountPercent) {
+      discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
+    } else if (appliedCoupon.discountFlat) {
+      discountAmount = appliedCoupon.discountFlat;
+    } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
       deliveryFee = 0;
-      discountAmount = 0;
-    } else if (type === 'FLAT') {
-      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
-    } else if (type === 'PERCENTAGE') {
-      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
-      discountAmount = Math.round((subtotalWithGst * pct) / 100);
-    } else {
-      if (appliedCoupon.discountPercent) {
-        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
-      } else if (appliedCoupon.discountFlat) {
-        discountAmount = Number(appliedCoupon.discountFlat);
-      }
     }
   }
 
@@ -1272,4 +1176,104 @@ window.applySearchFromDropdown = function (q) {
   closeSearchDropdown();
   const catalogSection = document.getElementById('catalogSection') || document.getElementById('productsGrid');
   if (catalogSection) catalogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+// ---------------------------------------------------------
+// HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
+// ---------------------------------------------------------
+let activeFeaturedCategory = 'all';
+
+window.filterFeatured = function (category, btn) {
+  activeFeaturedCategory = category;
+  
+  // Update active pill button style
+  const buttons = document.querySelectorAll('#featuredFilters .pill-btn');
+  buttons.forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  
+  renderFeaturedProducts();
+};
+
+window.renderFeaturedProducts = function () {
+  const grid = document.getElementById('featuredGrid');
+  const section = document.getElementById('featuredSection');
+  if (!grid || !section) return;
+
+  // Filter products by isFeatured flag
+  let featuredList = (allProducts || []).filter(p => p.isFeatured === true);
+
+  if (!featuredList.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  // Show the featured section container
+  section.style.display = 'block';
+
+  // Apply sub-category filter inside featured products list
+  if (activeFeaturedCategory !== 'all') {
+    featuredList = featuredList.filter(p => p.category?.toLowerCase() === activeFeaturedCategory.toLowerCase());
+  }
+
+  if (!featuredList.length) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">No featured items found in "${activeFeaturedCategory}" category.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = featuredList.map(p => {
+    const basePrice = p.sellingPrice || 0;
+    const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : (storeSettings.defaultGstPercent !== undefined ? storeSettings.defaultGstPercent : 18);
+    const gstAmount = Math.round((basePrice * gstRate) / 100);
+    const priceWithGst = basePrice + gstAmount;
+    const savings = p.price > priceWithGst ? Math.round(((p.price - priceWithGst) / p.price) * 100) : 0;
+    const isAvailable = p.inStock !== false;
+    const inCartItem = cart.find(i => String(i.id) === String(p.id));
+    const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
+
+    return `
+      <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
+        <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
+          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+          <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
+          ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
+          ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
+        </a>
+        <div class="product-body">
+          <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
+
+          <div class="price-row">
+            <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
+            ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
+            ${savings > 0 ? `<span class="discount-tag">${savings}% OFF</span>` : ''}
+          </div>
+
+          <div class="card-actions">
+            ${!isAvailable ? `
+              <button class="btn-add-cart" disabled style="background:#cbd5e1; cursor:not-allowed; opacity:0.8;">
+                🚫 Out of Stock
+              </button>
+            ` : (cartQty > 0 ? `
+              <div class="card-cart-qty-wrap">
+                <div class="card-qty-stepper">
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', -1)">-</button>
+                  <span class="card-qty-count">${cartQty}</span>
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', 1)">+</button>
+                </div>
+                <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
+                  🛒 View Cart
+                </button>
+              </div>
+            ` : `
+              <button class="btn-add-cart" onclick="addToCart('${p.id}')">
+                🛒 Add to Cart
+              </button>
+            `)}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 };

@@ -114,12 +114,25 @@
   </section>
 
   <!-- FEATURED PRODUCTS SECTION -->
-  <section class="featured-section" id="featuredSection" style="display: none; padding: 24px 0 16px; margin: 0 auto; max-width: 1200px; padding-left: 16px; padding-right: 16px; border-bottom: 1px dashed var(--border-color); margin-bottom: 20px;">
+  <section class="featured-section" id="featuredSection" style="padding: 32px 0 24px; background: #f8fafc; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); display: none;">
     <div class="wordart-header-box" style="margin-bottom: 20px;">
-      <span class="wordart-badge" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7;">⭐ TOP PICKS</span>
-      <h2 class="wordart-title">Featured <span class="wordart-gradient-text" style="background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PRODUCTS</span></h2>
+      <span class="wordart-badge">⭐ HANDPICKED BESTSELLERS</span>
+      <h2 class="wordart-title">Featured <span class="wordart-gradient-text">PRODUCTS</span></h2>
     </div>
-    <div class="product-grid" id="featuredProductGrid" style="margin-bottom: 24px;"></div>
+
+    <!-- Filters for Featured Products -->
+    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; padding: 0 16px;" id="featuredFilters">
+      <button class="pill-btn active" onclick="filterFeatured('all', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">All Items</button>
+      <button class="pill-btn" onclick="filterFeatured('CCTV Camera', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">CCTV Cameras</button>
+      <button class="pill-btn" onclick="filterFeatured('DVR & NVR', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">DVR & NVR</button>
+      <button class="pill-btn" onclick="filterFeatured('Printers', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">Printers</button>
+      <button class="pill-btn" onclick="filterFeatured('Security Systems', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">Security Systems</button>
+      <button class="pill-btn" onclick="filterFeatured('Accessories', this)" style="font-weight: 800; font-size: 0.82rem; padding: 6px 18px; border-radius: 20px;">Accessories</button>
+    </div>
+
+    <div class="product-grid" id="featuredGrid">
+      <!-- Dynamic featured products mapping -->
+    </div>
   </section>
 
   <!-- 2. TRUST BADGES STRIP WITH LIGHT BACKGROUND COLORS -->

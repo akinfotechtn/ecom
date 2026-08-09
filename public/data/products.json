@@ -10441,6 +10441,7 @@
     "baseSellingPrice": 10900,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": true
   }
 ]

@@ -412,37 +412,13 @@ export class DbService {
 
   static async updateProduct(id, productData) {
     try {
-      const local = localStorage.getItem('ak_local_products');
-      if (local) {
-        const parsed = JSON.parse(local);
-        const index = parsed.findIndex(p => String(p.id) === String(id));
-        if (index > -1) {
-          parsed[index] = { ...parsed[index], ...productData };
-          localStorage.setItem('ak_local_products', JSON.stringify(parsed));
-        }
-      }
-    } catch (e) { }
-
-    if (this._cachedProducts) {
-      const index = this._cachedProducts.findIndex(p => String(p.id) === String(id));
-      if (index > -1) {
-        this._cachedProducts[index] = { ...this._cachedProducts[index], ...productData };
-      }
-    }
-
-    try {
       await setDoc(doc(db, "products", id), productData, { merge: true });
     } catch (err) {
-      console.warn("Firestore product update failed:", err);
-    }
-    try {
       await fetch(`/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData)
       });
-    } catch (err) {
-      console.warn("Local product API update failed:", err);
     }
   }
 
