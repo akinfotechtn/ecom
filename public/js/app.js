@@ -595,13 +595,50 @@ function renderPromoChips() {
   }
 }
 
-window.autoApplyCoupon = function(code) {
+window.applyCartCoupon = function(code) {
   const inputEl = document.getElementById('cartCouponInput');
-  const btnEl = document.getElementById('applyCartCouponBtn');
-  if (inputEl && btnEl) {
-    inputEl.value = code;
-    btnEl.click();
+  const msgEl = document.getElementById('cartPromoMsg');
+  if (!code) code = inputEl ? inputEl.value.trim().toUpperCase() : '';
+  
+  if (!code) {
+    if (msgEl) {
+      msgEl.style.display = 'block';
+      msgEl.style.color = '#ef4444';
+      msgEl.innerHTML = 'Please enter a coupon code!';
+    }
+    return;
   }
+  const found = storeSettings.discountCoupons?.find(c => c.code === code);
+  if (found) {
+    appliedCoupon = found;
+    if (msgEl) {
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--accent-green)';
+      msgEl.innerHTML = `Coupon <b>${code}</b> applied! <button type="button" onclick="removeCartCoupon()" style="background:none; border:none; color:#ef4444; font-weight:800; cursor:pointer; font-size:0.75rem; margin-left:8px; padding:2px 6px; background:#fee2e2; border-radius:4px;">✕ Remove</button>`;
+    }
+    if (inputEl) inputEl.value = code;
+  } else {
+    appliedCoupon = null;
+    if (msgEl) {
+      msgEl.style.display = 'block';
+      msgEl.style.color = '#ef4444';
+      msgEl.innerHTML = 'Invalid coupon code!';
+    }
+  }
+  renderCart();
+};
+
+window.removeCartCoupon = function() {
+  appliedCoupon = null;
+  const inputEl = document.getElementById('cartCouponInput');
+  const msgEl = document.getElementById('cartPromoMsg');
+  if (inputEl) inputEl.value = '';
+  if (msgEl) msgEl.style.display = 'none';
+  renderCart();
+};
+
+window.autoApplyCoupon = function(code) {
+  window.applyCartCoupon(code);
 };
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {
@@ -895,34 +932,7 @@ function setupEventListeners() {
   const applyCartCouponBtn = document.getElementById('applyCartCouponBtn');
   if (applyCartCouponBtn) {
     applyCartCouponBtn.addEventListener('click', () => {
-      const inputEl = document.getElementById('cartCouponInput');
-      const msgEl = document.getElementById('cartPromoMsg');
-      const code = inputEl ? inputEl.value.trim().toUpperCase() : '';
-      if (!code) {
-        if (msgEl) {
-          msgEl.style.display = 'block';
-          msgEl.style.color = '#ef4444';
-          msgEl.textContent = 'Please enter a coupon code!';
-        }
-        return;
-      }
-      const found = storeSettings.discountCoupons?.find(c => c.code === code);
-      if (found) {
-        appliedCoupon = found;
-        if (msgEl) {
-          msgEl.style.display = 'block';
-          msgEl.style.color = 'var(--accent-green)';
-          msgEl.textContent = `Coupon ${code} applied successfully!`;
-        }
-      } else {
-        appliedCoupon = null;
-        if (msgEl) {
-          msgEl.style.display = 'block';
-          msgEl.style.color = '#ef4444';
-          msgEl.textContent = 'Invalid coupon code!';
-        }
-      }
-      renderCart();
+      window.applyCartCoupon();
     });
   }
 
