@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AK Infotech | CCTV Security Systems, Cameras & IT Solutions</title>
+  <title>Shopping Cart - AK Info Ecom</title>
   <meta name="description"
     content="Authorized Wholesale & Retail Security Systems Distributor. Shop 4K CCTV Cameras, DVR/NVR, Wireless Cameras, Biometrics, PoE Switches & Combo Packs. Fast Delivery via Shiprocket & COD Available.">
 
@@ -144,71 +144,7 @@
         
         <!-- CHECKOUT OPTIONS / FORM -->
         <div id="checkoutAuthChoice" style="margin-top: 30px;">
-          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">Proceed to Checkout</h3>
-          <button class="btn-checkout" onclick="checkoutWithGoogle()" style="background: #2563eb !important; margin-bottom: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; box-shadow: none;">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width: 20px; height: 20px; background: white; border-radius: 50%; padding: 2px;">
-            <span>Sign In & Checkout</span>
-          </button>
-          <button class="btn-checkout" onclick="checkoutAsGuest()" style="background: #f1f5f9 !important; color: var(--text-dark) !important; border: 1px solid var(--border-color) !important; box-shadow: none !important; width: 100%;">
-            Continue as Guest
-          </button>
-        </div>
-        
-        <!-- THE ACTUAL FORM (Hidden initially) -->
-        <div id="checkoutFormContainer" style="display: none; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 16px;">Delivery Details</h3>
-          
-          <div id="savedAddressGroup" style="display: none; margin-bottom: 16px; background: #f0f9ff; border: 1px solid #bae6fd; padding: 12px; border-radius: var(--radius-md);">
-            <label style="font-size: 0.82rem; font-weight: 700; color: var(--accent-cyan); display: block; margin-bottom: 6px;">📍 Select Saved Address</label>
-            <select id="savedAddressSelect" style="width: 100%; padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.88rem;"></select>
-          </div>
-          
-          <form id="mainCheckoutForm">
-            <div class="form-group">
-              <label>Full Name *</label>
-              <input type="text" id="custName" required placeholder="John Doe">
-            </div>
-            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div class="form-group">
-                <label>Phone *</label>
-                <input type="tel" id="custPhone" required placeholder="9876543210">
-              </div>
-              <div class="form-group">
-                <label>Pincode *</label>
-                <input type="text" id="custPincode" required placeholder="600001">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Delivery Address *</label>
-              <textarea id="custAddress" required placeholder="House No, Street, Landmark" rows="3"></textarea>
-            </div>
-            
-            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 20px 0 12px;">Payment Method</h3>
-            <div class="payment-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-              <div class="payment-option-card selected" id="optOnline" onclick="selectPaymentMethod('ONLINE')" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; text-align: center;">
-                <div style="font-size: 1.5rem; margin-bottom: 6px;">💳</div>
-                <div style="font-weight: 700; font-size: 0.9rem;">Pay Online</div>
-                <div style="font-size: 0.7rem; color: var(--text-muted);">UPI, Cards, NetBanking</div>
-              </div>
-              <div class="payment-option-card" id="optCOD" onclick="selectPaymentMethod('COD')" style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; text-align: center;">
-                <div style="font-size: 1.5rem; margin-bottom: 6px;">🚚</div>
-                <div style="font-weight: 700; font-size: 0.9rem;">Cash on Delivery</div>
-                <div style="font-size: 0.7rem; color: var(--text-muted);">Pay ₹1,000 Advance</div>
-              </div>
-            </div>
-            
-            <div id="codAdvanceBanner" style="display: none; background: #fff7ed; border: 1px solid #fed7aa; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 0.82rem; color: #9a3412;">
-              <div style="font-weight: 800; margin-bottom: 4px;">⚡ COD Terms:</div>
-              <div>
-                👉 Paid Now (Advance): <span style="color: var(--accent-cyan);">₹1,000</span><br>
-                👉 Payable to Courier: <span style="color: var(--accent-green);" id="codBalanceText">₹0</span>
-              </div>
-            </div>
-            
-            <button type="submit" class="btn-checkout" id="payOrderSubmitBtn" style="width: 100%;">
-              Pay & Place Order →
-            </button>
-          </form>
+          <a href="checkout.html" class="btn-checkout" style="width: 100%; display: block; text-align: center; text-decoration: none; padding: 14px; font-size: 1.1rem; box-sizing: border-box;">Proceed to Checkout →</a>
         </div>
       </div>
     </div>

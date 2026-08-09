@@ -1228,7 +1228,7 @@ window.applySearchFromDropdown = function (q) {
 // HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
 // ---------------------------------------------------------
 window.openCartDrawer = function () {
-  window.location.href = DbService.getLinkPrefix() + 'checkout.html';
+  window.location.href = DbService.getLinkPrefix() + 'cart.html';
 };
 
 window.renderFeaturedProducts = function () {

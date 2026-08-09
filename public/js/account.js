@@ -535,7 +535,7 @@ function setupEventListeners() {
         alert('Your cart is empty!');
         return;
       }
-      window.location.href = DbService.getLinkPrefix() + 'checkout.html';
+      window.location.href = DbService.getLinkPrefix() + 'cart.html';
     });
   }
 }
