@@ -1138,7 +1138,8 @@ window.saveAdminCoupon = async function (e) {
     adminSettings.discountCoupons.push(newCoupon);
   }
 
-  await _persistSettings("Coupon saved successfully!");
+  await DbService.updateSettings(adminSettings);
+  alert("Coupon saved successfully!");
   document.getElementById('couponForm').reset();
   renderCouponsList();
 };
@@ -1147,7 +1148,8 @@ window.deleteAdminCoupon = async function (code) {
   if (!confirm(`Are you sure you want to delete coupon ${code}?`)) return;
   
   adminSettings.discountCoupons = (adminSettings.discountCoupons || []).filter(c => c.code !== code);
-  await _persistSettings(`Coupon ${code} deleted!`);
+  await DbService.updateSettings(adminSettings);
+  alert(`Coupon ${code} deleted!`);
   renderCouponsList();
 };
 
@@ -2524,6 +2526,7 @@ window.saveCoupon = async function (e) {
   const valueInput = document.getElementById('couponValue');
   const minAmountInput = document.getElementById('couponMinAmount');
   const activeChk = document.getElementById('couponActive');
+  const showInCartChk = document.getElementById('couponShowInCart');
   const editIdxInput = document.getElementById('couponEditIndex');
 
   const code = codeInput.value.trim().toUpperCase().replace(/\s+/g, '');
@@ -2531,6 +2534,7 @@ window.saveCoupon = async function (e) {
   const val = Number(valueInput.value) || 0;
   const minAmount = Number(minAmountInput.value) || 0;
   const active = activeChk.checked;
+  const showInCart = showInCartChk ? showInCartChk.checked : true;
   const editIdx = editIdxInput.value;
 
   if (!code) {
@@ -2545,7 +2549,8 @@ window.saveCoupon = async function (e) {
     code,
     type,
     minOrderAmount: minAmount,
-    active
+    active,
+    showInCart
   };
 
   if (type === 'PERCENT') {
@@ -2620,6 +2625,9 @@ window.editCoupon = function (index) {
 
   document.getElementById('couponMinAmount').value = c.minOrderAmount || 0;
   document.getElementById('couponActive').checked = c.active !== false;
+  
+  const showInCartChk = document.getElementById('couponShowInCart');
+  if (showInCartChk) showInCartChk.checked = c.showInCart !== false;
 
   handleCouponTypeChange(document.getElementById('couponType').value);
 
@@ -2653,6 +2661,9 @@ window.resetCouponForm = function () {
   document.getElementById('couponFormTitle').textContent = '➕ Create New Coupon';
   document.getElementById('couponEditIndex').value = '';
   document.getElementById('couponForm').reset();
+  
+  const showInCartChk = document.getElementById('couponShowInCart');
+  if (showInCartChk) showInCartChk.checked = true;
   
   handleCouponTypeChange('PERCENT');
 

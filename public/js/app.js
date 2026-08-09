@@ -582,7 +582,7 @@ function renderPromoChips() {
   const container = document.querySelector('.coupon-quick-chips');
   if (!container) return;
 
-  const activeCoupons = (storeSettings.discountCoupons || []).filter(c => c.active !== false);
+  const activeCoupons = (storeSettings.discountCoupons || []).filter(c => c.showInCart === true);
   if (!activeCoupons.length) {
     container.style.display = 'none';
   } else {
@@ -594,6 +594,15 @@ function renderPromoChips() {
     `).join('');
   }
 }
+
+window.autoApplyCoupon = function(code) {
+  const inputEl = document.getElementById('cartCouponInput');
+  const btnEl = document.getElementById('applyCartCouponBtn');
+  if (inputEl && btnEl) {
+    inputEl.value = code;
+    btnEl.click();
+  }
+};
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {
   if (!cartItems || !cartItems.length) return 0;
