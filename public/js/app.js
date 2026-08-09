@@ -496,8 +496,12 @@ function renderCart() {
 
   const finalTotal = Math.max(0, subtotalWithGst + deliveryFee - discountAmount);
 
+  
+  const mrpSubtotal = cart.reduce((sum, item) => sum + (Math.max(Number(item.price) || 0, getItemPriceWithGst(item, (typeof storeSettings !== 'undefined' ? storeSettings : {}))) * (item.quantity || item.qty || 1)), 0);
+  const mrpDiscount = Math.max(0, mrpSubtotal - subtotalWithGst);
+
   const subtotalEl = document.getElementById('cartSubtotal');
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
+  if (subtotalEl) subtotalEl.textContent = `₹${mrpSubtotal.toLocaleString('en-IN')}`;
 
   const gstEl = document.getElementById('cartGstAmount');
   if (gstEl) gstEl.style.display = 'none';
@@ -518,14 +522,36 @@ function renderCart() {
     }
   }
 
+  
   const discountRow = document.getElementById('discountRow');
   if (discountRow) {
-    if (discountAmount > 0) {
+    if (mrpDiscount > 0) {
       discountRow.style.display = 'flex';
+      const firstSpan = discountRow.querySelector('span:first-child');
+      if (firstSpan) firstSpan.textContent = 'Discount';
       const discEl = document.getElementById('cartDiscount');
-      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+      if (discEl) discEl.textContent = `-₹${mrpDiscount.toLocaleString('en-IN')}`;
     } else {
       discountRow.style.display = 'none';
+    }
+  }
+
+  let promoRow = document.getElementById('promoDiscountRow');
+  if (!promoRow && discountRow && discountRow.parentNode) {
+    promoRow = document.createElement('div');
+    promoRow.className = 'cart-summary-row';
+    promoRow.id = 'promoDiscountRow';
+    promoRow.style.color = 'var(--accent-green)';
+    promoRow.innerHTML = `<span>Promo Discount</span><span id="cartPromoDiscount">-₹0</span>`;
+    discountRow.after(promoRow);
+  }
+  if (promoRow) {
+    if (discountAmount > 0) {
+      promoRow.style.display = 'flex';
+      const pDiscEl = document.getElementById('cartPromoDiscount');
+      if (pDiscEl) pDiscEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+    } else {
+      promoRow.style.display = 'none';
     }
   }
 
@@ -674,7 +700,8 @@ function calculateCartDeliveryFee(cartItems, settings, categories = []) {
   return maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
 }
 
-window.autoApplyCoupon = function (code) {
+// Fix: Checkout autoApplyCoupon renamed to avoid conflict
+window.autoApplyCheckoutCoupon = function (code) {
   const input = document.getElementById('couponCodeInput');
   if (input) {
     input.value = code;

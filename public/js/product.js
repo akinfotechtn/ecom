@@ -368,8 +368,12 @@ function renderCart() {
 
   const finalTotal = Math.max(0, subtotalWithGst + deliveryFee - discountAmount);
 
+  
+  const mrpSubtotal = cart.reduce((sum, item) => sum + (Math.max(Number(item.price) || 0, getItemPriceWithGst(item, (typeof storeSettings !== 'undefined' ? storeSettings : {}))) * (item.quantity || item.qty || 1)), 0);
+  const mrpDiscount = Math.max(0, mrpSubtotal - subtotalWithGst);
+
   const subtotalEl = document.getElementById('cartSubtotal');
-  if (subtotalEl) subtotalEl.textContent = `₹${subtotalWithGst.toLocaleString('en-IN')}`;
+  if (subtotalEl) subtotalEl.textContent = `₹${mrpSubtotal.toLocaleString('en-IN')}`;
 
   const deliveryEl = document.getElementById('cartDelivery');
   if (deliveryEl) {
@@ -387,14 +391,36 @@ function renderCart() {
     }
   }
 
+  
   const discountRow = document.getElementById('discountRow');
   if (discountRow) {
-    if (discountAmount > 0) {
+    if (mrpDiscount > 0) {
       discountRow.style.display = 'flex';
+      const firstSpan = discountRow.querySelector('span:first-child');
+      if (firstSpan) firstSpan.textContent = 'Discount';
       const discEl = document.getElementById('cartDiscount');
-      if (discEl) discEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+      if (discEl) discEl.textContent = `-₹${mrpDiscount.toLocaleString('en-IN')}`;
     } else {
       discountRow.style.display = 'none';
+    }
+  }
+
+  let promoRow = document.getElementById('promoDiscountRow');
+  if (!promoRow && discountRow && discountRow.parentNode) {
+    promoRow = document.createElement('div');
+    promoRow.className = 'cart-summary-row';
+    promoRow.id = 'promoDiscountRow';
+    promoRow.style.color = 'var(--accent-green)';
+    promoRow.innerHTML = `<span>Promo Discount</span><span id="cartPromoDiscount">-₹0</span>`;
+    discountRow.after(promoRow);
+  }
+  if (promoRow) {
+    if (discountAmount > 0) {
+      promoRow.style.display = 'flex';
+      const pDiscEl = document.getElementById('cartPromoDiscount');
+      if (pDiscEl) pDiscEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
+    } else {
+      promoRow.style.display = 'none';
     }
   }
 
@@ -444,7 +470,7 @@ function setupEventListeners() {
         if (msgEl) {
           msgEl.style.display = 'block';
           msgEl.style.color = 'var(--accent-green)';
-          msgEl.textContent = `Coupon ${code} applied successfully!`;
+          msgEl.innerHTML = `Coupon <b>${code}</b> applied! <button type="button" onclick="window.removeCartCoupon()" style="background:none; border:none; color:#ef4444; font-weight:800; cursor:pointer; font-size:0.75rem; margin-left:8px; padding:2px 6px; background:#fee2e2; border-radius:4px;">✕ Remove</button>`;
         }
       } else {
         appliedCoupon = null;
@@ -476,3 +502,13 @@ function escapeHtml(str) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
   });
 }
+
+
+window.removeCartCoupon = function() {
+  if (typeof appliedCoupon !== 'undefined') appliedCoupon = null;
+  const inputEl = document.getElementById('cartCouponInput');
+  const msgEl = document.getElementById('cartPromoMsg');
+  if (inputEl) inputEl.value = '';
+  if (msgEl) msgEl.style.display = 'none';
+  if (typeof renderCart === 'function') renderCart();
+};
