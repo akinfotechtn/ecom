@@ -260,7 +260,7 @@ function renderCategoryCatalog() {
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
-          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
@@ -562,7 +562,7 @@ function renderCart() {
       const itemPriceWithGst = getItemPriceWithGst(item, settings);
       return `
         <div class="cart-item">
-          <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name">${escapeHtml(item.productName)}</div>
             <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>

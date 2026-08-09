@@ -31,18 +31,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shop.akinfotechcctv.in/cart.html</loc>
-    <lastmod>2026-08-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shop.akinfotechcctv.in/checkout.html</loc>
-    <lastmod>2026-08-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://shop.akinfotechcctv.in/privacy.html</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>weekly</changefreq>

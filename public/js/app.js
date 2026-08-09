@@ -119,12 +119,18 @@ function renderBrandLogosStrip() {
     <a href="${DbService.getLinkPrefix()}brand.html?name=All%20Brands" class="brand-logo-card ${activeBrand === '' ? 'active' : ''}" style="text-decoration:none;" title="All Brands">
       <span style="font-weight: 800; font-size: 0.82rem; color: var(--accent-cyan);">ALL BRANDS</span>
     </a>
-  ` + storeBrands.map(b => `
-    <a href="${DbService.getLinkPrefix()}brands/${DbService.slugify(b.name)}.html" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
-      <img src="${b.imageLink || 'images/logo.webp'}" alt="${escapeHtml(b.name)}" onerror="this.src='images/logo.webp'">
-      <span>${escapeHtml(b.name)}</span>
-    </a>
-  `).join('');
+  ` + storeBrands.map(b => {
+    let logoUrl = b.imageLink || 'images/logo.webp';
+    if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+      logoUrl = DbService.getLinkPrefix() + logoUrl;
+    }
+    return `
+      <a href="${DbService.getLinkPrefix()}brands/${DbService.slugify(b.name)}.html" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
+        <img src="${logoUrl}" alt="${escapeHtml(b.name)}" onerror="this.src='${DbService.getLinkPrefix()}images/logo.webp'">
+        <span>${escapeHtml(b.name)}</span>
+      </a>
+    `;
+  }).join('');
 }
 
 function renderCategoryScrollRow() {
@@ -140,12 +146,18 @@ function renderCategoryScrollRow() {
       <div style="font-size: 1.3rem;">🔥</div>
       <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
     </a>
-  ` + storeCategories.map(c => `
-    <a href="${DbService.getLinkPrefix()}categories/${DbService.slugify(c.name)}.html" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
-      <img src="${c.imageLink || 'images/cctv-wholesale.webp'}" alt="${escapeHtml(c.name)}" onerror="this.src='images/cctv-wholesale.webp'">
-      <span>${escapeHtml(c.name)}</span>
-    </a>
-  `).join('');
+  ` + storeCategories.map(c => {
+    let catUrl = c.imageLink || 'images/cctv-wholesale.webp';
+    if (catUrl && !catUrl.startsWith('http') && !catUrl.startsWith('data:')) {
+      catUrl = DbService.getLinkPrefix() + catUrl;
+    }
+    return `
+      <a href="${DbService.getLinkPrefix()}categories/${DbService.slugify(c.name)}.html" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">
+        <img src="${catUrl}" alt="${escapeHtml(c.name)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+        <span>${escapeHtml(c.name)}</span>
+      </a>
+    `;
+  }).join('');
 }
 
 async function fetchProducts() {
@@ -270,7 +282,7 @@ function renderCatalog() {
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
-          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
@@ -469,7 +481,7 @@ function renderCart() {
       const itemPriceWithGst = getItemPriceWithGst(item, storeSettings);
       return `
         <div class="cart-item">
-          <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name">${escapeHtml(item.productName)}</div>
             <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
@@ -1201,7 +1213,7 @@ function renderSearchDropdown(q) {
       const inStock = p.inStock !== false;
       const priceWithGst = getItemPriceWithGst(p, storeSettings);
       return `<a class="search-dropdown-item" href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">
-        <img src="${escapeHtml(p.photoLink || 'images/logo.webp')}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/logo.webp'">
+        <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? escapeHtml(p.photoLink) : (DbService.getLinkPrefix() + escapeHtml(p.photoLink || 'images/logo.webp'))}" alt="${escapeHtml(p.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/logo.webp'">
         <div class="sdi-info">
           <div class="sdi-name">${escapeHtml(p.productName || '')}</div>
           <div class="sdi-brand">${escapeHtml(p.brand || '')}</div>
@@ -1271,7 +1283,7 @@ window.renderFeaturedProducts = function () {
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
-          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}

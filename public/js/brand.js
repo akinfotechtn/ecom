@@ -137,12 +137,15 @@ async function renderBrandCategories() {
 
   availableCatNames.forEach(catName => {
     const catObj = allCategories.find(c => c.name?.toLowerCase() === catName.toLowerCase());
-    const imgUrl = catObj?.imageLink || 'images/cctv-wholesale.webp';
+    let imgUrl = catObj?.imageLink || 'images/cctv-wholesale.webp';
+    if (imgUrl && !imgUrl.startsWith('http') && !imgUrl.startsWith('data:')) {
+      imgUrl = DbService.getLinkPrefix() + imgUrl;
+    }
     const count = brandProducts.filter(p => p.category?.toLowerCase() === catName.toLowerCase()).length;
 
     html += `
       <button class="category-chip" data-cat="${escapeHtml(catName)}" onclick="filterBrandCategory('${escapeHtml(catName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
-        <img src="${imgUrl}" alt="${escapeHtml(catName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #f8fafc; padding: 2px;" onerror="this.src='images/cctv-wholesale.webp'">
+        <img src="${imgUrl}" alt="${escapeHtml(catName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #f8fafc; padding: 2px;" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
         <span>${escapeHtml(catName)} (${count})</span>
       </button>
     `;
@@ -191,7 +194,11 @@ function renderBrandHero() {
   if (catalogTitle) catalogTitle.textContent = `${displayName} Products`;
 
   if (heroLogo) {
-    heroLogo.src = brandInfo?.imageLink || 'images/logo.webp';
+    let logoUrl = brandInfo?.imageLink || 'images/logo.webp';
+    if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+      logoUrl = DbService.getLinkPrefix() + logoUrl;
+    }
+    heroLogo.src = logoUrl;
     heroLogo.alt = displayName;
   }
 
@@ -250,7 +257,7 @@ function renderBrandCatalog() {
     return `
       <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
         <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
-          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
           ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
           ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
@@ -454,7 +461,7 @@ function renderCart() {
       const itemPriceWithGst = getItemPriceWithGst(item, settings);
       return `
         <div class="cart-item">
-          <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name">${escapeHtml(item.productName)}</div>
             <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>

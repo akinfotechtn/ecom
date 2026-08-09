@@ -85,7 +85,7 @@ async function loadProductDetail(idOrProduct) {
 
   detailGrid.innerHTML = `
     <div class="gallery-box">
-      <img src="${currentProduct.photoLink}" alt="${escapeHtml(currentProduct.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+      <img src="${currentProduct.photoLink && (currentProduct.photoLink.startsWith('http') || currentProduct.photoLink.startsWith('data:')) ? currentProduct.photoLink : (DbService.getLinkPrefix() + (currentProduct.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(currentProduct.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
     </div>
     <div class="product-info-box">
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
@@ -169,7 +169,7 @@ async function loadRelatedProducts(category, currentId) {
   container.innerHTML = related.map(p => `
     <div class="product-card">
       <div class="product-image-wrap">
-        <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+        <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
       </div>
       <div class="product-body">
         <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
@@ -329,7 +329,7 @@ function renderCart() {
       const itemPriceWithGst = getItemPriceWithGst(item, settings);
       return `
         <div class="cart-item">
-          <img src="${item.photoLink}" alt="${escapeHtml(item.productName)}" onerror="this.src='images/cctv-wholesale.webp'">
+          <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
           <div class="cart-item-info">
             <div class="cart-item-name">${escapeHtml(item.productName)}</div>
             <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
