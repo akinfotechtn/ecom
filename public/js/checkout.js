@@ -1,293 +1,362 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for app.js to initialize window.cart
-    setTimeout(() => {
-        renderCheckoutCart();
-    }, 500);
-});
+/**
+ * AK Infotech - Shared Cart/Checkout Logic (v2)
+ * Works on both cart.html and checkout.html
+ * Cart items are stored as full product objects:
+ *   item.id, item.productName, item.photoLink,
+ *   item.sellingPrice, item.gstPercent, item.quantity/qty
+ */
 
-// Custom event listener for when cart updates in app.js
-window.addEventListener('cartUpdated', () => {
-    renderCheckoutCart();
-});
+// ─── HELPERS ────────────────────────────────────────────────────────────────
 
-function renderCheckoutCart() {
-    const container = document.getElementById('checkoutCartItems');
+function getCart() {
+    try { return JSON.parse(localStorage.getItem('ak_cart') || '[]'); }
+    catch (e) { return []; }
+}
+
+/**
+ * Save cart ONLY via localStorage. Never call window.saveCart() —
+ * that would overwrite with app.js's stale local `cart` variable.
+ */
+function saveCartData(cartArr) {
+    localStorage.setItem('ak_cart', JSON.stringify(cartArr));
+    // Also update window.cart reference so other scripts stay in sync
+    window.cart = cartArr;
+    // Update the badge count on the page
+    _updateBadge();
+}
+
+function _updateBadge() {
+    const cart = getCart();
+    const total = cart.reduce((s, i) => s + getQty(i), 0);
+    ['cartCount', 'cartItemCount', 'mobileCartCount'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = total;
+    });
+}
+
+function getSettings() {
+    // Use window.storeSettings set by app.js, or sensible defaults
+    return window.storeSettings || { deliveryCharge: 150, freeShippingMinOrder: 3000, discountCoupons: [] };
+}
+
+function getAppliedCoupon() {
+    return window.appliedCoupon || null;
+}
+
+function getItemPrice(item) {
+    const base = Number(item.sellingPrice || item.price || 0);
+    const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
+        ? Number(item.gstPercent) : 18;
+    return base + Math.round((base * gstRate) / 100);
+}
+
+function getQty(item) {
+    return Number(item.quantity || item.qty || 1);
+}
+
+function fmt(n) {
+    return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+// ─── RENDER CART ITEMS ───────────────────────────────────────────────────────
+
+function renderCartItems(containerId, editable) {
+    // Default editable to true
+    if (editable === undefined) editable = true;
+
+    var container = document.getElementById(containerId);
     if (!container) return;
 
-    if (!window.cart || window.cart.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">Your cart is empty. <br><br><a href="index.html" style="color: var(--accent-cyan); text-decoration: underline;">Continue Shopping</a></div>';
-        updateCheckoutSummary();
+    var cart = getCart();
+
+    if (!cart.length) {
+        container.innerHTML =
+            '<div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">' +
+            '<div style="font-size: 4rem; margin-bottom: 16px; opacity:0.4;">🛒</div>' +
+            '<div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Your cart is empty</div>' +
+            '<div style="font-size: 0.9rem; margin-bottom: 24px;">Looks like you haven\'t added anything yet!</div>' +
+            '<a href="index.html" style="display:inline-block; background:var(--accent-cyan); color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.95rem;">Browse Products</a>' +
+            '</div>';
+        renderSummary();
         return;
     }
 
-    container.innerHTML = window.cart.map((item, index) => {
-        const product = window.allProducts.find(p => p.id === item.productId) || { name: 'Unknown', price: 0, image: 'images/placeholder.webp' };
-        
-        let originalPrice = Number(product.price);
-        let salePrice = product.salePrice ? Number(product.salePrice) : originalPrice;
-        
-        let priceDisplay = `<div class="checkout-item-price">₹${salePrice.toLocaleString('en-IN')}</div>`;
-        if (product.salePrice && Number(product.salePrice) < Number(product.price)) {
-            priceDisplay = `
-              <div class="checkout-item-price">
-                ₹${salePrice.toLocaleString('en-IN')}
-                <span style="text-decoration: line-through; color: var(--text-muted); font-size: 0.8rem; font-weight: 400; margin-left: 6px;">₹${originalPrice.toLocaleString('en-IN')}</span>
-              </div>
-            `;
+    var html = '';
+    for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        var qty = getQty(item);
+        var unitPrice = getItemPrice(item);
+        var total = unitPrice * qty;
+        var name = item.productName || item.name || 'Product';
+        var img = item.photoLink || item.image || 'images/cctv-wholesale.webp';
+        var idx = i; // capture for onclick
+
+        var qtyControls = '';
+        if (editable) {
+            qtyControls =
+                '<div style="display:flex; align-items:center; gap:0; border:1.5px solid var(--border-color); border-radius:8px; overflow:hidden; width:fit-content;">' +
+                '<button onclick="cartChangeQty(' + idx + ', -1)" style="padding:6px 14px; background:#f8fafc; border:none; border-right:1.5px solid var(--border-color); cursor:pointer; font-size:1rem; font-weight:700; color:var(--text-dark);">−</button>' +
+                '<span style="padding:6px 18px; font-weight:700; font-size:0.95rem; min-width:20px; text-align:center;">' + qty + '</span>' +
+                '<button onclick="cartChangeQty(' + idx + ', 1)" style="padding:6px 14px; background:#f8fafc; border:none; border-left:1.5px solid var(--border-color); cursor:pointer; font-size:1rem; font-weight:700; color:var(--text-dark);">+</button>' +
+                '</div>' +
+                '<button onclick="cartRemoveItem(' + idx + ')" style="background:none; border:none; color:#ef4444; font-size:0.82rem; font-weight:700; cursor:pointer; padding:4px 8px; border-radius:4px;">✕ Remove</button>';
+        } else {
+            qtyControls = '<div style="color:var(--text-muted); font-size:0.85rem;">Qty: ' + qty + '</div>';
         }
 
-        return `
-            <div class="checkout-item">
-                <img src="${product.image}" alt="${product.name}">
-                <div class="checkout-item-details">
-                    <div class="checkout-item-title">${product.name}</div>
-                    ${priceDisplay}
-                    
-                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                        <div style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden;">
-                            <button onclick="updateCartQty(${index}, -1)" style="padding: 4px 10px; background: #f8fafc; border: none; border-right: 1px solid var(--border-color); cursor: pointer;">-</button>
-                            <span style="padding: 4px 14px; font-weight: 700; font-size: 0.9rem;">${item.quantity}</span>
-                            <button onclick="updateCartQty(${index}, 1)" style="padding: 4px 10px; background: #f8fafc; border: none; border-left: 1px solid var(--border-color); cursor: pointer;">+</button>
-                        </div>
-                        <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 700; cursor: pointer;">Remove</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
+        html +=
+            '<div style="display:flex; gap:16px; padding:18px 0; border-bottom:1px solid var(--border-color); align-items:flex-start;">' +
+            '<img src="' + img + '" alt="' + name + '" onerror="this.src=\'images/cctv-wholesale.webp\'" ' +
+            'style="width:90px; height:90px; object-fit:contain; border:1px solid var(--border-color); border-radius:10px; background:#fafafa; flex-shrink:0;">' +
+            '<div style="flex:1; min-width:0;">' +
+            '<div style="font-weight:700; font-size:0.97rem; color:var(--text-dark); margin-bottom:6px; line-height:1.4;">' + name + '</div>' +
+            '<div style="font-weight:800; font-size:1.05rem; color:var(--accent-cyan); margin-bottom:10px;">' +
+            fmt(unitPrice) + ' <span style="color:var(--text-muted); font-size:0.78rem; font-weight:400;">× ' + qty + ' = ' + fmt(total) + '</span>' +
+            '</div>' +
+            '<div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">' + qtyControls + '</div>' +
+            '</div>' +
+            '</div>';
+    }
 
-    updateCheckoutSummary();
+    container.innerHTML = html;
+    renderSummary();
 }
 
-window.updateCartQty = function(index, delta) {
-    if (!window.cart[index]) return;
-    const newQty = window.cart[index].quantity + delta;
+// ─── CART MUTATIONS (called from onclick in HTML) ────────────────────────────
+
+window.cartChangeQty = function (index, delta) {
+    var cart = getCart();
+    if (index < 0 || index >= cart.length) return;
+    var newQty = getQty(cart[index]) + delta;
     if (newQty <= 0) {
-        removeFromCart(index);
-        return;
-    }
-    window.cart[index].quantity = newQty;
-    window.saveCart();
-    renderCheckoutCart();
-};
-
-window.removeFromCart = function(index) {
-    window.cart.splice(index, 1);
-    window.saveCart();
-    renderCheckoutCart();
-};
-
-function updateCheckoutSummary() {
-    let subtotal = 0;
-    if (window.cart && window.cart.length > 0) {
-        window.cart.forEach(item => {
-            const p = window.allProducts.find(x => x.id === item.productId);
-            if (p) {
-                const price = p.salePrice ? Number(p.salePrice) : Number(p.price);
-                subtotal += price * item.quantity;
-            }
-        });
-    }
-
-    const elSubtotal = document.getElementById('checkoutSubtotal');
-    if (elSubtotal) elSubtotal.innerText = '₹' + subtotal.toLocaleString('en-IN');
-
-    const gst = Math.round(subtotal * 0.18);
-    const elGst = document.getElementById('checkoutGst');
-    if (elGst) elGst.innerText = '₹' + gst.toLocaleString('en-IN');
-
-    // Promo
-    let discount = 0;
-    const discountRow = document.getElementById('checkoutDiscountRow');
-    const elDiscount = document.getElementById('checkoutDiscount');
-    let isFreeDelivery = false;
-    
-    if (window.appliedCoupon) {
-        if (window.appliedCoupon.type === 'PERCENTAGE') {
-            discount = Math.floor(subtotal * (window.appliedCoupon.value / 100));
-        } else if (window.appliedCoupon.type === 'FLAT') {
-            discount = window.appliedCoupon.value;
-        } else if (window.appliedCoupon.type === 'FREE_DELIVERY') {
-            isFreeDelivery = true;
-        }
-        
-        if (discountRow) discountRow.style.display = 'flex';
-        if (elDiscount) elDiscount.innerText = '-₹' + discount.toLocaleString('en-IN');
-        
-        const msg = document.getElementById('checkoutPromoMsg');
-        if (msg) {
-            msg.style.display = 'block';
-            msg.style.color = '#10b981';
-            msg.innerText = 'Coupon applied successfully!';
-        }
+        cart.splice(index, 1);
     } else {
-        if (discountRow) discountRow.style.display = 'none';
-        const msg = document.getElementById('checkoutPromoMsg');
-        if (msg) msg.style.display = 'none';
+        cart[index].quantity = newQty;
+        cart[index].qty = newQty;
     }
+    saveCartData(cart);
+    _refreshAll();
+};
 
-    let delivery = subtotal > 0 ? 150 : 0;
-    if (isFreeDelivery && subtotal > 0) delivery = 0;
-    
-    const elDelivery = document.getElementById('checkoutDelivery');
-    if (elDelivery) {
-        if (isFreeDelivery && subtotal > 0) {
-            elDelivery.innerHTML = '<div style="color:#ef4444; font-size:0.9rem; line-height: 1.4; margin-top: 4px;">Free Delivery!<br>We will parcel your product in Rathi meena or MSS. You should Pickup from there.</div>';
-        } else {
-            elDelivery.innerText = '₹' + delivery.toLocaleString('en-IN');
-        }
+window.cartRemoveItem = function (index) {
+    var cart = getCart();
+    if (index < 0 || index >= cart.length) return;
+    cart.splice(index, 1);
+    saveCartData(cart);
+    _refreshAll();
+};
+
+function _refreshAll() {
+    if (document.getElementById('cartItemsContainer')) {
+        renderCartItems('cartItemsContainer', true);
+        // update label
+        var cart = getCart();
+        var label = document.getElementById('cartItemCountLabel');
+        if (label) label.textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
     }
-
-    const grandTotal = subtotal + gst + delivery - discount;
-    const elTotal = document.getElementById('checkoutGrandTotal');
-    if (elTotal) elTotal.innerText = '₹' + Math.max(0, grandTotal).toLocaleString('en-IN');
+    if (document.getElementById('checkoutItemsContainer')) {
+        renderCartItems('checkoutItemsContainer', false);
+    }
+    renderSummary();
+    _updateBadge();
 }
 
-window.applyCheckoutCoupon = function() {
-    const code = document.getElementById('checkoutCouponInput').value.trim().toUpperCase();
-    const msg = document.getElementById('checkoutPromoMsg');
-    
-    if (!code) {
-        msg.style.display = 'block';
-        msg.style.color = '#ef4444';
-        msg.innerText = 'Please enter a coupon code';
-        return;
+// ─── SUMMARY ────────────────────────────────────────────────────────────────
+
+function renderSummary() {
+    var cart = getCart();
+    var settings = getSettings();
+    var coupon = getAppliedCoupon();
+
+    var subtotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+        subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
     }
-    
-    DbService.getCoupons().then(coupons => {
-        const coupon = coupons.find(c => c.code.toUpperCase() === code && c.isActive);
-        if (!coupon) {
-            msg.style.display = 'block';
-            msg.style.color = '#ef4444';
-            msg.innerText = 'Invalid or expired coupon code';
-            window.appliedCoupon = null;
+
+    // Delivery
+    var delivery = cart.length > 0 ? (settings.deliveryCharge || 150) : 0;
+    var isFreeDelivery = false;
+
+    // Promo discount
+    var promoDiscount = 0;
+    if (coupon && subtotal >= (coupon.minOrderAmount || 0)) {
+        if (coupon.discountPercent) promoDiscount = Math.round(subtotal * coupon.discountPercent / 100);
+        else if (coupon.discountFlat) promoDiscount = coupon.discountFlat;
+        else if (coupon.freeDelivery || coupon.type === 'FREE_DELIVERY') {
+            isFreeDelivery = true;
+            delivery = 0;
+        }
+    }
+
+    // Free shipping threshold
+    var freeMin = settings.freeShippingMinOrder || 3000;
+    if (!isFreeDelivery && cart.length > 0 && subtotal >= freeMin) {
+        delivery = 0;
+    }
+
+    var grandTotal = Math.max(0, subtotal - promoDiscount + delivery);
+
+    _setEl('summSubtotal', fmt(subtotal));
+    _setEl('summTotal', fmt(grandTotal));
+
+    // Delivery display
+    var delivEl = document.getElementById('summDelivery');
+    if (delivEl) {
+        if (cart.length === 0) {
+            delivEl.textContent = fmt(0);
+        } else if (isFreeDelivery) {
+            delivEl.innerHTML = '<span style="color:#ef4444; font-size:0.82rem; line-height:1.4; display:block; font-weight:700;">' +
+                'Your order will be shipped via Rathimeena or MSS Cargo.<br>' +
+                'Kindly pick it up from their nearest local branch.</span>';
+        } else if (delivery === 0) {
+            delivEl.innerHTML = '<span style="color:#10b981; font-weight:800;">FREE 🎉</span>';
         } else {
-            window.appliedCoupon = coupon;
-            document.getElementById('checkoutCouponInput').value = '';
+            var needed = Math.max(0, freeMin - subtotal);
+            delivEl.innerHTML = fmt(delivery) + (needed > 0
+                ? '<small style="display:block; color:var(--text-muted); font-size:0.72rem;">Add ' + fmt(needed) + ' more for Free Delivery!</small>'
+                : '');
         }
-        updateCheckoutSummary();
-    });
-};
+    }
 
-window.removePromoCode = function() {
-    window.appliedCoupon = null;
-    updateCheckoutSummary();
-};
-
-window.checkoutWithGoogle = function() {
-    window.signInWithGoogle().then(() => {
-        document.getElementById('checkoutAuthChoice').style.display = 'none';
-        document.getElementById('checkoutFormContainer').style.display = 'block';
-        
-        // Auto-fill details if user is logged in
-        if (window.currentUser) {
-            document.getElementById('custName').value = window.currentUser.displayName || '';
-            document.getElementById('custPhone').value = window.currentUser.phone || '';
-            document.getElementById('custPincode').value = window.currentUser.pincode || '';
-            document.getElementById('custAddress').value = window.currentUser.address || '';
+    // Promo row
+    var promoRow = document.getElementById('summPromoRow');
+    var promoAmt = document.getElementById('summPromoAmt');
+    if (promoRow) {
+        if (promoDiscount > 0) {
+            promoRow.style.display = 'flex';
+            if (promoAmt) promoAmt.textContent = '−' + fmt(promoDiscount);
+        } else {
+            promoRow.style.display = 'none';
         }
-    });
-};
+    }
+}
 
-window.checkoutAsGuest = function() {
-    document.getElementById('checkoutAuthChoice').style.display = 'none';
-    document.getElementById('checkoutFormContainer').style.display = 'block';
-};
+function _setEl(id, val) {
+    var el = document.getElementById(id);
+    if (el && val !== null) el.textContent = val;
+}
 
-window.selectPaymentMethod = function(method) {
-    document.getElementById('optOnline').classList.remove('selected');
-    document.getElementById('optCOD').classList.remove('selected');
-    
-    if (method === 'ONLINE') {
-        document.getElementById('optOnline').classList.add('selected');
-        document.getElementById('codAdvanceBanner').style.display = 'none';
-    } else {
-        document.getElementById('optCOD').classList.add('selected');
-        document.getElementById('codAdvanceBanner').style.display = 'block';
-        
-        // Calculate balance
-        let subtotal = 0;
-        if (window.cart && window.cart.length > 0) {
-            window.cart.forEach(item => {
-                const p = window.allProducts.find(x => x.id === item.productId);
-                if (p) {
-                    const price = p.salePrice ? Number(p.salePrice) : Number(p.price);
-                    subtotal += price * item.quantity;
+// ─── COUPON ──────────────────────────────────────────────────────────────────
+
+window.applyCoupon = function () {
+    var input = document.getElementById('couponInput');
+    var msg = document.getElementById('couponMsg');
+    if (!input || !msg) return;
+
+    var code = input.value.trim().toUpperCase();
+    if (!code) { _couponMsg(msg, 'Please enter a coupon code.', false); return; }
+
+    if (typeof DbService !== 'undefined' && DbService.getCoupons) {
+        DbService.getCoupons().then(function (coupons) {
+            var c = null;
+            for (var i = 0; i < coupons.length; i++) {
+                if (coupons[i].code.toUpperCase() === code && coupons[i].isActive) {
+                    c = coupons[i];
+                    break;
                 }
-            });
-        }
-        const gst = Math.round(subtotal * 0.18);
-        let discount = 0;
-        let isFreeDelivery = false;
-        if (window.appliedCoupon) {
-            if (window.appliedCoupon.type === 'PERCENTAGE') discount = Math.floor(subtotal * (window.appliedCoupon.value / 100));
-            else if (window.appliedCoupon.type === 'FLAT') discount = window.appliedCoupon.value;
-            else if (window.appliedCoupon.type === 'FREE_DELIVERY') isFreeDelivery = true;
-        }
-        let delivery = subtotal > 0 && !isFreeDelivery ? 150 : 0;
-        const grandTotal = Math.max(0, subtotal + gst + delivery - discount);
-        
-        const balance = Math.max(0, grandTotal - 1000);
-        document.getElementById('codBalanceText').innerText = '₹' + balance.toLocaleString('en-IN');
+            }
+            if (!c) {
+                _couponMsg(msg, 'Invalid or expired coupon code.', false);
+                window.appliedCoupon = null;
+            } else {
+                window.appliedCoupon = c;
+                input.value = '';
+                _couponMsg(msg, '✓ Coupon "' + c.code + '" applied!', true);
+            }
+            renderSummary();
+        }).catch(function () {
+            _couponMsg(msg, 'Could not verify coupon. Please try again.', false);
+        });
+    } else {
+        _couponMsg(msg, 'Coupon service unavailable. Try again shortly.', false);
     }
 };
 
-document.getElementById('mainCheckoutForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!window.cart || window.cart.length === 0) {
-        alert('Your cart is empty!');
+window.removeCoupon = function () {
+    window.appliedCoupon = null;
+    var msg = document.getElementById('couponMsg');
+    if (msg) msg.style.display = 'none';
+    renderSummary();
+    renderPromoChipsUI();
+};
+
+function _couponMsg(el, text, success) {
+    el.textContent = text;
+    el.style.color = success ? '#10b981' : '#ef4444';
+    el.style.display = 'block';
+}
+
+// ─── PROMO CHIPS (Show in Cart) ───────────────────────────────────────────────
+
+function renderPromoChipsUI() {
+    var container = document.getElementById('couponChips');
+    if (!container) return;
+
+    var settings = getSettings();
+    var coupons = settings.discountCoupons || [];
+    var visible = [];
+    for (var i = 0; i < coupons.length; i++) {
+        if (coupons[i].showInCart && coupons[i].isActive !== false) {
+            visible.push(coupons[i]);
+        }
+    }
+
+    if (!visible.length) {
+        container.style.display = 'none';
         return;
     }
-    
-    const paymentMethod = document.getElementById('optOnline').classList.contains('selected') ? 'ONLINE' : 'COD';
-    const isGuest = !window.currentUser;
-    
-    let subtotal = 0;
-    const itemsData = window.cart.map(item => {
-        const p = window.allProducts.find(x => x.id === item.productId);
-        const price = p ? (p.salePrice ? Number(p.salePrice) : Number(p.price)) : 0;
-        subtotal += price * item.quantity;
-        return {
-            productId: item.productId,
-            name: p ? p.name : 'Unknown',
-            price: price,
-            quantity: item.quantity
-        };
-    });
-    
-    const gst = Math.round(subtotal * 0.18);
-    let discount = 0;
-    if (window.appliedCoupon) {
-        if (window.appliedCoupon.type === 'PERCENTAGE') discount = Math.floor(subtotal * (window.appliedCoupon.value / 100));
-        else if (window.appliedCoupon.type === 'FLAT') discount = window.appliedCoupon.value;
-    }
-    let delivery = subtotal > 0 && !(window.appliedCoupon && window.appliedCoupon.type === 'FREE_DELIVERY') ? 150 : 0;
-    const grandTotal = Math.max(0, subtotal + gst + delivery - discount);
 
-    const orderData = {
-        userId: isGuest ? 'GUEST' : window.currentUser.uid,
-        customerInfo: {
-            name: document.getElementById('custName').value,
-            phone: document.getElementById('custPhone').value,
-            pincode: document.getElementById('custPincode').value,
-            address: document.getElementById('custAddress').value
-        },
-        items: itemsData,
-        pricing: {
-            subtotal,
-            gst,
-            discount,
-            delivery,
-            grandTotal,
-            couponCode: window.appliedCoupon ? window.appliedCoupon.code : null
-        },
-        paymentMethod: paymentMethod,
-        status: 'PENDING',
-        createdAt: new Date().toISOString()
-    };
-    
-    alert('Order placed successfully! In a real app, this would process payment and save to database.');
-    window.cart = [];
-    window.saveCart();
-    window.location.href = DbService.getLinkPrefix() + 'index.html';
+    container.style.display = 'flex';
+    var html = '';
+    for (var j = 0; j < visible.length; j++) {
+        var c = visible[j];
+        var label = c.discountPercent ? '−' + c.discountPercent + '%'
+            : c.discountFlat ? '−₹' + c.discountFlat
+            : 'Free Delivery';
+        html += '<button onclick="document.getElementById(\'couponInput\').value=\'' + c.code + '\'; applyCoupon();" ' +
+            'style="padding:4px 12px; border:1.5px dashed var(--accent-cyan); border-radius:20px; background:#f0f9ff; color:var(--accent-cyan); font-size:0.78rem; font-weight:700; cursor:pointer;">' +
+            c.code + ' ' + label + '</button>';
+    }
+    container.innerHTML = html;
+}
+
+// Re-render chips when storeSettings become available (set by app.js)
+function _waitForSettings() {
+    if (window.storeSettings) {
+        renderPromoChipsUI();
+        renderSummary();
+    } else {
+        // Poll until app.js has loaded settings (max 5s)
+        var attempts = 0;
+        var interval = setInterval(function () {
+            attempts++;
+            if (window.storeSettings || attempts > 25) {
+                clearInterval(interval);
+                renderPromoChipsUI();
+                renderSummary();
+            }
+        }, 200);
+    }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Cart page
+    if (document.getElementById('cartItemsContainer')) {
+        renderCartItems('cartItemsContainer', true);
+        // Update item count label
+        var cart = getCart();
+        var label = document.getElementById('cartItemCountLabel');
+        if (label) label.textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
+    }
+
+    // Checkout page (read-only item list in sidebar)
+    if (document.getElementById('checkoutItemsContainer')) {
+        renderCartItems('checkoutItemsContainer', false);
+    }
+
+    _updateBadge();
+    renderSummary();
+    _waitForSettings();
 });

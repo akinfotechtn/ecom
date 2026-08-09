@@ -90,10 +90,17 @@ function renderAuthUI() {
 async function fetchSettings() {
   try {
     storeSettings = await DbService.getSettings();
+    // Expose to window so cart.html / checkout.html can read settings
+    window.storeSettings = storeSettings;
   } catch (err) {
     console.warn('Could not load settings:', err);
   }
 }
+
+// Convenience wrapper for checkout page
+window.signInWithGoogle = function () {
+  return DbService.loginWithGoogle();
+};
 
 async function loadBrandsAndCategories() {
   storeBrands = await DbService.getBrands();
@@ -1229,8 +1236,8 @@ window.applySearchFromDropdown = function (q) {
 // ---------------------------------------------------------
 // HOMEPAGE FEATURED PRODUCTS SECTION WITH FILTERS
 // ---------------------------------------------------------
-window.openCartDrawer = function () {
-  window.location.href = DbService.getLinkPrefix() + 'cart.html';
+window.openCartDrawer = function openCartDrawer() {
+  window.location.href = 'cart.html';
 };
 
 window.renderFeaturedProducts = function () {
