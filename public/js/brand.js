@@ -257,7 +257,6 @@ function renderBrandCatalog() {
         </a>
         <div class="product-body">
           <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
-          <p class="product-spec">${escapeHtml(p.productSpec)}</p>
 
           <div class="price-row">
             <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
@@ -483,10 +482,21 @@ function renderCart() {
 
   let discountAmount = 0;
   if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
-    if (appliedCoupon.discountPercent) {
-      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
-    } else if (appliedCoupon.discountFlat) {
-      discountAmount = appliedCoupon.discountFlat;
+    const type = appliedCoupon.type;
+    if (type === 'FREE_DELIVERY') {
+      deliveryFee = 0;
+      discountAmount = 0;
+    } else if (type === 'FLAT') {
+      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
+    } else if (type === 'PERCENTAGE') {
+      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
+      discountAmount = Math.round((subtotalWithGst * pct) / 100);
+    } else {
+      if (appliedCoupon.discountPercent) {
+        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
+      } else if (appliedCoupon.discountFlat) {
+        discountAmount = Number(appliedCoupon.discountFlat);
+      }
     }
   }
 

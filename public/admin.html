@@ -327,6 +327,8 @@
     <div class="admin-tabs">
       <button class="tab-btn active" onclick="switchAdminTab('ordersTab', this); fetchAdminOrdersNow()">📋 Orders History</button>
       <button class="tab-btn" onclick="switchAdminTab('heroTab', this)">🖼️ Hero Banners & Slider</button>
+      <button class="tab-btn" onclick="switchAdminTab('couponsTab', this); fetchAdminCoupons()">🎫 Coupon Codes</button>
+      <button class="tab-btn" onclick="switchAdminTab('featuredTab', this); fetchAdminFeaturedProducts()">⭐ Featured Products</button>
       <button class="tab-btn" onclick="switchAdminTab('settingsTab', this)">⚙️ Store Settings</button>
     </div>
 
@@ -412,6 +414,73 @@
 
       <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px;">Current Active Hero Slides</h3>
       <div id="adminHeroBannersList"></div>
+    </div>
+
+    <!-- TAB: COUPON CODES -->
+    <div class="tab-content" id="couponsTab">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.4rem; margin-bottom: 4px; color: var(--text-dark); font-weight: 800;">🎫 Coupon Code Generator</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Create, manage, and toggle active coupon codes for customer discounts.</p>
+        </div>
+        <button class="hero-btn" onclick="openAddCouponModal()" style="background: linear-gradient(135deg, var(--accent-cyan), #0284c7); padding: 10px 20px; font-size: 0.88rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+          ➕ Create New Coupon
+        </button>
+      </div>
+
+      <!-- COUPONS LIST TABLE -->
+      <div class="table-container" style="background: #ffffff; border-radius: var(--radius-lg); padding: 16px; border: 1px solid var(--border-color); margin-bottom: 24px; overflow-x: auto;">
+        <table class="data-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="text-align: left;">Coupon Code</th>
+              <th style="text-align: left;">Type</th>
+              <th style="text-align: right;">Discount Value</th>
+              <th style="text-align: right;">Min Order (₹)</th>
+              <th style="text-align: center;">Status</th>
+              <th style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="couponsTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">Loading coupons...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: FEATURED PRODUCTS -->
+    <div class="tab-content" id="featuredTab">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.4rem; margin-bottom: 4px; color: var(--text-dark); font-weight: 800;">⭐ Select Featured Products</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Toggle which products appear in the "Featured Products" top picks section on the storefront.</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="text" id="featuredSearchInput" placeholder="🔍 Search products..." oninput="filterAdminFeaturedProducts()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.85rem; width: 220px; outline: none; background: #ffffff; color: var(--text-dark);">
+        </div>
+      </div>
+
+      <!-- PRODUCTS LIST TABLE -->
+      <div class="table-container" style="background: #ffffff; border-radius: var(--radius-lg); padding: 16px; border: 1px solid var(--border-color); max-height: 550px; overflow-y: auto; overflow-x: auto;">
+        <table class="data-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="text-align: left; width: 60px;">Image</th>
+              <th style="text-align: left;">Product Name</th>
+              <th style="text-align: left;">Brand</th>
+              <th style="text-align: left;">Category</th>
+              <th style="text-align: center; width: 120px;">Featured</th>
+            </tr>
+          </thead>
+          <tbody id="featuredTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">Loading products list...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- TAB 6: STORE SETTINGS -->
@@ -748,6 +817,44 @@
       <div id="srCourierListContainer">
         <p style="color: var(--text-muted);">Fetching available courier partners and live shipping rates...</p>
       </div>
+    </div>
+  </div>
+
+  <!-- CREATE / EDIT COUPON MODAL -->
+  <div class="modal-backdrop" id="couponModalBackdrop">
+    <div class="modal-content" style="max-width: 480px; width: 90%; padding: 24px; position: relative;">
+      <button class="close-btn" style="position: absolute; top: 16px; right: 16px;" onclick="closeCouponModal()">✕</button>
+      <h2 class="modal-title" id="couponModalTitle" style="margin-bottom: 20px; color: var(--text-dark); font-weight: 800;">➕ Create New Coupon</h2>
+      <form id="couponForm">
+        <input type="hidden" id="couponEditIndex" value="">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-dark);">Coupon Code</label>
+          <input type="text" id="couponCode" placeholder="e.g. FESTIVE20" required style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; text-transform: uppercase; outline: none; background: #f8fafc; color: var(--text-dark);">
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-dark);">Discount Type</label>
+          <select id="couponType" required style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; background: #ffffff; color: var(--text-dark); outline: none;" onchange="handleCouponTypeChange()">
+            <option value="PERCENTAGE">Percentage Wise Discount (%)</option>
+            <option value="FLAT">Flat Amount Discount (₹)</option>
+            <option value="FREE_DELIVERY">Free Delivery 🚚</option>
+          </select>
+        </div>
+        <div class="form-group" id="couponValueGroup" style="margin-bottom: 16px;">
+          <label id="couponValueLabel" style="display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-dark);">Discount Value (%)</label>
+          <input type="number" id="couponValue" placeholder="e.g. 10" required style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #f8fafc; color: var(--text-dark);">
+        </div>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-dark);">Minimum Order Amount (₹)</label>
+          <input type="number" id="couponMinOrder" placeholder="e.g. 1000" value="0" required style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #f8fafc; color: var(--text-dark);">
+        </div>
+        <div class="form-group" style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="couponActive" checked style="width: 16px; height: 16px; cursor: pointer;">
+          <label for="couponActive" style="font-weight: 700; font-size: 0.85rem; cursor: pointer; color: var(--text-dark);">Active & Available to Customers</label>
+        </div>
+        <button type="submit" class="hero-btn" style="width: 100%; background: linear-gradient(135deg, var(--accent-cyan), #0284c7); padding: 12px; font-size: 0.95rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+          💾 Save Coupon
+        </button>
+      </form>
     </div>
   </div>
 

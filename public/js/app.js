@@ -138,9 +138,76 @@ function renderCategoryScrollRow() {
   `).join('');
 }
 
+function renderFeaturedProducts() {
+  const grid = document.getElementById('featuredProductGrid');
+  const section = document.getElementById('featuredSection');
+  if (!grid || !section) return;
+
+  const featured = allProducts.filter(p => p.featured === true || p.isFeatured === true);
+  if (!featured.length) {
+    section.style.display = 'none';
+  } else {
+    section.style.display = 'block';
+    grid.innerHTML = featured.map(p => {
+      const basePrice = p.sellingPrice || 0;
+      const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : (storeSettings.defaultGstPercent !== undefined ? storeSettings.defaultGstPercent : 18);
+      const gstAmount = Math.round((basePrice * gstRate) / 100);
+      const priceWithGst = basePrice + gstAmount;
+      const savings = p.price > priceWithGst ? Math.round(((p.price - priceWithGst) / p.price) * 100) : 0;
+      const isAvailable = p.inStock !== false;
+      const inCartItem = cart.find(i => String(i.id) === String(p.id));
+      const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
+
+      return `
+        <div class="product-card ${!isAvailable ? 'out-of-stock-card' : ''}">
+          <a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" class="product-image-wrap">
+            <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='images/cctv-wholesale.webp'">
+            <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
+            ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
+            ${!isAvailable ? `<span style="position: absolute; bottom: 8px; left: 8px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;">OUT OF STOCK</span>` : ''}
+          </a>
+          <div class="product-body">
+            <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html" title="${escapeHtml(p.productName)}">${escapeHtml(p.productName)}</a></h3>
+
+            <div class="price-row">
+              <span class="selling-price">₹${priceWithGst.toLocaleString('en-IN')}</span>
+              ${p.price > priceWithGst ? `<span class="mrp-price">₹${p.price.toLocaleString('en-IN')}</span>` : ''}
+              ${savings > 0 ? `<span class="discount-tag">${savings}% OFF</span>` : ''}
+            </div>
+
+            <div class="card-actions">
+              ${!isAvailable ? `
+                <button class="btn-add-cart" disabled style="background:#cbd5e1; cursor:not-allowed; opacity:0.8;">
+                  🚫 Out of Stock
+                </button>
+              ` : (cartQty > 0 ? `
+                <div class="card-cart-qty-wrap">
+                  <div class="card-qty-stepper">
+                    <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', -1)">-</button>
+                    <span class="card-qty-count">${cartQty}</span>
+                    <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', 1)">+</button>
+                  </div>
+                  <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
+                    🛒 View Cart
+                  </button>
+                </div>
+              ` : `
+                <button class="btn-add-cart" onclick="addToCart('${p.id}')">
+                  🛒 Add to Cart
+                </button>
+              `)}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
 async function fetchProducts() {
   try {
     allProducts = await DbService.getProducts();
+    renderFeaturedProducts();
     renderCatalog();
     if (allProducts.length) {
       DbService.injectProductSEO(allProducts[0]);
@@ -484,10 +551,21 @@ function renderCart() {
 
   let discountAmount = 0;
   if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
-    if (appliedCoupon.discountPercent) {
-      discountAmount = Math.round((subtotalWithGst * appliedCoupon.discountPercent) / 100);
-    } else if (appliedCoupon.discountFlat) {
-      discountAmount = appliedCoupon.discountFlat;
+    const type = appliedCoupon.type;
+    if (type === 'FREE_DELIVERY') {
+      deliveryFee = 0;
+      discountAmount = 0;
+    } else if (type === 'FLAT') {
+      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
+    } else if (type === 'PERCENTAGE') {
+      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
+      discountAmount = Math.round((subtotalWithGst * pct) / 100);
+    } else {
+      if (appliedCoupon.discountPercent) {
+        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
+      } else if (appliedCoupon.discountFlat) {
+        discountAmount = Number(appliedCoupon.discountFlat);
+      }
     }
   }
 
@@ -547,6 +625,7 @@ function renderCart() {
   }
 
   renderPromoChips();
+  if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
 }
 
 function getItemPriceWithGst(item, settings = storeSettings) {
@@ -682,12 +761,24 @@ async function handleCheckoutSubmit(e) {
   let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
   let gstAmount = calculateCartGstAmount(cart, storeSettings);
 
+  const subtotalWithGst = subtotal + gstAmount;
   let discountAmount = 0;
-  if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
-    if (appliedCoupon.discountPercent) {
-      discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
-    } else if (appliedCoupon.discountFlat) {
-      discountAmount = appliedCoupon.discountFlat;
+  if (appliedCoupon && subtotalWithGst >= (appliedCoupon.minOrderAmount || 0)) {
+    const type = appliedCoupon.type;
+    if (type === 'FREE_DELIVERY') {
+      deliveryFee = 0;
+      discountAmount = 0;
+    } else if (type === 'FLAT') {
+      discountAmount = Number(appliedCoupon.discountFlat || appliedCoupon.value || 0);
+    } else if (type === 'PERCENTAGE') {
+      const pct = Number(appliedCoupon.discountPercent || appliedCoupon.value || 0);
+      discountAmount = Math.round((subtotalWithGst * pct) / 100);
+    } else {
+      if (appliedCoupon.discountPercent) {
+        discountAmount = Math.round((subtotalWithGst * Number(appliedCoupon.discountPercent)) / 100);
+      } else if (appliedCoupon.discountFlat) {
+        discountAmount = Number(appliedCoupon.discountFlat);
+      }
     }
   }
 

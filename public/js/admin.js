@@ -155,6 +155,10 @@ window.switchAdminTab = function (tabId, btn) {
 
   if (tabId === 'ordersTab') {
     fetchAdminOrders();
+  } else if (tabId === 'couponsTab') {
+    window.fetchAdminCoupons();
+  } else if (tabId === 'featuredTab') {
+    window.fetchAdminFeaturedProducts();
   }
 };
 
@@ -1362,6 +1366,9 @@ function setupEventListeners() {
 
   const settingsForm = document.getElementById('settingsForm');
   if (settingsForm) settingsForm.addEventListener('submit', saveStoreSettings);
+
+  const couponForm = document.getElementById('couponForm');
+  if (couponForm) couponForm.addEventListener('submit', handleSaveCouponSubmit);
 }
 
 function escapeHtml(str) {
@@ -2335,5 +2342,321 @@ window.printShiprocketLabel = async function (orderId) {
     }
   } catch (err) {
     alert(`Label Error: ${err.message}`);
+  }
+};
+
+// ---------------------------------------------------------
+// 10. COUPONS MANAGEMENT & Persist settings.discountCoupons
+// ---------------------------------------------------------
+window.fetchAdminCoupons = function () {
+  const tableBody = document.getElementById('couponsTableBody');
+  if (!tableBody) return;
+
+  const coupons = adminSettings.discountCoupons || [];
+  if (!coupons.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">
+          🎟️ No coupon codes generated yet. Click "Create New Coupon" to get started.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  tableBody.innerHTML = coupons.map((c, index) => {
+    let typeLabel = '';
+    let valLabel = '';
+
+    if (c.type === 'FREE_DELIVERY') {
+      typeLabel = '🚚 Free Delivery';
+      valLabel = 'Free Shipping';
+    } else if (c.type === 'FLAT') {
+      typeLabel = '₹ Flat Discount';
+      valLabel = `₹${(c.discountFlat || c.value || 0).toLocaleString('en-IN')}`;
+    } else if (c.type === 'PERCENTAGE') {
+      typeLabel = '% Percentage Discount';
+      valLabel = `${(c.discountPercent || c.value || 0)}% Off`;
+    } else {
+      if (c.discountPercent) {
+        typeLabel = '% Percentage Discount';
+        valLabel = `${c.discountPercent}% Off`;
+      } else {
+        typeLabel = '₹ Flat Discount';
+        valLabel = `₹${(c.discountFlat || 0)}`;
+      }
+    }
+
+    const isActive = c.active !== false;
+
+    return `
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 12px 8px; font-weight: 700; font-family: var(--font-mono); color: var(--text-dark);">${escapeHtml(c.code)}</td>
+        <td style="padding: 12px 8px;">${typeLabel}</td>
+        <td style="padding: 12px 8px; text-align: right; font-weight: bold; color: var(--accent-cyan);">${valLabel}</td>
+        <td style="padding: 12px 8px; text-align: right;">₹${(c.minOrderAmount || 0).toLocaleString('en-IN')}</td>
+        <td style="padding: 12px 8px; text-align: center;">
+          <span class="status-badge" style="background: ${isActive ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}; color: ${isActive ? '#10b981' : '#ef4444'}; font-weight: 800; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; cursor: pointer;" onclick="toggleCouponActive(${index})">
+            ${isActive ? 'Active' : 'Inactive'}
+          </span>
+        </td>
+        <td style="padding: 12px 8px; text-align: center;">
+          <div style="display: flex; gap: 8px; justify-content: center;">
+            <button class="qty-btn" style="background: var(--bg-dark); color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;" onclick="openEditCouponModal(${index})">✏️ Edit</button>
+            <button class="qty-btn" style="background: #ef4444; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;" onclick="deleteCoupon(${index})">🗑️ Delete</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+};
+
+window.openAddCouponModal = function () {
+  const modal = document.getElementById('couponModalBackdrop');
+  if (modal) {
+    document.getElementById('couponModalTitle').textContent = '➕ Create New Coupon';
+    document.getElementById('couponEditIndex').value = '';
+    document.getElementById('couponCode').value = '';
+    document.getElementById('couponType').value = 'PERCENTAGE';
+    document.getElementById('couponValue').value = '';
+    document.getElementById('couponMinOrder').value = '0';
+    document.getElementById('couponActive').checked = true;
+    
+    window.handleCouponTypeChange();
+    modal.classList.add('active');
+  }
+};
+
+window.openEditCouponModal = function (index) {
+  const modal = document.getElementById('couponModalBackdrop');
+  const coupons = adminSettings.discountCoupons || [];
+  const c = coupons[index];
+  if (!modal || !c) return;
+
+  document.getElementById('couponModalTitle').textContent = '✏️ Edit Coupon';
+  document.getElementById('couponEditIndex').value = index;
+  document.getElementById('couponCode').value = c.code || '';
+  
+  let type = c.type;
+  if (!type) {
+    type = c.discountPercent ? 'PERCENTAGE' : 'FLAT';
+  }
+  document.getElementById('couponType').value = type;
+  
+  let val = 0;
+  if (type === 'PERCENTAGE') {
+    val = c.discountPercent || c.value || 0;
+  } else if (type === 'FLAT') {
+    val = c.discountFlat || c.value || 0;
+  }
+  document.getElementById('couponValue').value = val;
+  document.getElementById('couponMinOrder').value = c.minOrderAmount || 0;
+  document.getElementById('couponActive').checked = c.active !== false;
+
+  window.handleCouponTypeChange();
+  modal.classList.add('active');
+};
+
+window.closeCouponModal = function () {
+  const modal = document.getElementById('couponModalBackdrop');
+  if (modal) modal.classList.remove('active');
+};
+
+window.handleCouponTypeChange = function () {
+  const type = document.getElementById('couponType').value;
+  const valGroup = document.getElementById('couponValueGroup');
+  const valInput = document.getElementById('couponValue');
+  const valLabel = document.getElementById('couponValueLabel');
+
+  if (!valGroup || !valInput || !valLabel) return;
+
+  if (type === 'FREE_DELIVERY') {
+    valGroup.style.display = 'none';
+    valInput.required = false;
+    valInput.value = '0';
+  } else {
+    valGroup.style.display = 'block';
+    valInput.required = true;
+    if (type === 'PERCENTAGE') {
+      valLabel.textContent = 'Discount Value (%)';
+      valInput.placeholder = 'e.g. 10';
+    } else {
+      valLabel.textContent = 'Discount Value (₹)';
+      valInput.placeholder = 'e.g. 150';
+    }
+  }
+};
+
+window.toggleCouponActive = async function (index) {
+  const coupons = adminSettings.discountCoupons || [];
+  if (!coupons[index]) return;
+
+  coupons[index].active = coupons[index].active === false ? true : false;
+  adminSettings.discountCoupons = coupons;
+  
+  await DbService.updateSettings({ discountCoupons: coupons });
+  window.fetchAdminCoupons();
+};
+
+window.deleteCoupon = async function (index) {
+  const coupons = adminSettings.discountCoupons || [];
+  if (!coupons[index]) return;
+
+  if (!confirm(`Are you sure you want to delete coupon code "${coupons[index].code}"?`)) return;
+
+  coupons.splice(index, 1);
+  adminSettings.discountCoupons = coupons;
+  
+  await DbService.updateSettings({ discountCoupons: coupons });
+  window.fetchAdminCoupons();
+};
+
+window.handleSaveCouponSubmit = async function (e) {
+  e.preventDefault();
+  
+  const editIndexStr = document.getElementById('couponEditIndex').value;
+  const code = document.getElementById('couponCode').value.trim().toUpperCase();
+  const type = document.getElementById('couponType').value;
+  const val = Number(document.getElementById('couponValue').value);
+  const minOrder = Number(document.getElementById('couponMinOrder').value || 0);
+  const active = document.getElementById('couponActive').checked;
+
+  if (!code) {
+    alert("Please enter a coupon code!");
+    return;
+  }
+
+  const coupons = adminSettings.discountCoupons || [];
+  
+  const couponObj = {
+    code,
+    type,
+    minOrderAmount: minOrder,
+    active
+  };
+
+  if (type === 'PERCENTAGE') {
+    couponObj.discountPercent = val;
+    couponObj.value = val;
+  } else if (type === 'FLAT') {
+    couponObj.discountFlat = val;
+    couponObj.value = val;
+  } else {
+    couponObj.discountPercent = 0;
+    couponObj.discountFlat = 0;
+    couponObj.value = 0;
+  }
+
+  if (editIndexStr !== '') {
+    const idx = parseInt(editIndexStr);
+    coupons[idx] = couponObj;
+  } else {
+    if (coupons.some(c => c.code === code)) {
+      alert(`Coupon code "${code}" already exists!`);
+      return;
+    }
+    coupons.push(couponObj);
+  }
+
+  adminSettings.discountCoupons = coupons;
+  
+  try {
+    await DbService.updateSettings({ discountCoupons: coupons });
+    window.closeCouponModal();
+    window.fetchAdminCoupons();
+    alert("✅ Coupon saved successfully!");
+  } catch (err) {
+    alert(`Error saving coupon: ${err.message}`);
+  }
+};
+
+// ---------------------------------------------------------
+// 11. FEATURED PRODUCTS SELECTION & Persist to products collection
+// ---------------------------------------------------------
+let adminFeaturedProductsList = [];
+
+window.fetchAdminFeaturedProducts = async function () {
+  const tableBody = document.getElementById('featuredTableBody');
+  if (!tableBody) return;
+
+  try {
+    adminFeaturedProductsList = await DbService.getProducts();
+    adminFeaturedProductsList.sort((a, b) => (a.productName || '').localeCompare(b.productName || ''));
+    window.renderAdminFeaturedProductsList();
+  } catch (err) {
+    tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Failed to load products: ${err.message}</td></tr>`;
+  }
+};
+
+window.renderAdminFeaturedProductsList = function (filteredList = null) {
+  const tableBody = document.getElementById('featuredTableBody');
+  if (!tableBody) return;
+
+  const list = filteredList || adminFeaturedProductsList;
+  if (!list.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 24px;">
+          🔍 No products found.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  tableBody.innerHTML = list.map(p => {
+    const isFeatured = p.featured === true || p.isFeatured === true;
+    return `
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 10px 8px;">
+          <img src="${p.photoLink}" alt="${escapeHtml(p.productName)}" onerror="this.src='images/cctv-wholesale.webp'" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+        </td>
+        <td style="padding: 10px 8px; font-weight: 700; color: var(--text-dark);">${escapeHtml(p.productName)}</td>
+        <td style="padding: 10px 8px;">${escapeHtml(p.brand || 'N/A')}</td>
+        <td style="padding: 10px 8px;">${escapeHtml(p.category || 'N/A')}</td>
+        <td style="padding: 10px 8px; text-align: center;">
+          <input type="checkbox" ${isFeatured ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;" onchange="toggleProductFeatured('${p.id}', this)">
+        </td>
+      </tr>
+    `;
+  }).join('');
+};
+
+window.filterAdminFeaturedProducts = function () {
+  const query = document.getElementById('featuredSearchInput').value.toLowerCase().trim();
+  if (!query) {
+    window.renderAdminFeaturedProductsList(adminFeaturedProductsList);
+    return;
+  }
+
+  const tokens = query.split(/\s+/);
+  const filtered = adminFeaturedProductsList.filter(p => {
+    const text = `${p.productName} ${p.brand} ${p.category}`.toLowerCase();
+    return tokens.every(t => text.includes(t));
+  });
+
+  window.renderAdminFeaturedProductsList(filtered);
+};
+
+window.toggleProductFeatured = async function (productId, checkboxEl) {
+  const isChecked = checkboxEl.checked;
+  
+  const prod = adminFeaturedProductsList.find(p => String(p.id) === String(productId));
+  if (prod) {
+    prod.featured = isChecked;
+    prod.isFeatured = isChecked;
+  }
+
+  try {
+    await DbService.updateProduct(productId, { 
+      featured: isChecked,
+      isFeatured: isChecked
+    });
+    console.log(`Product ${productId} featured toggled to ${isChecked}`);
+  } catch (err) {
+    checkboxEl.checked = !isChecked;
+    if (prod) {
+      prod.featured = !isChecked;
+      prod.isFeatured = !isChecked;
+    }
+    alert(`Error updating featured product status: ${err.message}`);
   }
 };

@@ -668,7 +668,7 @@ app.put('/api/settings', (req, res) => {
       password: req.body.shiprocket?.password || currentSettings.shiprocket?.password || '',
       channelId: req.body.shiprocket?.channelId || currentSettings.shiprocket?.channelId || ''
     },
-    discountCoupons: req.body.discountCoupons || currentSettings.discountCoupons || []
+    discountCoupons: req.body.discountCoupons !== undefined ? req.body.discountCoupons : (currentSettings.discountCoupons || [])
   };
 
   writeJson(SETTINGS_FILE, updatedSettings);
