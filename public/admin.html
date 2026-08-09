@@ -552,6 +552,66 @@
       </div>
     </div>
 
+    <!-- TAB: COUPON GENERATOR -->
+    <div class="tab-content" id="couponsTab">
+      <h2 style="font-size: 1.4rem; margin-bottom: 20px; color: var(--text-dark); font-weight: 800;">🎟️ Discount Coupons Generator</h2>
+      
+      <!-- CREATE COUPON FORM -->
+      <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--text-dark);">➕ Create New Coupon</h3>
+        <form id="couponForm" onsubmit="saveAdminCoupon(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Coupon Code (e.g., FESTIVAL20)</label>
+              <input type="text" id="couponCode" required style="text-transform: uppercase;">
+            </div>
+            <div class="form-group">
+              <label>Discount Type</label>
+              <select id="couponType" required onchange="toggleCouponValueInput()">
+                <option value="PERCENT">Percentage Discount (%)</option>
+                <option value="FLAT">Flat Amount Discount (₹)</option>
+                <option value="FREE_DELIVERY">Free Delivery</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="couponValueGroup">
+              <label id="couponValueLabel">Discount Value (%)</label>
+              <input type="number" id="couponValue" required step="0.1">
+            </div>
+            <div class="form-group">
+              <label>Minimum Order Amount (₹)</label>
+              <input type="number" id="couponMinOrder" placeholder="0 (No minimum)">
+            </div>
+          </div>
+          <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="couponShowInCart" checked style="width: 20px; height: 20px; cursor: pointer;">
+            <span style="font-weight: 700; font-size: 0.95rem; color: #0f172a;">Show in Cart Checkout (Visible to customers)</span>
+          </div>
+          <button type="submit" class="btn-checkout" style="width: auto; padding: 10px 24px; font-size: 0.9rem;">💾 Save Coupon</button>
+        </form>
+      </div>
+
+      <!-- COUPONS LIST TABLE -->
+      <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-dark);">📋 Active Coupons</h3>
+      <div style="overflow-x: auto; background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Coupon Code</th>
+              <th>Type & Value</th>
+              <th>Min. Order</th>
+              <th>Visibility</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="couponsTableBody">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading coupons...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- TAB 6: STORE SETTINGS -->
     <div class="tab-content" id="settingsTab">
       <h2 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--text-dark);">⚙️ Delivery, COD & API Configuration</h2>
@@ -889,6 +949,23 @@
     </div>
   </div>
 
+  <script>
+    function toggleCouponValueInput() {
+      const type = document.getElementById('couponType').value;
+      const valGroup = document.getElementById('couponValueGroup');
+      const valLabel = document.getElementById('couponValueLabel');
+      const valInput = document.getElementById('couponValue');
+
+      if (type === 'FREE_DELIVERY') {
+        valGroup.style.display = 'none';
+        valInput.removeAttribute('required');
+      } else {
+        valGroup.style.display = 'block';
+        valInput.setAttribute('required', 'true');
+        valLabel.textContent = type === 'PERCENT' ? 'Discount Value (%)' : 'Discount Value (₹)';
+      }
+    }
+  </script>
   <script type="module" src="js/admin.js"></script>
 </body>
 </html>

@@ -1073,6 +1073,102 @@ window.toggleFreeShippingMinGroup = function (enabled) {
   }
 };
 
+// ---------------------------------------------------------
+// COUPONS MANAGEMENT
+// ---------------------------------------------------------
+window.renderCouponsList = function () {
+  const tbody = document.getElementById('couponsTableBody');
+  if (!tbody) return;
+
+  const coupons = adminSettings.discountCoupons || [];
+  if (coupons.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">No active coupons found. Create one above!</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = coupons.map(c => {
+    let typeDisplay = '';
+    if (c.type === 'PERCENT') typeDisplay = `<span style="color:#0ea5e9; font-weight:700;">${c.discountPercent}% OFF</span>`;
+    else if (c.type === 'FLAT') typeDisplay = `<span style="color:#10b981; font-weight:700;">₹${c.discountFlat} OFF</span>`;
+    else if (c.type === 'FREE_DELIVERY') typeDisplay = `<span style="color:#f59e0b; font-weight:700;">FREE DELIVERY</span>`;
+
+    const minOrderStr = c.minOrderAmount ? `₹${c.minOrderAmount}` : '<span style="color:var(--text-muted);">None</span>';
+    const visBadge = c.showInCart ? `<span style="background:#dcfce7; color:#16a34a; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:700;">Visible</span>` : `<span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:700;">Hidden</span>`;
+
+    return `
+      <tr>
+        <td style="font-weight: 800; color: var(--text-dark);">${c.code}</td>
+        <td>${typeDisplay}</td>
+        <td>${minOrderStr}</td>
+        <td>${visBadge}</td>
+        <td>
+          <button onclick="deleteAdminCoupon('${c.code}')" style="background: none; border: none; color: #ef4444; font-size: 1rem; cursor: pointer;" title="Delete Coupon">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+};
+
+window.saveAdminCoupon = async function (e) {
+  e.preventDefault();
+  const code = document.getElementById('couponCode').value.trim().toUpperCase();
+  const type = document.getElementById('couponType').value;
+  const val = parseFloat(document.getElementById('couponValue').value) || 0;
+  const minOrder = parseFloat(document.getElementById('couponMinOrder').value) || 0;
+  const showInCart = document.getElementById('couponShowInCart').checked;
+
+  if (!code) return alert("Please enter a coupon code.");
+
+  if (!adminSettings.discountCoupons) adminSettings.discountCoupons = [];
+
+  const existingIdx = adminSettings.discountCoupons.findIndex(c => c.code === code);
+  const newCoupon = {
+    code,
+    type,
+    discountPercent: type === 'PERCENT' ? val : null,
+    discountFlat: type === 'FLAT' ? val : null,
+    freeDelivery: type === 'FREE_DELIVERY',
+    minOrderAmount: minOrder,
+    showInCart
+  };
+
+  if (existingIdx > -1) {
+    adminSettings.discountCoupons[existingIdx] = newCoupon;
+  } else {
+    adminSettings.discountCoupons.push(newCoupon);
+  }
+
+  await _persistSettings("Coupon saved successfully!");
+  document.getElementById('couponForm').reset();
+  renderCouponsList();
+};
+
+window.deleteAdminCoupon = async function (code) {
+  if (!confirm(`Are you sure you want to delete coupon ${code}?`)) return;
+  
+  adminSettings.discountCoupons = (adminSettings.discountCoupons || []).filter(c => c.code !== code);
+  await _persistSettings(`Coupon ${code} deleted!`);
+  renderCouponsList();
+};
+
+async function _persistSettings(successMsg) {
+  try {
+    const res = await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(adminSettings)
+    });
+    if (res.ok) {
+      if (successMsg) alert(successMsg);
+    } else {
+      throw new Error("Failed to save to server");
+    }
+  } catch (err) {
+    console.error("Error saving settings:", err);
+    alert("Error saving settings.");
+  }
+}
+
 // 6. SETTINGS MANAGEMENT & PERSISTENCE
 async function fetchAdminSettings() {
   try {
