@@ -8,11 +8,23 @@ function normalizeGoogleSheetUrl(url) {
   if (!url) return '';
   let cleanUrl = url.trim();
 
+  if (cleanUrl.includes('output=csv') || cleanUrl.includes('format=csv')) {
+    return cleanUrl;
+  }
+
   if (cleanUrl.includes('/edit')) {
     cleanUrl = cleanUrl.replace(/\/edit.*$/, '/export?format=csv');
   } else if (cleanUrl.includes('/pubhtml')) {
     cleanUrl = cleanUrl.replace(/\/pubhtml.*$/, '/pub?output=csv');
+  } else if (cleanUrl.match(/\/d\/([a-zA-Z0-9-_]+)/)) {
+    cleanUrl = cleanUrl.replace(/\/+$/, '');
+    if (!cleanUrl.endsWith('/export') && !cleanUrl.endsWith('/pub')) {
+      cleanUrl += '/export?format=csv';
+    } else {
+      cleanUrl += '?format=csv';
+    }
   }
+
   return cleanUrl;
 }
 
