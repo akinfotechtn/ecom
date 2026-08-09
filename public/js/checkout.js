@@ -182,65 +182,21 @@ function renderSummary() {
         subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
     }
 
-    // Delivery calculation
-    var isPayOnDelivery = settings.payShippingOnDelivery === true;
-    var delivery = 0;
+    // Delivery calculation (Only two delivery charge modes: Free Shipping via coupon, or Calculated & Payable Upon Delivery)
     var isFreeDelivery = false;
-    
-    if (cart.length > 0) {
-        if (isPayOnDelivery) {
-            delivery = 0;
-        } else {
-            // Category-wise & Product-specific custom delivery charge calculation
-            var maxDeliveryCharge = 0;
-            var categories = window.storeCategories || [];
-            for (var i = 0; i < cart.length; i++) {
-                var item = cart[i];
-                var itemFee = 0;
-                if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
-                    itemFee = Number(item.deliveryCharge);
-                } else {
-                    var matchCat = null;
-                    var itemCatName = (item.category || '').toLowerCase();
-                    for (var j = 0; j < categories.length; j++) {
-                        if ((categories[j].name || '').toLowerCase() === itemCatName) {
-                            matchCat = categories[j];
-                            break;
-                        }
-                    }
-                    if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
-                        itemFee = Number(matchCat.deliveryCharge);
-                    } else {
-                        itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
-                    }
-                }
-                if (itemFee > maxDeliveryCharge) {
-                    maxDeliveryCharge = itemFee;
-                }
-            }
-            delivery = maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
-        }
-    }
-
-    // Promo discount
     var promoDiscount = 0;
+
     if (coupon && subtotal >= (coupon.minOrderAmount || 0)) {
-        if (coupon.discountPercent) promoDiscount = Math.round(subtotal * coupon.discountPercent / 100);
-        else if (coupon.discountFlat) promoDiscount = coupon.discountFlat;
-        else if (coupon.freeDelivery || coupon.type === 'FREE_DELIVERY') {
+        if (coupon.discountPercent) {
+            promoDiscount = Math.round(subtotal * coupon.discountPercent / 100);
+        } else if (coupon.discountFlat) {
+            promoDiscount = coupon.discountFlat;
+        } else if (coupon.freeDelivery || coupon.type === 'FREE_DELIVERY') {
             isFreeDelivery = true;
-            delivery = 0;
         }
     }
 
-    // Free shipping threshold
-    var freeMin = settings.freeShippingMinOrder || 3000;
-    var enableFreeShipping = settings.enableFreeShipping !== false;
-    if (!isFreeDelivery && enableFreeShipping && cart.length > 0 && subtotal >= freeMin) {
-        delivery = 0;
-    }
-
-    var grandTotal = Math.max(0, subtotal - promoDiscount + delivery);
+    var grandTotal = Math.max(0, subtotal - promoDiscount);
 
     _setEl('summSubtotal', fmt(subtotal));
     _setEl('summTotal', fmt(grandTotal));
@@ -249,21 +205,14 @@ function renderSummary() {
     var delivEl = document.getElementById('summDelivery');
     if (delivEl) {
         if (cart.length === 0) {
-            delivEl.textContent = fmt(0);
+            delivEl.textContent = '—';
         } else if (isFreeDelivery) {
             delivEl.innerHTML = '<span style="color:#16a34a; font-size:0.82rem; line-height:1.4; display:block; font-weight:700;">' +
                 'You got Free Shipping! Your order will be shipped via Rathimeena or MSS Cargo.<br>' +
                 'Kindly pick it up from their nearest local branch.</span>';
-        } else if (isPayOnDelivery) {
+        } else {
             delivEl.innerHTML = '<span style="color: #0284c7; font-weight: 800; font-size: 0.8rem;">Calculated & Payable Upon Delivery 🚚</span>' +
                 '<small style="display:block; color:var(--text-muted); font-size:0.7rem;">(Freight / Shipping fee collected during delivery)</small>';
-        } else if (delivery === 0) {
-            delivEl.innerHTML = '<span style="color:#10b981; font-weight:800;">FREE 🎉</span>';
-        } else {
-            var needed = Math.max(0, freeMin - subtotal);
-            delivEl.innerHTML = fmt(delivery) + (needed > 0 && enableFreeShipping
-                ? '<small style="display:block; color:var(--text-muted); font-size:0.72rem;">Add ' + fmt(needed) + ' more for Free Delivery!</small>'
-                : '');
         }
     }
 
