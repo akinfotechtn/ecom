@@ -38,7 +38,15 @@
       align-items: start;
     }
     @media (max-width: 860px) {
-      .co-grid { grid-template-columns: 1fr; }
+      .co-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .co-grid > div:first-child {
+        order: 2;
+      }
+      .co-grid > div:last-child {
+        order: 1;
+      }
     }
 
     /* Step card */
