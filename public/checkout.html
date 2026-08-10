@@ -479,6 +479,24 @@
             <span id="summTotal">₹0</span>
           </div>
 
+          <!-- Promo / Coupon Code -->
+          <div class="co-coupon-box" style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:0.84rem; font-weight:700; color:var(--text-dark);">🏷️ Apply Promo Code</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="checkoutCouponInput" placeholder="Enter promo code" 
+                style="flex:1; padding:9px 12px; border:1.5px solid var(--border-color); border-radius:8px; font-size:0.86rem; text-transform:uppercase; font-weight:600; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='var(--border-color)'"
+                onkeydown="if(event.key==='Enter'){event.preventDefault(); applyCoupon();}">
+              <button type="button" onclick="applyCoupon()" 
+                style="padding:9px 16px; background:var(--text-dark); color:#fff; border:none; border-radius:8px; font-weight:700; font-size:0.85rem; cursor:pointer; transition:opacity 0.2s;"
+                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Apply</button>
+            </div>
+            <div id="checkoutPromoMsg" style="font-size:0.82rem; font-weight:700; margin-top:6px; display:none;"></div>
+            <div id="couponChips" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;"></div>
+          </div>
+
           <!-- Item preview -->
           <div class="co-items-preview">
             <div class="co-items-preview-title">Items in Order</div>
@@ -691,7 +709,7 @@
       // Expose to window or get from settings
       const settings = window.storeSettings || { deliveryCharge: 150, freeShippingMinOrder: 3000, codAdvanceAmount: 1000 };
       const categories = window.storeCategories || [];
-      const appliedCoupon = window.appliedCoupon || null;
+      const appliedCoupon = window.appliedCoupon || JSON.parse(localStorage.getItem('ak_applied_coupon') || 'null');
 
       // 1. Calculate final values matching older app.js logic
       const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
