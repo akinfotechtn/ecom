@@ -144,7 +144,7 @@ async function loadProductDetail(idOrProduct) {
       `}
 
       <div style="margin-top: 16px;">
-        <a href="https://wa.me/919876543210?text=${encodeURIComponent(`Hi AK Infotech, I am inquiring about: ${currentProduct.productName} (Price: ₹${currentProduct.sellingPrice})`)}" target="_blank" class="btn-whatsapp-quote">
+        <a href="https://wa.me/919500673207?text=${encodeURIComponent(`Hi AK Infotech, I am inquiring about: ${currentProduct.productName} (Price: ₹${currentProduct.sellingPrice})`)}" target="_blank" class="btn-whatsapp-quote">
           💬 Enquire via WhatsApp Quote
         </a>
       </div>
