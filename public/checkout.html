@@ -603,6 +603,14 @@
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = a.pincode || '';
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = a.street || a.address || '';
                           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = a.cityState || '';
+                        } else {
+                          // Clear all address-related fields for fresh entry
+                          if (document.getElementById('custName')) document.getElementById('custName').value = '';
+                          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = '';
+                          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
+                          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
+                          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
+                          if (document.getElementById('chkSaveAddress')) document.getElementById('chkSaveAddress').checked = true;
                         }
                       };
                     }

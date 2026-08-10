@@ -1112,11 +1112,17 @@ async function openCheckoutModal() {
         const selectedId = this.value;
         const found = userAddresses.find(a => a.id === selectedId);
         if (found) {
-          document.getElementById('custName').value = found.fullName;
-          document.getElementById('custPhone').value = found.phone;
-          document.getElementById('custAddress').value = found.street;
-          document.getElementById('custPincode').value = found.pincode;
-          document.getElementById('custCityState').value = found.cityState;
+          if (document.getElementById('custName')) document.getElementById('custName').value = found.fullName || found.name || '';
+          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = found.phone || '';
+          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = found.street || found.address || '';
+          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = found.pincode || '';
+          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = found.cityState || '';
+        } else {
+          if (document.getElementById('custName')) document.getElementById('custName').value = '';
+          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = '';
+          if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
+          if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
+          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
         }
       };
 
