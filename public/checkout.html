@@ -436,13 +436,13 @@
               <div class="co-pay-card" id="optCOD" onclick="selectPaymentMethod('COD')">
                 <div class="co-pay-icon">🚚</div>
                 <div class="co-pay-name">Cash on Delivery</div>
-                <div class="co-pay-sub">Pay ₹1,000 Advance</div>
+                <div class="co-pay-sub" id="codCardSub">Pay ₹1,000 Advance</div>
               </div>
             </div>
 
             <div class="cod-banner" id="codAdvanceBanner">
               <strong>⚡ COD Terms:</strong>
-              👉 Advance Paid Now: <span style="color:var(--accent-cyan); font-weight:800;">₹1,000</span><br>
+              👉 Advance Paid Now: <span style="color:var(--accent-cyan); font-weight:800;" id="codAdvanceText">₹1,000</span><br>
               👉 Balance Payable to Courier: <span style="color:#10b981; font-weight:800;" id="codBalanceText">₹0</span>
             </div>
 
@@ -653,9 +653,9 @@
       const codBanner = document.getElementById('codAdvanceBanner');
       codBanner.style.display = method === 'COD' ? 'block' : 'none';
 
-      if (method === 'COD') {
-        const total = parseInt((document.getElementById('summTotal')?.textContent || '0').replace(/[₹,]/g, '')) || 0;
-        document.getElementById('codBalanceText').textContent = '₹' + Math.max(0, total - 1000).toLocaleString('en-IN');
+      const total = parseInt((document.getElementById('summTotal')?.textContent || '0').replace(/[₹,]/g, '')) || 0;
+      if (typeof window.updateCodDisplay === 'function') {
+        window.updateCodDisplay(total);
       }
     };
 
@@ -759,9 +759,22 @@
       }
 
       const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
-      const codAdvanceFee = settings.codAdvanceAmount || 1000;
+      
+      // Dynamic Advance Payment calculation based on tiered rules
+      const codDetails = typeof window.getCodAdvanceDetails === 'function'
+        ? window.getCodAdvanceDetails(finalTotal)
+        : (function(t) {
+            if (t < 1000) return { advance: t, balance: 0 };
+            if (t <= 3000) return { advance: 500, balance: Math.max(0, t - 500) };
+            if (t <= 10000) return { advance: 1000, balance: Math.max(0, t - 1000) };
+            const a = Math.round(t * 0.10);
+            return { advance: a, balance: Math.max(0, t - a) };
+          })(finalTotal);
+
+      const codAdvanceFee = codDetails.advance;
+      const remainingBalance = codDetails.balance;
       const paymentMethod = document.getElementById('optOnline').classList.contains('selected') ? 'ONLINE' : 'COD';
-      const amountToPayNow = paymentMethod === 'COD' ? Math.min(finalTotal, codAdvanceFee) : finalTotal;
+      const amountToPayNow = paymentMethod === 'COD' ? codAdvanceFee : finalTotal;
 
       // Save address if logged in and checkbox checked
       if (window.currentUser && shouldSaveAddress && window.DbService && window.DbService.addUserAddress) {
@@ -788,11 +801,9 @@
           currency: 'INR',
           name: 'AK INFOTECH',
           description: paymentMethod === 'COD'
-            ? `₹${codAdvanceFee} Mandatory COD Advance Payment`
+            ? (remainingBalance === 0 ? `Full ₹${codAdvanceFee} Payment (100% Upfront)` : `₹${codAdvanceFee} Mandatory COD Advance Payment`)
             : 'Full Order Payment',
           handler: async function (response) {
-            const remainingBalance = paymentMethod === 'COD' ? Math.max(0, finalTotal - codAdvanceFee) : 0;
-
             const orderPayload = {
               customerName: custName,
               phone: custPhone,
@@ -804,7 +815,9 @@
               state: custCityState.split(',')[1]?.trim() || 'Tamil Nadu',
               items: cart,
               paymentMethod: paymentMethod,
-              paymentStatus: paymentMethod === 'COD' ? `ADVANCE_PAID_₹${codAdvanceFee}` : 'PAID_ONLINE',
+              paymentStatus: paymentMethod === 'COD' 
+                ? (remainingBalance === 0 ? 'PAID_ONLINE' : `ADVANCE_PAID_₹${codAdvanceFee}`) 
+                : 'PAID_ONLINE',
               paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
               razorpayOrderId: response.razorpay_order_id || '',
               subtotal,
@@ -812,7 +825,7 @@
               discountAmount,
               finalTotal,
               advancePaid: paymentMethod === 'COD' ? codAdvanceFee : finalTotal,
-              balanceOnDelivery: remainingBalance,
+              balanceOnDelivery: paymentMethod === 'COD' ? remainingBalance : 0,
               status: 'PROCESSING'
             };
 
@@ -831,7 +844,7 @@
                 } catch (e) {
                   console.warn("Email notify trigger error:", e);
                 }
-                alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.` : 'Full Amount Paid Online.'}`);
+                alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? (remainingBalance === 0 ? `Full Amount (₹${codAdvanceFee}) Paid Online.` : `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.`) : 'Full Amount Paid Online.'}`);
 
                 localStorage.removeItem('ak_cart');
                 localStorage.removeItem('ak_applied_coupon');
@@ -854,7 +867,7 @@
         };
 
         if (isTestMode) {
-          if (confirm(`[TEST SIMULATION MODE]\nClick OK to simulate successful Razorpay Payment of ₹${amountToPayNow} (${paymentMethod === 'COD' ? `₹${codAdvanceFee} COD Advance` : 'Full Online Payment'}).`)) {
+          if (confirm(`[TEST SIMULATION MODE]\nClick OK to simulate successful Razorpay Payment of ₹${amountToPayNow} (${paymentMethod === 'COD' ? (remainingBalance === 0 ? `₹${codAdvanceFee} Full Payment` : `₹${codAdvanceFee} COD Advance`) : 'Full Online Payment'}).`)) {
             options.handler({ razorpay_payment_id: `pay_sim_${Date.now()}` });
           } else {
             btn.disabled = false;

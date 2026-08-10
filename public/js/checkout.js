@@ -201,6 +201,9 @@ function renderSummary() {
     _setEl('summSubtotal', fmt(subtotal));
     _setEl('summTotal', fmt(grandTotal));
 
+    // Update dynamic COD advance rules
+    updateCodDisplay(grandTotal);
+
     // Delivery display
     var delivEl = document.getElementById('summDelivery');
     if (delivEl) {
@@ -242,6 +245,84 @@ function renderSummary() {
         }
     }
 }
+
+// ─── ADVANCE PAYMENT RULES ───────────────────────────────────────────────────
+/**
+ * 1. Below ₹1,000 (₹1 to ₹999): Full Payment (100% upfront) -> Advance = Total, Balance = 0
+ * 2. ₹1,000 to ₹3,000: Fixed Advance ₹500 -> Advance = 500, Balance = Total - 500
+ * 3. ₹3,001 to ₹10,000: Fixed Advance ₹1,000 -> Advance = 1000, Balance = Total - 1000
+ * 4. Above ₹10,000 (₹10,001+): 10% of Total Order Value -> Advance = 10% of Total, Balance = Total - Advance
+ */
+function getCodAdvanceDetails(totalAmount) {
+    var total = Math.max(0, Math.round(Number(totalAmount) || 0));
+    if (total <= 0) {
+        return {
+            advance: 0,
+            balance: 0,
+            subText: '100% Upfront Payment',
+            termsAdvanceText: '₹0',
+            termsBalanceText: '₹0'
+        };
+    }
+
+    // 1. Below ₹1,000 (₹1 to ₹999): Full Payment (100% upfront)
+    if (total < 1000) {
+        return {
+            advance: total,
+            balance: 0,
+            subText: 'Pay ' + fmt(total) + ' (100% Full Payment)',
+            termsAdvanceText: fmt(total) + ' (100% Full Payment)',
+            termsBalanceText: '₹0'
+        };
+    }
+
+    // 2. ₹1,000 to ₹3,000: Fixed Advance ₹500
+    if (total <= 3000) {
+        return {
+            advance: 500,
+            balance: Math.max(0, total - 500),
+            subText: 'Pay ₹500 Advance',
+            termsAdvanceText: '₹500',
+            termsBalanceText: fmt(Math.max(0, total - 500))
+        };
+    }
+
+    // 3. ₹3,001 to ₹10,000: Fixed Advance ₹1,000
+    if (total <= 10000) {
+        return {
+            advance: 1000,
+            balance: Math.max(0, total - 1000),
+            subText: 'Pay ₹1,000 Advance',
+            termsAdvanceText: '₹1,000',
+            termsBalanceText: fmt(Math.max(0, total - 1000))
+        };
+    }
+
+    // 4. Above ₹10,000 (₹10,001+): 10% of Total Order Value
+    var advance = Math.round(total * 0.10);
+    return {
+        advance: advance,
+        balance: Math.max(0, total - advance),
+        subText: 'Pay 10% Advance (' + fmt(advance) + ')',
+        termsAdvanceText: fmt(advance) + ' (10%)',
+        termsBalanceText: fmt(Math.max(0, total - advance))
+    };
+}
+
+function updateCodDisplay(totalAmount) {
+    var cod = getCodAdvanceDetails(totalAmount);
+    var codSub = document.getElementById('codCardSub');
+    if (codSub) codSub.textContent = cod.subText;
+
+    var codAdvEl = document.getElementById('codAdvanceText');
+    if (codAdvEl) codAdvEl.textContent = cod.termsAdvanceText;
+
+    var codBalEl = document.getElementById('codBalanceText');
+    if (codBalEl) codBalEl.textContent = cod.termsBalanceText;
+}
+
+window.getCodAdvanceDetails = getCodAdvanceDetails;
+window.updateCodDisplay = updateCodDisplay;
 
 function _setEl(id, val) {
     var el = document.getElementById(id);

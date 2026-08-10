@@ -835,8 +835,24 @@ app.post('/api/orders', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Missing required order details.' });
     }
 
-    const codAdvanceFee = settings.codAdvanceAmount || 1000;
-    const remainingBalanceAtDelivery = paymentMethod === 'COD' ? Math.max(0, finalTotal - codAdvanceFee) : 0;
+    // Calculate tiered COD advance
+    let codAdvanceFee = finalTotal;
+    let remainingBalanceAtDelivery = 0;
+    if (paymentMethod === 'COD') {
+      if (finalTotal < 1000) {
+        codAdvanceFee = finalTotal;
+        remainingBalanceAtDelivery = 0;
+      } else if (finalTotal <= 3000) {
+        codAdvanceFee = 500;
+        remainingBalanceAtDelivery = Math.max(0, finalTotal - 500);
+      } else if (finalTotal <= 10000) {
+        codAdvanceFee = 1000;
+        remainingBalanceAtDelivery = Math.max(0, finalTotal - 1000);
+      } else {
+        codAdvanceFee = Math.round(finalTotal * 0.10);
+        remainingBalanceAtDelivery = Math.max(0, finalTotal - codAdvanceFee);
+      }
+    }
 
     const newOrder = {
       id: `AK-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -854,11 +870,13 @@ app.post('/api/orders', async (req, res) => {
       discountAmount: parseFloat(discountAmount) || 0,
       finalTotal: parseFloat(finalTotal) || 0,
       paymentMethod, // ONLINE or COD
-      paymentStatus: paymentMethod === 'COD' ? `ADVANCE_PAID_₹${codAdvanceFee}` : 'PAID_ONLINE',
+      paymentStatus: paymentMethod === 'COD' 
+        ? (remainingBalanceAtDelivery === 0 ? 'PAID_ONLINE' : `ADVANCE_PAID_₹${codAdvanceFee}`) 
+        : 'PAID_ONLINE',
       paymentId: paymentId || `pay_sim_${Date.now()}`,
       razorpayOrderId: razorpayOrderId || '',
       advancePaid: paymentMethod === 'COD' ? codAdvanceFee : finalTotal,
-      balanceOnDelivery: remainingBalanceAtDelivery,
+      balanceOnDelivery: paymentMethod === 'COD' ? remainingBalanceAtDelivery : 0,
       status: 'PROCESSING',
       shiprocket: null
     };
