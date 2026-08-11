@@ -105,21 +105,6 @@
     "isFeatured": false
   },
   {
-    "id": "prod-qubo-wireless-gps-tracker-htbv11nz12",
-    "photoLink": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp",
-    "productName": "QUBO WIRELESS GPS TRACKER (HTBV11NZ12)",
-    "productSpec": "Operating Temperature\t-20C ~ 70C\r\nLocation\tGPS\r\nCellular\tPre-installed SIM available with device\r\nSIM Type\tNano SIM\r\nBattery Capacity\t10,000 mAh\r\nBattery Life\tUp to 60 days?(on Smart Saver Mode)\r\nSensors\t3 axis Accelerometer, Light sensor\r\nDimension\t86.0 X 63.0 X 31.5 mm\r\nWeight\t245 gm?\r\nCharging Wire Type\tType A to Type C (Included in box)\r\nIP Rating\tIP66\r\nMounting Type\tMagnetic",
-    "brand": "Qubo",
-    "category": "GPS",
-    "price": 9990,
-    "sellingPrice": 4200,
-    "baseSellingPrice": 4000,
-    "dealerMarginPercent": 5,
-    "inStock": true,
-    "isCombo": false,
-    "isFeatured": false
-  },
-  {
     "id": "prod-qubo-instaview-edge-video-door-phone",
     "photoLink": "images/products/qubo-instaview-edge-video-door-phone.webp",
     "productName": "Qubo Instaview- Edge Video Door Phone",
