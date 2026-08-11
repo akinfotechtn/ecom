@@ -764,7 +764,7 @@ window.selectPaymentMethod = function (method) {
     if (optCOD) optCOD.className = 'co-pay-card selected';
     if (codBanner) codBanner.style.display = 'block';
 
-    const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+    const subtotal = cart.reduce((sum, item) => sum + (getItemPriceWithGst(item, storeSettings) * (item.quantity || item.qty || 1)), 0);
     let promoDiscount = 0;
     if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
       if (appliedCoupon.discountPercent) {
@@ -774,16 +774,20 @@ window.selectPaymentMethod = function (method) {
       }
     }
     const finalTotal = Math.max(0, subtotal - promoDiscount);
-    const codDetails = getCodAdvanceDetails(finalTotal);
 
-    const codAdvEl = document.getElementById('codAdvanceText');
-    if (codAdvEl) codAdvEl.textContent = codDetails.termsAdvanceText || `₹${codDetails.advance.toLocaleString('en-IN')}`;
+    if (typeof window.updateCodDisplay === 'function') {
+      window.updateCodDisplay(finalTotal);
+    } else {
+      const codDetails = getCodAdvanceDetails(finalTotal);
+      const codAdvEl = document.getElementById('codAdvanceText');
+      if (codAdvEl) codAdvEl.textContent = codDetails.termsAdvanceText || `₹${codDetails.advance.toLocaleString('en-IN')}`;
 
-    const codBalEl = document.getElementById('codBalanceText');
-    if (codBalEl) codBalEl.textContent = codDetails.termsBalanceText || `₹${codDetails.balance.toLocaleString('en-IN')}`;
+      const codBalEl = document.getElementById('codBalanceText');
+      if (codBalEl) codBalEl.textContent = codDetails.termsBalanceText || `₹${codDetails.balance.toLocaleString('en-IN')}`;
 
-    const codSubEl = document.getElementById('codCardSub');
-    if (codSubEl) codSubEl.textContent = codDetails.subText;
+      const codSubEl = document.getElementById('codCardSub');
+      if (codSubEl) codSubEl.textContent = codDetails.subText;
+    }
   }
 };
 
@@ -804,7 +808,7 @@ async function handleCheckoutSubmit(e) {
   const custCityState = document.getElementById('custCityState').value.trim();
   const shouldSaveAddress = (document.getElementById('saveAddressToAccount') || document.getElementById('chkSaveAddress'))?.checked ?? false;
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (getItemPriceWithGst(item, storeSettings) * (item.quantity || item.qty || 1)), 0);
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
     if (appliedCoupon.discountPercent) {

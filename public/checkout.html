@@ -711,7 +711,14 @@
       const appliedCoupon = window.appliedCoupon || JSON.parse(localStorage.getItem('ak_applied_coupon') || 'null');
 
       // 1. Calculate final values matching Order Summary logic
-      const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
+      const getItemUnitPrice = (item) => {
+        if (typeof window.getItemPriceWithGst === 'function') return window.getItemPriceWithGst(item, settings);
+        if (typeof window.getItemPrice === 'function') return window.getItemPrice(item);
+        const base = Number(item.sellingPrice || item.price || 0);
+        const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '') ? Number(item.gstPercent) : 18;
+        return base + Math.round((base * gstRate) / 100);
+      };
+      const subtotal = cart.reduce((sum, item) => sum + (getItemUnitPrice(item) * (item.quantity || item.qty || 1)), 0);
 
       // Discount
       var discountAmount = 0;
