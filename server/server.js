@@ -454,10 +454,82 @@ function generateSitemapAndRobots(products, brands, categories) {
 
     writeIfChanged(path.join(__dirname, '../public/robots.txt'), robots);
 
+    // 6. Generate Google Shopping XML Feed
+    generateGoogleShoppingFeed(products);
+
   } catch (err) {
     console.error('[SSG] Error generating sitemap/robots:', err.message);
   }
 }
+
+function generateGoogleShoppingFeed(products) {
+  try {
+    const settings = readJson(SETTINGS_FILE, {});
+    const siteUrl = (settings.baseUrl || 'https://shop.akinfotechcctv.in').replace(/\/$/, '');
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n`;
+    xml += `  <channel>\n`;
+    xml += `    <title>AK Infotech - CCTV Security Systems &amp; Cameras</title>\n`;
+    xml += `    <link>${siteUrl}</link>\n`;
+    xml += `    <description>Authorized Wholesale &amp; Retail Security Systems Distributor in Chennai. 4K CCTV Cameras, DVR/NVR, Biometrics, PoE Switches &amp; IT Accessories.</description>\n`;
+
+    for (const p of products) {
+      if (!p.productName) continue;
+      const slug = slugify(p.productName);
+      const base = Number(p.sellingPrice || p.price || 0);
+      const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
+      const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
+      const mrpPrice = (Number(p.price || base) + Math.round((Number(p.price || base) * gstRate) / 100)).toFixed(2);
+      const photo = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `${siteUrl}/${p.photoLink.replace(/^\//, '')}`) : `${siteUrl}/images/logo.webp`;
+      const description = p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`;
+
+      xml += `    <item>\n`;
+      xml += `      <g:id>${escapeHtml(p.id || slug)}</g:id>\n`;
+      xml += `      <g:title>${escapeHtml(p.productName)}</g:title>\n`;
+      xml += `      <g:description>${escapeHtml(description)}</g:description>\n`;
+      xml += `      <g:link>${siteUrl}/product/${slug}.html</g:link>\n`;
+      xml += `      <g:image_link>${escapeHtml(photo)}</g:image_link>\n`;
+      xml += `      <g:availability>${p.inStock === false ? 'out_of_stock' : 'in_stock'}</g:availability>\n`;
+      xml += `      <g:price>${finalPrice} INR</g:price>\n`;
+      if (Number(mrpPrice) > Number(finalPrice)) {
+        xml += `      <g:sale_price>${finalPrice} INR</g:sale_price>\n`;
+      }
+      xml += `      <g:brand>${escapeHtml(p.brand || 'AK Infotech')}</g:brand>\n`;
+      xml += `      <g:condition>new</g:condition>\n`;
+      xml += `      <g:identifier_exists>no</g:identifier_exists>\n`;
+      xml += `      <g:shipping>\n`;
+      xml += `        <g:country>IN</g:country>\n`;
+      xml += `        <g:service>Standard Courier</g:service>\n`;
+      xml += `        <g:price>0.00 INR</g:price>\n`;
+      xml += `      </g:shipping>\n`;
+      xml += `    </item>\n`;
+    }
+
+    xml += `  </channel>\n`;
+    xml += `</rss>`;
+
+    writeIfChanged(path.join(__dirname, '../public/google-feed.xml'), xml);
+    console.log(`[Google Feed] Generated public/google-feed.xml with ${products.length} products`);
+  } catch (err) {
+    console.error('[Google Feed] Error generating XML feed:', err.message);
+  }
+}
+
+// ---------------------------------------------------------
+// GOOGLE SHOPPING FEED API
+// ---------------------------------------------------------
+app.get('/api/google-shopping-feed.xml', (req, res) => {
+  const feedPath = path.join(__dirname, '../public/google-feed.xml');
+  if (fs.existsSync(feedPath)) {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    return res.sendFile(feedPath);
+  }
+  const products = readJson(PRODUCTS_FILE, []);
+  generateGoogleShoppingFeed(products);
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  return res.sendFile(path.join(__dirname, '../public/google-feed.xml'));
+});
 
 // ---------------------------------------------------------
 // PRODUCTS API
