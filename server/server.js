@@ -472,9 +472,9 @@ function generateGoogleShoppingFeed(products) {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n`;
     xml += `  <channel>\n`;
-    xml += `    <title>AK Infotech - CCTV Security Systems &amp; Cameras</title>\n`;
+    xml += `    <title><![CDATA[AK Infotech - CCTV Security Systems & Cameras]]></title>\n`;
     xml += `    <link>${siteUrl}</link>\n`;
-    xml += `    <description>Authorized Wholesale &amp; Retail Security Systems Distributor in Chennai. 4K CCTV Cameras, DVR/NVR, Biometrics, PoE Switches &amp; IT Accessories.</description>\n`;
+    xml += `    <description><![CDATA[Authorized Wholesale & Retail Security Systems Distributor in Chennai. 4K CCTV Cameras, DVR/NVR, Biometrics, PoE Switches & IT Accessories.]]></description>\n`;
 
     for (const p of products) {
       if (!p.productName) continue;
@@ -484,20 +484,27 @@ function generateGoogleShoppingFeed(products) {
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
       const mrpPrice = (Number(p.price || base) + Math.round((Number(p.price || base) * gstRate) / 100)).toFixed(2);
       const photo = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `${siteUrl}/${p.photoLink.replace(/^\//, '')}`) : `${siteUrl}/images/logo.webp`;
-      const description = p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`;
+      
+      let cleanDesc = (p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`)
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      const cleanTitle = p.productName.trim().replace(/\s+/g, ' ');
 
       xml += `    <item>\n`;
-      xml += `      <g:id>${escapeHtml(p.id || slug)}</g:id>\n`;
-      xml += `      <g:title>${escapeHtml(p.productName)}</g:title>\n`;
-      xml += `      <g:description>${escapeHtml(description)}</g:description>\n`;
+      xml += `      <g:id><![CDATA[${p.id || slug}]]></g:id>\n`;
+      xml += `      <g:title><![CDATA[${cleanTitle}]]></g:title>\n`;
+      xml += `      <g:description><![CDATA[${cleanDesc}]]></g:description>\n`;
       xml += `      <g:link>${siteUrl}/product/${slug}.html</g:link>\n`;
-      xml += `      <g:image_link>${escapeHtml(photo)}</g:image_link>\n`;
+      xml += `      <g:image_link>${photo}</g:image_link>\n`;
       xml += `      <g:availability>${p.inStock === false ? 'out_of_stock' : 'in_stock'}</g:availability>\n`;
       xml += `      <g:price>${finalPrice} INR</g:price>\n`;
       if (Number(mrpPrice) > Number(finalPrice)) {
         xml += `      <g:sale_price>${finalPrice} INR</g:sale_price>\n`;
       }
-      xml += `      <g:brand>${escapeHtml(p.brand || 'AK Infotech')}</g:brand>\n`;
+      xml += `      <g:brand><![CDATA[${p.brand || 'AK Infotech'}]]></g:brand>\n`;
       xml += `      <g:condition>new</g:condition>\n`;
       xml += `      <g:identifier_exists>no</g:identifier_exists>\n`;
       xml += `      <g:shipping>\n`;
