@@ -182,7 +182,7 @@ function renderSummary() {
         subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
     }
 
-    // Delivery calculation (Only two delivery charge modes: Free Shipping via coupon, or Calculated & Payable Upon Delivery)
+    // Delivery calculation (Free Shipping via coupon, or Calculated & Payable Upon Delivery)
     var isFreeDelivery = false;
     var promoDiscount = 0;
 
@@ -191,7 +191,16 @@ function renderSummary() {
             promoDiscount = Math.round(subtotal * coupon.discountPercent / 100);
         } else if (coupon.discountFlat) {
             promoDiscount = coupon.discountFlat;
-        } else if (coupon.freeDelivery || coupon.type === 'FREE_DELIVERY') {
+        }
+        
+        const code = String(coupon.code || '').toUpperCase().trim();
+        if (coupon.freeDelivery === true || 
+            coupon.type === 'FREE_DELIVERY' || 
+            coupon.type === 'FREE_SHIPPING' || 
+            code === 'SHIP' || 
+            code === 'FREESHIP' || 
+            code === 'FREESHIPPING' ||
+            (!coupon.discountPercent && !coupon.discountFlat)) {
             isFreeDelivery = true;
         }
     }
@@ -315,17 +324,23 @@ function getCodAdvanceDetails(totalAmount, isFreeDelivery) {
 }
 
 function updateCodDisplay(totalAmount, isFreeDelivery) {
-    if (isFreeDelivery === undefined) {
-        var coupon = getAppliedCoupon();
-        var cart = getCart();
-        var subtotal = 0;
-        for (var i = 0; i < cart.length; i++) {
-            subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
-        }
-        if (coupon && subtotal >= (coupon.minOrderAmount || 0)) {
-            if (coupon.freeDelivery || coupon.type === 'FREE_DELIVERY' || String(coupon.code || '').toUpperCase() === 'SHIP' || String(coupon.code || '').toUpperCase() === 'FREESHIP') {
-                isFreeDelivery = true;
-            }
+    var coupon = getAppliedCoupon();
+    var cart = getCart();
+    var subtotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+        subtotal += getItemPrice(cart[i]) * getQty(cart[i]);
+    }
+
+    if (coupon && subtotal >= (coupon.minOrderAmount || 0)) {
+        const code = String(coupon.code || '').toUpperCase().trim();
+        if (coupon.freeDelivery === true || 
+            coupon.type === 'FREE_DELIVERY' || 
+            coupon.type === 'FREE_SHIPPING' || 
+            code === 'SHIP' || 
+            code === 'FREESHIP' || 
+            code === 'FREESHIPPING' ||
+            (!coupon.discountPercent && !coupon.discountFlat)) {
+            isFreeDelivery = true;
         }
     }
 

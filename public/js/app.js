@@ -775,14 +775,24 @@ window.selectPaymentMethod = function (method) {
     if (codBanner) codBanner.style.display = 'block';
 
     const subtotal = cart.reduce((sum, item) => sum + (getItemPriceWithGst(item, storeSettings) * (item.quantity || item.qty || 1)), 0);
+    const activeCoupon = window.appliedCoupon || JSON.parse(localStorage.getItem('ak_applied_coupon') || 'null');
     let promoDiscount = 0;
     let isFreeDelivery = false;
-    if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
-      if (appliedCoupon.discountPercent) {
-        promoDiscount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
-      } else if (appliedCoupon.discountFlat) {
-        promoDiscount = appliedCoupon.discountFlat;
-      } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY' || String(appliedCoupon.code || '').toUpperCase() === 'SHIP' || String(appliedCoupon.code || '').toUpperCase() === 'FREESHIP') {
+    if (activeCoupon && subtotal >= (activeCoupon.minOrderAmount || 0)) {
+      if (activeCoupon.discountPercent) {
+        promoDiscount = Math.round((subtotal * activeCoupon.discountPercent) / 100);
+      } else if (activeCoupon.discountFlat) {
+        promoDiscount = activeCoupon.discountFlat;
+      }
+      
+      const code = String(activeCoupon.code || '').toUpperCase().trim();
+      if (activeCoupon.freeDelivery === true || 
+          activeCoupon.type === 'FREE_DELIVERY' || 
+          activeCoupon.type === 'FREE_SHIPPING' || 
+          code === 'SHIP' || 
+          code === 'FREESHIP' || 
+          code === 'FREESHIPPING' ||
+          (!activeCoupon.discountPercent && !activeCoupon.discountFlat)) {
         isFreeDelivery = true;
       }
     }
