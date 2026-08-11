@@ -842,8 +842,9 @@
 
                 localStorage.removeItem('ak_cart');
                 localStorage.removeItem('ak_applied_coupon');
+                try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
                 window.cart = [];
-                window.location.href = 'account.html?order=' + savedOrder.id;
+                window.location.href = 'order-success.html?order=' + savedOrder.id;
               } else {
                 throw new Error('Database service unavailable');
               }

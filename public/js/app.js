@@ -921,8 +921,8 @@ async function handleCheckoutSubmit(e) {
 
         cart = [];
         saveCart();
-        renderCart();
-        closeCheckoutModal();
+        try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
+        window.location.href = 'order-success.html?order=' + savedOrder.id;
       },
       prefill: {
         name: custName,
