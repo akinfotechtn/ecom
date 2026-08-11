@@ -739,14 +739,23 @@ window.autoApplyCheckoutCoupon = function (code) {
 };
 
 // ADVANCE PAYMENT RULES CALCULATION
-function getCodAdvanceDetails(totalAmount) {
+function getCodAdvanceDetails(totalAmount, isFreeDelivery) {
   const total = Math.max(0, Math.round(Number(totalAmount) || 0));
-  if (total <= 0) return { advance: 0, balance: 0, subText: '100% Upfront Payment', termsText: '₹0' };
-  if (total < 1000) return { advance: total, balance: 0, subText: `Pay ₹${total.toLocaleString('en-IN')} (100% Full Payment)`, termsText: `Full Advance (100%)` };
-  if (total <= 3000) return { advance: 500, balance: Math.max(0, total - 500), subText: `Pay ₹500 Advance`, termsText: `Fixed ₹500 Advance` };
-  if (total <= 10000) return { advance: 1000, balance: Math.max(0, total - 1000), subText: `Pay ₹1,000 Advance`, termsText: `Fixed ₹1,000 Advance` };
+  const suffix = isFreeDelivery ? '' : ' + Courier Extra';
+
+  if (total <= 0) return { advance: 0, balance: 0, subText: '100% Upfront Payment', termsText: '₹0', termsAdvanceText: '₹0', termsBalanceText: '₹0' + suffix };
+  if (total < 1000) return { advance: total, balance: 0, subText: `Pay ₹${total.toLocaleString('en-IN')} (100% Full Payment)`, termsText: `Full Advance (100%)`, termsAdvanceText: `₹${total.toLocaleString('en-IN')} (100% Full Payment)`, termsBalanceText: '₹0' + suffix };
+  if (total <= 3000) {
+    const bal = Math.max(0, total - 500);
+    return { advance: 500, balance: bal, subText: `Pay ₹500 Advance`, termsText: `Fixed ₹500 Advance`, termsAdvanceText: '₹500', termsBalanceText: `₹${bal.toLocaleString('en-IN')}${suffix}` };
+  }
+  if (total <= 10000) {
+    const bal = Math.max(0, total - 1000);
+    return { advance: 1000, balance: bal, subText: `Pay ₹1,000 Advance`, termsText: `Fixed ₹1,000 Advance`, termsAdvanceText: '₹1,000', termsBalanceText: `₹${bal.toLocaleString('en-IN')}${suffix}` };
+  }
   const advance = Math.round(total * 0.10);
-  return { advance: advance, balance: Math.max(0, total - advance), subText: `Pay 10% Advance (₹${advance.toLocaleString('en-IN')})`, termsText: `10% Advance` };
+  const bal = Math.max(0, total - advance);
+  return { advance: advance, balance: bal, subText: `Pay 10% Advance (₹${advance.toLocaleString('en-IN')})`, termsText: `10% Advance`, termsAdvanceText: `₹${advance.toLocaleString('en-IN')} (10%)`, termsBalanceText: `₹${bal.toLocaleString('en-IN')}${suffix}` };
 }
 
 // CHECKOUT & PAYMENT SELECTION
@@ -767,19 +776,22 @@ window.selectPaymentMethod = function (method) {
 
     const subtotal = cart.reduce((sum, item) => sum + (getItemPriceWithGst(item, storeSettings) * (item.quantity || item.qty || 1)), 0);
     let promoDiscount = 0;
+    let isFreeDelivery = false;
     if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
       if (appliedCoupon.discountPercent) {
         promoDiscount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
       } else if (appliedCoupon.discountFlat) {
         promoDiscount = appliedCoupon.discountFlat;
+      } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY' || String(appliedCoupon.code || '').toUpperCase() === 'SHIP' || String(appliedCoupon.code || '').toUpperCase() === 'FREESHIP') {
+        isFreeDelivery = true;
       }
     }
     const finalTotal = Math.max(0, subtotal - promoDiscount);
 
     if (typeof window.updateCodDisplay === 'function') {
-      window.updateCodDisplay(finalTotal);
+      window.updateCodDisplay(finalTotal, isFreeDelivery);
     } else {
-      const codDetails = getCodAdvanceDetails(finalTotal);
+      const codDetails = getCodAdvanceDetails(finalTotal, isFreeDelivery);
       const codAdvEl = document.getElementById('codAdvanceText');
       if (codAdvEl) codAdvEl.textContent = codDetails.termsAdvanceText || `₹${codDetails.advance.toLocaleString('en-IN')}`;
 
