@@ -823,6 +823,21 @@
                 } catch (e) {
                   console.warn("Email notify trigger error:", e);
                 }
+                // Google Ads / Analytics Purchase Event Tracking
+                if (typeof window.gtag === 'function') {
+                  window.gtag('event', 'purchase', {
+                    transaction_id: savedOrder.id,
+                    value: Number(savedOrder.totalAmount || amountToPayNow),
+                    currency: 'INR',
+                    items: (savedOrder.items || []).map(i => ({
+                      item_id: i.id || i.productName,
+                      item_name: i.productName,
+                      price: Number(i.sellingPrice || i.price || 0),
+                      quantity: Number(i.quantity || i.qty || 1)
+                    }))
+                  });
+                }
+
                 alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? (remainingBalance === 0 ? `Full Amount (₹${codAdvanceFee}) Paid Online.` : `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.`) : 'Full Amount Paid Online.'}`);
 
                 localStorage.removeItem('ak_cart');
