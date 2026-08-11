@@ -166,20 +166,20 @@ const DEFAULT_PRODUCTS = [
 ];
 
 const DEFAULT_BRANDS = [
-  { id: "brand-1", name: "Trueview", imageLink: "images/trueview-logo.webp" },
-  { id: "brand-2", name: "CPPlus", imageLink: "images/cpplus-logo.webp" },
-  { id: "brand-3", name: "Hikvision", imageLink: "images/hikvision-logo.webp" },
-  { id: "brand-4", name: "Gopix", imageLink: "images/gopix-logo.webp" },
-  { id: "brand-5", name: "Dahua", imageLink: "images/dahua-logo.webp" },
-  { id: "brand-6", name: "EZVIZ", imageLink: "images/ezviz-logo.webp" }
+  { id: "brand-1", name: "Trueview", imageLink: "images/brands/trueview.webp" },
+  { id: "brand-2", name: "CPPlus", imageLink: "images/brands/cpplus.webp" },
+  { id: "brand-3", name: "Hikvision", imageLink: "images/brands/hikvision.webp" },
+  { id: "brand-4", name: "Gopix", imageLink: "images/brands/gopix.webp" },
+  { id: "brand-5", name: "Dahua", imageLink: "images/brands/dahua.webp" },
+  { id: "brand-6", name: "EZVIZ", imageLink: "images/brands/ezviz.webp" }
 ];
 
 const DEFAULT_CATEGORIES = [
   { id: "cat-1", name: "CCTV Camera", imageLink: "images/cctv-wholesale.webp", deliveryCharge: 150 },
-  { id: "cat-2", name: "Printers", imageLink: "images/printers-wholesale.webp", deliveryCharge: 200 },
-  { id: "cat-3", name: "DVR & NVR", imageLink: "images/storage-wholesale.webp", deliveryCharge: 250 },
-  { id: "cat-4", name: "Security Systems", imageLink: "images/biometrics-wholesale.webp", deliveryCharge: 200 },
-  { id: "cat-5", name: "Accessories", imageLink: "images/networking-wholesale.webp", deliveryCharge: 100 }
+  { id: "cat-2", name: "Printers", imageLink: "images/categories/printers.webp", deliveryCharge: 200 },
+  { id: "cat-3", name: "DVR & NVR", imageLink: "images/categories/hd-dvr.webp", deliveryCharge: 250 },
+  { id: "cat-4", name: "Security Systems", imageLink: "images/categories/biometric.webp", deliveryCharge: 200 },
+  { id: "cat-5", name: "Accessories", imageLink: "images/categories/accessories.webp", deliveryCharge: 100 }
 ];
 
 const DEFAULT_SETTINGS = {

@@ -67,26 +67,26 @@
   {
     "id": "brand-2",
     "name": "CPPlus",
-    "imageLink": "images/cpplus-logo.webp"
+    "imageLink": "images/brands/cpplus.webp"
   },
   {
     "id": "brand-3",
     "name": "Hikvision",
-    "imageLink": "images/hikvision-logo.webp"
+    "imageLink": "images/brands/hikvision.webp"
   },
   {
     "id": "brand-4",
     "name": "Gopix",
-    "imageLink": "images/gopix-logo.webp"
+    "imageLink": "images/brands/gopix.webp"
   },
   {
     "id": "brand-5",
-    "imageLink": "images/dahua-logo.webp",
+    "imageLink": "images/brands/dahua.webp",
     "name": "Dahua"
   },
   {
     "id": "brand-6",
-    "imageLink": "images/ezviz-logo.webp",
+    "imageLink": "images/brands/ezviz.webp",
     "name": "EZVIZ"
   }
 ]
