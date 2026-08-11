@@ -68,42 +68,53 @@ async function uploadProducts() {
     const entries = chunk.map((p, idx) => {
       const slug = slugify(p.productName);
       const base = Number(p.sellingPrice || p.price || 0);
+      const mrpBase = Number(p.price || p.sellingPrice || 0);
       const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
+      const mrpPrice = (mrpBase + Math.round((mrpBase * gstRate) / 100)).toFixed(2);
       const photo = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `${siteUrl}/${p.photoLink.replace(/^\//, '')}`) : `${siteUrl}/images/logo.webp`;
       const description = p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`;
+
+      const productPayload = {
+        offerId: p.id || slug,
+        title: p.productName,
+        description: description,
+        link: `${siteUrl}/product/${slug}.html`,
+        imageLink: photo,
+        contentLanguage: 'en',
+        targetCountry: 'IN',
+        channel: 'online',
+        availability: p.inStock === false ? 'out of stock' : 'in stock',
+        condition: 'new',
+        brand: p.brand || 'AK Infotech',
+        price: {
+          value: Number(mrpPrice) > Number(finalPrice) ? mrpPrice : finalPrice,
+          currency: 'INR'
+        },
+        shipping: [
+          {
+            country: 'IN',
+            service: 'Standard Delivery',
+            price: {
+              value: '0.00',
+              currency: 'INR'
+            }
+          }
+        ]
+      };
+
+      if (Number(mrpPrice) > Number(finalPrice)) {
+        productPayload.salePrice = {
+          value: finalPrice,
+          currency: 'INR'
+        };
+      }
 
       return {
         batchId: i + idx + 1,
         merchantId: MERCHANT_ID,
         method: 'insert',
-        product: {
-          offerId: p.id || slug,
-          title: p.productName,
-          description: description,
-          link: `${siteUrl}/product/${slug}.html`,
-          imageLink: photo,
-          contentLanguage: 'en',
-          targetCountry: 'IN',
-          channel: 'online',
-          availability: p.inStock === false ? 'out of stock' : 'in stock',
-          condition: 'new',
-          brand: p.brand || 'AK Infotech',
-          price: {
-            value: finalPrice,
-            currency: 'INR'
-          },
-          shipping: [
-            {
-              country: 'IN',
-              service: 'Standard Delivery',
-              price: {
-                value: '0.00',
-                currency: 'INR'
-              }
-            }
-          ]
-        }
+        product: productPayload
       };
     });
 

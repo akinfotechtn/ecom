@@ -482,9 +482,10 @@ function generateGoogleShoppingFeed(products) {
       if (!p.productName) continue;
       const slug = slugify(p.productName);
       const base = Number(p.sellingPrice || p.price || 0);
+      const mrpBase = Number(p.price || p.sellingPrice || 0);
       const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
-      const mrpPrice = (Number(p.price || base) + Math.round((Number(p.price || base) * gstRate) / 100)).toFixed(2);
+      const mrpPrice = (mrpBase + Math.round((mrpBase * gstRate) / 100)).toFixed(2);
       const photo = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `${siteUrl}/${p.photoLink.replace(/^\//, '')}`) : `${siteUrl}/images/logo.webp`;
       
       let cleanDesc = (p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`)
@@ -502,9 +503,11 @@ function generateGoogleShoppingFeed(products) {
       xml += `      <g:link>${siteUrl}/product/${slug}.html</g:link>\n`;
       xml += `      <g:image_link>${photo}</g:image_link>\n`;
       xml += `      <g:availability>${p.inStock === false ? 'out_of_stock' : 'in_stock'}</g:availability>\n`;
-      xml += `      <g:price>${finalPrice} INR</g:price>\n`;
       if (Number(mrpPrice) > Number(finalPrice)) {
+        xml += `      <g:price>${mrpPrice} INR</g:price>\n`;
         xml += `      <g:sale_price>${finalPrice} INR</g:sale_price>\n`;
+      } else {
+        xml += `      <g:price>${finalPrice} INR</g:price>\n`;
       }
       xml += `      <g:brand><![CDATA[${p.brand || 'AK Infotech'}]]></g:brand>\n`;
       xml += `      <g:condition>new</g:condition>\n`;
