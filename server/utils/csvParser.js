@@ -172,7 +172,7 @@ function roundPriceTo10s(val) {
     const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
 
     return {
-      id: `gs-${Date.now()}-${index + 1}`,
+      id: `prod-${slug}`,
       photoLink,
       productName,
       productSpec,

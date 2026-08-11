@@ -159,6 +159,12 @@ function autoExportCatalogCsv(products) {
     });
 
     const csvContent = [headers.join(','), ...rows].join('\n');
+    if (fs.existsSync(OUTPUT_CSV)) {
+      const existing = fs.readFileSync(OUTPUT_CSV, 'utf8');
+      if (existing === csvContent) {
+        return; // Content unchanged, skip writing
+      }
+    }
     fs.writeFileSync(OUTPUT_CSV, csvContent, 'utf8');
     console.log(`[Auto-CSV] Updated public/data/ak_products_catalog_updated.csv (${products.length} products).`);
   } catch (err) {

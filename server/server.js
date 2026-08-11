@@ -125,42 +125,56 @@ function adjustPaths(html) {
     .replace(/href="cart\.html/g, 'href="../cart.html');
 }
 
-function cleanStaticPages() {
+function writeIfChanged(filePath, newContent) {
   try {
-    const publicDir = path.join(__dirname, '../public');
-
-    // 1. Clean root public directory of non-base HTMLs
-    const files = fs.readdirSync(publicDir);
-    for (const file of files) {
-      if (file.endsWith('.html') && !BASE_PAGES.has(file)) {
-        fs.unlinkSync(path.join(publicDir, file));
+    if (fs.existsSync(filePath)) {
+      const existingContent = fs.readFileSync(filePath, 'utf8');
+      if (existingContent === newContent) {
+        return false; // Skipped (unchanged)
       }
     }
-
-    // 2. Clean subdirectories
-    const subdirs = ['product', 'brands', 'categories'];
-    for (const dir of subdirs) {
-      const dirPath = path.join(publicDir, dir);
-      if (fs.existsSync(dirPath)) {
-        const subFiles = fs.readdirSync(dirPath);
-        for (const f of subFiles) {
-          if (f.endsWith('.html')) {
-            fs.unlinkSync(path.join(dirPath, f));
-          }
-        }
-      } else {
-        fs.mkdirSync(dirPath, { recursive: true });
-      }
-    }
+    fs.writeFileSync(filePath, newContent, 'utf8');
+    return true; // Modified / Created
   } catch (err) {
-    console.error('[SSG] Error cleaning static pages:', err.message);
+    fs.writeFileSync(filePath, newContent, 'utf8');
+    return true;
   }
+}
+
+function cleanOrphanedStaticPages(validProductSlugs, validBrandSlugs, validCatSlugs) {
+  const publicDir = path.join(__dirname, '../public');
+  let totalDeleted = 0;
+
+  const checkDir = (subDir, validSlugs) => {
+    const dirPath = path.join(publicDir, subDir);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+      return 0;
+    }
+    let deleted = 0;
+    const files = fs.readdirSync(dirPath);
+    for (const file of files) {
+      if (file.endsWith('.html')) {
+        const slug = file.replace(/\.html$/, '');
+        if (!validSlugs.has(slug)) {
+          try {
+            fs.unlinkSync(path.join(dirPath, file));
+            deleted++;
+          } catch (e) {}
+        }
+      }
+    }
+    return deleted;
+  };
+
+  totalDeleted += checkDir('product', validProductSlugs);
+  totalDeleted += checkDir('brands', validBrandSlugs);
+  totalDeleted += checkDir('categories', validCatSlugs);
+  return totalDeleted;
 }
 
 function generateStaticPages() {
   try {
-    cleanStaticPages();
-
     const products = readJson(PRODUCTS_FILE, []);
     const brands = readJson(BRANDS_FILE, []);
     const categories = readJson(CATEGORIES_FILE, []);
@@ -173,13 +187,21 @@ function generateStaticPages() {
     const brandTemplate = fs.existsSync(brandTemplatePath) ? fs.readFileSync(brandTemplatePath, 'utf8') : '';
     const categoryTemplate = fs.existsSync(categoryTemplatePath) ? fs.readFileSync(categoryTemplatePath, 'utf8') : '';
 
-    // 1. Generate Product pages
+    let writtenProducts = 0;
+    let skippedProducts = 0;
+    const validProductSlugs = new Set();
+
+    // 1. Incremental Product pages
     if (productTemplate) {
+      const prodDir = path.join(__dirname, '../public/product');
+      if (!fs.existsSync(prodDir)) fs.mkdirSync(prodDir, { recursive: true });
+
       for (const p of products) {
         if (!p.productName) continue;
         const slug = slugify(p.productName);
+        validProductSlugs.add(slug);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public/product', fileName);
+        const filePath = path.join(prodDir, fileName);
 
         const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
         let html = productTemplate.replace('</head>', `${injectScript}\n</head>`);
@@ -187,30 +209,50 @@ function generateStaticPages() {
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${p.productSpec || p.productName}">`);
         html = adjustPaths(html);
 
-        fs.writeFileSync(filePath, html, 'utf8');
+        if (writeIfChanged(filePath, html)) {
+          writtenProducts++;
+        } else {
+          skippedProducts++;
+        }
       }
     }
 
-    // 2. Generate Brand pages
+    // 2. Incremental Brand pages
+    let writtenBrands = 0;
+    let skippedBrands = 0;
+    const validBrandSlugs = new Set();
     if (brandTemplate) {
+      const brandDir = path.join(__dirname, '../public/brands');
+      if (!fs.existsSync(brandDir)) fs.mkdirSync(brandDir, { recursive: true });
+
       for (const b of brands) {
         if (!b.name) continue;
         const slug = slugify(b.name);
+        validBrandSlugs.add(slug);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public/brands', fileName);
+        const filePath = path.join(brandDir, fileName);
 
         const injectScript = `<script>window.staticBrandData = ${JSON.stringify(b)};</script>`;
         let html = brandTemplate.replace('</head>', `${injectScript}\n</head>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>${b.name} CCTV Security Products | AK Infotech</title>`);
         html = adjustPaths(html);
 
-        fs.writeFileSync(filePath, html, 'utf8');
+        if (writeIfChanged(filePath, html)) {
+          writtenBrands++;
+        } else {
+          skippedBrands++;
+        }
       }
     }
 
-    // 3. Generate Category pages
+    // 3. Incremental Category pages
+    let writtenCats = 0;
+    let skippedCats = 0;
+    const validCatSlugs = new Set();
     if (categoryTemplate) {
-      // Add combo-packs category dynamically as well
+      const catDir = path.join(__dirname, '../public/categories');
+      if (!fs.existsSync(catDir)) fs.mkdirSync(catDir, { recursive: true });
+
       const allCats = [...categories];
       if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
         allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/generic.png' });
@@ -219,22 +261,30 @@ function generateStaticPages() {
       for (const c of allCats) {
         if (!c.name) continue;
         const slug = slugify(c.name);
+        validCatSlugs.add(slug);
         const fileName = `${slug}.html`;
-        const filePath = path.join(__dirname, '../public/categories', fileName);
+        const filePath = path.join(catDir, fileName);
 
         const injectScript = `<script>window.staticCategoryData = ${JSON.stringify(c)};</script>`;
         let html = categoryTemplate.replace('</head>', `${injectScript}\n</head>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>Shop ${c.name} Security Systems | AK Infotech</title>`);
         html = adjustPaths(html);
 
-        fs.writeFileSync(filePath, html, 'utf8');
+        if (writeIfChanged(filePath, html)) {
+          writtenCats++;
+        } else {
+          skippedCats++;
+        }
       }
     }
 
-    // Generate sitemap.xml and robots.txt
+    // 4. Clean only deleted/orphaned files
+    const deletedCount = cleanOrphanedStaticPages(validProductSlugs, validBrandSlugs, validCatSlugs);
+
+    // 5. Generate sitemap.xml and robots.txt incrementally
     generateSitemapAndRobots(products, brands, categories);
 
-    console.log(`[SSG] Generated pages: ${products.length} products, ${brands.length} brands, ${categories.length} categories.`);
+    console.log(`[SSG-Delta] Static Pages -> Products: ${writtenProducts} modified, ${skippedProducts} unchanged | Brands: ${writtenBrands} modified | Categories: ${writtenCats} modified | Deleted: ${deletedCount}`);
   } catch (err) {
     console.error('[SSG] Generation error:', err.message);
   }
@@ -315,8 +365,7 @@ function generateSitemapAndRobots(products, brands, categories) {
 
     xml += `</urlset>`;
     
-    fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), xml, 'utf8');
-    console.log('[SSG] Generated sitemap.xml');
+    writeIfChanged(path.join(__dirname, '../public/sitemap.xml'), xml);
 
     // Generate robots.txt
     let robots = `User-agent: *\n`;
@@ -325,8 +374,7 @@ function generateSitemapAndRobots(products, brands, categories) {
     robots += `Disallow: /local-sync.html\n`;
     robots += `Sitemap: ${siteUrl}/sitemap.xml\n`;
 
-    fs.writeFileSync(path.join(__dirname, '../public/robots.txt'), robots, 'utf8');
-    console.log('[SSG] Generated robots.txt');
+    writeIfChanged(path.join(__dirname, '../public/robots.txt'), robots);
 
   } catch (err) {
     console.error('[SSG] Error generating sitemap/robots:', err.message);
