@@ -214,6 +214,7 @@ window.addToCart = async function (id) {
   }
 
   localStorage.setItem('ak_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
   renderCart();
   if (currentProduct && String(currentProduct.id) === String(id)) {
     loadProductDetail(currentProduct.id);
@@ -234,11 +235,13 @@ window.updateCartQty = function (id, change) {
     }
   }
   localStorage.setItem('ak_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
   renderCart();
   if (currentProduct && String(currentProduct.id) === String(id)) {
     loadProductDetail(currentProduct.id);
   }
 };
+window.updateQty = window.updateCartQty;
 
 window.buyNowDirect = function (id) {
   if (currentProduct && currentProduct.inStock === false) {

@@ -432,6 +432,7 @@ window.addToCart = async function (productId) {
   saveCart();
   renderCart();
   if (typeof renderCatalog === 'function') renderCatalog();
+  if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
   openCartDrawer();
 };
 
@@ -450,12 +451,15 @@ window.updateCartQty = function (productId, change) {
   saveCart();
   renderCart();
   if (typeof renderCatalog === 'function') renderCatalog();
+  if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
 };
+window.updateQty = window.updateCartQty;
 
 window.saveCart = function saveCart() {
-    window.cart = cart;
+  window.cart = cart;
   localStorage.setItem('ak_cart', JSON.stringify(cart));
-}
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
+};
 
 function renderCart() {
   const cartCountEl = document.getElementById('cartCount');

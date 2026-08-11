@@ -270,6 +270,7 @@ window.deleteAddress = async function(id) {
 
 window.saveCart = function () {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
 };
 
 window.updateCartQty = function (productId, change) {
@@ -287,6 +288,7 @@ window.updateCartQty = function (productId, change) {
     renderCart();
   }
 };
+window.updateQty = window.updateCartQty;
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {
   if (!cartItems || !cartItems.length) return 0;

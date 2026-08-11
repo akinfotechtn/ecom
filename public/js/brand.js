@@ -276,9 +276,9 @@ function renderBrandCatalog() {
             ` : (cartQty > 0 ? `
               <div class="card-cart-qty-wrap">
                 <div class="card-qty-stepper">
-                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateQty('${p.id}', -1)">-</button>
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', -1)">-</button>
                   <span class="card-qty-count">${cartQty}</span>
-                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateQty('${p.id}', 1)">+</button>
+                  <button class="qty-btn-sm" onclick="event.stopPropagation(); updateCartQty('${p.id}', 1)">+</button>
                 </div>
                 <button class="btn-view-cart" onclick="event.stopPropagation(); openCartDrawer()">
                   🛒 View Cart
@@ -390,8 +390,27 @@ window.addToCart = async function (productId) {
   openCartDrawer();
 };
 
+window.updateCartQty = function (productId, change) {
+  const index = cart.findIndex(item => String(item.id) === String(productId));
+  if (index > -1) {
+    const currentQty = cart[index].quantity || cart[index].qty || 1;
+    const newQty = currentQty + change;
+    if (newQty <= 0) {
+      cart.splice(index, 1);
+    } else {
+      cart[index].quantity = newQty;
+      cart[index].qty = newQty;
+    }
+  }
+  saveCart();
+  renderCart();
+  if (typeof renderBrandCatalog === 'function') renderBrandCatalog();
+};
+window.updateQty = window.updateCartQty;
+
 function saveCart() {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
 }
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {
@@ -612,7 +631,6 @@ window.closeCartDrawer = function () {
   if (drawer) { drawer.classList.remove('open'); drawer.classList.remove('active'); }
   if (backdrop) { backdrop.classList.remove('open'); backdrop.classList.remove('active'); }
 };
-window.updateCartQty = window.updateQty;
 
 function setupEventListeners() {
   document.getElementById('openCartBtn')?.addEventListener('click', openCartDrawer);

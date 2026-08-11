@@ -493,9 +493,11 @@ window.updateCartQty = function (productId, change) {
   renderCart();
   if (typeof renderCategoryCatalog === 'function') renderCategoryCatalog();
 };
+window.updateQty = window.updateCartQty;
 
 function saveCart() {
   localStorage.setItem('ak_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
 }
 
 function calculateCartDeliveryFee(cartItems, settings, categories = []) {

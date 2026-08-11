@@ -23,6 +23,7 @@ function saveCartData(cartArr) {
     window.cart = cartArr;
     // Update the badge count on the page
     _updateBadge();
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cartArr }));
 }
 
 function _updateBadge() {
