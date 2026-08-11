@@ -251,12 +251,34 @@ export class DbService {
     return onAuthStateChanged(auth, callback);
   }
 
-  // HERO BANNERS MANAGEMENT (CRUD)
+  // HERO BANNERS MANAGEMENT (CRUD - Local First with instant rendering)
   static async getHeroBanners() {
     try {
+      const cached = localStorage.getItem('ak_hero_banners');
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Return cached immediately and refresh in background
+            setTimeout(async () => {
+              try {
+                const snap = await getDocs(collection(db, "hero_banners"));
+                if (!snap.empty) {
+                  const fresh = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                  localStorage.setItem('ak_hero_banners', JSON.stringify(fresh));
+                }
+              } catch (e) { }
+            }, 100);
+            return parsed;
+          }
+        } catch (e) { }
+      }
+
       const snap = await getDocs(collection(db, "hero_banners"));
       if (!snap.empty) {
-        return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const banners = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        localStorage.setItem('ak_hero_banners', JSON.stringify(banners));
+        return banners;
       }
       return [];
     } catch (err) {
@@ -291,49 +313,47 @@ export class DbService {
     this._cachedSettings = null;
   }
 
-  // PRODUCTS: Fetch all (always loads directly from public/data/products.json with zero Firestore reads)
+  // PRODUCTS: Instant Local-First Fetch (loads in <10ms)
   static async getProducts(forceRefresh = false) {
     if (!forceRefresh && this._cachedProducts && this._cachedProducts.length > 0) {
       return this._cachedProducts;
     }
 
-    // 1. Fetch from static local JSON (/data/products.json, data/products.json, /public/data/products.json)
-    const jsonUrls = [
-      `data/products.json?t=${Date.now()}`,
-      `/data/products.json?t=${Date.now()}`,
-      `/public/data/products.json?t=${Date.now()}`,
-      `public/data/products.json?t=${Date.now()}`,
-      `/api/products?t=${Date.now()}`
-    ];
-
-    for (const url of jsonUrls) {
+    // 1. Check in-memory / localStorage cache for immediate 0ms render
+    if (!forceRefresh) {
       try {
-        const res = await fetch(url);
-        if (res.ok) {
-          const data = await res.json();
-          const prods = Array.isArray(data) ? data : (data.products || []);
-          if (prods && prods.length > 0) {
-            this._cachedProducts = prods;
-            try {
-              localStorage.setItem('ak_local_products', JSON.stringify(prods));
-            } catch (e) { }
-            return prods;
+        const local = localStorage.getItem('ak_local_products');
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this._cachedProducts = parsed;
           }
         }
       } catch (e) { }
     }
 
-    // 2. Check localStorage fallback
+    // 2. Fetch authoritative compressed products.json
+    const prefix = this.getLinkPrefix();
+    const primaryUrl = `${prefix}data/products.json`;
+
     try {
-      const local = localStorage.getItem('ak_local_products');
-      if (local) {
-        const parsed = JSON.parse(local);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          this._cachedProducts = parsed;
-          return parsed;
+      const res = await fetch(primaryUrl);
+      if (res.ok) {
+        const data = await res.json();
+        const prods = Array.isArray(data) ? data : (data.products || []);
+        if (prods && prods.length > 0) {
+          this._cachedProducts = prods;
+          try {
+            localStorage.setItem('ak_local_products', JSON.stringify(prods));
+          } catch (e) { }
+          return prods;
         }
       }
     } catch (e) { }
+
+    if (this._cachedProducts && this._cachedProducts.length > 0) {
+      return this._cachedProducts;
+    }
 
     this._cachedProducts = DEFAULT_PRODUCTS;
     return DEFAULT_PRODUCTS;

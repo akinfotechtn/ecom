@@ -8,15 +8,24 @@ const { parseProductsFromCsv } = require('./utils/csvParser');
 const { autoLocalizeProductImages, autoExportCatalogCsv } = require('./utils/imageLocalizer');
 const ShiprocketHelper = require('./utils/shiprocket');
 const nodemailer = require('nodemailer');
+const compression = require('compression');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// High-speed Compression & Performance Middleware
+app.use(compression({
+  threshold: 1024, // compress anything above 1KB
+  level: 6
+}));
+
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public'), {
+  maxAge: '1h',
+  etag: true
+}));
 
 // File paths - Single Unified Data Folder (public/data)
 const DATA_DIR = path.join(__dirname, '../public/data');

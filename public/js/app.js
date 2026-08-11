@@ -29,20 +29,21 @@ let currentHeroIndex = 0;
 let heroAutoScrollTimer = null;
 
 // INITIALIZATION
-document.addEventListener('DOMContentLoaded', async () => {
-  renderCart(); // Render cart instantly from localStorage
-  setupAuthState();
-  try {
-    await fetchSettings();
-    renderCart();
-  } catch (e) {
-    console.error("fetchSettings error:", e);
-  }
-  await loadHeroBanners();
-  await loadBrandsAndCategories();
-  await fetchProducts();
-  setupEventListeners();
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Instant Synchronous UI Setup (< 1ms)
   renderCart();
+  setupAuthState();
+  setupEventListeners();
+
+  // 2. High-Speed Concurrent Async Data Fetching
+  Promise.allSettled([
+    fetchSettings(),
+    loadHeroBanners(),
+    loadBrandsAndCategories(),
+    fetchProducts()
+  ]).then(() => {
+    renderCart();
+  });
 
   // Check if checkout redirect exists
   const params = new URLSearchParams(window.location.search);
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else {
         openCheckoutModal();
       }
-    }, 1200);
+    }, 800);
   }
 });
 
