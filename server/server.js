@@ -182,11 +182,23 @@ function cleanOrphanedStaticPages(validProductSlugs, validBrandSlugs, validCatSl
   return totalDeleted;
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function generateStaticPages() {
   try {
     const products = readJson(PRODUCTS_FILE, []);
     const brands = readJson(BRANDS_FILE, []);
     const categories = readJson(CATEGORIES_FILE, []);
+    const settings = readJson(SETTINGS_FILE, {});
+    const siteUrl = (settings.baseUrl || 'https://shop.akinfotechcctv.in').replace(/\/$/, '');
 
     const productTemplatePath = path.join(__dirname, '../public/product.html');
     const brandTemplatePath = path.join(__dirname, '../public/brand.html');
@@ -212,10 +224,22 @@ function generateStaticPages() {
         const fileName = `${slug}.html`;
         const filePath = path.join(prodDir, fileName);
 
+        const prodTitle = `${p.productName} | AK Infotech Security Store`;
+        const prodDesc = p.productSpec || `Buy ${p.productName} at wholesale price ₹${p.sellingPrice || ''} from AK Infotech Chennai. Fast delivery & COD available.`;
+        const prodCanonical = `${siteUrl}/product/${slug}.html`;
+
         const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
         let html = productTemplate.replace('</head>', `${injectScript}\n</head>`);
-        html = html.replace(/<title>.*?<\/title>/, `<title>${p.productName} | AK Infotech Security Store</title>`);
-        html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${p.productSpec || p.productName}">`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(prodTitle)}</title>`);
+        html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(prodDesc)}">`);
+        
+        // Canonical tag
+        if (html.includes('<link rel="canonical"')) {
+          html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${prodCanonical}">`);
+        } else {
+          html = html.replace('</head>', `<link rel="canonical" href="${prodCanonical}">\n</head>`);
+        }
+
         html = adjustPaths(html);
 
         if (writeIfChanged(filePath, html)) {
@@ -241,9 +265,31 @@ function generateStaticPages() {
         const fileName = `${slug}.html`;
         const filePath = path.join(brandDir, fileName);
 
+        const brandTitle = `${b.name} CCTV Security Products | AK Infotech`;
+        const brandDesc = `Shop 100% genuine ${b.name} CCTV cameras, DVR/NVR, surveillance systems, and accessories at wholesale & retail prices at AK Infotech Chennai.`;
+        const brandCanonical = `${siteUrl}/brands/${slug}.html`;
+
         const injectScript = `<script>window.staticBrandData = ${JSON.stringify(b)};</script>`;
         let html = brandTemplate.replace('</head>', `${injectScript}\n</head>`);
-        html = html.replace(/<title>.*?<\/title>/, `<title>${b.name} CCTV Security Products | AK Infotech</title>`);
+        
+        // Title & Meta Description
+        html = html.replace(/<title id="brandPageTitle">.*?<\/title>/, `<title id="brandPageTitle">${escapeHtml(brandTitle)}</title>`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(brandTitle)}</title>`);
+        html = html.replace(/<meta name="description" id="brandPageMeta" content=".*?"\s*\/?>/, `<meta name="description" id="brandPageMeta" content="${escapeHtml(brandDesc)}">`);
+        html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(brandDesc)}">`);
+        
+        // Canonical tag
+        if (html.includes('<link rel="canonical"')) {
+          html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${brandCanonical}">`);
+        } else {
+          html = html.replace('</head>', `<link rel="canonical" href="${brandCanonical}">\n</head>`);
+        }
+
+        // Distinct Static H1, Hero Sub, and Breadcrumb for search engine crawlers
+        html = html.replace(/<h1 class="brand-hero-title" id="brandHeroName">.*?<\/h1>/, `<h1 class="brand-hero-title" id="brandHeroName">${escapeHtml(b.name)} Products</h1>`);
+        html = html.replace(/<p class="brand-hero-sub" id="brandHeroSub">.*?<\/p>/, `<p class="brand-hero-sub" id="brandHeroSub">Authorized Wholesale & Retail ${escapeHtml(b.name)} Security Equipment</p>`);
+        html = html.replace(/<strong id="breadcrumbBrandName".*?>.*?<\/strong>/, `<strong id="breadcrumbBrandName" style="color: var(--text-dark);">${escapeHtml(b.name)}</strong>`);
+
         html = adjustPaths(html);
 
         if (writeIfChanged(filePath, html)) {
@@ -274,9 +320,31 @@ function generateStaticPages() {
         const fileName = `${slug}.html`;
         const filePath = path.join(catDir, fileName);
 
+        const catTitle = `Shop ${c.name} Security Systems | AK Infotech`;
+        const catDesc = `Explore top wholesale & retail ${c.name} security equipment, CCTV cameras, accessories, and IT solutions at AK Infotech Chennai. Fast delivery & COD available.`;
+        const catCanonical = `${siteUrl}/categories/${slug}.html`;
+
         const injectScript = `<script>window.staticCategoryData = ${JSON.stringify(c)};</script>`;
         let html = categoryTemplate.replace('</head>', `${injectScript}\n</head>`);
-        html = html.replace(/<title>.*?<\/title>/, `<title>Shop ${c.name} Security Systems | AK Infotech</title>`);
+        
+        // Title & Meta Description
+        html = html.replace(/<title id="categoryPageTitle">.*?<\/title>/, `<title id="categoryPageTitle">${escapeHtml(catTitle)}</title>`);
+        html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(catTitle)}</title>`);
+        html = html.replace(/<meta name="description" id="categoryPageMeta" content=".*?"\s*\/?>/, `<meta name="description" id="categoryPageMeta" content="${escapeHtml(catDesc)}">`);
+        html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(catDesc)}">`);
+        
+        // Canonical tag
+        if (html.includes('<link rel="canonical"')) {
+          html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${catCanonical}">`);
+        } else {
+          html = html.replace('</head>', `<link rel="canonical" href="${catCanonical}">\n</head>`);
+        }
+
+        // Distinct Static H1, Hero Sub, and Breadcrumb for search engine crawlers
+        html = html.replace(/<h1 class="category-hero-title" id="categoryHeroName">.*?<\/h1>/, `<h1 class="category-hero-title" id="categoryHeroName">${escapeHtml(c.name)} Products</h1>`);
+        html = html.replace(/<p class="category-hero-sub" id="categoryHeroSub">.*?<\/p>/, `<p class="category-hero-sub" id="categoryHeroSub">Explore top wholesale & retail ${escapeHtml(c.name)} security equipment</p>`);
+        html = html.replace(/<strong id="breadcrumbCategoryName".*?>.*?<\/strong>/, `<strong id="breadcrumbCategoryName" style="color: var(--text-dark);">${escapeHtml(c.name)}</strong>`);
+
         html = adjustPaths(html);
 
         if (writeIfChanged(filePath, html)) {
@@ -312,7 +380,7 @@ function generateSitemapAndRobots(products, brands, categories) {
 
     // 1. Root / Core pages
     const corePages = [
-      'index.html',
+      '', // Root Homepage https://shop.akinfotechcctv.in/
       'product.html',
       'brand.html',
       'category.html',
@@ -324,11 +392,12 @@ function generateSitemapAndRobots(products, brands, categories) {
       'refund.html'
     ];
     for (const page of corePages) {
+      const loc = page ? `${siteUrl}/${page}` : `${siteUrl}/`;
       xml += `  <url>\n`;
-      xml += `    <loc>${siteUrl}/${page}</loc>\n`;
+      xml += `    <loc>${loc}</loc>\n`;
       xml += `    <lastmod>${today}</lastmod>\n`;
       xml += `    <changefreq>weekly</changefreq>\n`;
-      xml += `    <priority>${page === 'index.html' ? '1.0' : '0.8'}</priority>\n`;
+      xml += `    <priority>${page === '' ? '1.0' : '0.8'}</priority>\n`;
       xml += `  </url>\n`;
     }
 
@@ -1321,16 +1390,17 @@ app.post('/api/deploy', (req, res) => {
   }
 });
 
-// ---------------------------------------------------------
-// START SERVER
-// ---------------------------------------------------------
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(` Ak Info Ecom Server is running on port ${PORT}`);
-  console.log(` Storefront UI: http://localhost:${PORT}`);
-  console.log(` Admin Portal : http://localhost:${PORT}/admin.html`);
-  console.log(`====================================================`);
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(` Ak Info Ecom Server is running on port ${PORT}`);
+    console.log(` Storefront UI: http://localhost:${PORT}`);
+    console.log(` Admin Portal : http://localhost:${PORT}/admin.html`);
+    console.log(`====================================================`);
 
-  // Build static pages on startup
-  generateStaticPages();
-});
+    // Build static pages on startup
+    generateStaticPages();
+  });
+}
+
+module.exports = { app, generateStaticPages };
