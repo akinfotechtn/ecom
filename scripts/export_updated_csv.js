@@ -6,7 +6,7 @@ const OUTPUT_CSV = path.join(__dirname, '../public/data/ak_products_catalog_upda
 
 const products = JSON.parse(fs.readFileSync(PRODUCTS_FILE, 'utf8'));
 
-const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Is Combo', 'Availability', 'Custom Delivery Fee'];
+const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Dealer Extra Margin %', 'Is Combo', 'Availability', 'Custom Delivery Fee'];
 
 const rows = products.map(p => {
   const photo = (p.photoLink || '').replace(/"/g, '""');
@@ -15,12 +15,13 @@ const rows = products.map(p => {
   const brand = (p.brand || '').replace(/"/g, '""');
   const cat = (p.category || '').replace(/"/g, '""');
   const price = p.price || 0;
-  const selling = p.sellingPrice || 0;
+  const selling = p.baseSellingPrice || p.sellingPrice || 0;
+  const margin = (p.dealerMarginPercent !== undefined && p.dealerMarginPercent !== null && p.dealerMarginPercent !== '') ? `${p.dealerMarginPercent}%` : '0%';
   const isCombo = p.isCombo ? 'TRUE' : 'FALSE';
   const inStock = p.inStock !== false ? 'In stock' : 'Out of stock';
   const fee = (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : '';
 
-  return `"${photo}","${name}","${spec}","${brand}","${cat}",${price},${selling},${isCombo},"${inStock}","${fee}"`;
+  return `"${photo}","${name}","${spec}","${brand}","${cat}",${price},${selling},"${margin}",${isCombo},"${inStock}","${fee}"`;
 });
 
 const csvContent = [headers.join(','), ...rows].join('\n');

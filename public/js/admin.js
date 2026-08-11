@@ -1483,9 +1483,10 @@ window.exportProductsToCsv = function () {
     return;
   }
 
-  const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Is Combo', 'Availability', 'Custom Delivery Fee'];
+  const headers = ['Product Photo/link', 'Product Name', 'Product Spec', 'Brand', 'Category', 'Price', 'Selling Price', 'Dealer Extra Margin %', 'Is Combo', 'Availability', 'Custom Delivery Fee'];
 
   const rows = adminProducts.map(p => {
+    const margin = (p.dealerMarginPercent !== undefined && p.dealerMarginPercent !== null && p.dealerMarginPercent !== '') ? `${p.dealerMarginPercent}%` : '0%';
     return [
       `"${(p.photoLink || '').replace(/"/g, '""')}"`,
       `"${(p.productName || '').replace(/"/g, '""')}"`,
@@ -1493,7 +1494,8 @@ window.exportProductsToCsv = function () {
       `"${(p.brand || '').replace(/"/g, '""')}"`,
       `"${(p.category || '').replace(/"/g, '""')}"`,
       p.price || 0,
-      p.sellingPrice || 0,
+      p.baseSellingPrice || p.sellingPrice || 0,
+      `"${margin}"`,
       p.isCombo ? 'TRUE' : 'FALSE',
       p.inStock !== false ? 'In stock' : 'Out of stock',
       (p.deliveryCharge !== undefined && p.deliveryCharge !== null) ? p.deliveryCharge : ''
