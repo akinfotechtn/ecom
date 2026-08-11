@@ -756,25 +756,31 @@ window.selectPaymentMethod = function (method) {
   const codBanner = document.getElementById('codAdvanceBanner');
 
   if (method === 'ONLINE') {
-    if (optOnline) optOnline.className = 'payment-option-card selected';
-    if (optCOD) optCOD.className = 'payment-option-card';
+    if (optOnline) optOnline.className = 'co-pay-card selected';
+    if (optCOD) optCOD.className = 'co-pay-card';
     if (codBanner) codBanner.style.display = 'none';
   } else {
-    if (optOnline) optOnline.className = 'payment-option-card';
-    if (optCOD) optCOD.className = 'payment-option-card selected cod-selected';
+    if (optOnline) optOnline.className = 'co-pay-card';
+    if (optCOD) optCOD.className = 'co-pay-card selected';
     if (codBanner) codBanner.style.display = 'block';
 
     const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
-    let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-    let gstAmount = calculateCartGstAmount(cart, storeSettings);
-    const finalTotal = subtotal + gstAmount + deliveryFee;
+    let promoDiscount = 0;
+    if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
+      if (appliedCoupon.discountPercent) {
+        promoDiscount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
+      } else if (appliedCoupon.discountFlat) {
+        promoDiscount = appliedCoupon.discountFlat;
+      }
+    }
+    const finalTotal = Math.max(0, subtotal - promoDiscount);
     const codDetails = getCodAdvanceDetails(finalTotal);
 
     const codAdvEl = document.getElementById('codAdvanceText');
-    if (codAdvEl) codAdvEl.textContent = `₹${codDetails.advance.toLocaleString('en-IN')}`;
+    if (codAdvEl) codAdvEl.textContent = codDetails.termsAdvanceText || `₹${codDetails.advance.toLocaleString('en-IN')}`;
 
     const codBalEl = document.getElementById('codBalanceText');
-    if (codBalEl) codBalEl.textContent = `₹${codDetails.balance.toLocaleString('en-IN')}`;
+    if (codBalEl) codBalEl.textContent = codDetails.termsBalanceText || `₹${codDetails.balance.toLocaleString('en-IN')}`;
 
     const codSubEl = document.getElementById('codCardSub');
     if (codSubEl) codSubEl.textContent = codDetails.subText;
@@ -799,21 +805,16 @@ async function handleCheckoutSubmit(e) {
   const shouldSaveAddress = (document.getElementById('saveAddressToAccount') || document.getElementById('chkSaveAddress'))?.checked ?? false;
 
   const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
-  let deliveryFee = calculateCartDeliveryFee(cart, storeSettings, storeCategories);
-  let gstAmount = calculateCartGstAmount(cart, storeSettings);
-
   let discountAmount = 0;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
     if (appliedCoupon.discountPercent) {
       discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
     } else if (appliedCoupon.discountFlat) {
       discountAmount = appliedCoupon.discountFlat;
-    } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
-      deliveryFee = 0;
     }
   }
 
-  const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+  const finalTotal = Math.max(0, subtotal - discountAmount);
   const codDetails = getCodAdvanceDetails(finalTotal);
   const codAdvanceFee = codDetails.advance;
   const remainingBalance = codDetails.balance;

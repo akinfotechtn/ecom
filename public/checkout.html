@@ -710,58 +710,8 @@
       const categories = window.storeCategories || [];
       const appliedCoupon = window.appliedCoupon || JSON.parse(localStorage.getItem('ak_applied_coupon') || 'null');
 
-      // 1. Calculate final values matching older app.js logic
+      // 1. Calculate final values matching Order Summary logic
       const subtotal = cart.reduce((sum, item) => sum + (item.sellingPrice * (item.quantity || item.qty || 1)), 0);
-
-      // Delivery Charges
-      var isPayOnDelivery = settings.payShippingOnDelivery === true;
-      var deliveryFee = 0;
-      var isFreeDelivery = false;
-      if (cart.length > 0) {
-        if (isPayOnDelivery) {
-          deliveryFee = 0;
-        } else {
-          var maxDeliveryCharge = 0;
-          for (var i = 0; i < cart.length; i++) {
-            var item = cart[i];
-            var itemFee = 0;
-            if (item.deliveryCharge !== undefined && item.deliveryCharge !== null && !isNaN(item.deliveryCharge)) {
-              itemFee = Number(item.deliveryCharge);
-            } else {
-              var matchCat = null;
-              var itemCatName = (item.category || '').toLowerCase();
-              for (var j = 0; j < categories.length; j++) {
-                if ((categories[j].name || '').toLowerCase() === itemCatName) {
-                  matchCat = categories[j];
-                  break;
-                }
-              }
-              if (matchCat && matchCat.deliveryCharge !== undefined && matchCat.deliveryCharge !== null && !isNaN(matchCat.deliveryCharge)) {
-                itemFee = Number(matchCat.deliveryCharge);
-              } else {
-                itemFee = settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150;
-              }
-            }
-            if (itemFee > maxDeliveryCharge) {
-              maxDeliveryCharge = itemFee;
-            }
-          }
-          deliveryFee = maxDeliveryCharge || (settings.deliveryCharge !== undefined ? Number(settings.deliveryCharge) : 150);
-        }
-      }
-
-      // GST amount
-      var defaultGst = settings.defaultGstPercent !== undefined ? settings.defaultGstPercent : 18;
-      var gstAmount = 0;
-      cart.forEach(item => {
-        const q = item.quantity || item.qty || 1;
-        const itemSellingPrice = item.sellingPrice || 0;
-        const itemGstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
-          ? Number(item.gstPercent)
-          : defaultGst;
-        const itemGst = Math.round(((itemSellingPrice * q) * itemGstRate) / 100);
-        gstAmount += itemGst;
-      });
 
       // Discount
       var discountAmount = 0;
@@ -770,20 +720,10 @@
           discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
         } else if (appliedCoupon.discountFlat) {
           discountAmount = appliedCoupon.discountFlat;
-        } else if (appliedCoupon.freeDelivery || appliedCoupon.type === 'FREE_DELIVERY') {
-          isFreeDelivery = true;
-          deliveryFee = 0;
         }
       }
 
-      // Free shipping threshold
-      var freeMin = settings.freeShippingMinOrder || 3000;
-      var enableFreeShipping = settings.enableFreeShipping !== false;
-      if (!isFreeDelivery && enableFreeShipping && cart.length > 0 && subtotal >= freeMin) {
-        deliveryFee = 0;
-      }
-
-      const finalTotal = Math.max(0, subtotal + gstAmount + deliveryFee - discountAmount);
+      const finalTotal = Math.max(0, subtotal - discountAmount);
       
       // Dynamic Advance Payment calculation based on tiered rules
       const codDetails = typeof window.getCodAdvanceDetails === 'function'
