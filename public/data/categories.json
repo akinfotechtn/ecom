@@ -2,60 +2,60 @@
   {
     "id": "cat-1786372112283",
     "name": "GPS",
-    "imageLink": "images/categories/gps.png",
+    "imageLink": "images/categories/gps.webp",
     "description": ""
   },
   {
     "id": "cat-1786283448512",
     "name": "MONITORS",
-    "imageLink": "images/categories/monitors.png",
+    "imageLink": "images/categories/monitors.webp",
     "description": ""
   },
   {
     "id": "cat-1785898434225",
     "deliveryCharge": 100,
-    "imageLink": "images/categories/wifi-cctv.png",
+    "imageLink": "images/categories/wifi-cctv.webp",
     "name": "WIFI CCTV"
   },
   {
     "id": "cat-1785898518841",
     "deliveryCharge": 100,
-    "imageLink": "images/categories/smart-plug.jpg",
+    "imageLink": "images/categories/smart-plug.webp",
     "name": "SMART PLUG"
   },
   {
     "id": "cat-1785898559490",
     "name": "VIDEO DOOR BELL",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/video-door-bell.png"
+    "imageLink": "images/categories/video-door-bell.webp"
   },
   {
     "id": "cat-1785924952911",
     "name": "4G CCTV",
-    "imageLink": "images/categories/4g-cctv.png",
+    "imageLink": "images/categories/4g-cctv.webp",
     "deliveryCharge": null
   },
   {
     "id": "cat-1785925065278",
     "name": "ELECTRIC DOOR LOCK",
-    "imageLink": "images/categories/electric-door-lock.png",
+    "imageLink": "images/categories/electric-door-lock.webp",
     "deliveryCharge": 150
   },
   {
     "id": "cat-1785925082552",
-    "imageLink": "images/categories/poe-extender.png",
+    "imageLink": "images/categories/poe-extender.webp",
     "deliveryCharge": 150,
     "name": "POE EXTENDER"
   },
   {
     "id": "cat-1785925100936",
-    "imageLink": "images/categories/networking.png",
+    "imageLink": "images/categories/networking.webp",
     "deliveryCharge": 150,
     "name": "NETWORKING"
   },
   {
     "id": "cat-1785926554486",
-    "imageLink": "images/categories/electric-door-lock-cat-1785926554486.png",
+    "imageLink": "images/categories/electric-door-lock-cat-1785926554486.webp",
     "name": "ELECTRIC DOOR LOCK",
     "deliveryCharge": 150
   },
@@ -63,35 +63,35 @@
     "id": "cat-1785926554640",
     "name": "POE EXTENDER",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/poe-extender-cat-1785926554640.png"
+    "imageLink": "images/categories/poe-extender-cat-1785926554640.webp"
   },
   {
     "id": "cat-1785926554717",
     "name": "NETWORKING",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/networking-cat-1785926554717.png"
+    "imageLink": "images/categories/networking-cat-1785926554717.webp"
   },
   {
     "id": "cat-1785926554795",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/poe-switch.png",
+    "imageLink": "images/categories/poe-switch.webp",
     "name": "POE SWITCH"
   },
   {
     "id": "cat-1785926554874",
     "name": "HDMI CABLE",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/hdmi-cable.png"
+    "imageLink": "images/categories/hdmi-cable.webp"
   },
   {
     "id": "cat-1785926554939",
     "name": "DESKTOP SWITCH",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/desktop-switch.png"
+    "imageLink": "images/categories/desktop-switch.webp"
   },
   {
     "id": "cat-1785926555000",
-    "imageLink": "images/categories/power-manager.png",
+    "imageLink": "images/categories/power-manager.webp",
     "deliveryCharge": 150,
     "name": "POWER MANAGER"
   },
@@ -99,35 +99,35 @@
     "id": "cat-1785926555080",
     "deliveryCharge": 150,
     "name": "JUNCTION BOX",
-    "imageLink": "images/categories/junction-box.png"
+    "imageLink": "images/categories/junction-box.webp"
   },
   {
     "id": "cat-1785926555142",
     "name": "HD DVR",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/hd-dvr.png"
+    "imageLink": "images/categories/hd-dvr.webp"
   },
   {
     "id": "cat-1785926555205",
-    "imageLink": "images/categories/cat-6-cables.jpg",
+    "imageLink": "images/categories/cat-6-cables.webp",
     "name": "CAT 6 CABLES",
     "deliveryCharge": 150
   },
   {
     "id": "cat-1785926555283",
     "name": "WIFI CAMERA",
-    "imageLink": "images/categories/wifi-camera.png",
+    "imageLink": "images/categories/wifi-camera.webp",
     "deliveryCharge": 150
   },
   {
     "id": "cat-1785926555346",
     "name": "LED TV",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/led-tv.png"
+    "imageLink": "images/categories/led-tv.webp"
   },
   {
     "id": "cat-1785926555409",
-    "imageLink": "images/categories/memory-card.png",
+    "imageLink": "images/categories/memory-card.webp",
     "name": "MEMORY CARD",
     "deliveryCharge": 150
   },
@@ -135,7 +135,7 @@
     "id": "cat-1785926555487",
     "name": "CABLE",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/cable.png"
+    "imageLink": "images/categories/cable.webp"
   },
   {
     "id": "cat-1785926555533",
@@ -145,7 +145,7 @@
   },
   {
     "id": "cat-1785926555581",
-    "imageLink": "images/categories/hd-camera.png",
+    "imageLink": "images/categories/hd-camera.webp",
     "deliveryCharge": 150,
     "name": "HD CAMERA"
   },
@@ -153,65 +153,65 @@
     "id": "cat-1785926555643",
     "deliveryCharge": 150,
     "name": "POWER SUPPLY",
-    "imageLink": "images/categories/power-supply.png"
+    "imageLink": "images/categories/power-supply.webp"
   },
   {
     "id": "cat-1785926555705",
     "deliveryCharge": 150,
     "name": "CCTV RACK",
-    "imageLink": "images/categories/cctv-rack.png"
+    "imageLink": "images/categories/cctv-rack.webp"
   },
   {
     "id": "cat-1785926555783",
-    "imageLink": "images/categories/ups.png",
+    "imageLink": "images/categories/ups.webp",
     "deliveryCharge": 150,
     "name": "UPS"
   },
   {
     "id": "cat-1785926555845",
     "name": "ADAPTORS",
-    "imageLink": "images/categories/adaptors.jpg",
+    "imageLink": "images/categories/adaptors.webp",
     "deliveryCharge": 150
   },
   {
     "id": "cat-1785926555908",
     "name": "CCTV CABLES",
-    "imageLink": "images/categories/cctv-cables.jpg",
+    "imageLink": "images/categories/cctv-cables.webp",
     "deliveryCharge": 150
   },
   {
     "id": "cat-1785926555968",
     "deliveryCharge": 150,
     "name": "FAN",
-    "imageLink": "images/categories/fan.png"
+    "imageLink": "images/categories/fan.webp"
   },
   {
     "id": "cat-1785926556029",
     "deliveryCharge": 150,
     "name": "MEDIA CONVERTOR",
-    "imageLink": "images/categories/media-convertor.png"
+    "imageLink": "images/categories/media-convertor.webp"
   },
   {
     "id": "cat-1785926556094",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/cctv-accessories.png",
+    "imageLink": "images/categories/cctv-accessories.webp",
     "name": "CCTV ACCESSORIES"
   },
   {
     "id": "cat-1785931927509",
     "deliveryCharge": null,
     "name": "HD CCTV",
-    "imageLink": "images/categories/hd-cctv.png"
+    "imageLink": "images/categories/hd-cctv.webp"
   },
   {
     "id": "cat-1785931936065",
     "deliveryCharge": null,
     "name": "IP CCTV",
-    "imageLink": "images/categories/ip-cctv.png"
+    "imageLink": "images/categories/ip-cctv.webp"
   },
   {
     "id": "cat-1785932315109",
-    "imageLink": "images/categories/wifi-nvr.png",
+    "imageLink": "images/categories/wifi-nvr.webp",
     "name": "WIFI NVR",
     "deliveryCharge": null
   },
@@ -219,29 +219,29 @@
     "id": "cat-1785933137264",
     "name": "HARD DISK",
     "deliveryCharge": null,
-    "imageLink": "images/categories/hard-disk.png"
+    "imageLink": "images/categories/hard-disk.webp"
   },
   {
     "id": "cat-1785937226100",
     "name": "BIOMETRIC",
-    "imageLink": "images/categories/biometric.png",
+    "imageLink": "images/categories/biometric.webp",
     "deliveryCharge": null
   },
   {
     "id": "cat-1785938901688",
     "deliveryCharge": null,
     "name": "CASH COUNTING MACHINES",
-    "imageLink": "images/categories/cash-counting-machines.png"
+    "imageLink": "images/categories/cash-counting-machines.webp"
   },
   {
     "id": "cat-1785953218112",
     "deliveryCharge": null,
     "name": "PC UPS",
-    "imageLink": "images/categories/pc-ups.png"
+    "imageLink": "images/categories/pc-ups.webp"
   },
   {
     "id": "cat-1785955000391",
-    "imageLink": "images/categories/combo-packs.jpg",
+    "imageLink": "images/categories/combo-packs.webp",
     "deliveryCharge": null,
     "name": "Combo Packs"
   },
@@ -249,12 +249,12 @@
     "id": "cat-2",
     "name": "PRINTERS",
     "deliveryCharge": 350,
-    "imageLink": "images/categories/printers.png"
+    "imageLink": "images/categories/printers.webp"
   },
   {
     "id": "cat-5",
     "deliveryCharge": null,
-    "imageLink": "images/categories/accessories.png",
+    "imageLink": "images/categories/accessories.webp",
     "name": "ACCESSORIES"
   }
 ]

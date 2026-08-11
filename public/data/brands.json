@@ -1,68 +1,68 @@
 [
   {
     "id": "brand-1785896484651",
-    "imageLink": "images/brands/trueview.png",
+    "imageLink": "images/brands/trueview.webp",
     "name": "Trueview"
   },
   {
     "id": "brand-1785896529498",
-    "imageLink": "images/brands/d-link.png",
+    "imageLink": "images/brands/d-link.webp",
     "name": "D-Link"
   },
   {
     "id": "brand-1785896576028",
-    "imageLink": "images/brands/maxxion.png",
+    "imageLink": "images/brands/maxxion.webp",
     "name": "Maxxion"
   },
   {
     "id": "brand-1785896603430",
     "name": "Qubo",
-    "imageLink": "images/brands/qubo.png"
+    "imageLink": "images/brands/qubo.webp"
   },
   {
     "id": "brand-1785896627644",
-    "imageLink": "images/brands/essl.png",
+    "imageLink": "images/brands/essl.webp",
     "name": "ESSL"
   },
   {
     "id": "brand-1785896647411",
     "name": "Folla",
-    "imageLink": "images/brands/folla.png"
+    "imageLink": "images/brands/folla.webp"
   },
   {
     "id": "brand-1785896673740",
-    "imageLink": "images/brands/prama.png",
+    "imageLink": "images/brands/prama.webp",
     "name": "Prama"
   },
   {
     "id": "brand-1785896693031",
-    "imageLink": "images/brands/fyber.png",
+    "imageLink": "images/brands/fyber.webp",
     "name": "Fyber"
   },
   {
     "id": "brand-1785896713867",
-    "imageLink": "images/brands/toshiba.png",
+    "imageLink": "images/brands/toshiba.webp",
     "name": "Toshiba"
   },
   {
     "id": "brand-1785896727664",
     "name": "WD",
-    "imageLink": "images/brands/wd.jpg"
+    "imageLink": "images/brands/wd.webp"
   },
   {
     "id": "brand-1785896748925",
-    "imageLink": "images/brands/seagate.png",
+    "imageLink": "images/brands/seagate.webp",
     "name": "Seagate"
   },
   {
     "id": "brand-1785937781459",
-    "imageLink": "images/brands/krystaa.png",
+    "imageLink": "images/brands/krystaa.webp",
     "name": "Krystaa"
   },
   {
     "id": "brand-1785942831411",
     "name": "Yadon",
-    "imageLink": "images/brands/yadon.png"
+    "imageLink": "images/brands/yadon.webp"
   },
   {
     "id": "brand-2",

@@ -45,7 +45,9 @@ function getExtensionFromMime(mimeType, fallbackUrl = '') {
   }
 }
 
-async function downloadSingleImage(url, destPath, retries = 2) {
+const sharp = require('sharp');
+
+async function downloadSingleImage(url, destWebpPath, retries = 2) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const response = await axios.get(url, {
@@ -59,8 +61,13 @@ async function downloadSingleImage(url, destPath, retries = 2) {
       });
 
       if (response.status === 200 && response.data && response.data.length > 0) {
-        fs.writeFileSync(destPath, response.data);
-        return { success: true, size: response.data.length, mime: response.headers['content-type'] };
+        // Always convert and compress to WebP format
+        await sharp(response.data)
+          .webp({ quality: 85, effort: 4 })
+          .toFile(destWebpPath);
+
+        const stats = fs.statSync(destWebpPath);
+        return { success: true, size: stats.size };
       }
     } catch (err) {
       if (attempt === retries) {
@@ -74,7 +81,8 @@ async function downloadSingleImage(url, destPath, retries = 2) {
 
 /**
  * Checks all products in the list. If any product has an external URL (http:// or https://),
- * it downloads the image to public/images/products/, saves it, and replaces photoLink with local path.
+ * it downloads the image, converts it to WebP format, saves it to public/images/products/,
+ * and replaces photoLink with local .webp path.
  */
 async function autoLocalizeProductImages(products) {
   if (!Array.isArray(products) || !products.length) return products;
@@ -90,7 +98,7 @@ async function autoLocalizeProductImages(products) {
 
   if (!externalItems.length) return products;
 
-  console.log(`[Auto-Localizer] Found ${externalItems.length} external product image(s). Downloading locally...`);
+  console.log(`[Auto-Localizer] Found ${externalItems.length} external product image(s). Downloading & converting to WebP...`);
 
   // Download in concurrent batches of 10
   const BATCH_SIZE = 10;
@@ -98,20 +106,15 @@ async function autoLocalizeProductImages(products) {
     const batch = externalItems.slice(i, i + BATCH_SIZE);
     await Promise.all(batch.map(async ({ product, index, url }) => {
       let slug = slugify(product.productName || `product-${index + 1}`);
-      const ext = getExtensionFromMime(null, url);
-      let filename = `${slug}${ext}`;
+      let filename = `${slug}.webp`;
       let destPath = path.join(IMAGES_DIR, filename);
 
-      // Avoid collision if different product has same slug
-      if (fs.existsSync(destPath)) {
-        const stats = fs.statSync(destPath);
-        if (stats.size > 500) {
-          // Already have a local image with same slug
-          product.photoLink = `images/products/${filename}`;
-          product.imageUrl = `images/products/${filename}`;
-          product.image = `images/products/${filename}`;
-          return;
-        }
+      // If file already exists with valid size, reuse it
+      if (fs.existsSync(destPath) && fs.statSync(destPath).size > 500) {
+        product.photoLink = `images/products/${filename}`;
+        product.imageUrl = `images/products/${filename}`;
+        product.image = `images/products/${filename}`;
+        return;
       }
 
       const res = await downloadSingleImage(url, destPath);
@@ -119,7 +122,7 @@ async function autoLocalizeProductImages(products) {
         product.photoLink = `images/products/${filename}`;
         product.imageUrl = `images/products/${filename}`;
         product.image = `images/products/${filename}`;
-        console.log(`[Auto-Localizer] ✅ Downloaded: ${product.productName} -> images/products/${filename}`);
+        console.log(`[Auto-Localizer] ✅ Downloaded & WebP Converted: ${product.productName} -> images/products/${filename}`);
       } else {
         console.warn(`[Auto-Localizer] ⚠️ Failed to download for ${product.productName}: ${res.error}`);
         product.photoLink = 'images/cctv-wholesale.webp';

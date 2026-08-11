@@ -1,5 +1,20 @@
 const axios = require('axios');
 const { parse } = require('csv-parse/sync');
+const fs = require('fs');
+const path = require('path');
+
+function slugify(text) {
+  if (!text) return 'product';
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
 
 /**
  * Standardize Google Sheet CSV exports.

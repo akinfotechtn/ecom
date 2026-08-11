@@ -14,7 +14,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "nodemailer": "^9.0.4",
-    "razorpay": "^2.9.2"
+    "razorpay": "^2.9.2",
+    "sharp": "^0.35.3"
   },
   "keywords": [
     "ecommerce",
