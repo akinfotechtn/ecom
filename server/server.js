@@ -130,6 +130,7 @@ function adjustPaths(html) {
     .replace(/href="privacy\.html/g, 'href="../privacy.html')
     .replace(/href="terms\.html/g, 'href="../terms.html')
     .replace(/href="refund\.html/g, 'href="../refund.html')
+    .replace(/href="contact\.html/g, 'href="../contact.html')
     .replace(/href="category\.html/g, 'href="../category.html')
     .replace(/href="brand\.html/g, 'href="../brand.html')
     .replace(/href="cart\.html/g, 'href="../cart.html');
@@ -389,6 +390,7 @@ function generateSitemapAndRobots(products, brands, categories) {
       'cart.html',
       'checkout.html',
       'order-success.html',
+      'contact.html',
       'privacy.html',
       'terms.html',
       'refund.html'
