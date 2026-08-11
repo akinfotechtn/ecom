@@ -879,7 +879,9 @@ async function handleCheckoutSubmit(e) {
         ? (remainingBalance === 0 ? `Full ₹${codAdvanceFee} Payment (100% Upfront)` : `₹${codAdvanceFee} Mandatory COD Advance Payment`)
         : 'Full Order Payment',
       handler: async function (response) {
+        const orderIdGenerated = 'AK-' + Date.now().toString().slice(-8);
         const orderPayload = {
+          id: orderIdGenerated,
           customerName: custName,
           phone: custPhone,
           email: custEmail || (currentUser ? currentUser.email : ''),
@@ -895,16 +897,23 @@ async function handleCheckoutSubmit(e) {
             : 'PAID_ONLINE',
           paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
           razorpayOrderId: response.razorpay_order_id || '',
-          subtotal,
-          deliveryFee,
-          discountAmount,
-          finalTotal,
+          subtotal: subtotal,
+          deliveryFee: 0,
+          discountAmount: discountAmount,
+          finalTotal: finalTotal,
+          totalAmount: finalTotal,
           advancePaid: selectedPaymentMethod === 'COD' ? codAdvanceFee : finalTotal,
           balanceOnDelivery: selectedPaymentMethod === 'COD' ? remainingBalance : 0,
           status: 'PROCESSING'
         };
 
-        const savedOrder = await DbService.createOrder(orderPayload);
+        let savedOrder = orderPayload;
+        try {
+          savedOrder = await DbService.createOrder(orderPayload) || orderPayload;
+        } catch (dbErr) {
+          console.warn('Db createOrder background sync:', dbErr);
+        }
+
         try {
           fetch('/api/send-order-email', {
             method: 'POST',
@@ -917,12 +926,11 @@ async function handleCheckoutSubmit(e) {
         } catch (e) {
           console.warn("Email notify trigger error:", e);
         }
-        alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${selectedPaymentMethod === 'COD' ? (remainingBalance === 0 ? `Full Amount (₹${codAdvanceFee}) Paid Online.` : `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.`) : 'Full Amount Paid Online.'}`);
 
         cart = [];
         saveCart();
         try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
-        window.location.href = 'order-success.html?order=' + savedOrder.id;
+        window.location.href = 'order-success.html?order=' + encodeURIComponent(savedOrder.id || orderIdGenerated);
       },
       prefill: {
         name: custName,

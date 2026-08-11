@@ -114,8 +114,7 @@ const BASE_PAGES = new Set([
   'local-sync.html',
   'checkout.html',
   'cart.html',
-  'order-success.html',
-  'thank-you.html'
+  'order-success.html'
 ]);
 
 function adjustPaths(html) {

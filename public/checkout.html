@@ -783,7 +783,9 @@
             ? (remainingBalance === 0 ? `Full ₹${codAdvanceFee} Payment (100% Upfront)` : `₹${codAdvanceFee} Mandatory COD Advance Payment`)
             : 'Full Order Payment',
           handler: async function (response) {
+            const orderIdGenerated = 'AK-' + Date.now().toString().slice(-8);
             const orderPayload = {
+              id: orderIdGenerated,
               customerName: custName,
               phone: custPhone,
               email: custEmail || (window.currentUser ? window.currentUser.email : ''),
@@ -799,59 +801,65 @@
                 : 'PAID_ONLINE',
               paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
               razorpayOrderId: response.razorpay_order_id || '',
-              subtotal,
-              deliveryFee,
-              discountAmount,
-              finalTotal,
+              subtotal: subtotal,
+              deliveryFee: 0,
+              discountAmount: discountAmount,
+              finalTotal: finalTotal,
+              totalAmount: finalTotal,
               advancePaid: paymentMethod === 'COD' ? codAdvanceFee : finalTotal,
               balanceOnDelivery: paymentMethod === 'COD' ? remainingBalance : 0,
               status: 'PROCESSING'
             };
 
+            let savedOrder = orderPayload;
             try {
               if (window.DbService && window.DbService.createOrder) {
-                const savedOrder = await window.DbService.createOrder(orderPayload);
-                try {
-                  fetch('/api/send-order-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      ...savedOrder,
-                      settings: settings
-                    })
-                  }).catch(e => console.warn("Email notify failed:", e));
-                } catch (e) {
-                  console.warn("Email notify trigger error:", e);
-                }
-                // Google Ads / Analytics Purchase Event Tracking
-                if (typeof window.gtag === 'function') {
-                  window.gtag('event', 'purchase', {
-                    transaction_id: savedOrder.id,
-                    value: Number(savedOrder.totalAmount || amountToPayNow),
-                    currency: 'INR',
-                    items: (savedOrder.items || []).map(i => ({
-                      item_id: i.id || i.productName,
-                      item_name: i.productName,
-                      price: Number(i.sellingPrice || i.price || 0),
-                      quantity: Number(i.quantity || i.qty || 1)
-                    }))
-                  });
-                }
-
-                alert(`🎉 Order Placed Successfully!\nOrder ID: ${savedOrder.id}\n${paymentMethod === 'COD' ? (remainingBalance === 0 ? `Full Amount (₹${codAdvanceFee}) Paid Online.` : `₹${codAdvanceFee} Advance Paid. Balance ₹${remainingBalance} payable on delivery.`) : 'Full Amount Paid Online.'}`);
-
-                localStorage.removeItem('ak_cart');
-                localStorage.removeItem('ak_applied_coupon');
-                try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
-                window.cart = [];
-                window.location.href = 'order-success.html?order=' + savedOrder.id;
-              } else {
-                throw new Error('Database service unavailable');
+                savedOrder = await window.DbService.createOrder(orderPayload) || orderPayload;
               }
             } catch (dbErr) {
-              console.error('Db createOrder failed:', dbErr);
-              alert('Successfully paid, but failed to record in DB. Contact us on WhatsApp with details!');
+              console.warn('Db createOrder background sync:', dbErr);
             }
+
+            try {
+              fetch('/api/send-order-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  ...savedOrder,
+                  settings: settings
+                })
+              }).catch(e => console.warn("Email notify failed:", e));
+            } catch (e) {
+              console.warn("Email notify trigger error:", e);
+            }
+
+            // Google Ads / Analytics Purchase Event Tracking
+            if (typeof window.gtag === 'function') {
+              try {
+                window.gtag('event', 'purchase', {
+                  transaction_id: savedOrder.id || orderIdGenerated,
+                  value: Number(savedOrder.totalAmount || amountToPayNow),
+                  currency: 'INR',
+                  items: (savedOrder.items || []).map(i => ({
+                    item_id: i.id || i.productName,
+                    item_name: i.productName,
+                    price: Number(i.sellingPrice || i.price || 0),
+                    quantity: Number(i.quantity || i.qty || 1)
+                  }))
+                });
+              } catch (gtagErr) {
+                console.warn('gtag purchase tracking warning:', gtagErr);
+              }
+            }
+
+            // Clear Cart & Save Last Order for Thank You Page
+            localStorage.removeItem('ak_cart');
+            localStorage.removeItem('ak_applied_coupon');
+            try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
+            window.cart = [];
+
+            // Immediate redirect to dedicated order-success page
+            window.location.href = 'order-success.html?order=' + encodeURIComponent(savedOrder.id || orderIdGenerated);
           },
           prefill: {
             name: custName,
