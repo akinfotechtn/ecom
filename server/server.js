@@ -1175,6 +1175,15 @@ app.post('/api/send-order-email', async (req, res) => {
       }
     });
 
+    const SITE_URL = 'https://shop.akinfotechcctv.in';
+    const getAbsoluteImageUrl = (photoLink) => {
+      if (!photoLink) return `${SITE_URL}/images/logo.webp`;
+      if (photoLink.startsWith('http://') || photoLink.startsWith('https://') || photoLink.startsWith('data:')) {
+        return photoLink;
+      }
+      return `${SITE_URL}/${photoLink.replace(/^\/+/, '')}`;
+    };
+
     let computedSubtotalWithGst = 0;
     const itemsHtml = (order.items || []).map(item => {
       const basePrice = Number(item.sellingPrice || 0);
@@ -1185,15 +1194,26 @@ app.post('/api/send-order-email', async (req, res) => {
       const itemTotalWithGst = itemPriceWithGst * qty;
       computedSubtotalWithGst += itemTotalWithGst;
 
+      const itemImgUrl = getAbsoluteImageUrl(item.photoLink || item.image || item.photo);
+      const itemName = item.productName || item.name || 'Product';
+
       return `
         <tr>
-          <td style="padding: 8px; border-bottom: 1px solid #ddd;">
-            <img src="${item.photoLink}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; vertical-align: middle; margin-right: 8px;">
-            <strong>${item.productName}</strong>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; vertical-align: middle;">
+            <table style="border-collapse: collapse; border: none;">
+              <tr>
+                <td style="padding: 0 8px 0 0; vertical-align: middle;">
+                  <img src="${itemImgUrl}" alt="${itemName}" width="40" height="40" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; background: #ffffff; display: block;">
+                </td>
+                <td style="padding: 0; vertical-align: middle;">
+                  <strong style="color: #0f172a; font-size: 0.9rem;">${itemName}</strong>
+                </td>
+              </tr>
+            </table>
           </td>
-          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center;">${qty}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${itemPriceWithGst.toLocaleString('en-IN')}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">₹${itemTotalWithGst.toLocaleString('en-IN')}</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: center; vertical-align: middle;">${qty}</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right; vertical-align: middle;">₹${itemPriceWithGst.toLocaleString('en-IN')}</td>
+          <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right; vertical-align: middle; font-weight: bold;">₹${itemTotalWithGst.toLocaleString('en-IN')}</td>
         </tr>
       `;
     }).join('');
@@ -1202,6 +1222,7 @@ app.post('/api/send-order-email', async (req, res) => {
     const emailBody = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff;">
         <div style="text-align: center; border-bottom: 2px solid #0ea5e9; padding-bottom: 16px; margin-bottom: 20px;">
+          <img src="${SITE_URL}/images/logo.webp" alt="AK Infotech" width="44" height="44" style="max-height: 44px; width: auto; margin-bottom: 6px; display: inline-block;">
           <h2 style="color: #0ea5e9; margin: 0 0 4px 0;">AK INFOTECH</h2>
           <p style="color: #64748b; font-size: 0.9rem; margin: 0;">New Order Notification Manager</p>
         </div>
