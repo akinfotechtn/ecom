@@ -1,68 +1,68 @@
 [
   {
     "id": "brand-1785896484651",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782218243/realconnect/brands/dklc9ppwymiaa9bpspdv.png",
+    "imageLink": "images/brands/trueview.png",
     "name": "Trueview"
   },
   {
     "id": "brand-1785896529498",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782993932/realconnect/brands/nenhj4alvd8si1et4o5n.png",
+    "imageLink": "images/brands/d-link.png",
     "name": "D-Link"
   },
   {
     "id": "brand-1785896576028",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782996584/realconnect/brands/bjipnmo5vdzwnh142fae.png",
+    "imageLink": "images/brands/maxxion.png",
     "name": "Maxxion"
   },
   {
     "id": "brand-1785896603430",
     "name": "Qubo",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782996378/realconnect/brands/yjpvovjqkwrik0nfc1zk.png"
+    "imageLink": "images/brands/qubo.png"
   },
   {
     "id": "brand-1785896627644",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782986410/realconnect/brands/sgncxtyhp3z2w7vpgfci.png",
+    "imageLink": "images/brands/essl.png",
     "name": "ESSL"
   },
   {
     "id": "brand-1785896647411",
     "name": "Folla",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782997319/realconnect/brands/fueywjmjqxali1mhlzsw.png"
+    "imageLink": "images/brands/folla.png"
   },
   {
     "id": "brand-1785896673740",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782985587/realconnect/brands/vb2lan3mn4cowedk64nh.png",
+    "imageLink": "images/brands/prama.png",
     "name": "Prama"
   },
   {
     "id": "brand-1785896693031",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782997074/realconnect/brands/knjnu6gk6y6zq8j1h80h.png",
+    "imageLink": "images/brands/fyber.png",
     "name": "Fyber"
   },
   {
     "id": "brand-1785896713867",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782218232/realconnect/brands/p0w7rld17abj4coohilg.png",
+    "imageLink": "images/brands/toshiba.png",
     "name": "Toshiba"
   },
   {
     "id": "brand-1785896727664",
     "name": "WD",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782218285/realconnect/brands/sxcp3idpo34ises3zi5s.jpg"
+    "imageLink": "images/brands/wd.jpg"
   },
   {
     "id": "brand-1785896748925",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1784038898/realconnect/brands/gvqy25hbglu2t2d7tjbl.png",
+    "imageLink": "images/brands/seagate.png",
     "name": "Seagate"
   },
   {
     "id": "brand-1785937781459",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782218264/realconnect/brands/lnj76ytru5evu11ip9bi.png",
+    "imageLink": "images/brands/krystaa.png",
     "name": "Krystaa"
   },
   {
     "id": "brand-1785942831411",
     "name": "Yadon",
-    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782992780/realconnect/brands/romjpotrbs2gqnyh91bc.png"
+    "imageLink": "images/brands/yadon.png"
   },
   {
     "id": "brand-2",
