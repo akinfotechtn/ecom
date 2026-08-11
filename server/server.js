@@ -5,6 +5,7 @@ const fs = require('fs');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { parseProductsFromCsv } = require('./utils/csvParser');
+const { autoLocalizeProductImages, autoExportCatalogCsv } = require('./utils/imageLocalizer');
 const ShiprocketHelper = require('./utils/shiprocket');
 const nodemailer = require('nodemailer');
 
@@ -61,6 +62,11 @@ function readJson(filePath, defaultData = []) {
 function writeJson(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+
+    // Automatically keep CSV catalog in sync when products change
+    if (filePath === PRODUCTS_FILE && Array.isArray(data)) {
+      autoExportCatalogCsv(data);
+    }
 
     // Automatically trigger Static Site Generation (SSG) if writing database files
     if (filePath === PRODUCTS_FILE || filePath === BRANDS_FILE || filePath === CATEGORIES_FILE) {
@@ -372,12 +378,16 @@ app.get('/api/products', (req, res) => {
 });
 
 // BULK SAVE - called by local-sync.js when adding/editing single products
-app.post('/api/products/bulk-save', (req, res) => {
+app.post('/api/products/bulk-save', async (req, res) => {
   try {
-    const products = req.body.products;
+    let products = req.body.products;
     if (!Array.isArray(products)) {
       return res.status(400).json({ success: false, message: 'Expected { products: [...] }' });
     }
+    
+    // Automatically download any external images locally
+    products = await autoLocalizeProductImages(products);
+
     const ok = writeJson(PRODUCTS_FILE, products);
     if (!ok) {
       return res.status(500).json({ success: false, message: 'Failed to write products.json' });
@@ -390,14 +400,15 @@ app.post('/api/products/bulk-save', (req, res) => {
   }
 });
 
-app.post('/api/products', (req, res) => {
+app.post('/api/products', async (req, res) => {
   if (Array.isArray(req.body.products)) {
-    writeJson(PRODUCTS_FILE, req.body.products);
-    return res.json({ success: true, message: 'Products saved successfully.', total: req.body.products.length });
+    let prods = await autoLocalizeProductImages(req.body.products);
+    writeJson(PRODUCTS_FILE, prods);
+    return res.json({ success: true, message: 'Products saved successfully.', total: prods.length });
   }
 
   const products = readJson(PRODUCTS_FILE, []);
-  const newProduct = {
+  let newProduct = {
     id: req.body.id || `prod-${Date.now()}`,
     photoLink: req.body.photoLink || 'images/cctv-wholesale.webp',
     productName: req.body.productName,
@@ -413,6 +424,10 @@ app.post('/api/products', (req, res) => {
   if (!newProduct.productName || !newProduct.sellingPrice) {
     return res.status(400).json({ success: false, message: 'Product name and selling price are required.' });
   }
+
+  // Auto download image if external
+  const localized = await autoLocalizeProductImages([newProduct]);
+  newProduct = localized[0];
 
   products.unshift(newProduct);
   writeJson(PRODUCTS_FILE, products);
@@ -611,7 +626,7 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     // Merge existing features (like isFeatured) to imported products
     const existingProducts = readJson(PRODUCTS_FILE, []);
-    const mergedProducts = parsedProducts.map(p => {
+    let mergedProducts = parsedProducts.map(p => {
       const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
       if (match) {
         return {
@@ -622,7 +637,10 @@ app.post('/api/sync-google-sheet', async (req, res) => {
       return p;
     });
 
-    // Save imported products to store
+    // Automatically download any new external images locally and map them
+    mergedProducts = await autoLocalizeProductImages(mergedProducts);
+
+    // Save imported products to store (auto-triggers SSG and CSV export)
     writeJson(PRODUCTS_FILE, mergedProducts);
 
     // Update settings with current URL & sync timestamp
@@ -655,7 +673,7 @@ app.post('/api/upload-csv', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(csvText);
     const existingProducts = readJson(PRODUCTS_FILE, []);
-    const mergedProducts = parsedProducts.map(p => {
+    let mergedProducts = parsedProducts.map(p => {
       const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
       if (match) {
         return {
@@ -665,6 +683,10 @@ app.post('/api/upload-csv', async (req, res) => {
       }
       return p;
     });
+
+    // Automatically download any new external images locally and map them
+    mergedProducts = await autoLocalizeProductImages(mergedProducts);
+
     writeJson(PRODUCTS_FILE, mergedProducts);
 
     res.json({

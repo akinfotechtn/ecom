@@ -91,11 +91,23 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       return '';
     };
 
-    const photoLink = findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || 'images/cctv-wholesale.webp';
+    let photoLink = findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || 'images/cctv-wholesale.webp';
     const productName = findValue(['Product Name', 'Name', 'Title', 'Product']) || `Product #${index + 1}`;
     const productSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || 'High quality product';
     const brand = findValue(['Brand', 'Manufacturer', 'Make']) || 'Generic';
     const category = findValue(['Category', 'Type', 'Department']) || 'General';
+
+    // Smart Local Image Preservation: If local image already exists for this product, prioritize it
+    const slug = slugify(productName);
+    const possibleExts = ['.webp', '.png', '.jpg', '.jpeg', '.avif', '.svg'];
+    for (const ext of possibleExts) {
+      const localRelPath = `images/products/${slug}${ext}`;
+      const localFullPath = path.join(__dirname, '../../public', localRelPath);
+      if (fs.existsSync(localFullPath)) {
+        photoLink = localRelPath;
+        break;
+      }
+    }
 
     const rawPrice = findValue(['Price', 'MRP', 'Regular Price']) || '0';
     const rawSellingPrice = findValue(['Selling Price', 'Sale Price', 'Offer Price', 'Discounted Price']) || rawPrice;
