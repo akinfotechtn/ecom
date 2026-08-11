@@ -25,7 +25,19 @@ const rows = products.map(p => {
 });
 
 const csvContent = [headers.join(','), ...rows].join('\n');
-fs.writeFileSync(OUTPUT_CSV, csvContent, 'utf8');
 
-console.log(`✅ CSV generated successfully at: ${OUTPUT_CSV}`);
+try {
+  fs.writeFileSync(OUTPUT_CSV, csvContent, 'utf8');
+  console.log(`✅ CSV generated successfully at: ${OUTPUT_CSV}`);
+} catch (err) {
+  if (err.code === 'EBUSY') {
+    console.warn(`⚠️ ${OUTPUT_CSV} is currently open in Excel.`);
+    const fallbackPath = path.join(__dirname, '../public/data/ak_products_catalog_latest.csv');
+    fs.writeFileSync(fallbackPath, csvContent, 'utf8');
+    console.log(`✅ Saved fresh copy at: ${fallbackPath}`);
+  } else {
+    throw err;
+  }
+}
+
 console.log(`Total Products: ${products.length}`);

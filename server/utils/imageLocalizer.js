@@ -160,16 +160,26 @@ function autoExportCatalogCsv(products) {
     });
 
     const csvContent = [headers.join(','), ...rows].join('\n');
-    if (fs.existsSync(OUTPUT_CSV)) {
-      const existing = fs.readFileSync(OUTPUT_CSV, 'utf8');
-      if (existing === csvContent) {
-        return; // Content unchanged, skip writing
+    try {
+      if (fs.existsSync(OUTPUT_CSV)) {
+        const existing = fs.readFileSync(OUTPUT_CSV, 'utf8');
+        if (existing === csvContent) {
+          return; // Content unchanged, skip writing
+        }
+      }
+      fs.writeFileSync(OUTPUT_CSV, csvContent, 'utf8');
+      console.log(`[Auto-CSV] Updated public/data/ak_products_catalog_updated.csv (${products.length} products).`);
+    } catch (err) {
+      if (err.code === 'EBUSY') {
+        const fallbackPath = path.join(__dirname, '../../public/data/ak_products_catalog_latest.csv');
+        fs.writeFileSync(fallbackPath, csvContent, 'utf8');
+        console.warn(`[Auto-CSV] ⚠️ CSV is open in Excel. Saved fresh copy to public/data/ak_products_catalog_latest.csv`);
+      } else {
+        console.error('[Auto-CSV] Error updating CSV:', err.message);
       }
     }
-    fs.writeFileSync(OUTPUT_CSV, csvContent, 'utf8');
-    console.log(`[Auto-CSV] Updated public/data/ak_products_catalog_updated.csv (${products.length} products).`);
   } catch (err) {
-    console.error('[Auto-CSV] Error updating CSV:', err.message);
+    console.error('[Auto-CSV] Error generating CSV content:', err.message);
   }
 }
 
