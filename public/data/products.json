@@ -87,8 +87,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp",
-    "image": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-instaview-video-door-phone",
@@ -118,8 +117,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp",
-    "image": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-instaview-edge-video-door-phone",
