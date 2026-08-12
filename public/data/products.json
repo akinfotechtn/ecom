@@ -8856,9 +8856,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-metal-ring-30cm-pr30c",
-    "photoLink": "images/products/metal-ring-30cm-pr30c.webp",
-    "productName": "METAL RING 30CM (PR30C)",
+    "id": "prod-metal-pole-ring-30cm-pr30c",
+    "photoLink": "images/products/metal-pole-ring-30cm-pr30c.webp",
+    "productName": "METAL POLE RING 30CM (PR30C)",
     "productSpec": "High quality product",
     "brand": "IMPORTED",
     "category": "ACCESSORIES",
@@ -8868,7 +8868,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/metal-pole-ring-30cm-pr30c.webp",
+    "image": "images/products/metal-pole-ring-30cm-pr30c.webp"
   },
   {
     "id": "prod-exit-switch-metal-13-es103",
@@ -9951,9 +9952,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-metal-ring-10cm-pr10c",
-    "photoLink": "images/products/metal-ring-10cm-pr10c.webp",
-    "productName": "METAL RING 10CM (PR10C)",
+    "id": "prod-metal-pole-ring-10cm-pr10c",
+    "photoLink": "images/products/metal-pole-ring-10cm-pr10c.webp",
+    "productName": "METAL POLE RING 10CM (PR10C)",
     "productSpec": "High quality product",
     "brand": "IMPORTED",
     "category": "ACCESSORIES",
@@ -9963,7 +9964,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/metal-pole-ring-10cm-pr10c.webp",
+    "image": "images/products/metal-pole-ring-10cm-pr10c.webp"
   },
   {
     "id": "prod-dome-camera-stand-metal-with-inserts-2b03e134",
@@ -10041,9 +10043,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-metal-ring-40cm-pr40c",
-    "photoLink": "images/products/metal-ring-40cm-pr40c.webp",
-    "productName": "METAL RING 40CM (PR40C)",
+    "id": "prod-metal-pole-ring-40cm-pr40c",
+    "photoLink": "images/products/metal-pole-ring-40cm-pr40c.webp",
+    "productName": "METAL POLE RING 40CM (PR40C)",
     "productSpec": "High quality product",
     "brand": "IMPORTED",
     "category": "ACCESSORIES",
@@ -10053,7 +10055,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/metal-pole-ring-40cm-pr40c.webp",
+    "image": "images/products/metal-pole-ring-40cm-pr40c.webp"
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-97e4b5b8",
@@ -11166,9 +11169,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-metal-ring-20cm-pr20c",
-    "photoLink": "images/products/metal-ring-20cm-pr20c.webp",
-    "productName": "METAL RING 20CM (PR20C)",
+    "id": "prod-metal-pole-ring-20cm-pr20c",
+    "photoLink": "images/products/metal-pole-ring-20cm-pr20c.webp",
+    "productName": "METAL POLE RING 20CM (PR20C)",
     "productSpec": "High quality product",
     "brand": "IMPORTED",
     "category": "ACCESSORIES",
@@ -11178,7 +11181,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/metal-pole-ring-20cm-pr20c.webp",
+    "image": "images/products/metal-pole-ring-20cm-pr20c.webp"
   },
   {
     "id": "prod-hikvision-2mp-4-camera-kit",
