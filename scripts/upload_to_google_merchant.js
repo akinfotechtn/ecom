@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { google } = require('googleapis');
 
 const MERCHANT_ID = '5444372321';
@@ -67,6 +68,14 @@ async function uploadProducts() {
     const chunk = products.slice(i, i + CHUNK_SIZE);
     const entries = chunk.map((p, idx) => {
       const slug = slugify(p.productName);
+      const rawId = (p.id || slug).trim();
+      let googleOfferId = rawId;
+      if (googleOfferId.length > 50) {
+        const hash = crypto.createHash('md5').update(rawId).digest('hex').slice(0, 8);
+        const truncated = rawId.slice(0, 41).replace(/-+$/, '');
+        googleOfferId = `${truncated}-${hash}`.slice(0, 50);
+      }
+
       const base = Number(p.sellingPrice || p.price || 0);
       const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
@@ -76,7 +85,7 @@ async function uploadProducts() {
       const description = p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`;
 
       const productPayload = {
-        offerId: p.id || slug,
+        offerId: googleOfferId,
         title: p.productName,
         description: description,
         link: `${siteUrl}/product/${slug}.html`,

@@ -481,6 +481,14 @@ function generateGoogleShoppingFeed(products) {
     for (const p of products) {
       if (!p.productName) continue;
       const slug = slugify(p.productName);
+      const rawId = (p.id || slug).trim();
+      let googleOfferId = rawId;
+      if (googleOfferId.length > 50) {
+        const hash = crypto.createHash('md5').update(rawId).digest('hex').slice(0, 8);
+        const truncated = rawId.slice(0, 41).replace(/-+$/, '');
+        googleOfferId = `${truncated}-${hash}`.slice(0, 50);
+      }
+
       const base = Number(p.sellingPrice || p.price || 0);
       const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
@@ -497,7 +505,7 @@ function generateGoogleShoppingFeed(products) {
       const cleanTitle = p.productName.trim().replace(/\s+/g, ' ');
 
       xml += `    <item>\n`;
-      xml += `      <g:id><![CDATA[${p.id || slug}]]></g:id>\n`;
+      xml += `      <g:id><![CDATA[${googleOfferId}]]></g:id>\n`;
       xml += `      <g:title><![CDATA[${cleanTitle}]]></g:title>\n`;
       xml += `      <g:description><![CDATA[${cleanDesc}]]></g:description>\n`;
       xml += `      <g:link>${siteUrl}/product/${slug}.html</g:link>\n`;
