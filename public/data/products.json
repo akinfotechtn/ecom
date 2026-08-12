@@ -1425,9 +1425,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-maxxion-5mp-dual-illumination-hd-col-6a81b775",
-    "photoLink": "images/products/maxxion-5mp-dual-illumination-hd-colour-bullet-mx-b3500p-wl.webp",
-    "productName": "MAXXION 5MP DUAL ILLUMINATION HD COLOUR BULLET (MX-B3500P-WL)",
+    "id": "prod-maxxion-5mp-dual-illumination-hd-col-5878e11b",
+    "photoLink": "images/products/maxxion-5mp-dual-illumination-hd-colour-bullet-cameramx-b3500p-wl.webp",
+    "productName": "MAXXION 5MP DUAL ILLUMINATION HD COLOUR BULLET CAMERA(MX-B3500P-WL)",
     "productSpec": "High quality product",
     "brand": "Maxxion",
     "category": "HD CCTV",
@@ -1437,7 +1437,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/maxxion-5mp-dual-illumination-hd-colour-bullet-cameramx-b3500p-wl.webp",
+    "image": "images/products/maxxion-5mp-dual-illumination-hd-colour-bullet-cameramx-b3500p-wl.webp"
   },
   {
     "id": "prod-maxxion-4u-mini-rack-with-tray-power-e8eaf454",
@@ -8868,8 +8869,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/metal-pole-ring-30cm-pr30c.webp",
-    "image": "images/products/metal-pole-ring-30cm-pr30c.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-exit-switch-metal-13-es103",
@@ -9964,8 +9964,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/metal-pole-ring-10cm-pr10c.webp",
-    "image": "images/products/metal-pole-ring-10cm-pr10c.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-dome-camera-stand-metal-with-inserts-2b03e134",
@@ -10055,8 +10054,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/metal-pole-ring-40cm-pr40c.webp",
-    "image": "images/products/metal-pole-ring-40cm-pr40c.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-97e4b5b8",
@@ -11181,8 +11179,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/metal-pole-ring-20cm-pr20c.webp",
-    "image": "images/products/metal-pole-ring-20cm-pr20c.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-2mp-4-camera-kit",
