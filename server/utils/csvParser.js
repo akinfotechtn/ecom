@@ -2,6 +2,7 @@ const axios = require('axios');
 const { parse } = require('csv-parse/sync');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 function slugify(text) {
   if (!text) return 'product';
@@ -14,6 +15,15 @@ function slugify(text) {
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
+}
+
+function generatePermanentProductId(productName) {
+  const slug = slugify(productName);
+  const rawId = `prod-${slug}`;
+  if (rawId.length <= 50) return rawId;
+  const hash = crypto.createHash('md5').update(rawId).digest('hex').slice(0, 8);
+  const truncated = rawId.slice(0, 41).replace(/-+$/, '');
+  return `${truncated}-${hash}`.slice(0, 50);
 }
 
 /**
@@ -61,6 +71,12 @@ function parseMarginPercentage(rawStr) {
   return num;
 }
 
+function roundPriceTo10s(val) {
+  if (isNaN(val) || val <= 0) return 0;
+  if (val < 10) return Math.round(val);
+  return Math.round(val / 10) * 10;
+}
+
 /**
  * Parses raw CSV string or fetches from Google Sheet CSV URL
  */
@@ -106,8 +122,21 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       return '';
     };
 
+    const rawName = findValue(['Product Name', 'Name', 'Title', 'Product']);
+    const rawPrice = findValue(['Price', 'MRP', 'Regular Price']);
+    const rawSellingPrice = findValue(['Selling Price', 'Sale Price', 'Offer Price', 'Discounted Price']);
+
+    // Skip empty row or row with no valid product name
+    if (!rawName || !rawName.trim()) {
+      return null;
+    }
+    const trimmedName = rawName.trim();
+    if (trimmedName.toLowerCase() === 'product name' || (trimmedName.toLowerCase().startsWith('product #') && (!rawPrice || rawPrice === '0' || rawPrice === ''))) {
+      return null;
+    }
+
     let photoLink = findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || 'images/cctv-wholesale.webp';
-    const productName = findValue(['Product Name', 'Name', 'Title', 'Product']) || `Product #${index + 1}`;
+    const productName = trimmedName;
     const productSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || 'High quality product';
     const brand = findValue(['Brand', 'Manufacturer', 'Make']) || 'Generic';
     const category = findValue(['Category', 'Type', 'Department']) || 'General';
@@ -124,8 +153,6 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       }
     }
 
-    const rawPrice = findValue(['Price', 'MRP', 'Regular Price']) || '0';
-    const rawSellingPrice = findValue(['Selling Price', 'Sale Price', 'Offer Price', 'Discounted Price']) || rawPrice;
     let rawDealerMargin = findValue([
       'Dealer Extra Margin %',
       'Dealer Extra Margin Percent',
@@ -147,12 +174,6 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       }
     }
 
-function roundPriceTo10s(val) {
-  if (isNaN(val) || val <= 0) return 0;
-  if (val < 10) return Math.round(val);
-  return Math.round(val / 10) * 10;
-}
-
     const price = parseFloat(rawPrice.replace(/[^0-9.]/g, '')) || 0;
     const baseSellingPrice = parseFloat(rawSellingPrice.replace(/[^0-9.]/g, '')) || price;
     const dealerMarginPercent = parseMarginPercentage(rawDealerMargin);
@@ -172,7 +193,7 @@ function roundPriceTo10s(val) {
     const inStock = !(availVal.includes('out') || availVal === 'false' || availVal === '0' || availVal === 'no');
 
     return {
-      id: `prod-${slug}`,
+      id: generatePermanentProductId(productName),
       photoLink,
       productName,
       productSpec,
@@ -185,12 +206,14 @@ function roundPriceTo10s(val) {
       inStock,
       isCombo
     };
-  });
+  }).filter(Boolean);
 
   return parsedProducts;
 }
 
 module.exports = {
   normalizeGoogleSheetUrl,
-  parseProductsFromCsv
+  parseProductsFromCsv,
+  generatePermanentProductId,
+  slugify
 };

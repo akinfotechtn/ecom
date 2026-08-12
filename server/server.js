@@ -844,14 +844,19 @@ app.post('/api/sync-google-sheet', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
 
-    // Merge existing features (like isFeatured) to imported products
+    // Merge existing features (like isFeatured, custom images, exact IDs) to imported products
     const existingProducts = readJson(PRODUCTS_FILE, []);
     let mergedProducts = parsedProducts.map(p => {
-      const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
+      const match = existingProducts.find(ep => 
+        (ep.id && p.id && String(ep.id).trim().toLowerCase() === String(p.id).trim().toLowerCase()) || 
+        (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
+      );
       if (match) {
         return {
           ...p,
-          isFeatured: match.isFeatured === true
+          id: match.id || p.id,
+          isFeatured: match.isFeatured === true,
+          photoLink: (match.photoLink && !match.photoLink.includes('cctv-wholesale.webp')) ? match.photoLink : p.photoLink
         };
       }
       return p;
@@ -894,11 +899,16 @@ app.post('/api/upload-csv', async (req, res) => {
     const parsedProducts = await parseProductsFromCsv(csvText);
     const existingProducts = readJson(PRODUCTS_FILE, []);
     let mergedProducts = parsedProducts.map(p => {
-      const match = existingProducts.find(ep => String(ep.id) === String(p.id) || (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase()));
+      const match = existingProducts.find(ep => 
+        (ep.id && p.id && String(ep.id).trim().toLowerCase() === String(p.id).trim().toLowerCase()) || 
+        (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
+      );
       if (match) {
         return {
           ...p,
-          isFeatured: match.isFeatured === true
+          id: match.id || p.id,
+          isFeatured: match.isFeatured === true,
+          photoLink: (match.photoLink && !match.photoLink.includes('cctv-wholesale.webp')) ? match.photoLink : p.photoLink
         };
       }
       return p;
