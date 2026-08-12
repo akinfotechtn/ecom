@@ -4062,8 +4062,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/cp-plus-2mp-ip-ptz-camera-cp-unp-d2521l10-daq.webp",
-    "image": "images/products/cp-plus-2mp-ip-ptz-camera-cp-unp-d2521l10-daq.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-dvr-5mp-2-satacp-uvr-32-995bd2bb",
@@ -4333,8 +4332,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/cp-plus-4mp-varifocal-cp-unc-tc41zl6c-vmd-lq.webp",
-    "image": "images/products/cp-plus-4mp-varifocal-cp-unc-tc41zl6c-vmd-lq.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-nvr-cp-unr-108f1",
@@ -5180,8 +5178,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/cp-plus-16ch-nvr-2sata-cp-unr-4k2162-v2.webp",
-    "image": "images/products/cp-plus-16ch-nvr-2sata-cp-unr-4k2162-v2.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-folla-decode",
