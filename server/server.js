@@ -1219,6 +1219,10 @@ app.post('/api/send-order-email', async (req, res) => {
 
       const itemImgUrl = getAbsoluteImageUrl(item.photoLink || item.image || item.photo);
       const itemName = item.productName || item.name || 'Product';
+      const noteVal = item.notes || item.itemNotes || '';
+      const itemNoteHtml = noteVal 
+        ? `<div style="margin-top: 4px; font-size: 0.78rem; color: #0284c7; background: #e0f2fe; border-left: 3px solid #0284c7; padding: 3px 6px; border-radius: 0 4px 4px 0; display: inline-block;">📝 <strong>Note:</strong> ${escapeHtml(noteVal)}</div>` 
+        : '';
 
       return `
         <tr>
@@ -1226,10 +1230,11 @@ app.post('/api/send-order-email', async (req, res) => {
             <table style="border-collapse: collapse; border: none;">
               <tr>
                 <td style="padding: 0 8px 0 0; vertical-align: middle;">
-                  <img src="${itemImgUrl}" alt="${itemName}" width="40" height="40" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; background: #ffffff; display: block;">
+                  <img src="${itemImgUrl}" alt="${escapeHtml(itemName)}" width="40" height="40" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; background: #ffffff; display: block;">
                 </td>
                 <td style="padding: 0; vertical-align: middle;">
-                  <strong style="color: #0f172a; font-size: 0.9rem;">${itemName}</strong>
+                  <strong style="color: #0f172a; font-size: 0.9rem;">${escapeHtml(itemName)}</strong>
+                  ${itemNoteHtml}
                 </td>
               </tr>
             </table>

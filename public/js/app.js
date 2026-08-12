@@ -455,6 +455,15 @@ window.updateCartQty = function (productId, change) {
 };
 window.updateQty = window.updateCartQty;
 
+window.updateCartItemNote = function(productId, noteText) {
+  const item = cart.find(i => String(i.id) === String(productId));
+  if (item) {
+    item.notes = (noteText || '').trim();
+    item.itemNotes = item.notes;
+    saveCart();
+  }
+};
+
 window.saveCart = function saveCart() {
   window.cart = cart;
   localStorage.setItem('ak_cart', JSON.stringify(cart));
@@ -484,17 +493,29 @@ function renderCart() {
     itemsListEl.innerHTML = cart.map(item => {
       const q = item.quantity || item.qty || 1;
       const itemPriceWithGst = getItemPriceWithGst(item, storeSettings);
+      const noteVal = item.notes || item.itemNotes || '';
       return `
-        <div class="cart-item">
-          <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${escapeHtml(item.productName)}</div>
-            <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
-            <div class="cart-item-qty">
-              <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
-              <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
-              <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+        <div class="cart-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; gap: 12px; align-items: center; width: 100%;">
+            <img src="${item.photoLink && (item.photoLink.startsWith('http') || item.photoLink.startsWith('data:')) ? item.photoLink : (DbService.getLinkPrefix() + (item.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(item.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${escapeHtml(item.productName)}</div>
+              <div class="cart-item-price">₹${itemPriceWithGst.toLocaleString('en-IN')}</div>
+              <div class="cart-item-qty">
+                <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">-</button>
+                <span style="font-weight: 700; font-size: 0.85rem;">${q}</span>
+                <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+              </div>
             </div>
+          </div>
+          <div style="width: 100%;">
+            <input type="text" 
+              class="cart-item-note-input" 
+              placeholder="📝 Add item note (e.g. 2.8mm lens, Bullet/Dome)..." 
+              value="${escapeHtml(noteVal)}" 
+              onchange="updateCartItemNote('${item.id}', this.value)"
+              onblur="updateCartItemNote('${item.id}', this.value)"
+              style="width: 100%; padding: 5px 8px; font-size: 0.76rem; border: 1px dashed #cbd5e1; border-radius: 4px; background: #f8fafc; color: var(--text-dark); box-sizing: border-box;">
           </div>
         </div>
       `;

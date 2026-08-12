@@ -2117,12 +2117,17 @@ function renderOrdersTable() {
           const itemPriceWithGst = basePrice + gstAmount;
           const qty = Number(item.quantity || item.qty || 1);
           const itemTotalWithGst = itemPriceWithGst * qty;
+          const noteVal = item.notes || item.itemNotes || '';
+          const noteHtml = noteVal 
+            ? `<div style="font-size:0.78rem; color:#0369a1; background:#e0f2fe; border-left:3px solid #0284c7; padding:3px 8px; margin-top:5px; border-radius:0 4px 4px 0; font-weight:700;">📝 Note: ${escapeHtml(noteVal)}</div>` 
+            : '';
 
           return `
           <div class="order-item-row">
             <img src="${item.photoLink || 'images/logo.webp'}" class="order-item-img" onerror="this.src='images/logo.webp'">
             <div class="order-item-details">
               <div class="order-item-name" title="${escapeHtml(item.productName || 'Product')}">${escapeHtml(item.productName || 'Product')}</div>
+              ${noteHtml}
               <div class="order-item-meta">${item.brand ? `Brand: ${escapeHtml(item.brand)} | ` : ''}Qty: <strong>${qty}</strong> × ₹${itemPriceWithGst.toLocaleString('en-IN')} <span style="font-size:0.7rem; color:var(--text-muted);">(incl. ${gstPercent}% GST)</span></div>
             </div>
             <div class="order-item-total">₹${itemTotalWithGst.toLocaleString('en-IN')}</div>

@@ -346,6 +346,16 @@
       }
     });
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     function renderOrderDetails(order) {
       document.getElementById('orderIdText').textContent = order.id || 'Confirmed';
 
@@ -379,11 +389,16 @@
           const qty = i.quantity || i.qty || 1;
           const price = Number(i.sellingPrice || i.price || 0);
           const photo = i.photoLink || 'images/logo.webp';
+          const noteVal = i.notes || i.itemNotes || '';
+          const noteHtml = noteVal 
+            ? `<div style="font-size:0.78rem; color:#0369a1; background:#e0f2fe; border-left:3px solid #0284c7; padding:2px 8px; border-radius:0 4px 4px 0; margin-top:4px; display:inline-block;">📝 <strong>Note:</strong> ${escapeHtml(noteVal)}</div>` 
+            : '';
           return `
             <div class="order-item-row">
-              <img src="${photo}" alt="${name}" onerror="this.src='images/logo.webp'">
+              <img src="${photo}" alt="${escapeHtml(name)}" onerror="this.src='images/logo.webp'">
               <div class="order-item-info">
-                ${name}
+                ${escapeHtml(name)}
+                ${noteHtml}
                 <span>Qty: ${qty} × ₹${price.toLocaleString('en-IN')}</span>
               </div>
               <div class="order-item-price">₹${(price * qty).toLocaleString('en-IN')}</div>

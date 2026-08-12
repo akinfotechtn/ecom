@@ -52,6 +52,16 @@ function getAppliedCoupon() {
     return null;
 }
 
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function getItemPrice(item) {
     const base = Number(item.sellingPrice || item.price || 0);
     const gstRate = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
@@ -99,8 +109,11 @@ function renderCartItems(containerId, editable) {
         var name = item.productName || item.name || 'Product';
         var img = item.photoLink || item.image || 'images/cctv-wholesale.webp';
         var idx = i; // capture for onclick
+        var noteVal = item.notes || item.itemNotes || '';
 
         var qtyControls = '';
+        var noteHtml = '';
+
         if (editable) {
             qtyControls =
                 '<div style="display:flex; align-items:center; gap:0; border:1.5px solid var(--border-color); border-radius:8px; overflow:hidden; width:fit-content;">' +
@@ -109,8 +122,23 @@ function renderCartItems(containerId, editable) {
                 '<button onclick="cartChangeQty(' + idx + ', 1)" style="padding:6px 14px; background:#f8fafc; border:none; border-left:1.5px solid var(--border-color); cursor:pointer; font-size:1rem; font-weight:700; color:var(--text-dark);">+</button>' +
                 '</div>' +
                 '<button onclick="cartRemoveItem(' + idx + ')" style="background:none; border:none; color:#ef4444; font-size:0.82rem; font-weight:700; cursor:pointer; padding:4px 8px; border-radius:4px;">✕ Remove</button>';
+
+            noteHtml =
+                '<div style="margin-top:10px; width:100%;">' +
+                '<input type="text" placeholder="📝 Add instructions/notes (e.g. Lens 2.8mm/3.6mm, Dome/Bullet, color, etc.)..." ' +
+                'value="' + escapeHtml(noteVal) + '" ' +
+                'onchange="window.cartChangeItemNote(' + idx + ', this.value)" ' +
+                'onblur="window.cartChangeItemNote(' + idx + ', this.value)" ' +
+                'style="width:100%; padding:7px 10px; font-size:0.82rem; border:1.5px dashed #cbd5e1; border-radius:6px; background:#f8fafc; color:var(--text-dark); box-sizing:border-box;">' +
+                '</div>';
         } else {
             qtyControls = '<div style="color:var(--text-muted); font-size:0.85rem;">Qty: ' + qty + '</div>';
+            if (noteVal) {
+                noteHtml =
+                    '<div style="margin-top:6px; font-size:0.8rem; color:#0369a1; background:#f0f9ff; border-left:3px solid #0284c7; padding:4px 8px; border-radius:0 4px 4px 0;">' +
+                    '📝 <strong>Note:</strong> ' + escapeHtml(noteVal) +
+                    '</div>';
+            }
         }
 
         html +=
@@ -123,6 +151,7 @@ function renderCartItems(containerId, editable) {
             fmt(unitPrice) + ' <span style="color:var(--text-muted); font-size:0.78rem; font-weight:400;">× ' + qty + ' = ' + fmt(total) + '</span>' +
             '</div>' +
             '<div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">' + qtyControls + '</div>' +
+            noteHtml +
             '</div>' +
             '</div>';
     }
@@ -132,6 +161,14 @@ function renderCartItems(containerId, editable) {
 }
 
 // ─── CART MUTATIONS (called from onclick in HTML) ────────────────────────────
+
+window.cartChangeItemNote = function (index, noteText) {
+    var cart = getCart();
+    if (index < 0 || index >= cart.length) return;
+    cart[index].notes = (noteText || '').trim();
+    cart[index].itemNotes = cart[index].notes;
+    saveCartData(cart);
+};
 
 window.cartChangeQty = function (index, delta) {
     var cart = getCart();

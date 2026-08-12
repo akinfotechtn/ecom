@@ -68,6 +68,16 @@ module.exports = async function handler(req, res) {
       return `${SITE_URL}/${photoLink.replace(/^\/+/, '')}`;
     };
 
+    const escapeHtml = (str) => {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+
     let computedSubtotalWithGst = 0;
     const itemsHtml = (order.items || []).map(item => {
       const basePrice = Number(item.sellingPrice || item.price || 0);
@@ -82,6 +92,10 @@ module.exports = async function handler(req, res) {
 
       const itemImgUrl = getAbsoluteImageUrl(item.photoLink || item.image || item.photo);
       const itemName = item.productName || item.name || 'Product';
+      const noteVal = item.notes || item.itemNotes || '';
+      const itemNoteHtml = noteVal 
+        ? `<div style="margin-top: 4px; font-size: 0.78rem; color: #0284c7; background: #e0f2fe; border-left: 3px solid #0284c7; padding: 3px 6px; border-radius: 0 4px 4px 0; display: inline-block;">📝 <strong>Note:</strong> ${escapeHtml(noteVal)}</div>` 
+        : '';
 
       return `
         <tr>
@@ -89,10 +103,11 @@ module.exports = async function handler(req, res) {
             <table style="border-collapse: collapse; border: none;">
               <tr>
                 <td style="padding: 0 10px 0 0; vertical-align: middle;">
-                  <img src="${itemImgUrl}" alt="${itemName}" width="44" height="44" style="width: 44px; height: 44px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; background: #ffffff; display: block;">
+                  <img src="${itemImgUrl}" alt="${escapeHtml(itemName)}" width="44" height="44" style="width: 44px; height: 44px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; background: #ffffff; display: block;">
                 </td>
                 <td style="padding: 0; vertical-align: middle;">
-                  <strong style="color: #0f172a; font-size: 0.92rem; line-height: 1.3;">${itemName}</strong>
+                  <strong style="color: #0f172a; font-size: 0.92rem; line-height: 1.3;">${escapeHtml(itemName)}</strong>
+                  ${itemNoteHtml}
                 </td>
               </tr>
             </table>

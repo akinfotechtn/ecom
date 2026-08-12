@@ -566,7 +566,10 @@ function generateOrderTrackingHtml(order) {
   }
 
   const itemsList = (order.items && Array.isArray(order.items) && order.items.length)
-    ? order.items.map(i => `${escapeHtml(i.productName || i.name || 'Item')} (x${i.quantity || i.qty || 1})`).join(', ')
+    ? order.items.map(i => {
+        const itemNote = (i.notes || i.itemNotes) ? ` <span style="color:#0284c7; font-weight:600; font-size:0.75rem;">[📝 ${escapeHtml(i.notes || i.itemNotes)}]</span>` : '';
+        return `${escapeHtml(i.productName || i.name || 'Item')} (x${i.quantity || i.qty || 1})${itemNote}`;
+      }).join(', ')
     : 'Order Items';
 
   const custName = escapeHtml(order.customerName || order.name || order.fullName || 'Customer');
