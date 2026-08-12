@@ -11,7 +11,8 @@
     "baseSellingPrice": 1990,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-2k-360-deg-camera-4mp-pt-2k",
@@ -25,7 +26,8 @@
     "baseSellingPrice": 2790,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-bullet-pro-4mp-oc-hco10wh1",
@@ -39,7 +41,8 @@
     "baseSellingPrice": 2990,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-smart-bullet-pro-180",
@@ -53,7 +56,8 @@
     "baseSellingPrice": 3190,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-video-door-bell-pro",
@@ -67,7 +71,8 @@
     "baseSellingPrice": 7100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-instaview-video-door-phone",
@@ -81,7 +86,8 @@
     "baseSellingPrice": 12000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-instaview-edge-video-door-phone",
@@ -95,7 +101,8 @@
     "baseSellingPrice": 5850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-smart-plug-10a",
@@ -109,7 +116,8 @@
     "baseSellingPrice": 750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-smart-plug-16a",
@@ -123,7 +131,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wire-dc-heavy",
@@ -137,7 +146,8 @@
     "baseSellingPrice": 8,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wireless-door-lock-mx-wrl700ac-x",
@@ -151,7 +161,8 @@
     "baseSellingPrice": 8000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-10100-poe-extender-water-pro-6603ac3a",
@@ -165,7 +176,8 @@
     "baseSellingPrice": 700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat-6-metal-ftp-jack-mx-nj-c6m-ftp",
@@ -179,7 +191,8 @@
     "baseSellingPrice": 4,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-42-10100-port-poe-switchmx-1402-s65w",
@@ -193,7 +206,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-ultra-shielded-io-mx-io-p-180usld",
@@ -207,7 +221,8 @@
     "baseSellingPrice": 75,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8mp-video-balun-with-surge-p-2a5d4f76",
@@ -221,7 +236,8 @@
     "baseSellingPrice": 88,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-15-meter-mx-hc4k15",
@@ -235,7 +251,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-port-10100-desktop-switch-mx-ds1108",
@@ -249,7 +266,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5port-surge-protector-5-mtr-mx-sp55",
@@ -263,7 +281,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-3-in-1-out-switch-mx-hsw301",
@@ -277,7 +296,8 @@
     "baseSellingPrice": 1200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-4g-mini-pan-tilt-c-ee32b138",
@@ -291,7 +311,8 @@
     "baseSellingPrice": 3050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8ch-5mp-xvr-mx-xr508-k1",
@@ -305,7 +326,8 @@
     "baseSellingPrice": 5850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-indoor-cca-300-yard-mx-ncin300ycca-p",
@@ -319,7 +341,8 @@
     "baseSellingPrice": 3050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1001000-poe-extender-water-p-b9ff5020",
@@ -333,7 +356,8 @@
     "baseSellingPrice": 1400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat-6-modular-io-mx-ioc3u-wk",
@@ -347,7 +371,8 @@
     "baseSellingPrice": 45,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-pure-copper-3mtr-mx-npc3-p",
@@ -361,7 +386,8 @@
     "baseSellingPrice": 160,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-82-10100-port-poe-switchmx-1802-s120w",
@@ -375,7 +401,8 @@
     "baseSellingPrice": 1300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8ch-2mp-xvr-mx-xr208-f1",
@@ -389,7 +416,8 @@
     "baseSellingPrice": 3600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-60mtr-hdmi-kvm-extender-ultr-a9840161",
@@ -403,7 +431,8 @@
     "baseSellingPrice": 3500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-wifi-dome-camera-mx-dw3l2-5",
@@ -417,7 +446,8 @@
     "baseSellingPrice": 1950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4-port-poe-switch-10100-mx-4f2f-p60",
@@ -431,7 +461,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8port-poe-switch-full-gigabi-34e028c5",
@@ -445,7 +476,8 @@
     "baseSellingPrice": 2650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-wifi-mini-pan-tilt-2b583f20",
@@ -459,7 +491,8 @@
     "baseSellingPrice": 2700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-port-poe-switch-2-uplink-g-8af0429a",
@@ -473,7 +506,8 @@
     "baseSellingPrice": 2100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-port-poe-switch-10100-mx-8f2f-p96",
@@ -487,7 +521,8 @@
     "baseSellingPrice": 1300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-multi-funtional-punch-down-t-dbe0e743",
@@ -501,7 +536,8 @@
     "baseSellingPrice": 250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-pure-copper-2mtr-mx-npc2-p",
@@ -515,7 +551,8 @@
     "baseSellingPrice": 120,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wire-bnc-heavy",
@@ -529,7 +566,8 @@
     "baseSellingPrice": 24,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3-mp-4g-dome-camera-mx-d4g3l2-5",
@@ -543,7 +581,8 @@
     "baseSellingPrice": 2300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-ultra-shielded-metal-io-mx-i-45e6730b",
@@ -557,7 +596,8 @@
     "baseSellingPrice": 150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-43-inch-frame-less-smart-tvmx4307st",
@@ -571,7 +611,8 @@
     "baseSellingPrice": 15890,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-kvm-extender-120-meter-092d3b18",
@@ -585,7 +626,8 @@
     "baseSellingPrice": 4250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-24-inch-mx2402n-led",
@@ -599,7 +641,8 @@
     "baseSellingPrice": 5255,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4ch-2mp-xvr-xr204-f1",
@@ -613,7 +656,8 @@
     "baseSellingPrice": 3000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-outdoor-cca-300-yard-mx-ncod-f36d3785",
@@ -627,7 +671,8 @@
     "baseSellingPrice": 3450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat6-lift-cable-300yard-max-65b132f3",
@@ -641,7 +686,8 @@
     "baseSellingPrice": 22500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-android-box-maxxion-4gbram-3-f0d5e10a",
@@ -655,7 +701,8 @@
     "baseSellingPrice": 3250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5mp-dual-illumination-hd-col-6d10fbae",
@@ -669,7 +716,8 @@
     "baseSellingPrice": 1750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-indoor-cca-90-yard-mx-ncin90ycca-p",
@@ -683,7 +731,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hybrid-pro-outdoor-cable-90-61fbf5e8",
@@ -697,7 +746,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-12v-10amp-metal-smps-single-315df996",
@@ -711,7 +761,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-splitter-1-in-4-out-4k-5f05eacf",
@@ -725,7 +776,8 @@
     "baseSellingPrice": 1050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-16-port-full-1001000-poe-swi-6597e601",
@@ -739,7 +791,8 @@
     "baseSellingPrice": 8500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-pure-copper-1mtr-mx-npc1-p",
@@ -753,7 +806,8 @@
     "baseSellingPrice": 85,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-female-to-female-io-mx-io-ff",
@@ -767,7 +821,8 @@
     "baseSellingPrice": 30,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-30mtr-hdmi-extender-mx-hep30",
@@ -781,7 +836,8 @@
     "baseSellingPrice": 190,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-cca-5mtr-mx-npc5-e",
@@ -795,7 +851,8 @@
     "baseSellingPrice": 160,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-pure-copper-5mtr-mx-npc5-p",
@@ -809,7 +866,8 @@
     "baseSellingPrice": 225,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hybrid-pro-outdoor-cable-300-ad549bad",
@@ -823,7 +881,8 @@
     "baseSellingPrice": 3550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1u-rack-450x130x330",
@@ -837,7 +896,8 @@
     "baseSellingPrice": 650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-24-port-poe-switch-uplink-gi-0ab0cd9a",
@@ -851,7 +911,8 @@
     "baseSellingPrice": 11000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-20-meter-mx-hc4k20",
@@ -865,7 +926,8 @@
     "baseSellingPrice": 750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat6-lift-cable-100yard-max-a3c3ad04",
@@ -879,7 +941,8 @@
     "baseSellingPrice": 7500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-32-inch-frame-less-led-tv-mx3207n",
@@ -893,7 +956,8 @@
     "baseSellingPrice": 7880,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-cca-2mtr-mx-npc2-e",
@@ -907,7 +971,8 @@
     "baseSellingPrice": 65,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-port-1001000-desktop-switc-8f247652",
@@ -921,7 +986,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-2-pair-telephone-outdoor-cab-d656472e",
@@ -935,7 +1001,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cctv-ups-mx-dc15k",
@@ -949,7 +1016,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-30-meter-mx-hc4k30",
@@ -963,7 +1031,8 @@
     "baseSellingPrice": 1750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-kvm-extender-60-meter-m-b29f6423",
@@ -977,7 +1046,8 @@
     "baseSellingPrice": 2250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-12v-dc-2amps-mx-wa122",
@@ -991,7 +1061,8 @@
     "baseSellingPrice": 170,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4u-rack-550x230x350",
@@ -1005,7 +1076,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-single-port-face-plate-mx-fp1-ws",
@@ -1019,7 +1091,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-12v-5amps-metal-smps-single-0511b0bf",
@@ -1033,7 +1106,8 @@
     "baseSellingPrice": 325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hybrid-indoor-cable-90-yard-7efe2bcc",
@@ -1047,7 +1121,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-android-box-maxxion-2gbram-1-008dd3d4",
@@ -1061,7 +1136,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-wifi-bullet-camera-3753c102",
@@ -1075,7 +1151,8 @@
     "baseSellingPrice": 2050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-31-turbo-outdoor-cable-90-ya-916361cd",
@@ -1089,7 +1166,8 @@
     "baseSellingPrice": 1425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-platinium-pro-outdoor-cable-b99fbec1",
@@ -1103,7 +1181,8 @@
     "baseSellingPrice": 10000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-axial-rack-fan-220v-ac-mx-arf220v",
@@ -1117,7 +1196,8 @@
     "baseSellingPrice": 225,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-10100-poe-extender-water-pro-6a8f34aa",
@@ -1131,7 +1211,8 @@
     "baseSellingPrice": 925,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat-6-pure-copper-pass-throu-f82379e3",
@@ -1145,7 +1226,8 @@
     "baseSellingPrice": 3,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-kvm-extender-200-meter-4cc51c67",
@@ -1159,7 +1241,8 @@
     "baseSellingPrice": 6000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-splitter-1x2-mx-hs102-4ks",
@@ -1173,7 +1256,8 @@
     "baseSellingPrice": 525,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-15-meter-mx-hc4k01",
@@ -1187,7 +1271,8 @@
     "baseSellingPrice": 85,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-2u-rack-550x150x350",
@@ -1201,7 +1286,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-150mtr-hdmi-kvm-extender-ult-2a619dcb",
@@ -1215,7 +1301,8 @@
     "baseSellingPrice": 4750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-5-in-1-out-switch-mx-hsw501",
@@ -1229,7 +1316,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-24-inch-mx2402s-smart-tv",
@@ -1243,7 +1331,8 @@
     "baseSellingPrice": 7415,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5-port-1001000-desktop-switc-96c83958",
@@ -1257,7 +1346,8 @@
     "baseSellingPrice": 650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-2u-mini-rack-350-x150x350",
@@ -1271,7 +1361,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-32-inch-led-smart-tv-mx3207s",
@@ -1285,7 +1376,8 @@
     "baseSellingPrice": 10425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4u-mini-rack-350x200x350",
@@ -1299,7 +1391,8 @@
     "baseSellingPrice": 675,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4-channel-power-supply-indiv-02f3b69b",
@@ -1313,7 +1406,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wire-dc-elite",
@@ -1327,7 +1421,8 @@
     "baseSellingPrice": 8,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5mp-dual-illumination-hd-col-6a81b775",
@@ -1341,7 +1436,8 @@
     "baseSellingPrice": 1800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4u-mini-rack-with-tray-power-e8eaf454",
@@ -1355,7 +1451,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-10-meter-mx-hc4k10",
@@ -1369,7 +1466,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-12v-dc-1amps-mx-wa121",
@@ -1383,7 +1481,8 @@
     "baseSellingPrice": 110,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-dual-port-face-plate-mx-fp2-ws",
@@ -1397,7 +1496,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-12v-dc-5amps-mx-da125",
@@ -1411,7 +1511,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-16-port-poe-switch-uplink-gi-9bc27a97",
@@ -1425,7 +1526,8 @@
     "baseSellingPrice": 6250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-2mp-dual-illumination-hd-col-8632f775",
@@ -1439,7 +1541,8 @@
     "baseSellingPrice": 1150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-platinium-indoor-cable-100-y-567c30d9",
@@ -1453,7 +1556,8 @@
     "baseSellingPrice": 3250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-05-meter-mx-hc4k05",
@@ -1467,7 +1571,8 @@
     "baseSellingPrice": 185,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4ch-5mp-xvr-mx-xr504-k1",
@@ -1481,7 +1586,8 @@
     "baseSellingPrice": 3700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8mp-video-balunmx-vb101h",
@@ -1495,7 +1601,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-31-impact-cable-90-yard-max-8c961070",
@@ -1509,7 +1616,8 @@
     "baseSellingPrice": 1050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-2mp-dual-illumination-hd-col-88e39c40",
@@ -1523,7 +1631,8 @@
     "baseSellingPrice": 1100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4k-hdmi-cable-03-meter-mx-hc4k03",
@@ -1537,7 +1646,8 @@
     "baseSellingPrice": 135,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-cca-3mtr-mx-npc3-e",
@@ -1551,7 +1661,8 @@
     "baseSellingPrice": 90,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1u-24-port-cat6-utp-patch-pa-1177139f",
@@ -1565,7 +1676,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1u-24-port-cat6-utp-patch-pa-7bdcf1b9",
@@ -1579,7 +1691,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-4g-bullet-camera-m-325e10cc",
@@ -1593,7 +1706,8 @@
     "baseSellingPrice": 2400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4-u-mini-rack-with-tray-400x230x400",
@@ -1607,7 +1721,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-cat-6-pure-copper-jack-mx-nj-c6p",
@@ -1621,7 +1736,8 @@
     "baseSellingPrice": 3,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-24port-poe-switch-full-gigab-ff4414e1",
@@ -1635,7 +1751,8 @@
     "baseSellingPrice": 12000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-splitter-1x4-mx-hs104-4ks",
@@ -1649,7 +1766,8 @@
     "baseSellingPrice": 650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-platinium-pro-outdoor-cable-572aac16",
@@ -1663,7 +1781,8 @@
     "baseSellingPrice": 3500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-outdoor-cca-90-yard-mx-ncod9-5532e313",
@@ -1677,7 +1796,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-orbit-3mp-wifi-omni-360-came-a7c2a50b",
@@ -1691,7 +1811,8 @@
     "baseSellingPrice": 1650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8port-poe-switch-full-gigabi-73aeb28c",
@@ -1705,7 +1826,8 @@
     "baseSellingPrice": 3500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1001000-poe-extender-water-p-7a60d1e5",
@@ -1719,7 +1841,8 @@
     "baseSellingPrice": 1025,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-multi-funtional-network-cabl-c534be5f",
@@ -1733,7 +1856,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-100mtr-wireless-hdmi-extende-b9652828",
@@ -1747,7 +1871,8 @@
     "baseSellingPrice": 5100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5port-surge-protector-15-mtr-mx-sp05",
@@ -1761,7 +1886,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-patch-cord-cca-1mtr-mx-npc1-e",
@@ -1775,7 +1901,8 @@
     "baseSellingPrice": 55,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hybrid-indoor-cable-300-yard-c33d8308",
@@ -1789,7 +1916,8 @@
     "baseSellingPrice": 3050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-fiber-10100-media-convertor-5c9ddc33",
@@ -1803,7 +1931,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-1-u-plastic-rack-mx-1urj",
@@ -1817,7 +1946,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-16ch-5mp-xvr-mx-xr516-k1",
@@ -1831,7 +1961,8 @@
     "baseSellingPrice": 9000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-platinium-indoor-cable-300-y-c6dd1252",
@@ -1845,7 +1976,8 @@
     "baseSellingPrice": 9000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-60mtr-hdmi-extender-mx-hep60",
@@ -1859,7 +1991,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-3u-mini-rack-350x175x350",
@@ -1873,7 +2006,8 @@
     "baseSellingPrice": 625,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-31-premium-cable-90-yard-max-3d7f1996",
@@ -1887,7 +2021,8 @@
     "baseSellingPrice": 1375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-31-standard-cable-90-yard-ma-b0060e9a",
@@ -1901,7 +2036,8 @@
     "baseSellingPrice": 1325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-5-port-10100-desktop-switch-mx-ds1105",
@@ -1915,7 +2051,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4port-gigabit-poe-switchmx-5402-s6w",
@@ -1929,7 +2066,8 @@
     "baseSellingPrice": 2100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-port-poe-switch-2-uplink-g-6630ba64",
@@ -1943,7 +2081,8 @@
     "baseSellingPrice": 2100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-8-channel-power-supply-indiv-0c6a4cfd",
@@ -1957,7 +2096,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wire-bnc-elite",
@@ -1971,7 +2111,8 @@
     "baseSellingPrice": 15,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-24port-poe-switch-full-gigab-2241c0dc",
@@ -1985,7 +2126,8 @@
     "baseSellingPrice": 12500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-fiber-1001000-media-converto-2a234c7e",
@@ -1999,7 +2141,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-wireless-door-lock-mx-wrl700r-s",
@@ -2013,7 +2156,8 @@
     "baseSellingPrice": 4500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-16ch-2mp-xvr-mx-xr216-f1",
@@ -2027,7 +2171,8 @@
     "baseSellingPrice": 6000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-4port-surge-protector-15-mtr-mx-sp04",
@@ -2041,7 +2186,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-multi-funtional-network-test-492d2ac7",
@@ -2055,7 +2201,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-bnc-premium",
@@ -2069,7 +2216,8 @@
     "baseSellingPrice": 17,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-maxxion-hdmi-splitter-1-in-2-out-4k-9261ebb5",
@@ -2083,7 +2231,8 @@
     "baseSellingPrice": 700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-8-port-poe-switch-82g-t38263-a",
@@ -2097,7 +2246,8 @@
     "baseSellingPrice": 1850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-8-port-poe-switch-82-t38262-a",
@@ -2111,7 +2261,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4ch-hd-dvr-two-way-audio-t-38297-a",
@@ -2125,7 +2276,8 @@
     "baseSellingPrice": 2750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-16-port-poe-switch-16g2g1sf-d94b86a0",
@@ -2139,7 +2291,8 @@
     "baseSellingPrice": 7300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-16ch-hd-dvr-t37431-be",
@@ -2153,7 +2306,8 @@
     "baseSellingPrice": 4900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-2mp-hd-mini-pan-tilt-atc-camera-with-f902c8cb",
@@ -2167,7 +2321,8 @@
     "baseSellingPrice": 1300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-24-port-poe-switch-24g2g2sf-e95aa0c6",
@@ -2181,7 +2336,8 @@
     "baseSellingPrice": 11600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-3mp-wi-fi-mini-pan-tilt-all-time-col-b36c5eb1",
@@ -2195,7 +2351,8 @@
     "baseSellingPrice": 2900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-8ch-hd-dvr-t38154-ae",
@@ -2209,7 +2366,8 @@
     "baseSellingPrice": 3750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3mp-wifi-outdoor-pt-camera-t18135s",
@@ -2223,7 +2381,8 @@
     "baseSellingPrice": 2900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-ultra-10ch-wifi-nvrt-38236-a",
@@ -2237,7 +2396,8 @@
     "baseSellingPrice": 5000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-36w-solar-panel-with-built-in-batter-156ead4c",
@@ -2251,7 +2411,8 @@
     "baseSellingPrice": 3700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4g-wi-fi-router-r300-white-t18258-a",
@@ -2265,7 +2426,8 @@
     "baseSellingPrice": 1100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-8ch-hd-dvr-two-way-audio-t38298-a",
@@ -2279,7 +2441,8 @@
     "baseSellingPrice": 3750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-2mp-hd-dome-camera-dual-light-t18256-a",
@@ -2293,7 +2456,8 @@
     "baseSellingPrice": 800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-8-port-poe-switch-8g2g-t38264-a",
@@ -2307,7 +2471,8 @@
     "baseSellingPrice": 2250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-2mp-hd-bullet-camera-dual-light-t18257-a",
@@ -2321,7 +2486,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4g-3mp-mini-pan-tilt-all-time-color-49182aa8",
@@ -2335,7 +2501,8 @@
     "baseSellingPrice": 3200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-stqc-4g-cctv-trueview-4g-do-127e040d",
@@ -2349,7 +2516,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4g-wi-fi-router-r500-black-t18259",
@@ -2363,7 +2531,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4g-bullet-ai-camerat18175sf",
@@ -2377,7 +2546,8 @@
     "baseSellingPrice": 2600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3-mp-wifi-bullet-camera-t18238s",
@@ -2391,7 +2561,8 @@
     "baseSellingPrice": 2250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-8-port-poe-switch-8g2g1sfp-t38265-a",
@@ -2405,7 +2576,8 @@
     "baseSellingPrice": 2650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3mp-wifi-bullet-camera-t18295s",
@@ -2419,7 +2591,8 @@
     "baseSellingPrice": 2250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3mp-wifi-dome-t18294s",
@@ -2433,7 +2606,8 @@
     "baseSellingPrice": 2150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3-mp-wifi-robot-cam-t18296s",
@@ -2447,7 +2621,8 @@
     "baseSellingPrice": 1725,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3-mp-wifi-dome-camera-t18237s",
@@ -2461,7 +2636,8 @@
     "baseSellingPrice": 2150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4-port-poe-switch-42-t38260-a",
@@ -2475,7 +2651,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4-port-poe-switch-4g2g1sfp-t38261-a",
@@ -2489,7 +2666,8 @@
     "baseSellingPrice": 2100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4g-ptz-dome-camera-t18120sf",
@@ -2503,7 +2681,8 @@
     "baseSellingPrice": 3200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-16-port-poe-switch-162ug1sf-b9dc527a",
@@ -2517,7 +2696,8 @@
     "baseSellingPrice": 5250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-3-mp-wifi-robot-pan-tilt-ca-e2d6abc2",
@@ -2531,7 +2711,8 @@
     "baseSellingPrice": 1725,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4g-bullet-camera-t18292sf",
@@ -2545,7 +2726,8 @@
     "baseSellingPrice": 2600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-trueview-4g-dome-ai-camerat18185sf",
@@ -2559,7 +2741,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-8tb-av-hard-drive-st8000vx010",
@@ -2573,7 +2756,8 @@
     "baseSellingPrice": 20000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-1-tb-av-hard-drive-st1000vx005",
@@ -2587,7 +2771,8 @@
     "baseSellingPrice": 8750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-10tb-av-hard-drive-st1000ve0008",
@@ -2601,7 +2786,8 @@
     "baseSellingPrice": 45000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-2tb-av-hard-drive-st2000vx017",
@@ -2615,7 +2801,8 @@
     "baseSellingPrice": 11500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-6tb-av-hard-drive-st6000vx001",
@@ -2629,7 +2816,8 @@
     "baseSellingPrice": 20500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-seagate-4-tb-av-hard-drive-st4000vx016",
@@ -2643,7 +2831,8 @@
     "baseSellingPrice": 14750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t321mfwx-b",
@@ -2657,7 +2846,8 @@
     "baseSellingPrice": 6800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t342efwx-e1",
@@ -2671,7 +2861,8 @@
     "baseSellingPrice": 12100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t320mfwx-b",
@@ -2685,7 +2876,8 @@
     "baseSellingPrice": 6150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd8003-ime1b",
@@ -2699,7 +2891,8 @@
     "baseSellingPrice": 10600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7116hqhi-m1t",
@@ -2713,7 +2906,8 @@
     "baseSellingPrice": 10100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce70df0t-pfs",
@@ -2727,7 +2921,8 @@
     "baseSellingPrice": 1830,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16h0t-itpfs",
@@ -2741,7 +2936,8 @@
     "baseSellingPrice": 1420,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-acw1",
@@ -2755,7 +2951,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7108hqhi-m1t",
@@ -2769,7 +2966,8 @@
     "baseSellingPrice": 5700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kh9510-wte1b",
@@ -2783,7 +2981,8 @@
     "baseSellingPrice": 15990,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-acw3",
@@ -2797,7 +2996,8 @@
     "baseSellingPrice": 7330,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis202t",
@@ -2811,7 +3011,8 @@
     "baseSellingPrice": 4700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7232hqhi-m2xt",
@@ -2825,7 +3026,8 @@
     "baseSellingPrice": 25800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t320efwx",
@@ -2839,7 +3041,8 @@
     "baseSellingPrice": 5100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7216huhi-m1t",
@@ -2853,7 +3056,8 @@
     "baseSellingPrice": 12900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis603-pc",
@@ -2867,7 +3071,8 @@
     "baseSellingPrice": 14300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-kp",
@@ -2881,7 +3086,8 @@
     "baseSellingPrice": 5330,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16d0t-lpfs",
@@ -2895,7 +3101,8 @@
     "baseSellingPrice": 1320,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7204hqhi-m1xt",
@@ -2909,7 +3116,8 @@
     "baseSellingPrice": 4500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kv8413-wme1c",
@@ -2923,7 +3131,8 @@
     "baseSellingPrice": 11000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis205t",
@@ -2937,7 +3146,8 @@
     "baseSellingPrice": 5500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16k0t-lpfs",
@@ -2951,7 +3161,8 @@
     "baseSellingPrice": 1770,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis302-p",
@@ -2965,7 +3176,8 @@
     "baseSellingPrice": 9150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kv6113-wpe1-c",
@@ -2979,7 +3191,8 @@
     "baseSellingPrice": 6550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16k0t-lpts",
@@ -2993,7 +3206,8 @@
     "baseSellingPrice": 2060,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce78k0t-lts",
@@ -3007,7 +3221,8 @@
     "baseSellingPrice": 2060,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t343mfwx",
@@ -3021,7 +3236,8 @@
     "baseSellingPrice": 8200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce76d0t-lpfs",
@@ -3035,7 +3251,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7104hghi-m1t",
@@ -3049,7 +3266,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce70kf0t-pfs",
@@ -3063,7 +3281,8 @@
     "baseSellingPrice": 2360,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce76k0t-lpfs",
@@ -3077,7 +3296,8 @@
     "baseSellingPrice": 1680,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis602",
@@ -3091,7 +3311,8 @@
     "baseSellingPrice": 18200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kh6320-wte1",
@@ -3105,7 +3326,8 @@
     "baseSellingPrice": 6550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t343efwx",
@@ -3119,7 +3341,8 @@
     "baseSellingPrice": 8200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-m",
@@ -3133,7 +3356,8 @@
     "baseSellingPrice": 2900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce10df0t-pfs",
@@ -3147,7 +3371,8 @@
     "baseSellingPrice": 1870,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7216huhi-m2x",
@@ -3161,7 +3386,8 @@
     "baseSellingPrice": 16200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce76d0t-itpfs",
@@ -3175,7 +3401,8 @@
     "baseSellingPrice": 895,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce70d0t-ptlts",
@@ -3189,7 +3416,8 @@
     "baseSellingPrice": 1810,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7232hghi-m2",
@@ -3203,7 +3431,8 @@
     "baseSellingPrice": 20050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t342mfwx-e1",
@@ -3217,7 +3446,8 @@
     "baseSellingPrice": 12100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7208hqhi-m1xt",
@@ -3231,7 +3461,8 @@
     "baseSellingPrice": 6930,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7208huhi-m1t",
@@ -3245,7 +3476,8 @@
     "baseSellingPrice": 7620,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-d5022qe-f",
@@ -3259,7 +3491,8 @@
     "baseSellingPrice": 4580,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce76h0t-itpfs",
@@ -3273,7 +3506,8 @@
     "baseSellingPrice": 1360,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-e",
@@ -3287,7 +3521,8 @@
     "baseSellingPrice": 3340,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce10kf0t-pfs",
@@ -3301,7 +3536,8 @@
     "baseSellingPrice": 2420,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd-kk",
@@ -3315,7 +3551,8 @@
     "baseSellingPrice": 2540,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16d0t-lpts",
@@ -3329,7 +3566,8 @@
     "baseSellingPrice": 1690,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7116hghi-m1t",
@@ -3343,7 +3581,8 @@
     "baseSellingPrice": 6150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7108hghi-m1t",
@@ -3357,7 +3596,8 @@
     "baseSellingPrice": 3650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kd9203-fe6",
@@ -3371,7 +3611,8 @@
     "baseSellingPrice": 19500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-k1t320mfwx",
@@ -3385,7 +3626,8 @@
     "baseSellingPrice": 5100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7216hqhi-m1xt",
@@ -3399,7 +3641,8 @@
     "baseSellingPrice": 11280,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-7104hqhi-m1t",
@@ -3413,7 +3656,8 @@
     "baseSellingPrice": 3960,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-2ce16d0t-itpfs",
@@ -3427,7 +3671,8 @@
     "baseSellingPrice": 985,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-ds-kis204t",
@@ -3441,7 +3686,8 @@
     "baseSellingPrice": 5000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-256-gb-memory-card",
@@ -3455,7 +3701,8 @@
     "baseSellingPrice": 2750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-64-gb-memory-card",
@@ -3469,7 +3716,8 @@
     "baseSellingPrice": 750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-20-inch-led-monitor-kst-2010",
@@ -3483,7 +3731,8 @@
     "baseSellingPrice": 2000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-500gb-hard-disk",
@@ -3497,7 +3746,8 @@
     "baseSellingPrice": 1700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-1-tb-hard-disk",
@@ -3511,7 +3761,8 @@
     "baseSellingPrice": 4250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-128gb-memory-card",
@@ -3525,7 +3776,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-6mp-ip-dome-camera-cp-unc-da-3da6d922",
@@ -3539,7 +3791,8 @@
     "baseSellingPrice": 5195,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16port-poe-switch-cp-dnw-hpu16g2f1-20",
@@ -3553,7 +3806,8 @@
     "baseSellingPrice": 7350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8port-poe-uplink-giga-cp-dnw-0a9891ee",
@@ -3567,7 +3821,8 @@
     "baseSellingPrice": 2270,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-dual-light-with-mic-dome-3e051b55",
@@ -3581,7 +3836,8 @@
     "baseSellingPrice": 4095,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-colour-dome-with-mic-cp-eb54847e",
@@ -3595,7 +3851,8 @@
     "baseSellingPrice": 1755,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-64ch-nvr-8-sata-unr-4k564r8-f1",
@@ -3609,7 +3866,8 @@
     "baseSellingPrice": 59545,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-cat-6-cable-cp-fut-6tsrh-305",
@@ -3623,7 +3881,8 @@
     "baseSellingPrice": 3100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-dvr-2mp-cp-uvr-1601e1-ic",
@@ -3637,7 +3896,8 @@
     "baseSellingPrice": 6435,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-dvr-5mp-cp-uvr-0801f1v-i",
@@ -3651,7 +3911,8 @@
     "baseSellingPrice": 8815,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-colour-dome-with-mic-cp-ddeaffdb",
@@ -3665,7 +3926,8 @@
     "baseSellingPrice": 1470,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16-port-poe-cp-anw-gpu16g2f2-20",
@@ -3679,7 +3941,8 @@
     "baseSellingPrice": 10100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8port-poe-cp-anw-gpu8g2-n12",
@@ -3693,7 +3956,8 @@
     "baseSellingPrice": 3150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-wifi-cameracp-e41q",
@@ -3707,7 +3971,8 @@
     "baseSellingPrice": 2640,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8mp-dual-light-bullet-camera-5880b987",
@@ -3721,7 +3986,8 @@
     "baseSellingPrice": 11500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-robot-camera-e21q",
@@ -3735,7 +4001,8 @@
     "baseSellingPrice": 2035,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-64ch-nvr-4-sata-cp-unr-4k5644-fi",
@@ -3749,7 +4016,8 @@
     "baseSellingPrice": 44510,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4-port-poe-switch-cp-anw-hp4h2-n65",
@@ -3763,7 +4031,8 @@
     "baseSellingPrice": 1109,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-nvr-2-sata-unr-4k-2162-v3",
@@ -3777,7 +4046,8 @@
     "baseSellingPrice": 10870,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-ip-ptz-camera-cp-unp-d2521l10-dpq",
@@ -3791,7 +4061,8 @@
     "baseSellingPrice": 29675,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-dvr-5mp-2-satacp-uvr-32-995bd2bb",
@@ -3805,7 +4076,8 @@
     "baseSellingPrice": 28870,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-dvr-2mp-2way-audio-suppo-d99abea3",
@@ -3819,7 +4091,8 @@
     "baseSellingPrice": 5055,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dual-light-dome-camera-c-5e61b047",
@@ -3833,7 +4106,8 @@
     "baseSellingPrice": 3355,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-bullet-with-2-way-audio-174197c3",
@@ -3847,7 +4121,8 @@
     "baseSellingPrice": 4295,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-bullet-camera-tc24pl3c",
@@ -3861,7 +4136,8 @@
     "baseSellingPrice": 980,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-nvr-2-sata-cp-unr-4k4162-v4",
@@ -3875,7 +4151,8 @@
     "baseSellingPrice": 12460,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-wi-fi-full-color-pt-came-e79ffe4f",
@@ -3889,7 +4166,8 @@
     "baseSellingPrice": 3425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-colour-bullet-with-mic-c-688106aa",
@@ -3903,7 +4181,8 @@
     "baseSellingPrice": 1530,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-45x-ptz-cp-unp-f4541l30-dpq",
@@ -3917,7 +4196,8 @@
     "baseSellingPrice": 75000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8-port-poe-switch-cp-anw-hpu8h2-n12",
@@ -3931,7 +4211,8 @@
     "baseSellingPrice": 1402,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-bullet-camera-with-audio-95b2c473",
@@ -3945,7 +4226,8 @@
     "baseSellingPrice": 3050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-hd-dome-camera-cp-usc-dc51pl3c",
@@ -3959,7 +4241,8 @@
     "baseSellingPrice": 1285,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-cat6-cable-outdoor-double-ja-f14bdfcf",
@@ -3973,7 +4256,8 @@
     "baseSellingPrice": 10495,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-dome-with-audio-cp-unc-d-12d417ab",
@@ -3987,7 +4271,8 @@
     "baseSellingPrice": 3715,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-dvr-2mp-2way-audio-supp-e16d121f",
@@ -4001,7 +4286,8 @@
     "baseSellingPrice": 8500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-6mp-ip-bullet-camera-colour-d108244a",
@@ -4015,7 +4301,8 @@
     "baseSellingPrice": 5255,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4ch-4k-nvr-cp-unr-4k2041-v4",
@@ -4029,7 +4316,8 @@
     "baseSellingPrice": 6885,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-verifocal-cp-unc-tc41zl6c-vmd-lq",
@@ -4043,7 +4331,8 @@
     "baseSellingPrice": 12000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-nvr-cp-unr-108f1",
@@ -4057,7 +4346,8 @@
     "baseSellingPrice": 5860,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-nvr-2-sata-cp-unr-4k-4082-v4",
@@ -4071,7 +4361,8 @@
     "baseSellingPrice": 8580,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4ch-dvr-5mp-0401f1v-i",
@@ -4085,7 +4376,8 @@
     "baseSellingPrice": 6230,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4ch-nvr-cp-unr-104f1",
@@ -4099,7 +4391,8 @@
     "baseSellingPrice": 5285,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-24-port-poe-switch-cp-dnw-hp-03425106",
@@ -4113,7 +4406,8 @@
     "baseSellingPrice": 8400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-dome-with-2-way-audio-co-207989c2",
@@ -4127,7 +4421,8 @@
     "baseSellingPrice": 4235,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-45x-300-mtr-ip-ptz-camer-0b6653d3",
@@ -4141,7 +4436,8 @@
     "baseSellingPrice": 75000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-wifi-camera-cp-z43q",
@@ -4155,7 +4451,8 @@
     "baseSellingPrice": 3365,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-nvr-4-sata-4k4164-fi",
@@ -4169,7 +4466,8 @@
     "baseSellingPrice": 26465,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8mp-ip-vandal-dome-cp-unc-vc-6d375c59",
@@ -4183,7 +4481,8 @@
     "baseSellingPrice": 12000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16-channel-nvr-cp-unr-4k-2161-v4",
@@ -4197,7 +4496,8 @@
     "baseSellingPrice": 8570,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-3mp-indoor-pt-camera-cp-e38q",
@@ -4211,7 +4511,8 @@
     "baseSellingPrice": 1885,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-dual-light-bullet-camera-2fbb3d37",
@@ -4225,7 +4526,8 @@
     "baseSellingPrice": 4155,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dome-with-2-way-audio-co-714fbe63",
@@ -4239,7 +4541,8 @@
     "baseSellingPrice": 3590,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-wifi-camera-cp-e41q",
@@ -4253,7 +4556,8 @@
     "baseSellingPrice": 2640,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-ip-motorized-varifocal-d-d7e37452",
@@ -4267,7 +4571,8 @@
     "baseSellingPrice": 15000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dual-light-bullet-camera-f36ff9e4",
@@ -4281,7 +4586,8 @@
     "baseSellingPrice": 3415,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-bullet-dual-light-cp-urc-af062760",
@@ -4295,7 +4601,8 @@
     "baseSellingPrice": 1245,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-128ch-nvr-8-sata-cp-unr-4k5128r8-ei",
@@ -4309,7 +4616,8 @@
     "baseSellingPrice": 150000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dome-camera-with-audio-c-97c26096",
@@ -4323,7 +4631,8 @@
     "baseSellingPrice": 2990,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-indoor-pure-copper-305mtr-cp-b0f817c9",
@@ -4337,7 +4646,8 @@
     "baseSellingPrice": 9191,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4ch-dvr-2mp-2way-audio-suppo-2d7418bf",
@@ -4351,7 +4661,8 @@
     "baseSellingPrice": 3995,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-32x-ptz-camera-cp-unp-e3-7582c94f",
@@ -4365,7 +4676,8 @@
     "baseSellingPrice": 57665,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8mp-verifocal-bullet-camera-4eb3dae8",
@@ -4379,7 +4691,8 @@
     "baseSellingPrice": 15000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-ip-dome-cp-unc-vc41l5c-vmd-lq",
@@ -4393,7 +4706,8 @@
     "baseSellingPrice": 12000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-dual-light-bullet-camera-662f19ab",
@@ -4407,7 +4721,8 @@
     "baseSellingPrice": 7500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-dvr-2mp-2-sata-cp-uvr-3201e2-i",
@@ -4421,7 +4736,8 @@
     "baseSellingPrice": 24060,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-3mp-indoor-pt-camera-cp-e31q",
@@ -4435,11 +4751,12 @@
     "baseSellingPrice": 2290,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-ip-45x-ptz-cp-unp-f4551l30-dpq",
-    "photoLink": "https://store.plushtechnologies.in/cdn/shop/files/1_600eabb9-9704-4e11-b6d8-2067f1895a9e_1200x1200.png?v=1779122998",
+    "photoLink": "images/cctv-wholesale.webp",
     "productName": "CP PLUS 5MP IP 45X PTZ (CP-UNP-F4551L30-DPQ)",
     "productSpec": "High quality product",
     "brand": "CPPlus",
@@ -4449,7 +4766,10 @@
     "baseSellingPrice": 150000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false,
+    "imageUrl": "images/cctv-wholesale.webp",
+    "image": "images/cctv-wholesale.webp"
   },
   {
     "id": "prod-cp-plus-8mp-ip-colour-domecp-unc-da81l3c-lq",
@@ -4463,7 +4783,8 @@
     "baseSellingPrice": 7270,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cpplus-16ch-dvr-5mp-cp-uvr-1601f1-ic",
@@ -4477,7 +4798,8 @@
     "baseSellingPrice": 14335,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-nvr-8-sata-cp-unr-4k532r8-fi",
@@ -4491,7 +4813,8 @@
     "baseSellingPrice": 50000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-hybrid-bullet-camera-wit-024b53e8",
@@ -4505,7 +4828,8 @@
     "baseSellingPrice": 1635,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-bullet-with-audio-cp-unc-0de3578d",
@@ -4519,7 +4843,8 @@
     "baseSellingPrice": 3770,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4g-pt-camera-ez-s35t",
@@ -4533,11 +4858,12 @@
     "baseSellingPrice": 2850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-nvr-4-sata-cp-unr-4k5324-fi",
-    "photoLink": "https://megajaipur.com/_next/image?url=%2Fuploads%2Fproducts%2Fsecurity%2Fnvr%2FCP%20Plus%2FCP-UNR-4K2081-V4%2FCP-UNR-4K2081-V4%20(1).webp&w=3840&q=75",
+    "photoLink": "images/cctv-wholesale.webp",
     "productName": "CP PLUS 32CH NVR 4 SATA (CP-UNR-4K5324-FI)",
     "productSpec": "High quality product",
     "brand": "CPPlus",
@@ -4547,11 +4873,14 @@
     "baseSellingPrice": 35000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false,
+    "imageUrl": "images/cctv-wholesale.webp",
+    "image": "images/cctv-wholesale.webp"
   },
   {
     "id": "prod-cp-plus-6mp-ip-vandal-dome-cp-unc-vc-0fd3d132",
-    "photoLink": "https://store.plushtechnologies.in/cdn/shop/files/1_d89ca2c4-a115-4f80-8caa-b16fb11d99c4_1200x1200.png?v=1776279094",
+    "photoLink": "images/cctv-wholesale.webp",
     "productName": "CP PLUS 6MP IP VANDAL DOME CP-UNC-VC61L5C-VMD-LQ",
     "productSpec": "High quality product",
     "brand": "CPPlus",
@@ -4561,7 +4890,10 @@
     "baseSellingPrice": 10000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false,
+    "imageUrl": "images/cctv-wholesale.webp",
+    "image": "images/cctv-wholesale.webp"
   },
   {
     "id": "prod-cp-plus-6mp-ip-bullet-cp-unc-tc61l5c-vmd-lq",
@@ -4575,7 +4907,8 @@
     "baseSellingPrice": 95000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-colour-bullet-with-mic-c-2e424010",
@@ -4589,7 +4922,8 @@
     "baseSellingPrice": 1810,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dome-dual-light-cp-urc-d-e67cddfe",
@@ -4603,7 +4937,8 @@
     "baseSellingPrice": 1190,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-bullet-with-2-way-audio-b488d147",
@@ -4617,7 +4952,8 @@
     "baseSellingPrice": 3650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-128gb-memory-card-cp-nm128",
@@ -4631,7 +4967,8 @@
     "baseSellingPrice": 2642,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-indoor-pt-camera-cp-e28-q",
@@ -4645,7 +4982,8 @@
     "baseSellingPrice": 1980,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-31-standard-copper-cable-90-0122cd86",
@@ -4659,7 +4997,8 @@
     "baseSellingPrice": 1333,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8ch-4k-nvr-cp-unr-4k2081-v4",
@@ -4673,7 +5012,8 @@
     "baseSellingPrice": 7460,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-64ch-nvr-8-sata-cp-unr-4k564r8-fi",
@@ -4687,7 +5027,8 @@
     "baseSellingPrice": 59545,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4mp-ip-anpr-bullet-cp-unc-tt-386351df",
@@ -4701,7 +5042,8 @@
     "baseSellingPrice": 75000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8port-gigabit-poe-switch-cp-0eddfd91",
@@ -4715,7 +5057,8 @@
     "baseSellingPrice": 3350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-8mp-ip-colour-bullet-with-mi-c964de8e",
@@ -4729,7 +5072,8 @@
     "baseSellingPrice": 7330,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-24-port-poe-giga-cp-anw-gpu24g2f2-n30",
@@ -4743,7 +5087,8 @@
     "baseSellingPrice": 13500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-nvr-2-sata-cp-unr-4k4322-v4",
@@ -4757,7 +5102,8 @@
     "baseSellingPrice": 15620,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-2mp-dome-camera-cp-urc-dc24pl3c-0360",
@@ -4771,7 +5117,8 @@
     "baseSellingPrice": 910,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-32ch-nvr-4-sata-unr-4k4324-fi",
@@ -4785,7 +5132,8 @@
     "baseSellingPrice": 33080,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-4-port-giga-switch-cp-dnw-gpu4g2-48c",
@@ -4799,7 +5147,8 @@
     "baseSellingPrice": 2270,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-5mp-bullet-camera-with-mic-c-d9ff47ef",
@@ -4813,7 +5162,8 @@
     "baseSellingPrice": 1345,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cp-plus-16ch-nvr-2sata-cp-unr-4k2162-v4",
@@ -4827,7 +5177,8 @@
     "baseSellingPrice": 10870,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-decode",
@@ -4841,7 +5192,8 @@
     "baseSellingPrice": 4750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-fm-eco-500v",
@@ -4855,7 +5207,8 @@
     "baseSellingPrice": 8750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-fm-i50pro",
@@ -4869,7 +5222,8 @@
     "baseSellingPrice": 6000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-fm-eco-007",
@@ -4883,7 +5237,8 @@
     "baseSellingPrice": 5000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-bpm-tycoon-ai",
@@ -4897,7 +5252,8 @@
     "baseSellingPrice": 10750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-folla-fm-i10",
@@ -4911,7 +5267,8 @@
     "baseSellingPrice": 5500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8-port-desktop-switch-fyes-08g",
@@ -4925,7 +5282,8 @@
     "baseSellingPrice": 967,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8-port-poe-switchfyr82fg",
@@ -4939,7 +5297,8 @@
     "baseSellingPrice": 2709,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-12v-5a-hikvision-4-pin-c37b419a",
@@ -4953,7 +5312,8 @@
     "baseSellingPrice": 441,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-12v20-amps-fyus-71",
@@ -4967,7 +5327,8 @@
     "baseSellingPrice": 792,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-12-volt-5-amps-fyds-125",
@@ -4981,7 +5342,8 @@
     "baseSellingPrice": 365,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-30-mtr-hdmi-extender-fy-he30mp",
@@ -4995,7 +5357,8 @@
     "baseSellingPrice": 197,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-hdmi-splitter-fy-hs12",
@@ -5009,7 +5372,8 @@
     "baseSellingPrice": 534,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4-ch-power-supply-ps-1204",
@@ -5023,7 +5387,8 @@
     "baseSellingPrice": 370,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-poe-switch-16-port-full-giga-fyr-162fg",
@@ -5037,7 +5402,8 @@
     "baseSellingPrice": 8091,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-16ch-power-supply-ps-1216",
@@ -5051,7 +5417,8 @@
     "baseSellingPrice": 816,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-16-port-giga-desktop-switch-ifyes-16g",
@@ -5065,7 +5432,8 @@
     "baseSellingPrice": 1985,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-16-channel-metal-cabinet-power-398eadb3",
@@ -5079,7 +5447,8 @@
     "baseSellingPrice": 714,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-dc-5v-2-amp-fyws-52",
@@ -5093,7 +5462,8 @@
     "baseSellingPrice": 129,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-16-port-10100-with-uplink-giga-bf97c4cc",
@@ -5107,7 +5477,8 @@
     "baseSellingPrice": 5089,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-150m-kvm-extender-fy-hekvm150m",
@@ -5121,7 +5492,8 @@
     "baseSellingPrice": 5184,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-surge-protector-2-mtr-fy-sp11-2m",
@@ -5135,7 +5507,8 @@
     "baseSellingPrice": 355,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-5v-1amps-fyws-51",
@@ -5149,7 +5522,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-terminal-power-supply-fyus-21",
@@ -5163,7 +5537,8 @@
     "baseSellingPrice": 125,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-12v5-amps-fyus-51",
@@ -5177,7 +5552,8 @@
     "baseSellingPrice": 352,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-44-pvc-box-fyjc-77",
@@ -5191,7 +5567,8 @@
     "baseSellingPrice": 21,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-60m-kvm-extender-fy-hekvm60m",
@@ -5205,7 +5582,8 @@
     "baseSellingPrice": 2726,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-laptop-power-cord-ify-l22",
@@ -5219,7 +5597,8 @@
     "baseSellingPrice": 94,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8port-desktop-switchifyes-08r",
@@ -5233,7 +5612,8 @@
     "baseSellingPrice": 487,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4k-hdmi-cable-3-mtr-ify-hd319",
@@ -5247,7 +5627,8 @@
     "baseSellingPrice": 155,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-hdmi-splitter-1x4-fy-hs14",
@@ -5261,7 +5642,8 @@
     "baseSellingPrice": 676,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8-channel-metal-cabinet-power-3cdd8885",
@@ -5275,7 +5657,8 @@
     "baseSellingPrice": 363,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-wire-dc-pin-ify-dc",
@@ -5289,7 +5672,8 @@
     "baseSellingPrice": 8,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-12-volt-2-amps-fyws-122",
@@ -5303,7 +5687,8 @@
     "baseSellingPrice": 198,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-24-v-3amp-fyds243",
@@ -5317,7 +5702,8 @@
     "baseSellingPrice": 395,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8-port-poe-switch-giga-uplink-fyr82ge",
@@ -5331,7 +5717,8 @@
     "baseSellingPrice": 2164,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-poe-extender-fy-4pe-11",
@@ -5345,7 +5732,8 @@
     "baseSellingPrice": 693,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4-channel-metal-cabinet-power-d7e2d102",
@@ -5359,7 +5747,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-12v10-amps-fyus-61",
@@ -5373,7 +5762,8 @@
     "baseSellingPrice": 487,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-mini-ups-fymu-21",
@@ -5387,7 +5777,8 @@
     "baseSellingPrice": 959,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-12v-1a-adaptor-fyws-121",
@@ -5401,7 +5792,8 @@
     "baseSellingPrice": 127,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4-port-full-giga-with-sfp-port-e91da718",
@@ -5415,7 +5807,8 @@
     "baseSellingPrice": 2036,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-55-pvc-box-ify-jc88",
@@ -5429,7 +5822,8 @@
     "baseSellingPrice": 26,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-surge-protector-5-mtr-fy-sp12-5m",
@@ -5443,7 +5837,8 @@
     "baseSellingPrice": 505,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8-ch-power-supply-ps-1208",
@@ -5457,7 +5852,8 @@
     "baseSellingPrice": 442,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4x4-pvc-box-ify-jc44",
@@ -5471,7 +5867,8 @@
     "baseSellingPrice": 21,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4-port-poe-extender-1001000-mb-73fcf6ec",
@@ -5485,7 +5882,8 @@
     "baseSellingPrice": 892,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-8port-poe-82-fya-82fe",
@@ -5499,7 +5897,8 @@
     "baseSellingPrice": 1355,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4k-hdmi-cable-5-mtr-ify-hd519",
@@ -5513,7 +5912,8 @@
     "baseSellingPrice": 194,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-wire-bnc-ify-bnc",
@@ -5527,7 +5927,8 @@
     "baseSellingPrice": 16,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4k-hdmi-cable-15-mtr-ify-hd1519",
@@ -5541,7 +5942,8 @@
     "baseSellingPrice": 87,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-5x5-pvc-box-ify-jc55",
@@ -5555,7 +5957,8 @@
     "baseSellingPrice": 26,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptors-9v-2a-adapter-fyws-92",
@@ -5569,7 +5972,8 @@
     "baseSellingPrice": 198,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ifyber-desktop-power-cord-15m-ify-d11",
@@ -5583,7 +5987,8 @@
     "baseSellingPrice": 94,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-5port-giga-desktop-switchifyes-05g",
@@ -5597,7 +6002,8 @@
     "baseSellingPrice": 644,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-9v-1a-fyws-91",
@@ -5611,7 +6017,8 @@
     "baseSellingPrice": 127,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-5port-desktop-switchifyes-05r",
@@ -5625,7 +6032,8 @@
     "baseSellingPrice": 353,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-media-converter-1001000-giga-f-2e73641c",
@@ -5639,7 +6047,8 @@
     "baseSellingPrice": 1443,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-60-mtr-hdmi-extender-fy-he60m",
@@ -5653,7 +6062,8 @@
     "baseSellingPrice": 1463,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-500mtr-p2p-device-fy-wb500",
@@ -5667,7 +6077,8 @@
     "baseSellingPrice": 3379,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-rj45-connector-ifyrjc5e",
@@ -5681,7 +6092,8 @@
     "baseSellingPrice": 2,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-52v-23a-smps-adapter-fyds-5222",
@@ -5695,7 +6107,8 @@
     "baseSellingPrice": 489,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4k-hdmi-cable-10-mtr-ify-hd1019n",
@@ -5709,7 +6122,8 @@
     "baseSellingPrice": 463,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-1u-poe-box-ify-jcpoe",
@@ -5723,7 +6137,8 @@
     "baseSellingPrice": 600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-media-converter-100100-fymc-fe-66cae4ff",
@@ -5737,7 +6152,8 @@
     "baseSellingPrice": 1042,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-4-port-poe-10100-42-fya-42fe",
@@ -5751,7 +6167,8 @@
     "baseSellingPrice": 943,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-cctv-ups-fy-ups8c",
@@ -5765,7 +6182,8 @@
     "baseSellingPrice": 2279,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-fyber-adaptor-12-volt-3-amps-fyds-123",
@@ -5779,7 +6197,8 @@
     "baseSellingPrice": 330,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-12-tb-av-hard-disk-wd122purp",
@@ -5793,7 +6212,8 @@
     "baseSellingPrice": 47500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-2tb-av-harddisk-wd23purz",
@@ -5807,7 +6227,8 @@
     "baseSellingPrice": 11000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-6tb-av-harddrive-wd64purz",
@@ -5821,7 +6242,8 @@
     "baseSellingPrice": 20750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-10-tb-av-hard-disk-wd102purp",
@@ -5835,7 +6257,8 @@
     "baseSellingPrice": 42500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-8-tb-av-hard-disk-wd85purz",
@@ -5849,7 +6272,8 @@
     "baseSellingPrice": 35000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-4-tb-av-harddisk-wd44purz",
@@ -5863,7 +6287,8 @@
     "baseSellingPrice": 15000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wd-1tb-av-hard-disk-wd11purz",
@@ -5877,7 +6302,8 @@
     "baseSellingPrice": 9000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-ai-face-jupiter",
@@ -5891,7 +6317,8 @@
     "baseSellingPrice": 20524,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-fr1200id",
@@ -5905,7 +6332,8 @@
     "baseSellingPrice": 4247,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-u-face-602",
@@ -5919,7 +6347,8 @@
     "baseSellingPrice": 17692,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-k30-pro-with-wifi",
@@ -5933,7 +6362,8 @@
     "baseSellingPrice": 5594,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-f22idwifi",
@@ -5947,7 +6377,8 @@
     "baseSellingPrice": 8210,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-x7",
@@ -5961,7 +6392,8 @@
     "baseSellingPrice": 2831,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-mars",
@@ -5975,7 +6407,8 @@
     "baseSellingPrice": 13447,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-x990-cid",
@@ -5989,7 +6422,8 @@
     "baseSellingPrice": 9908,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-kr503e-rs",
@@ -6003,7 +6437,8 @@
     "baseSellingPrice": 1982,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mb20id",
@@ -6017,7 +6452,8 @@
     "baseSellingPrice": 7077,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-kr500e",
@@ -6031,7 +6467,8 @@
     "baseSellingPrice": 1132,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mb160idwifi",
@@ -6045,7 +6482,8 @@
     "baseSellingPrice": 9600,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-battery",
@@ -6059,7 +6497,8 @@
     "baseSellingPrice": 1140,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-eris-wifi",
@@ -6073,7 +6512,8 @@
     "baseSellingPrice": 15994,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-k30-proidb",
@@ -6087,7 +6527,8 @@
     "baseSellingPrice": 4432,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-silkbio-101tcidb",
@@ -6101,7 +6542,8 @@
     "baseSellingPrice": 11770,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mb-160idbatterywifi",
@@ -6115,7 +6557,8 @@
     "baseSellingPrice": 10200,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-venuswifi",
@@ -6129,7 +6572,8 @@
     "baseSellingPrice": 19108,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mini-ups-12v25mah",
@@ -6143,7 +6587,8 @@
     "baseSellingPrice": 1750,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-k90-proidb",
@@ -6157,7 +6602,8 @@
     "baseSellingPrice": 4246,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-magnum",
@@ -6171,7 +6617,8 @@
     "baseSellingPrice": 12314,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-u-face-302",
@@ -6185,7 +6632,8 @@
     "baseSellingPrice": 17693,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mb160id",
@@ -6199,7 +6647,8 @@
     "baseSellingPrice": 8776,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-f18id",
@@ -6213,7 +6662,8 @@
     "baseSellingPrice": 11607,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-marswifi",
@@ -6227,7 +6677,8 @@
     "baseSellingPrice": 13871,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-js32e",
@@ -6241,7 +6692,8 @@
     "baseSellingPrice": 775,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-mb160b-with-battery",
@@ -6255,7 +6707,8 @@
     "baseSellingPrice": 9452,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-js33e",
@@ -6269,7 +6722,8 @@
     "baseSellingPrice": 775,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-ai-arionwifi",
@@ -6283,7 +6737,8 @@
     "baseSellingPrice": 22864,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-aiface-pluto",
@@ -6297,7 +6752,8 @@
     "baseSellingPrice": 11748,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-emlock",
@@ -6311,7 +6767,8 @@
     "baseSellingPrice": 1200,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-ai-face-orcus",
@@ -6325,7 +6782,8 @@
     "baseSellingPrice": 8209,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-essl-k21-proid",
@@ -6339,7 +6797,8 @@
     "baseSellingPrice": 3538,
     "dealerMarginPercent": 10,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-d-link-31-90-meter-cable-standard",
@@ -6353,7 +6812,8 @@
     "baseSellingPrice": 1325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dlink-82-port-10100-poe-des-f1010p-fe",
@@ -6367,7 +6827,8 @@
     "baseSellingPrice": 1775,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-d-link-cat-6-100-meter-drum",
@@ -6381,7 +6842,8 @@
     "baseSellingPrice": 3750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-d-link-cat-6-305-meter-drum",
@@ -6395,7 +6857,8 @@
     "baseSellingPrice": 11050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-d-link-rj45-jack",
@@ -6409,7 +6872,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dlink-42-port-10100-poe-des-f1006p-fe",
@@ -6423,7 +6887,8 @@
     "baseSellingPrice": 1450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-d-link-outdoor-cat-6-305-meter-drum-7d8dc338",
@@ -6437,7 +6902,8 @@
     "baseSellingPrice": 14000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-mini-upsyad15-6k25",
@@ -6451,7 +6917,8 @@
     "baseSellingPrice": 2500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-magic-15a-lithium-x-pc-ups",
@@ -6465,7 +6932,8 @@
     "baseSellingPrice": 4850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-8-port-giga-uplink-poe-switch-b4fd61ae",
@@ -6479,7 +6947,8 @@
     "baseSellingPrice": 4000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-8-port-full-giga-with-sfp-poe-c8a8dba5",
@@ -6493,7 +6962,8 @@
     "baseSellingPrice": 4850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-4-port-poe-switch-with-battery-307a8287",
@@ -6507,7 +6977,8 @@
     "baseSellingPrice": 3250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-yadon-8-port-poe-switch-with-battery-5aa55a05",
@@ -6521,7 +6992,8 @@
     "baseSellingPrice": 3750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-16ch-nvr-4-sata-pt-nras2b16-k4",
@@ -6535,7 +7007,8 @@
     "baseSellingPrice": 17400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-6mp-ip-bullet-with-2way-audio-1b5f037f",
@@ -6549,7 +7022,8 @@
     "baseSellingPrice": 5800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-6mp-ip-dome-camera-with-2way-a-1f14d784",
@@ -6563,7 +7037,8 @@
     "baseSellingPrice": 5750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-8ch-1-sata-nvr-pt-nr2a08-q1",
@@ -6577,7 +7052,8 @@
     "baseSellingPrice": 5150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-varifocal-dome-camerapt-27ec4e85",
@@ -6591,7 +7067,8 @@
     "baseSellingPrice": 7500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-6mp-ip-bullet-camera-hybrid-wi-d945fe0e",
@@ -6605,7 +7082,8 @@
     "baseSellingPrice": 4950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-8ch-nvr-pt-nr2a08-q2",
@@ -6619,7 +7097,8 @@
     "baseSellingPrice": 5780,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4ch-nvr-pt-nr1a04-q1",
@@ -6633,7 +7112,8 @@
     "baseSellingPrice": 3300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-2mp-ip-bullet-camera-pt-nc120d3-nd2",
@@ -6647,7 +7127,8 @@
     "baseSellingPrice": 2800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-hybrid-color-dome-pt-nc-771a81c3",
@@ -6661,7 +7142,8 @@
     "baseSellingPrice": 3800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-dome-camerapt-nc143d3-nd2-28mm",
@@ -6675,7 +7157,8 @@
     "baseSellingPrice": 3540,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-16ch-nvr-2sata-pt-nras2a16-k2",
@@ -6689,7 +7172,8 @@
     "baseSellingPrice": 9650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-2mp-ip-hybrid-color-dome-pt-nc-038c7769",
@@ -6703,7 +7187,8 @@
     "baseSellingPrice": 3040,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-64ch-nvr-4sata-pt-nr2b64-k4",
@@ -6717,7 +7202,8 @@
     "baseSellingPrice": 29000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-bullet-2way-audio-pt-nc-e62e2d9b",
@@ -6731,7 +7217,8 @@
     "baseSellingPrice": 5250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-dome-2way-audio-pt-nc-1-0ec53ca6",
@@ -6745,7 +7232,8 @@
     "baseSellingPrice": 5200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-32ch-nvr-4-sata-pt-nras2b32-k4",
@@ -6759,7 +7247,8 @@
     "baseSellingPrice": 21100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-8ch-2-sata-nvr-pt-nras2a08-k2",
@@ -6773,7 +7262,8 @@
     "baseSellingPrice": 8350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4ch-nvr-pt-nras2a04-k1",
@@ -6787,7 +7277,8 @@
     "baseSellingPrice": 6100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4ch-nvr-1-sata-pt-nr2a04-q1",
@@ -6801,7 +7292,8 @@
     "baseSellingPrice": 4300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-16ch-1-sata-nvr-pt-nras2a16-k1",
@@ -6815,7 +7307,8 @@
     "baseSellingPrice": 7950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-8ch-nvr-pt-nr1a08-q1",
@@ -6829,7 +7322,8 @@
     "baseSellingPrice": 3700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-hybrid-color-bullet-pt-487abc07",
@@ -6843,7 +7337,8 @@
     "baseSellingPrice": 3860,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-6mp-ip-dome-camera-hybrid-with-5891559e",
@@ -6857,7 +7352,8 @@
     "baseSellingPrice": 4900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-8ch-1-sata-nvr-pt-nras2a08-k1",
@@ -6871,7 +7367,8 @@
     "baseSellingPrice": 7150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-4mp-ip-bullet-camera-pt-nc140d3-nd2-4mm",
@@ -6885,7 +7382,8 @@
     "baseSellingPrice": 3590,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-16ch-nvr-pt-nr2a16-q1",
@@ -6899,7 +7397,8 @@
     "baseSellingPrice": 5600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-2mp-ip-dome-camera-pt-nc123d3-nd2",
@@ -6913,7 +7412,8 @@
     "baseSellingPrice": 2750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-16ch-2-sata-nvr-pt-nr2a16-q2",
@@ -6927,7 +7427,8 @@
     "baseSellingPrice": 6780,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-32ch-nvr-2-sata-pt-nras2a32-k2",
@@ -6941,7 +7442,8 @@
     "baseSellingPrice": 11700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-prama-2mp-ip-hybrid-color-bulletpt-n-cd10276a",
@@ -6955,7 +7457,8 @@
     "baseSellingPrice": 3090,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-6u-rack-500d",
@@ -6969,7 +7472,8 @@
     "baseSellingPrice": 2000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-6u-rack-350d",
@@ -6983,7 +7487,8 @@
     "baseSellingPrice": 1400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-4u-rack-350d",
@@ -6997,7 +7502,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-44-pvc-box-smart",
@@ -7011,7 +7517,8 @@
     "baseSellingPrice": 20,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-4x4-outdoor-pvc-box-without-bush",
@@ -7025,7 +7532,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-pvc-box-44-eco",
@@ -7039,7 +7547,8 @@
     "baseSellingPrice": 23,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-back-box",
@@ -7053,7 +7562,8 @@
     "baseSellingPrice": 24,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-2u-rack-350d",
@@ -7067,7 +7577,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-pvc-box-55",
@@ -7081,7 +7592,8 @@
     "baseSellingPrice": 30,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-4x4-outdoor-pvc-box-with-bush",
@@ -7095,7 +7607,8 @@
     "baseSellingPrice": 55,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-4u-rack-500d",
@@ -7109,7 +7622,8 @@
     "baseSellingPrice": 1550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-9u-rack-500d",
@@ -7123,7 +7637,8 @@
     "baseSellingPrice": 2350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-elco-6-socket-power-manager-15-met-epm-0605",
@@ -7137,7 +7652,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-8tb-av-hard-drive-s300-pro-h-c7028fab",
@@ -7151,7 +7667,8 @@
     "baseSellingPrice": 33500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-10-tb-av-hard-drive-s300-pro-0f9b84c6",
@@ -7165,7 +7682,8 @@
     "baseSellingPrice": 42500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-2-tb-av-hard-drive-hdwt720u2sva",
@@ -7179,7 +7697,8 @@
     "baseSellingPrice": 10250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-6tb-av-hard-drive-hdwt860uzsva",
@@ -7193,7 +7712,8 @@
     "baseSellingPrice": 19750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-4-tb-av-hard-drive-hdwt840uzsva",
@@ -7207,7 +7727,8 @@
     "baseSellingPrice": 14500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-toshiba-16tb-hard-drive-mg11aca16te-v",
@@ -7221,7 +7742,8 @@
     "baseSellingPrice": 65000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-frame-dsfr",
@@ -7235,7 +7757,8 @@
     "baseSellingPrice": 115,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rim-lock-430l",
@@ -7249,7 +7772,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-cable-testerlt368ab",
@@ -7263,7 +7787,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-cable-trackerwt801r",
@@ -7277,7 +7802,8 @@
     "baseSellingPrice": 1050,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-punch-down-tool-pdt200",
@@ -7291,7 +7817,8 @@
     "baseSellingPrice": 325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-5bdfd2be",
@@ -7305,7 +7832,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-heavy-plastic-square-camera-box-44s01",
@@ -7319,7 +7847,8 @@
     "baseSellingPrice": 75,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-big-outdoor-metal-box-500400300mm-d500mbd",
@@ -7333,7 +7862,8 @@
     "baseSellingPrice": 2550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-66ft-mx-tal66",
@@ -7347,7 +7877,8 @@
     "baseSellingPrice": 9750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-automatic-wire-stripper-mx-aws666",
@@ -7361,7 +7892,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-600lbs-em-lock-2-lock-5-wires-em280dual5",
@@ -7375,7 +7907,8 @@
     "baseSellingPrice": 2100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-1104bad7",
@@ -7389,7 +7922,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-junction-box-007-55-007box",
@@ -7403,7 +7937,8 @@
     "baseSellingPrice": 45,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-20-meter-hc120",
@@ -7417,7 +7952,8 @@
     "baseSellingPrice": 550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120cm-ts60120",
@@ -7431,7 +7967,8 @@
     "baseSellingPrice": 625,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ptz-wall-mount-stand-1602h",
@@ -7445,7 +7982,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-arm-for-extensionnd-bulletarm",
@@ -7459,7 +7997,8 @@
     "baseSellingPrice": 125,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-exit-switch-with-backbox-es303pm",
@@ -7473,7 +8012,8 @@
     "baseSellingPrice": 150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-26-55-inch-tilting-tws2655t",
@@ -7487,7 +8027,8 @@
     "baseSellingPrice": 600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-video-balun-5-mp-yellow-elite-vb8",
@@ -7501,7 +8042,8 @@
     "baseSellingPrice": 65,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-thick-card-125khz-emtthick",
@@ -7515,7 +8057,8 @@
     "baseSellingPrice": 12,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-police-light",
@@ -7529,7 +8072,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-150-300-0105cb46",
@@ -7543,7 +8087,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-strip-40cm-ringlock40",
@@ -7557,7 +8102,8 @@
     "baseSellingPrice": 90,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-poe-splitter-1x2-plastic-poe2",
@@ -7571,7 +8117,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-box-mx-b5mb",
@@ -7585,7 +8132,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120c-bf8ceccb",
@@ -7599,7 +8147,8 @@
     "baseSellingPrice": 625,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-magnetic-lock-for-sliding-door-sdml",
@@ -7613,7 +8162,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ptz-stand-corner-pbbcorner",
@@ -7627,7 +8177,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-housing-882208",
@@ -7641,7 +8192,8 @@
     "baseSellingPrice": 725,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-sheilded-rj45-jointers-8p8cj",
@@ -7655,7 +8207,8 @@
     "baseSellingPrice": 25,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-stand-heavy-25cm-s701",
@@ -7669,7 +8222,8 @@
     "baseSellingPrice": 90,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-100-200-f250d598",
@@ -7683,7 +8237,8 @@
     "baseSellingPrice": 800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-z-clamp-em-lock-bracket-280z",
@@ -7697,7 +8252,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-strike-lock-emsl150a",
@@ -7711,7 +8267,8 @@
     "baseSellingPrice": 1250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-7ft-mx-tsal7",
@@ -7725,7 +8282,8 @@
     "baseSellingPrice": 4750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-box-mx-b4mb",
@@ -7739,7 +8297,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wireless-hdmi-extender-150m-whe150",
@@ -7753,7 +8312,8 @@
     "baseSellingPrice": 7850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-pvc-poe-rack-450300125-jbf",
@@ -7767,7 +8327,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-9e9fe0c6",
@@ -7781,7 +8342,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dc-pin-dc100",
@@ -7795,7 +8357,8 @@
     "baseSellingPrice": 5,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-one-channel-universal-remote-receive-fcc3c84a",
@@ -7809,7 +8372,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-crimping-tool-for-cat6cat7rj11-with-c751bdc2",
@@ -7823,7 +8387,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-150-300-3d5770a2",
@@ -7837,7 +8402,8 @@
     "baseSellingPrice": 1200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-f4ed45ee",
@@ -7851,7 +8417,8 @@
     "baseSellingPrice": 1200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-32-65-tilting-ts3265t",
@@ -7865,7 +8432,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-wallmount-big-dsb404",
@@ -7879,7 +8447,8 @@
     "baseSellingPrice": 75,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-self-locking-crimping-tool-for-cat6r-985e56ad",
@@ -7893,7 +8462,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-screw-bnc-connector-sbnc",
@@ -7907,7 +8477,8 @@
     "baseSellingPrice": 12,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-splitter-12-8p8ct",
@@ -7921,7 +8492,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-60mtr-hdmi-extendermx-hdmi-e60m",
@@ -7935,7 +8507,8 @@
     "baseSellingPrice": 775,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-2mp-video-balun-elite-vb2",
@@ -7949,7 +8522,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-poe-injector-30mtr-poecable",
@@ -7963,7 +8537,8 @@
     "baseSellingPrice": 55,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-125khz-usb-desktop-reader-usbrrfid",
@@ -7977,7 +8552,8 @@
     "baseSellingPrice": 600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-no-touch-exit-switch-wave-type-nt303-w",
@@ -7991,7 +8567,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-indoor-55-junction-box-heavy-44s02",
@@ -8005,7 +8582,8 @@
     "baseSellingPrice": 45,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cabinet-lock-mx-cdl",
@@ -8019,7 +8597,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-14443a-tag-protocol-1356mhz-mifare-u-817a11e2",
@@ -8033,7 +8612,8 @@
     "baseSellingPrice": 2800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-female-dc-pin-fdc100",
@@ -8047,7 +8627,8 @@
     "baseSellingPrice": 5,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-800lbs-em-lock-2-wires-em350",
@@ -8061,7 +8642,8 @@
     "baseSellingPrice": 1300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-77ft-mx-tal77",
@@ -8075,7 +8657,8 @@
     "baseSellingPrice": 11250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-25ff8b62",
@@ -8089,7 +8672,8 @@
     "baseSellingPrice": 325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-d4ac26a2",
@@ -8103,7 +8687,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-aluminum-stand-60-120cm-ps60120",
@@ -8117,7 +8702,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-aluminum-stand-20-40cm-ps2040",
@@ -8131,7 +8717,8 @@
     "baseSellingPrice": 225,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-exit-switch-metal-33-es303",
@@ -8145,7 +8732,8 @@
     "baseSellingPrice": 125,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-100-200-a17f8fd6",
@@ -8159,7 +8747,8 @@
     "baseSellingPrice": 825,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-clamp-em-lock-bracket-280l",
@@ -8173,7 +8762,8 @@
     "baseSellingPrice": 185,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-junction-box-55-130e",
@@ -8187,7 +8777,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-17ft-mx-tsal17",
@@ -8201,7 +8792,8 @@
     "baseSellingPrice": 11250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-two-channel-universal-remote-receive-d0f15332",
@@ -8215,7 +8807,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-300lbs-em-lock-2-wires-em180",
@@ -8229,7 +8822,8 @@
     "baseSellingPrice": 750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-waterproof-cap-wc01",
@@ -8243,7 +8837,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-splitter-1x2-port-elite-hs102-e",
@@ -8257,7 +8852,8 @@
     "baseSellingPrice": 325,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-ring-30cm-pr30c",
@@ -8271,7 +8867,8 @@
     "baseSellingPrice": 30,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-exit-switch-metal-13-es103",
@@ -8285,7 +8882,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120c-2b7f2f70",
@@ -8299,7 +8897,8 @@
     "baseSellingPrice": 675,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-junction-box-with-transparen-d243f401",
@@ -8313,7 +8912,8 @@
     "baseSellingPrice": 275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-oem-em-lock-2-wire-em280",
@@ -8327,7 +8927,8 @@
     "baseSellingPrice": 800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-19ft-mx-tsal19",
@@ -8341,7 +8942,8 @@
     "baseSellingPrice": 13750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-network-rack-cable-manager-1u-metal-cm1um",
@@ -8355,7 +8957,8 @@
     "baseSellingPrice": 275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-em-lock-concealed-type-2-wires-em280c",
@@ -8369,7 +8972,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-camera-base-135mm-c002",
@@ -8383,7 +8987,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-75-150cm-ts75150",
@@ -8397,7 +9002,8 @@
     "baseSellingPrice": 725,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-aluminum-stand-100-200cm-ps100200",
@@ -8411,7 +9017,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-40-80-inch-double-arm-tilting-tws4080t",
@@ -8425,7 +9032,8 @@
     "baseSellingPrice": 1450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-bolt-lock-5-wires-bllock5",
@@ -8439,7 +9047,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-26-65-inch-double-arm-tws2665t",
@@ -8453,7 +9062,8 @@
     "baseSellingPrice": 1275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-network-rack-cable-manager-plastic-cm2u",
@@ -8467,7 +9077,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-100lbs-em-lock-2-wires-em60",
@@ -8481,7 +9092,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-j-type-powder-coated-aluminum-stand-04c8b6db",
@@ -8495,7 +9107,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wire-tracker-wt200",
@@ -8509,7 +9122,8 @@
     "baseSellingPrice": 2000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ptz-camera-stand-ceiling-type-1661c",
@@ -8523,7 +9137,8 @@
     "baseSellingPrice": 450,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-10ft-mx-tsal10",
@@ -8537,7 +9152,8 @@
     "baseSellingPrice": 6500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-5ft-mx-tsal5",
@@ -8551,7 +9167,8 @@
     "baseSellingPrice": 3350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-housing-10822010",
@@ -8565,7 +9182,8 @@
     "baseSellingPrice": 775,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-metal-frame-small-dss-401",
@@ -8579,7 +9197,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-30mtr-hdmi-extender-he30",
@@ -8593,7 +9212,8 @@
     "baseSellingPrice": 115,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-splitter-1x4-port-hs104",
@@ -8607,7 +9227,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-dome-stand-metal-lmds407",
@@ -8621,7 +9242,8 @@
     "baseSellingPrice": 750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-plastic-dome-stand-small-dss1258",
@@ -8635,7 +9257,8 @@
     "baseSellingPrice": 80,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-22ft-mx-tsal22",
@@ -8649,7 +9272,8 @@
     "baseSellingPrice": 16750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-usb-50mtr-lite-usb150ft-lite",
@@ -8663,7 +9287,8 @@
     "baseSellingPrice": 175,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-8ch-utp-balun-8chutp",
@@ -8677,7 +9302,8 @@
     "baseSellingPrice": 900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-video-balun-vb8rj45",
@@ -8691,7 +9317,8 @@
     "baseSellingPrice": 125,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-600lbs-em-lock-2-lock-2-wires-em280dual",
@@ -8705,7 +9332,8 @@
     "baseSellingPrice": 1800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-glass-door-lock-gldlock",
@@ -8719,7 +9347,8 @@
     "baseSellingPrice": 1750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-oem-em-lock-5-wire-em2805",
@@ -8733,7 +9362,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ptz-pole-mount-stand-big-with-3-rings-pbb",
@@ -8747,7 +9377,8 @@
     "baseSellingPrice": 250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-monitor-stand-14-24-ms1424t",
@@ -8761,7 +9392,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-passthrough-crimping-tool-rj4503",
@@ -8775,7 +9407,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wireless-hdmi-extender-100m-whe100",
@@ -8789,7 +9422,8 @@
     "baseSellingPrice": 7250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-waterproof-outdoor-rj45-jointer-8p8cwj",
@@ -8803,7 +9437,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-i-type-aluminum-stand-5734f2bc",
@@ -8817,7 +9452,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-big-pole-stand-with-3-ring-20cm-bpsrts",
@@ -8831,7 +9467,8 @@
     "baseSellingPrice": 225,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-pvc-poe-rack-33023095-jbd",
@@ -8845,7 +9482,8 @@
     "baseSellingPrice": 275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-emergency-exit-release-button-emcgk",
@@ -8859,7 +9497,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-automatic-wire-stripper-mx-aws766",
@@ -8873,7 +9512,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-26-60-table-top-stand-tt2660",
@@ -8887,7 +9527,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-heavy-plastic-round-camera-box-44r",
@@ -8901,7 +9542,8 @@
     "baseSellingPrice": 70,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-extra-remote",
@@ -8915,7 +9557,8 @@
     "baseSellingPrice": 200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-03-meter-hc103",
@@ -8929,7 +9572,8 @@
     "baseSellingPrice": 115,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-kvm-extender-200-meter-ohek200",
@@ -8943,7 +9587,8 @@
     "baseSellingPrice": 4000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-9ft-mx-tsal9",
@@ -8957,7 +9602,8 @@
     "baseSellingPrice": 6000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-splitter-1x2-port-hs102",
@@ -8971,7 +9617,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-15meter-hc101",
@@ -8985,7 +9632,8 @@
     "baseSellingPrice": 85,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-600lbs-em-lock-with-buzzer-and-timer-9c10f5d1",
@@ -8999,7 +9647,8 @@
     "baseSellingPrice": 1200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-aluminum-stand-30-60cm-ps3060",
@@ -9013,7 +9662,8 @@
     "baseSellingPrice": 275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-clamp-closed-type-280lc",
@@ -9027,7 +9677,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-60mtr-hdmi-extender-he60",
@@ -9041,7 +9692,8 @@
     "baseSellingPrice": 700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-1356mhz-mifare-card-emtmifare",
@@ -9055,7 +9707,8 @@
     "baseSellingPrice": 11,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-aluminum-junction-box-137-mm-54-mm-1-5e8a1cdd",
@@ -9069,7 +9722,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wifi-camera-stand-dstilt",
@@ -9083,7 +9737,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-housing-8-inch-8001",
@@ -9097,7 +9752,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4-port-poe-extender-10100-poe4",
@@ -9111,7 +9767,8 @@
     "baseSellingPrice": 550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-100-200-e2bb9e65",
@@ -9125,7 +9782,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-af33748f",
@@ -9139,7 +9797,8 @@
     "baseSellingPrice": 365,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-junction-box-economy-ip66rbeco",
@@ -9153,7 +9812,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-2e60a734",
@@ -9167,7 +9827,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-bolt-lock-2-wire-bllock",
@@ -9181,7 +9842,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-usb-rj45-extention-usb150ft",
@@ -9195,7 +9857,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wire-marker",
@@ -9209,7 +9872,8 @@
     "baseSellingPrice": 75,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-60acf221",
@@ -9223,7 +9887,8 @@
     "baseSellingPrice": 335,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-junction-box-with-rubb-c1a4e816",
@@ -9237,7 +9902,8 @@
     "baseSellingPrice": 675,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-kvm-extender-120-meter-ohek120",
@@ -9251,7 +9917,8 @@
     "baseSellingPrice": 3750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-back-lock-metal-15-housing-800715",
@@ -9265,7 +9932,8 @@
     "baseSellingPrice": 1100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-stand-small-15-cm-s703",
@@ -9279,7 +9947,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-ring-10cm-pr10c",
@@ -9293,7 +9962,8 @@
     "baseSellingPrice": 15,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-camera-stand-metal-with-inserts-2b03e134",
@@ -9307,7 +9977,8 @@
     "baseSellingPrice": 550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-poe-spliter-connector-type-102ps",
@@ -9321,7 +9992,8 @@
     "baseSellingPrice": 90,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-pole-bracket-stand-with-ring-pbs",
@@ -9335,7 +10007,8 @@
     "baseSellingPrice": 85,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-58c0d954",
@@ -9349,7 +10022,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-plastic-dome-stand-big-dsb1258",
@@ -9363,7 +10037,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-ring-40cm-pr40c",
@@ -9377,7 +10052,8 @@
     "baseSellingPrice": 40,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-97e4b5b8",
@@ -9391,7 +10067,8 @@
     "baseSellingPrice": 700,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-cat-6-plastic-boot-npboot",
@@ -9405,7 +10082,8 @@
     "baseSellingPrice": 1,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-kvm-extender-60-meter-ohek60",
@@ -9419,7 +10097,8 @@
     "baseSellingPrice": 1750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-800lbs-em-lock-2-lock-5-wires-em350dual5",
@@ -9433,7 +10112,8 @@
     "baseSellingPrice": 2600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-base-based",
@@ -9447,7 +10127,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ceiling-mount-19-43-cm1943",
@@ -9461,7 +10142,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120c-90406383",
@@ -9475,7 +10157,8 @@
     "baseSellingPrice": 775,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wall-robo-camera-stand-ap180",
@@ -9489,7 +10172,8 @@
     "baseSellingPrice": 175,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-55-100-wall-mount-for-led-smart-class-wm55100",
@@ -9503,7 +10187,8 @@
     "baseSellingPrice": 950,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-99ft-mx-tal99",
@@ -9517,7 +10202,8 @@
     "baseSellingPrice": 14500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-side-lock-semi-metal-6-housing-82206",
@@ -9531,7 +10217,8 @@
     "baseSellingPrice": 650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-55ft-mx-tal55",
@@ -9545,7 +10232,8 @@
     "baseSellingPrice": 8500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-wallmount-big-with-inserts-dsbb",
@@ -9559,7 +10247,8 @@
     "baseSellingPrice": 125,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-j-type-powder-coated-aluminum-stand-89e32e6d",
@@ -9573,7 +10262,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-heavy-plastic-small-round-camera-box-hbrs",
@@ -9587,7 +10277,8 @@
     "baseSellingPrice": 65,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-camera-base-110mm-c001",
@@ -9601,7 +10292,8 @@
     "baseSellingPrice": 45,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-pvc-poe-rack-250180100-jbe",
@@ -9615,7 +10307,8 @@
     "baseSellingPrice": 200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120c-0701f2e7",
@@ -9629,7 +10322,8 @@
     "baseSellingPrice": 825,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-40-80-inch-fixed-4080f",
@@ -9643,7 +10337,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-874f158e",
@@ -9657,7 +10352,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-box-400300180mm-d400mb",
@@ -9671,7 +10367,8 @@
     "baseSellingPrice": 1400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-wall-stand-for-vandal-dome-20cm-ts20ptz",
@@ -9685,7 +10382,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-wallmount-small-dss403",
@@ -9699,7 +10397,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-1200lbs-em-lock-2-wires-eml1200lbs2",
@@ -9713,7 +10412,8 @@
     "baseSellingPrice": 2800,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-cable-testerlt368a",
@@ -9727,7 +10427,8 @@
     "baseSellingPrice": 225,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-splitter-1x4-port-elite-hs104-e",
@@ -9741,7 +10442,8 @@
     "baseSellingPrice": 400,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-1200lbs-em-lock-5-wires-eml1200lbs5",
@@ -9755,7 +10457,8 @@
     "baseSellingPrice": 3150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-100-200-10da2201",
@@ -9769,7 +10472,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-box-deep-400300300mm-d400mbd",
@@ -9783,7 +10487,8 @@
     "baseSellingPrice": 1650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-05meter-hc105",
@@ -9797,7 +10502,8 @@
     "baseSellingPrice": 165,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-125khz-rroximity-rfid-keyfob-rfidkeyfob",
@@ -9811,7 +10517,8 @@
     "baseSellingPrice": 10,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-15-meter-hc115",
@@ -9825,7 +10532,8 @@
     "baseSellingPrice": 475,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-housing-12822012",
@@ -9839,7 +10547,8 @@
     "baseSellingPrice": 850,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-ea2fa59a",
@@ -9853,7 +10562,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-a3741906",
@@ -9867,7 +10577,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-32-75-table-top-stand-tt3775t",
@@ -9881,7 +10592,8 @@
     "baseSellingPrice": 600,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-exit-switch-plastic-13-es103p",
@@ -9895,7 +10607,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-big-outdoor-metal-box-500400180mm-d500mb",
@@ -9909,7 +10622,8 @@
     "baseSellingPrice": 1900,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-base-for-arm-extension-baseb",
@@ -9923,7 +10637,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-11ft-mx-tsal11",
@@ -9937,7 +10652,8 @@
     "baseSellingPrice": 7500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-u-clamp-em-lock-bracket-280u",
@@ -9951,7 +10667,8 @@
     "baseSellingPrice": 235,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-48v-poe-splitter-48vps",
@@ -9965,7 +10682,8 @@
     "baseSellingPrice": 110,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-no-touch-exit-switch-23-nt203",
@@ -9979,7 +10697,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-lan-tester-with-bnc-and-poe-support-lt368bl",
@@ -9993,7 +10712,8 @@
     "baseSellingPrice": 550,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-dome-stand-metal-frame-big-dsb-402",
@@ -10007,7 +10727,8 @@
     "baseSellingPrice": 85,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-j-type-powder-coated-aluminum-stand-f4348424",
@@ -10021,7 +10742,8 @@
     "baseSellingPrice": 375,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-back-lock-metal-12-housing-800712",
@@ -10035,7 +10757,8 @@
     "baseSellingPrice": 975,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-thin-card-125khz-emtthin",
@@ -10049,7 +10772,8 @@
     "baseSellingPrice": 10,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-no-touch-exit-switch-33-nt303",
@@ -10063,7 +10787,8 @@
     "baseSellingPrice": 350,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hanging-type-drop-bolt-lock-hdbl",
@@ -10077,7 +10802,8 @@
     "baseSellingPrice": 1500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-bee3404d",
@@ -10091,7 +10817,8 @@
     "baseSellingPrice": 625,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-pole-mount-housing-stand-with-2-rings-701r",
@@ -10105,7 +10832,8 @@
     "baseSellingPrice": 150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-outdoor-metal-junction-box-with-rubber-ip66rb",
@@ -10119,7 +10847,8 @@
     "baseSellingPrice": 425,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-strip-25cm-ringlock25",
@@ -10133,7 +10862,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hdmi-cable-10-meter-hc110",
@@ -10147,7 +10877,8 @@
     "baseSellingPrice": 300,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-screw-green-dc-pin-sdc",
@@ -10161,7 +10892,8 @@
     "baseSellingPrice": 6,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-plastic-housing-10-inch-8006",
@@ -10175,7 +10907,8 @@
     "baseSellingPrice": 650,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ipc-camera-tester-camera-tester",
@@ -10189,7 +10922,8 @@
     "baseSellingPrice": 20000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-exit-switch-3x3-key-type-es303-k",
@@ -10203,7 +10937,8 @@
     "baseSellingPrice": 575,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-strip-30cm-ringlock30",
@@ -10217,7 +10952,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-32-75-wall-mount-for-led-smart-class-wm3275",
@@ -10231,7 +10967,8 @@
     "baseSellingPrice": 525,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-30-60cm-97e6b3c6",
@@ -10245,7 +10982,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-4ch-utp-balun-4chutp",
@@ -10259,7 +10997,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-normal-waterproof-600lbs-em-lock-2-w-f23aca0a",
@@ -10273,7 +11012,8 @@
     "baseSellingPrice": 1150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-150cm-wallmount-stand-ts150w",
@@ -10287,7 +11027,8 @@
     "baseSellingPrice": 1150,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-l-type-powder-coated-aluminum-stand-a9fac5cd",
@@ -10301,7 +11042,8 @@
     "baseSellingPrice": 275,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-powder-coated-aluminum-stand-60-120c-71b02f6c",
@@ -10315,7 +11057,8 @@
     "baseSellingPrice": 1000,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-rj45-extention-adapter-200m-usb200m",
@@ -10329,7 +11072,8 @@
     "baseSellingPrice": 500,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-ezviz-robot-stand-c003",
@@ -10343,7 +11087,8 @@
     "baseSellingPrice": 50,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-stand-small-20-cm-s702",
@@ -10357,7 +11102,8 @@
     "baseSellingPrice": 60,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-heavy-plastic-camera-junction-boxhjb",
@@ -10371,7 +11117,8 @@
     "baseSellingPrice": 100,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-88ft-mx-tal88",
@@ -10385,7 +11132,8 @@
     "baseSellingPrice": 12750,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-telescopic-aluminum-ladder-14ft-mx-tsal14",
@@ -10399,7 +11147,8 @@
     "baseSellingPrice": 9250,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-krone-tool-ht3141",
@@ -10413,7 +11162,8 @@
     "baseSellingPrice": 200,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-metal-ring-20cm-pr20c",
@@ -10427,7 +11177,8 @@
     "baseSellingPrice": 20,
     "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-2mp-4-camera-kit",
@@ -10441,7 +11192,8 @@
     "baseSellingPrice": 10900,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-2mp-2-camera-kit",
@@ -10455,7 +11207,8 @@
     "baseSellingPrice": 8250,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-2mp-1-camera-kit",
@@ -10469,7 +11222,8 @@
     "baseSellingPrice": 6800,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-2mp-3-camera-kit",
@@ -10483,6 +11237,22 @@
     "baseSellingPrice": 9600,
     "dealerMarginPercent": 0,
     "inStock": true,
-    "isCombo": true
+    "isCombo": true,
+    "isFeatured": false
+  },
+  {
+    "id": "prod-hikvision-2mp-3-camera-kit",
+    "photoLink": "images/products/hikvision-2mp-3-camera-kit.webp",
+    "productName": "HIKVISION 2MP 3 CAMERA KIT",
+    "productSpec": "HIKVISION 4CH 2MP DVR (DS-7104HGHI-M1/T)-1\nHIKVISION 2MP Inbuild Mic Camera (2CE16DOT-ITPFS) OR (2CE76D0T-ITPFS)-3\nKRYSTAA 500GB HDD-1\nFYBER 4CH SMPS (1204)-1\nMAXXION 3+1 Full Copper Cable-70m\nSURVOLT WIRE BNC-3 Set\nSURVOLT DC (Heavy)-3\nJASCOM PVC Box-3\n\n*Dome or Bullet Camera. After Order we will keep in touch with you for clarification",
+    "brand": "Hikvision",
+    "category": "Combo Packs",
+    "price": 25488,
+    "sellingPrice": 9600,
+    "baseSellingPrice": 9600,
+    "dealerMarginPercent": 0,
+    "inStock": true,
+    "isCombo": true,
+    "isFeatured": false
   }
 ]
