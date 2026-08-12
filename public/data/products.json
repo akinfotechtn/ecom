@@ -2265,9 +2265,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-4ch-hd-dvr-two-way-audio-t-38297-a",
-    "photoLink": "images/products/4ch-hd-dvr-two-way-audio-t-38297-a.webp",
-    "productName": "4CH HD DVR TWO WAY AUDIO (T-38297-A)",
+    "id": "prod-trueview-4ch-hd-dvr-two-way-audio-t-38297-a",
+    "photoLink": "images/products/trueview-4ch-hd-dvr-two-way-audio-t-38297-a.webp",
+    "productName": "TRUEVIEW 4CH HD DVR TWO WAY AUDIO (T-38297-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "NETWORKING",
@@ -2277,7 +2277,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-4ch-hd-dvr-two-way-audio-t-38297-a.webp",
+    "image": "images/products/trueview-4ch-hd-dvr-two-way-audio-t-38297-a.webp"
   },
   {
     "id": "prod-trueview-16-port-poe-switch-16g2g1sf-d94b86a0",
@@ -2295,9 +2296,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-16ch-hd-dvr-t37431-be",
-    "photoLink": "images/products/16ch-hd-dvr-t37431-be.webp",
-    "productName": "16CH HD DVR (T37431-BE)",
+    "id": "prod-trueview-16ch-hd-dvr-t37431-be",
+    "photoLink": "images/products/trueview-16ch-hd-dvr-t37431-be.webp",
+    "productName": "TRUEVIEW 16CH HD DVR (T37431-BE)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "HD DVR",
@@ -2307,12 +2308,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-16ch-hd-dvr-t37431-be.webp",
+    "image": "images/products/trueview-16ch-hd-dvr-t37431-be.webp"
   },
   {
-    "id": "prod-2mp-hd-mini-pan-tilt-atc-camera-with-f902c8cb",
-    "photoLink": "images/products/2mp-hd-mini-pan-tilt-atc-camera-with-two-way-audiot18300-a.webp",
-    "productName": "2MP HD MINI PAN-TILT ATC CAMERA WITH TWO-WAY AUDIO(T18300-A)",
+    "id": "prod-trueview-2mp-hd-mini-pan-tilt-atc-ca-dee78edd",
+    "photoLink": "images/products/trueview-2mp-hd-mini-pan-tilt-atc-camera-with-two-way-audiot18300-a.webp",
+    "productName": "TRUEVIEW 2MP HD MINI PAN-TILT ATC CAMERA WITH TWO-WAY AUDIO(T18300-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "HD CCTV",
@@ -2322,7 +2324,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-2mp-hd-mini-pan-tilt-atc-camera-with-two-way-audiot18300-a.webp",
+    "image": "images/products/trueview-2mp-hd-mini-pan-tilt-atc-camera-with-two-way-audiot18300-a.webp"
   },
   {
     "id": "prod-trueview-24-port-poe-switch-24g2g2sf-e95aa0c6",
@@ -2340,9 +2343,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-3mp-wi-fi-mini-pan-tilt-all-time-col-b36c5eb1",
-    "photoLink": "images/products/3mp-wi-fi-mini-pan-tilt-all-time-color-camerat18290s.webp",
-    "productName": "3MP WI-FI MINI PAN-TILT ALL TIME COLOR CAMERA(T18290S)",
+    "id": "prod-trueview-3mp-wi-fi-mini-pan-tilt-all-3b82e8e2",
+    "photoLink": "images/products/trueview-3mp-wi-fi-mini-pan-tilt-all-time-color-camerat18290s.webp",
+    "productName": "TRUEVIEW 3MP WI-FI MINI PAN-TILT ALL TIME COLOR CAMERA(T18290S)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "WIFI CCTV",
@@ -2352,12 +2355,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-3mp-wi-fi-mini-pan-tilt-all-time-color-camerat18290s.webp",
+    "image": "images/products/trueview-3mp-wi-fi-mini-pan-tilt-all-time-color-camerat18290s.webp"
   },
   {
-    "id": "prod-8ch-hd-dvr-t38154-ae",
-    "photoLink": "images/products/8ch-hd-dvr-t38154-ae.webp",
-    "productName": "8CH HD DVR (T38154-AE)",
+    "id": "prod-trueview-8ch-hd-dvr-t38154-ae",
+    "photoLink": "images/products/trueview-8ch-hd-dvr-t38154-ae.webp",
+    "productName": "TRUEVIEW 8CH HD DVR (T38154-AE)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "HD DVR",
@@ -2367,7 +2371,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-8ch-hd-dvr-t38154-ae.webp",
+    "image": "images/products/trueview-8ch-hd-dvr-t38154-ae.webp"
   },
   {
     "id": "prod-trueview-3mp-wifi-outdoor-pt-camera-t18135s",
@@ -2400,9 +2405,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-36w-solar-panel-with-built-in-batter-156ead4c",
-    "photoLink": "images/products/36w-solar-panel-with-built-in-batteryt291357-a.webp",
-    "productName": "36W SOLAR PANEL WITH BUILT IN BATTERY(T291357-A)",
+    "id": "prod-trueview-36w-solar-panel-with-built-25dba501",
+    "photoLink": "images/products/trueview-36w-solar-panel-with-built-in-batteryt291357-a.webp",
+    "productName": "TRUEVIEW 36W SOLAR PANEL WITH BUILT IN BATTERY(T291357-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "NETWORKING",
@@ -2412,12 +2417,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-36w-solar-panel-with-built-in-batteryt291357-a.webp",
+    "image": "images/products/trueview-36w-solar-panel-with-built-in-batteryt291357-a.webp"
   },
   {
-    "id": "prod-4g-wi-fi-router-r300-white-t18258-a",
-    "photoLink": "images/products/4g-wi-fi-router-r300-white-t18258-a.webp",
-    "productName": "4G WI-FI ROUTER R300 WHITE (T18258-A)",
+    "id": "prod-trueview-4g-wi-fi-router-r300-white-t18258-a",
+    "photoLink": "images/products/trueview-4g-wi-fi-router-r300-white-t18258-a.webp",
+    "productName": "TRUEVIEW 4G WI-FI ROUTER R300 WHITE (T18258-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "ACCESSORIES",
@@ -2427,12 +2433,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-4g-wi-fi-router-r300-white-t18258-a.webp",
+    "image": "images/products/trueview-4g-wi-fi-router-r300-white-t18258-a.webp"
   },
   {
-    "id": "prod-8ch-hd-dvr-two-way-audio-t38298-a",
-    "photoLink": "images/products/8ch-hd-dvr-two-way-audio-t38298-a.webp",
-    "productName": "8CH HD DVR TWO WAY AUDIO (T38298-A)",
+    "id": "prod-trueview-8ch-hd-dvr-two-way-audio-t38298-a",
+    "photoLink": "images/products/trueview-8ch-hd-dvr-two-way-audio-t38298-a.webp",
+    "productName": "TRUEVIEW 8CH HD DVR TWO WAY AUDIO (T38298-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "NETWORKING",
@@ -2442,12 +2449,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-8ch-hd-dvr-two-way-audio-t38298-a.webp",
+    "image": "images/products/trueview-8ch-hd-dvr-two-way-audio-t38298-a.webp"
   },
   {
-    "id": "prod-2mp-hd-dome-camera-dual-light-t18256-a",
-    "photoLink": "images/products/2mp-hd-dome-camera-dual-light-t18256-a.webp",
-    "productName": "2MP HD DOME CAMERA DUAL LIGHT (T18256-A)",
+    "id": "prod-trueview-2mp-hd-dome-camera-dual-lig-fada2cac",
+    "photoLink": "images/products/trueview-2mp-hd-dome-camera-dual-light-t18256-a.webp",
+    "productName": "TRUEVIEW 2MP HD DOME CAMERA DUAL LIGHT (T18256-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "HD CCTV",
@@ -2457,7 +2465,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-2mp-hd-dome-camera-dual-light-t18256-a.webp",
+    "image": "images/products/trueview-2mp-hd-dome-camera-dual-light-t18256-a.webp"
   },
   {
     "id": "prod-trueview-8-port-poe-switch-8g2g-t38264-a",
@@ -2475,9 +2484,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-2mp-hd-bullet-camera-dual-light-t18257-a",
-    "photoLink": "images/products/2mp-hd-bullet-camera-dual-light-t18257-a.webp",
-    "productName": "2MP HD BULLET CAMERA DUAL LIGHT (T18257-A)",
+    "id": "prod-trueview-2mp-hd-bullet-camera-dual-l-ea0b630f",
+    "photoLink": "images/products/trueview-2mp-hd-bullet-camera-dual-light-t18257-a.webp",
+    "productName": "TRUEVIEW 2MP HD BULLET CAMERA DUAL LIGHT (T18257-A)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "HD CCTV",
@@ -2487,12 +2496,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-2mp-hd-bullet-camera-dual-light-t18257-a.webp",
+    "image": "images/products/trueview-2mp-hd-bullet-camera-dual-light-t18257-a.webp"
   },
   {
-    "id": "prod-4g-3mp-mini-pan-tilt-all-time-color-49182aa8",
-    "photoLink": "images/products/4g-3mp-mini-pan-tilt-all-time-color-camerat18291sf.webp",
-    "productName": "4G 3MP MINI PAN-TILT ALL TIME COLOR CAMERA(T18291SF)",
+    "id": "prod-trueview-4g-3mp-mini-pan-tilt-all-ti-5a62a59d",
+    "photoLink": "images/products/trueview-4g-3mp-mini-pan-tilt-all-time-color-camerat18291sf.webp",
+    "productName": "TRUEVIEW 4G 3MP MINI PAN-TILT ALL TIME COLOR CAMERA(T18291SF)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "4G CCTV",
@@ -2502,7 +2512,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-4g-3mp-mini-pan-tilt-all-time-color-camerat18291sf.webp",
+    "image": "images/products/trueview-4g-3mp-mini-pan-tilt-all-time-color-camerat18291sf.webp"
   },
   {
     "id": "prod-trueview-stqc-4g-cctv-trueview-4g-do-127e040d",
@@ -2520,9 +2531,9 @@
     "isFeatured": false
   },
   {
-    "id": "prod-4g-wi-fi-router-r500-black-t18259",
-    "photoLink": "images/products/4g-wi-fi-router-r500-black-t18259.webp",
-    "productName": "4G WI-FI ROUTER R500 BLACK (T18259)",
+    "id": "prod-trueview-4g-wi-fi-router-r500-black-t18259",
+    "photoLink": "images/products/trueview-4g-wi-fi-router-r500-black-t18259.webp",
+    "productName": "TRUEVIEW 4G WI-FI ROUTER R500 BLACK (T18259)",
     "productSpec": "High quality product",
     "brand": "Trueview",
     "category": "ACCESSORIES",
@@ -2532,7 +2543,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/trueview-4g-wi-fi-router-r500-black-t18259.webp",
+    "image": "images/products/trueview-4g-wi-fi-router-r500-black-t18259.webp"
   },
   {
     "id": "prod-trueview-4g-bullet-ai-camerat18175sf",
@@ -2835,10 +2847,10 @@
     "isFeatured": false
   },
   {
-    "id": "prod-hikvision-ds-k1t321mfwx-b",
-    "photoLink": "images/products/hikvision-ds-k1t321mfwx-b.webp",
-    "productName": "HIKVISION DS-K1T321MFWX-B",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t321mfwx-b",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t321mfwx-b.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T321MFWX-B",
+    "productSpec": "2.4-inch LCD screen, 2 MP lens\r\nMultiple authentication methods, including face, fingerprint, card (M1 card), and PIN, etc.\r\nMax. 500 faces, 3000 cards, 3000 fingerprints and 150,000 events\r\nFace recognition duration < 0.2 s/User\r\nSupports ISAPI and ISUP 5.0 protocols\r\nConfiguration via the PC web client and mobile web client\r\nSupports wired network and Wi-Fi (AP mode)\r\nSupports wiring with secure door control unit or card reader via RS-485\r\nSupports power supply by battery in the bracket\r\nSupports access control and local time and attendance function",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 14844,
@@ -2847,13 +2859,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t321mfwx-b.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t321mfwx-b.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t342efwx-e1",
-    "photoLink": "images/products/hikvision-ds-k1t342efwx-e1.webp",
-    "productName": "HIKVISION DS-K1T342EFWX-E1",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t342efwx-e1",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t342efwx-e1.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T342EFWX-E1",
+    "productSpec": "Max.1500 faces capacity, Max.3000 fingerprints capacity, and Max.3000 cards\r\nFace Recognition Terminal, 4.3-inch LCD touch screen, 2 Mega pixel wide-angle lens, built-in EM card reading module\r\nTwo-way audio with client software, indoor station, and main station; Supports TCP/IP, Wi-Fi\r\nSupports ISAPI, ISUP5.0\r\nConfiguration via the web client\r\nFace Recognition Distance: 0.3 m to 1.5 m; Duration ＜ 0.2 s/User; Accuracy rate ≥ 99%\r\nSupports face with mask recognition\r\nPowers supply by standard PoE and at the same time powers supply for door lock (12 VDC/1 A)\r\nSupports platform-applied personal PIN and device-set personal PIN\r\nSupports Push SDK.\r\nSupports the following SIP servers: ASTERISK, 3CX, ELASTIX, miniSipServer, Brekeke, OpenSIPs, Kamailio.\r\nSupports face duplicate check, preventing multiple people from using the same face.\r\nSupports attendance-only function.",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 26414,
@@ -2862,13 +2875,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t342efwx-e1.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t342efwx-e1.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t320mfwx-b",
-    "photoLink": "images/products/hikvision-ds-k1t320mfwx-b.webp",
-    "productName": "HIKVISION DS-K1T320MFWX-B",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t320mfwx-b",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t320mfwx-b.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T320MFWX-B",
+    "productSpec": "2.4-inch LCD screen, 2 MP lens\r\nMultiple authentication methods, including face, fingerprint, card, and PIN, etc.\r\nSupports M1 card\r\nMax. 500 faces, 1,000 cards, 1,000 fingerprints and 100,000 events\r\nFace recognition duration < 0.2 s/User\r\nSupports ISAPI and ISUP 5.0 protocols\r\nConfiguration via the web client\r\nSupports power supply by battery in the bracket\r\nSupports access control and local time and attendance function",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 13425,
@@ -2877,13 +2891,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t320mfwx-b.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t320mfwx-b.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd8003-ime1b",
-    "photoLink": "images/products/hikvision-ds-kd8003-ime1b.webp",
-    "productName": "HIKVISION DS-KD8003-IME1(B)",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-modular-door-station-d-4d8abf57",
+    "photoLink": "images/products/hikvision-vdp-modular-door-station-ds-kd8003-ime1b.webp",
+    "productName": "HIKVISION VDP MODULAR DOOR STATION DS-KD8003-IME1(B)",
+    "productSpec": "Main unit of modular door station.\r\n2MP fisheye Camera with IR Supplement.\r\nOne call Physical Button For easier calls.\r\nTwo-lock control.\r\nStandard PoE power supply.\r\nIP65 protection level.\r\nConvenient configuration via Web remotely.\r\nDirectly provide 12 V, 500 mA power output for one electronic lock without additional power supply.",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 23140,
@@ -2892,13 +2907,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-modular-door-station-ds-kd8003-ime1b.webp",
+    "image": "images/products/hikvision-vdp-modular-door-station-ds-kd8003-ime1b.webp"
   },
   {
-    "id": "prod-hikvision-ds-7116hqhi-m1t",
-    "photoLink": "images/products/hikvision-ds-7116hqhi-m1t.webp",
-    "productName": "HIKVISION DS-7116HQHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-16ch-5mp-support-dvr-ds-71-d6d1f3fe",
+    "photoLink": "images/products/hikvision-16ch-5mp-support-dvr-ds-7116hqhi-m1t.webp",
+    "productName": "HIKVISION 16CH 5MP SUPPORT DVR DS-7116HQHI-M1/T",
+    "productSpec": "Deep learning based human and vehicle targets classification of Motion Detection 2.0\r\nDeep learning-based perimeter protection\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/AHD/CVI/CVBS/IP video inputs\r\nAudio via coaxial cable\r\nUp to 24-ch IP camera inputs (up to 6 MP)\r\nEncoding ability up to 3K/5M Lite @ 12 fps",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 22048,
@@ -2907,13 +2923,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-16ch-5mp-support-dvr-ds-7116hqhi-m1t.webp",
+    "image": "images/products/hikvision-16ch-5mp-support-dvr-ds-7116hqhi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce70df0t-pfs",
-    "photoLink": "images/products/hikvision-ds-2ce70df0t-pfs.webp",
-    "productName": "HIKVISION DS-2CE70DF0T-PFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-colorvu-dome-camera-ds-442422b6",
+    "photoLink": "images/products/hikvision-2mp-colorvu-dome-camera-ds-2ce70df0t-pfs.webp",
+    "productName": "HIKVISION 2MP COLORVU DOME CAMERA DS-2CE70DF0T-PFS",
+    "productSpec": "High quality imaging with 2 MP, 1920 × 1080 resolution\r\n24/7 color imaging with F1.0 aperture\r\n3D DNR technology delivers clean and sharp images\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 20 m white light distance for bright night imaging\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3995,
@@ -2922,13 +2939,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-colorvu-dome-camera-ds-2ce70df0t-pfs.webp",
+    "image": "images/products/hikvision-2mp-colorvu-dome-camera-ds-2ce70df0t-pfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16h0t-itpfs",
-    "photoLink": "images/products/hikvision-ds-2ce16h0t-itpfs.webp",
-    "productName": "HIKVISION DS-2CE16H0T-ITPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-5mp-bullet-camera-ds-2ce16h0t-itpfs",
+    "photoLink": "images/products/hikvision-5mp-bullet-camera-ds-2ce16h0t-itpfs.webp",
+    "productName": "HIKVISION 5MP BULLET CAMERA DS-2CE16H0T-ITPFS",
+    "productSpec": "5 MP, 2560 × 1944 resolution\r\nDigital WDR\r\n2.8 mm, 3.6 mm, 6 mm fixed focal lens\r\nSmart IR, up to 25 m IR distance\r\nAudio over coaxial cable, built-in mic\r\n4 in 1 video output (switchable TVI/AHD/CVI/CVBS)\r\nIP67",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3100,
@@ -2937,13 +2955,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-5mp-bullet-camera-ds-2ce16h0t-itpfs.webp",
+    "image": "images/products/hikvision-5mp-bullet-camera-ds-2ce16h0t-itpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-acw1",
-    "photoLink": "images/products/hikvision-ds-kd-acw1.webp",
-    "productName": "HIKVISION DS-KD-ACW1",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-bracket-ds-kd-acw1",
+    "photoLink": "images/products/hikvision-vdp-bracket-ds-kd-acw1.webp",
+    "productName": "HIKVISION VDP BRACKET DS-KD-ACW1",
+    "productSpec": "1 Surface mounting module brackets of modular door station: includes 1 module frame , 1 module front panel and some other necessary accessories\r\nAviation aluminum high quality material",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 5458,
@@ -2952,13 +2971,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-bracket-ds-kd-acw1.webp",
+    "image": "images/products/hikvision-vdp-bracket-ds-kd-acw1.webp"
   },
   {
-    "id": "prod-hikvision-ds-7108hqhi-m1t",
-    "photoLink": "images/products/hikvision-ds-7108hqhi-m1t.webp",
-    "productName": "HIKVISION DS-7108HQHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-8ch-5mp-support-dvr-ds-7108hqhi-m1t",
+    "photoLink": "images/products/hikvision-8ch-5mp-support-dvr-ds-7108hqhi-m1t.webp",
+    "productName": "HIKVISION 8CH 5MP SUPPORT DVR DS-7108HQHI-M1/T",
+    "productSpec": "Deep learning based human and vehicle targets classification of Motion Detection 2.0\r\nDeep learning-based perimeter protection\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/AHD/CVI/CVBS/IP video inputs\r\nAudio via coaxial cable\r\nUp to 12-ch IP camera inputs (up to 6 MP)\r\nEncoding ability up to 3K/5M Lite @ 12 fps",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 12443,
@@ -2967,13 +2987,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-8ch-5mp-support-dvr-ds-7108hqhi-m1t.webp",
+    "image": "images/products/hikvision-8ch-5mp-support-dvr-ds-7108hqhi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-kh9510-wte1b",
-    "photoLink": "images/products/hikvision-ds-kh9510-wte1b.webp",
-    "productName": "HIKVISION DS-KH9510-WTE1(B)",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-android-indoor-monitor-14035dfc",
+    "photoLink": "images/products/hikvision-vdp-android-indoor-monitor-ds-kh9510-wte1b.webp",
+    "productName": "HIKVISION VDP ANDROID INDOOR MONITOR DS-KH9510-WTE1(B)",
+    "productSpec": "10.1-inch colorful touch screen with 1024 × 600 resolution\r\nBuilt-in Android System\r\nSupports Android APP installation\r\nSupport for three-party software integration\r\nBuilt-in Hik-Connect APP\r\nFor all-in-one management of Hikvision’s devices on tablet",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 34906,
@@ -2982,13 +3003,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-android-indoor-monitor-ds-kh9510-wte1b.webp",
+    "image": "images/products/hikvision-vdp-android-indoor-monitor-ds-kh9510-wte1b.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-acw3",
-    "photoLink": "images/products/hikvision-ds-kd-acw3.webp",
-    "productName": "HIKVISION DS-KD-ACW3",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-brackets-ds-kd-acw3",
+    "photoLink": "images/products/hikvision-vdp-brackets-ds-kd-acw3.webp",
+    "productName": "HIKVISION VDP BRACKETS DS-KD-ACW3",
+    "productSpec": "3 Surface mounting module brackets of modular door station: includes 3 module frame , 3 module front panel, 1 button cover and some other necessary accessories\r\nStainless steel high quality material",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 16001,
@@ -2997,13 +3019,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-brackets-ds-kd-acw3.webp",
+    "image": "images/products/hikvision-vdp-brackets-ds-kd-acw3.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis202t",
-    "photoLink": "images/products/hikvision-ds-kis202t.webp",
-    "productName": "HIKVISION DS-KIS202T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-analog-vdp-kit-ds-kis202t",
+    "photoLink": "images/products/hikvision-analog-vdp-kit-ds-kis202t.webp",
+    "productName": "HIKVISION ANALOG VDP KIT DS-KIS202T",
+    "productSpec": "4-wire analog video intercom bundle for villa or house\r\nOne call button for easier calls\r\nIncluding DS-KB2411T-IM and DS-KH2220, 5-meter 4-wire cable, and other accessories\r\nEuropean power supply adaptor included (please mark for other standards when you order)",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 10260,
@@ -3012,13 +3035,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-analog-vdp-kit-ds-kis202t.webp",
+    "image": "images/products/hikvision-analog-vdp-kit-ds-kis202t.webp"
   },
   {
-    "id": "prod-hikvision-ds-7232hqhi-m2xt",
-    "photoLink": "images/products/hikvision-ds-7232hqhi-m2xt.webp",
-    "productName": "HIKVISION DS-7232HQHI-M2/XT",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-32ch-5mp-support-dvr-ds-72-cf7418ba",
+    "photoLink": "images/products/hikvision-32ch-5mp-support-dvr-ds-7232hqhi-m2xt.webp",
+    "productName": "HIKVISION 32CH 5MP SUPPORT DVR DS-7232HQHI-M2/XT",
+    "productSpec": "32 channels and 2 HDD 1U AcuSense DVR\r\nSupport 4-ch Facial Recognition or 16-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nSupport 32-ch AcuSearch Technology\r\nEfficient H.265 pro+ compression technology\r\nEncoding ability up to 3K/ 5MP Lite@12fps\r\nUp to 40 channels IP camera inputs, each channel up to 6MP\r\nUp to 24*1080P@30fps decoding ability\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 56321,
@@ -3027,13 +3051,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-32ch-5mp-support-dvr-ds-7232hqhi-m2xt.webp",
+    "image": "images/products/hikvision-32ch-5mp-support-dvr-ds-7232hqhi-m2xt.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t320efwx",
-    "photoLink": "images/products/hikvision-ds-k1t320efwx.webp",
-    "productName": "HIKVISION DS-K1T320EFWX",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t320efwx",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t320efwx.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T320EFWX",
+    "productSpec": "2.4-inch LCD screen, 2 MP lens\r\nMultiple authentication methods, including face, fingerprint, card, and PIN, etc\r\nSupports EM card\r\nMax. 500 faces, 1,000 cards, 1,000 fingerprints and 100,000 events\r\nFace recognition duration < 0.2 s/User\r\nSupports ISAPI and ISUP 5.0 protocols\r\nConfiguration via the web client",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 11133,
@@ -3042,13 +3067,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t320efwx.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t320efwx.webp"
   },
   {
-    "id": "prod-hikvision-ds-7216huhi-m1t",
-    "photoLink": "images/products/hikvision-ds-7216huhi-m1t.webp",
-    "productName": "HIKVISION DS-7216HUHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-16ch-real-5mp-dvr-ds-7216huhi-m1t",
+    "photoLink": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m1t.webp",
+    "productName": "HIKVISION 16CH REAL 5MP DVR DS-7216HUHI-M1/T",
+    "productSpec": "16 channels and 1 HDD 1U AcuSense DVR\r\nSupport 4-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nEncoding ability up to 4K/8MP @ 8fps; 3K/5MP @12fps\r\nUp to 32 channels IP camera inputs, each channel up to 8MP\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 28161,
@@ -3057,13 +3083,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m1t.webp",
+    "image": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis603-pc",
-    "photoLink": "images/products/hikvision-ds-kis603-pc.webp",
-    "productName": "HIKVISION DS-KIS603-P(C)",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-ip-vdp-kit-ds-kis603-pc",
+    "photoLink": "images/products/hikvision-ip-vdp-kit-ds-kis603-pc.webp",
+    "productName": "HIKVISION IP VDP KIT DS-KIS603-P(C)",
+    "productSpec": "IP video intercom for villa or house\r\nOne call button for easier calls\r\nConvenient Hik-Connect APP Mobile Control\r\nIncluding: DS-KV6113-WPE1(C) x1, DS-KH6320-WTE1 x1, DSKABV6113-RS × 1, Administrator card x 1, Key fob x 5, PSU x2",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 31217,
@@ -3072,13 +3099,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-ip-vdp-kit-ds-kis603-pc.webp",
+    "image": "images/products/hikvision-ip-vdp-kit-ds-kis603-pc.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-kp",
-    "photoLink": "images/products/hikvision-ds-kd-kp.webp",
-    "productName": "HIKVISION DS-KD-KP",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-keypad-module-ds-kd-kp",
+    "photoLink": "images/products/hikvision-vdp-keypad-module-ds-kd-kp.webp",
+    "productName": "HIKVISION VDP KEYPAD MODULE DS-KD-KP",
+    "productSpec": "Keypad module of modular door station\r\nSupporting input pin code to open door, call indoor station\r\nIP65 and IK07 higher protection level\r\nBacklight compensation behind the keypad buttons\r\nEasy to use and extend",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 11635,
@@ -3087,13 +3115,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-keypad-module-ds-kd-kp.webp",
+    "image": "images/products/hikvision-vdp-keypad-module-ds-kd-kp.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16d0t-lpfs",
-    "photoLink": "images/products/hikvision-ds-2ce16d0t-lpfs.webp",
-    "productName": "HIKVISION DS-2CE16D0T-LPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-dual-light-bullet-came-9c93f545",
+    "photoLink": "images/products/hikvision-2mp-dual-light-bullet-camera-ds-2ce16d0t-lpfs.webp",
+    "productName": "HIKVISION 2MP DUAL LIGHT BULLET CAMERA DS-2CE16D0T-LPFS",
+    "productSpec": "High quality imaging with 2 MP, 1920×1080 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 25 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS）\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nWater and dust resistant (IP67)\r\nSmart-Hybrid light, optimize your security with flexible lighting options",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 2882,
@@ -3102,13 +3131,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-dual-light-bullet-camera-ds-2ce16d0t-lpfs.webp",
+    "image": "images/products/hikvision-2mp-dual-light-bullet-camera-ds-2ce16d0t-lpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-7204hqhi-m1xt",
-    "photoLink": "images/products/hikvision-ds-7204hqhi-m1xt.webp",
-    "productName": "HIKVISION DS-7204HQHI-M1/XT",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-4ch-5mp-support-metal-dvr-5d029099",
+    "photoLink": "images/products/hikvision-4ch-5mp-support-metal-dvr-ds-7204hqhi-m1xt.webp",
+    "productName": "HIKVISION 4CH 5MP SUPPORT METAL DVR DS-7204HQHI-M1/XT",
+    "productSpec": "4 channels and 1 HDD 1U AcuSense DVR\r\nSupport 1-ch Facial Recognition or 2-ch Advanced model Perimeter Protection based on Deep Learning algorithm\r\nSupport 2-ch AcuSearch Technology\r\nEfficient H.265 pro+ compression technology\r\nEncoding ability up to 3K/5MP Lite @ 12 fps\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nUp to 6-ch network cameras can be connected\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 9824,
@@ -3117,13 +3147,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-4ch-5mp-support-metal-dvr-ds-7204hqhi-m1xt.webp",
+    "image": "images/products/hikvision-4ch-5mp-support-metal-dvr-ds-7204hqhi-m1xt.webp"
   },
   {
-    "id": "prod-hikvision-ds-kv8413-wme1c",
-    "photoLink": "images/products/hikvision-ds-kv8413-wme1c.webp",
-    "productName": "HIKVISION DS-KV8413-WME1(C)",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-4-button-vdp-outdoor-ds-kv-da140817",
+    "photoLink": "images/products/hikvision-4-button-vdp-outdoor-ds-kv8413-wme1c.webp",
+    "productName": "HIKVISION 4 BUTTON VDP OUTDOOR DS-KV8413-WME1(C)",
+    "productSpec": "2 MP camera with IR supplement\r\nFour nametag buttons calling design for easier calls\r\nBuilt-in card reader module\r\nStandard PoE power supply\r\nIK08 & IP65 higher protection level with aluminum alloy material\r\nConvenient Hik-Connect APP mobile control",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 24013,
@@ -3132,13 +3163,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-4-button-vdp-outdoor-ds-kv8413-wme1c.webp",
+    "image": "images/products/hikvision-4-button-vdp-outdoor-ds-kv8413-wme1c.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis205t",
-    "photoLink": "images/products/hikvision-ds-kis205t.webp",
-    "productName": "HIKVISION DS-KIS205T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-analog-vdp-kit-ds-kis205t",
+    "photoLink": "images/products/hikvision-analog-vdp-kit-ds-kis205t.webp",
+    "productName": "HIKVISION ANALOG VDP KIT DS-KIS205T",
+    "productSpec": "2MP FullHD camera: 1920*1080 @ 25 fps\r\nNight Vision IR\r\nWaterproof and dustproof antioxidant zinc alloy housing (IK7, IP65)\r\n7″ color LCD screen\r\nBuilt-in memory for 200 photos\r\nAdjust brightness, contrast, volume and ringtone\r\nMax. number of calling panels: 2 pcs. / Possibility to connect 1 lock for each\r\nMax. number of monitors: 3 pcs.\r\nMax. ability to connect 1 analog camera to each monitor",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 12007,
@@ -3147,13 +3179,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-analog-vdp-kit-ds-kis205t.webp",
+    "image": "images/products/hikvision-analog-vdp-kit-ds-kis205t.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16k0t-lpfs",
-    "photoLink": "images/products/hikvision-ds-2ce16k0t-lpfs.webp",
-    "productName": "HIKVISION DS-2CE16K0T-LPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-dual-light-bullet-c-35d62da0",
+    "photoLink": "images/products/hikvision-3k-5mp-dual-light-bullet-camera-ds-2ce16k0t-lpfs.webp",
+    "productName": "HIKVISION 3K 5MP DUAL LIGHT BULLET CAMERA DS-2CE16K0T-LPFS",
+    "productSpec": "High quality imaging with 3K, 2960 × 1665 resolution\r\n2.8 mm and 3.6 mm fixed focal lens\r\nUp to 25 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS）\r\nWater and dust resistant (IP67)\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nSmart-Hybrid light, optimize your security with flexible lighting options",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3864,
@@ -3162,13 +3195,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-dual-light-bullet-camera-ds-2ce16k0t-lpfs.webp",
+    "image": "images/products/hikvision-3k-5mp-dual-light-bullet-camera-ds-2ce16k0t-lpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis302-p",
-    "photoLink": "images/products/hikvision-ds-kis302-p.webp",
-    "productName": "HIKVISION DS-KIS302-P",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-analog-vdp-kit-ds-kis302-p",
+    "photoLink": "images/products/hikvision-analog-vdp-kit-ds-kis302-p.webp",
+    "productName": "HIKVISION ANALOG VDP KIT DS-KIS302-P",
+    "productSpec": "Hybrid Intercom Bundle with 1 indoor station and 1 four-wire analog door station\r\nUser-friendly control with a convenient touch screen\r\nConvenient management via the Hik-Connect mobile client\r\nMore cost-effective options with analog doorbells\r\nEasy installation as the doorbell requires no exclusive power supply\r\nEuropean power supply adaptor included (please mark for other standards when you order)",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 19974,
@@ -3177,13 +3211,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-analog-vdp-kit-ds-kis302-p.webp",
+    "image": "images/products/hikvision-analog-vdp-kit-ds-kis302-p.webp"
   },
   {
-    "id": "prod-hikvision-ds-kv6113-wpe1-c",
-    "photoLink": "images/products/hikvision-ds-kv6113-wpe1-c.webp",
-    "productName": "HIKVISION DS-KV6113-WPE1 (C)",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-ip-vdp-outdoor-ds-kv6113-wpe1-c",
+    "photoLink": "images/products/hikvision-ip-vdp-outdoor-ds-kv6113-wpe1-c.webp",
+    "productName": "HIKVISION IP VDP OUTDOOR DS-KV6113-WPE1 (C)",
+    "productSpec": "2 MP camera with IR supplement\r\nOne-touch button calling design for easier calls\r\nBuilt-in card reader module\r\nStandard PoE power supply\r\nIP65 protection level\r\nConvenient Hik-Connect APP Mobile Control",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 14299,
@@ -3192,13 +3227,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-ip-vdp-outdoor-ds-kv6113-wpe1-c.webp",
+    "image": "images/products/hikvision-ip-vdp-outdoor-ds-kv6113-wpe1-c.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16k0t-lpts",
-    "photoLink": "images/products/hikvision-ds-2ce16k0t-lpts.webp",
-    "productName": "HIKVISION DS-2CE16K0T-LPTS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-two-way-audio-bulle-6807000b",
+    "photoLink": "images/products/hikvision-3k-5mp-two-way-audio-bullet-camera-ds-2ce16k0t-lpts.webp",
+    "productName": "HIKVISION 3K 5MP TWO WAY AUDIO BULLET CAMERA DS-2CE16K0T-LPTS",
+    "productSpec": "High quality imaging with 3K, 2960 × 1665 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 20 m white light and 25 m IR distance for bright night imaging\r\nSmart-Hybrid Light, optimize your security with flexible lighting options\r\nHigh quality audio with audio over coaxial cable, built-in mic, and built-in speaker\r\nProvide real-time communication via built-in two-way audio\r\nWater and dust resistant (IP67)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 4497,
@@ -3207,13 +3243,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-two-way-audio-bullet-camera-ds-2ce16k0t-lpts.webp",
+    "image": "images/products/hikvision-3k-5mp-two-way-audio-bullet-camera-ds-2ce16k0t-lpts.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce78k0t-lts",
-    "photoLink": "images/products/hikvision-ds-2ce78k0t-lts.webp",
-    "productName": "HIKVISION DS-2CE78K0T-LTS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-two-way-audio-dome-d47f5253",
+    "photoLink": "images/products/hikvision-3k-5mp-two-way-audio-dome-camera-ds-2ce78k0t-lts.webp",
+    "productName": "HIKVISION 3K 5MP TWO WAY AUDIO DOME CAMERA DS-2CE78K0T-LTS",
+    "productSpec": "High quality imaging with 3K, 2960 × 1665 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 40 m white light and 40 m IR distance for bright night imaging\r\nSmart-Hybrid Light, optimize your security with flexible lighting options\r\nHigh quality audio with audio over coaxial cable, built-in mic, and built-in speaker\r\nProvide real-time communication via built-in two-way audio\r\nWater and dust resistant (IP67)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 4497,
@@ -3222,13 +3259,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-two-way-audio-dome-camera-ds-2ce78k0t-lts.webp",
+    "image": "images/products/hikvision-3k-5mp-two-way-audio-dome-camera-ds-2ce78k0t-lts.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t343mfwx",
-    "photoLink": "images/products/hikvision-ds-k1t343mfwx.webp",
-    "productName": "HIKVISION DS-K1T343MFWX",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t343mfwx",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t343mfwx.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T343MFWX",
+    "productSpec": "Max.1500 faces capacity, Max.3000 fingerprints capacity, and Max.3000 cards\r\nFace Recognition Terminal, 4.3-inch LCD touch screen,2 Mega pixel wide-angle lens,Built-in M1 card reading module\r\nTwo-way audio with client software, indoor station, and main station; Supports TCP/IP, Wi-Fi\r\nSupports ISAPI, ISUP5.0\r\nConfiguration via the web client\r\nFace recognition. Distance: 0.3 m to 1.5 m\r\nDuration < 0.2 s/User\r\nAccuracy rate ≥ 99%\r\nSupports face duplicate check, preventing multiple people from using the same face\r\nSupports attendance-only function\r\nSupports the following SIP servers: ASTERISK, 3CX, ELASTIX, miniSipServer, Brekeke, OpenSIPs, Kamailio\r\nSupports Push SDK",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 17901,
@@ -3237,13 +3275,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t343mfwx.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t343mfwx.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce76d0t-lpfs",
-    "photoLink": "images/products/hikvision-ds-2ce76d0t-lpfs.webp",
-    "productName": "HIKVISION DS-2CE76D0T-LPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-dual-light-dome-camera-231f4af6",
+    "photoLink": "images/products/hikvision-2mp-dual-light-dome-camerads-2ce76d0t-lpfs.webp",
+    "productName": "HIKVISION 2MP DUAL LIGHT DOME CAMERADS-2CE76D0T-LPFS",
+    "productSpec": "High quality imaging with 2 MP, 1920×1080 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 20 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS）\r\nSmart-Hybrid light, optimize your security with flexible lighting options",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 2729,
@@ -3252,13 +3291,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-dual-light-dome-camerads-2ce76d0t-lpfs.webp",
+    "image": "images/products/hikvision-2mp-dual-light-dome-camerads-2ce76d0t-lpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-7104hghi-m1t",
-    "photoLink": "images/products/hikvision-ds-7104hghi-m1t.webp",
-    "productName": "HIKVISION DS-7104HGHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-4ch-dvr-ds-7104hghi-m1t",
+    "photoLink": "images/products/hikvision-2mp-4ch-dvr-ds-7104hghi-m1t.webp",
+    "productName": "HIKVISION 2MP 4CH DVR DS-7104HGHI-M1/T",
+    "productSpec": "Support all channels motion detection technology\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/CVI/AHD/IP/CVBS video inputs\r\nAudio over coaxial cable\r\nSupport all channels HDTVI two-way audio technology\r\nUp to 5-ch IP camera inputs",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 5458,
@@ -3267,13 +3307,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-4ch-dvr-ds-7104hghi-m1t.webp",
+    "image": "images/products/hikvision-2mp-4ch-dvr-ds-7104hghi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce70kf0t-pfs",
-    "photoLink": "images/products/hikvision-ds-2ce70kf0t-pfs.webp",
-    "productName": "HIKVISION DS-2CE70KF0T-PFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-colorvu-dome-camera-f0cd4bbb",
+    "photoLink": "images/products/hikvision-3k-5mp-colorvu-dome-camera-ds-2ce70kf0t-pfs.webp",
+    "productName": "HIKVISION 3K 5MP COLORVU DOME CAMERA DS-2CE70KF0T-PFS",
+    "productSpec": "High quality imaging with 3K, 2960 × 1665 resolution\r\n24/7 color imaging with F1.0 aperture\r\n2.8 mm and 3.6 mm fixed focal lens\r\nUp to 20 m white light distance for bright night imaging\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS)\r\nHigh quality audio with audio over coaxial cable, built-in mic",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 5152,
@@ -3282,13 +3323,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-colorvu-dome-camera-ds-2ce70kf0t-pfs.webp",
+    "image": "images/products/hikvision-3k-5mp-colorvu-dome-camera-ds-2ce70kf0t-pfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce76k0t-lpfs",
-    "photoLink": "images/products/hikvision-ds-2ce76k0t-lpfs.webp",
-    "productName": "HIKVISION DS-2CE76K0T-LPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-dual-light-dome-cam-417f952c",
+    "photoLink": "images/products/hikvision-3k-5mp-dual-light-dome-camera-ds-2ce76k0t-lpfs.webp",
+    "productName": "HIKVISION 3K 5MP DUAL LIGHT DOME CAMERA DS-2CE76K0T-LPFS",
+    "productSpec": "High quality imaging with 3K, 2960 × 1665 resolution\r\n2.8 mm and 3.6 mm fixed focal lens\r\nUp to 20 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS）\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nSmart-Hybrid light, optimize your security with flexible lighting options",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3667,
@@ -3297,13 +3339,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-dual-light-dome-camera-ds-2ce76k0t-lpfs.webp",
+    "image": "images/products/hikvision-3k-5mp-dual-light-dome-camera-ds-2ce76k0t-lpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis602",
-    "photoLink": "images/products/hikvision-ds-kis602.webp",
-    "productName": "HIKVISION DS-KIS602",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-ip-vdp-kit-ds-kis602",
+    "photoLink": "images/products/hikvision-ip-vdp-kit-ds-kis602.webp",
+    "productName": "HIKVISION IP VDP KIT DS-KIS602",
+    "productSpec": "IP video intercom kit for villa or house, only one call button\r\nDS-KD8003-IME1/Surface x1\r\nDS-KH6320-WTE1 x1\r\n4 port standard PoE switch x1\r\n16GB TF card x1\r\nEuropean power supply adaptor included (please mark for other standards when you order)",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 39731,
@@ -3312,13 +3355,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-ip-vdp-kit-ds-kis602.webp",
+    "image": "images/products/hikvision-ip-vdp-kit-ds-kis602.webp"
   },
   {
-    "id": "prod-hikvision-ds-kh6320-wte1",
-    "photoLink": "images/products/hikvision-ds-kh6320-wte1.webp",
-    "productName": "HIKVISION DS-KH6320-WTE1",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-ip-vdp-indoor-monitor-ds-k-cd905151",
+    "photoLink": "images/products/hikvision-ip-vdp-indoor-monitor-ds-kh6320-wte1.webp",
+    "productName": "HIKVISION IP VDP INDOOR MONITOR DS-KH6320-WTE1",
+    "productSpec": "7-inch TFT touch screen with 1024 × 600 resolution\r\nConvenient Hik-Connect APP Mobile Control\r\nReceive calls, open the door and live view remotely\r\nEasy to use without PC\r\nEasy wizard for quick set up\r\nConfigure the whole system on one touch screen\r\nLive view of the door station and cameras in public areas\r\nSupport voice messages when no response from the indoor station\r\nReceive alarms by linkage with a alarm system and notify the center to handle in time\r\nElevator access control",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 14299,
@@ -3327,13 +3371,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-ip-vdp-indoor-monitor-ds-kh6320-wte1.webp",
+    "image": "images/products/hikvision-ip-vdp-indoor-monitor-ds-kh6320-wte1.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t343efwx",
-    "photoLink": "images/products/hikvision-ds-k1t343efwx.webp",
-    "productName": "HIKVISION DS-K1T343EFWX",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t343efwx",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t343efwx.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T343EFWX",
+    "productSpec": "Max.1500 faces capacity, Max.3000 fingerprints capacity, and Max.3000 cards\r\nFace Recognition Terminal, 4.3-inch LCD touch screen,2 Mega pixel wide-angle lens,Built-in EM card reading module\r\nTwo-way audio with client software, indoor station, and main station; Supports TCP/IP, Wi-Fi\r\nSupports ISAPI, ISUP5.0\r\nConfiguration via the web client\r\nFace recognition. Distance: 0.3 m to 1.5 m\r\nDuration ＜ 0.2 s/User\r\nAccuracy rate ≥ 99%\r\nSupports face duplicate check, preventing multiple people from using the same face\r\nSupports attendance-only function\r\nSupports the following SIP servers: ASTERISK, 3CX, ELASTIX, miniSipServer, Brekeke, OpenSIPs, Kamailio\r\nSupports Push SDK",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 17901,
@@ -3342,13 +3387,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t343efwx.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t343efwx.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-m",
-    "photoLink": "images/products/hikvision-ds-kd-m.webp",
-    "productName": "HIKVISION DS-KD-M",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-mifare-vdp-card-reader-ds-kd-m",
+    "photoLink": "images/products/hikvision-mifare-vdp-card-reader-ds-kd-m.webp",
+    "productName": "HIKVISION MIFARE VDP CARD READER DS-KD-M",
+    "productSpec": "M1 card reader module of modular door station\r\nSupport unlock door via swiping card, issuing cards\r\nIP65 protection level\r\nBacklight compensation behind the module\r\nEasy to use and extend",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 6331,
@@ -3357,13 +3403,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-mifare-vdp-card-reader-ds-kd-m.webp",
+    "image": "images/products/hikvision-mifare-vdp-card-reader-ds-kd-m.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce10df0t-pfs",
-    "photoLink": "images/products/hikvision-ds-2ce10df0t-pfs.webp",
-    "productName": "HIKVISION DS-2CE10DF0T-PFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-colorvu-bullet-camera-46d0eb1a",
+    "photoLink": "images/products/hikvision-2mp-colorvu-bullet-camera-ds-2ce10df0t-pfs.webp",
+    "productName": "HIKVISION 2MP COLORVU BULLET CAMERA DS-2CE10DF0T-PFS",
+    "productSpec": "High quality imaging with 2 MP, 1920 × 1080 resolution\r\n24/7 color imaging with F1.0 aperture\r\n3D DNR technology delivers clean and sharp images\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 20 m white light distance for bright night imaging\r\nHigh quality audio with audio over coaxial cable, built-in mic\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS)\r\nWater and dust resistant (IP67)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 4082,
@@ -3372,13 +3419,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-colorvu-bullet-camera-ds-2ce10df0t-pfs.webp",
+    "image": "images/products/hikvision-2mp-colorvu-bullet-camera-ds-2ce10df0t-pfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-7216huhi-m2x",
-    "photoLink": "images/products/hikvision-ds-7216huhi-m2x.webp",
-    "productName": "HIKVISION DS-7216HUHI-M2/X",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-16ch-real-5mp-dvr-ds-7216huhi-m2x",
+    "photoLink": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m2x.webp",
+    "productName": "HIKVISION 16CH REAL 5MP DVR DS-7216HUHI-M2/X",
+    "productSpec": "16 channels and 2 HDD 1U AcuSense DVR\r\nSupport 4-ch Facial Recognition or 8-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nSupport 8-ch AcuSearch Technology\r\nEncoding ability up to 4K/8MP@ 8fps; 3K/5MP @12fps\r\nUp to 32 channels IP camera inputs, each channel up to 8MP\r\nUp to 24*1080P@30fps decoding ability\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection technology\r\nEfficient H.265 pro+ compression technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 35365,
@@ -3387,13 +3435,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m2x.webp",
+    "image": "images/products/hikvision-16ch-real-5mp-dvr-ds-7216huhi-m2x.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce76d0t-itpfs",
-    "photoLink": "images/products/hikvision-ds-2ce76d0t-itpfs.webp",
-    "productName": "HIKVISION DS-2CE76D0T-ITPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-dome-camera-ds-2ce76d0t-itpfs",
+    "photoLink": "images/products/hikvision-2mp-dome-camera-ds-2ce76d0t-itpfs.webp",
+    "productName": "HIKVISION 2MP DOME CAMERA DS-2CE76D0T-ITPFS",
+    "productSpec": "2 MP coaxial audio camera\r\nEnhancing safety with discreet and economical built-in microphone\r\nTransmits audio over the coaxial cable\r\nEXIR 2.0: advanced infrared technology with 20 m IR distance\r\n4 in 1 (4 signals switchable TVI/AHD/CVI/CVBS)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 1954,
@@ -3402,13 +3451,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-dome-camera-ds-2ce76d0t-itpfs.webp",
+    "image": "images/products/hikvision-2mp-dome-camera-ds-2ce76d0t-itpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce70d0t-ptlts",
-    "photoLink": "images/products/hikvision-ds-2ce70d0t-ptlts.webp",
-    "productName": "HIKVISION DS-2CE70D0T-PTLTS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-two-way-audio-pt-camer-a936e3d2",
+    "photoLink": "images/products/hikvision-2mp-two-way-audio-pt-camera-ds-2ce70d0t-ptlts.webp",
+    "productName": "HIKVISION 2MP TWO WAY AUDIO PT CAMERA DS-2CE70D0T-PTLTS",
+    "productSpec": "High quality imaging with 2 MP, 1920 × 1080 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 25 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nSmart-Hybrid Light, optimize your security with flexible lighting options\r\nHigh quality audio with audio over coaxial cable, built-in mic, and built-in speaker\r\nProvide real-time communication via built-in two-way audio",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3951,
@@ -3417,13 +3467,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-two-way-audio-pt-camera-ds-2ce70d0t-ptlts.webp",
+    "image": "images/products/hikvision-2mp-two-way-audio-pt-camera-ds-2ce70d0t-ptlts.webp"
   },
   {
-    "id": "prod-hikvision-ds-7232hghi-m2",
-    "photoLink": "images/products/hikvision-ds-7232hghi-m2.webp",
-    "productName": "HIKVISION DS-7232HGHI-M2",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-32ch-2mp-2-sata-dvr-ds-7232hghi-m2",
+    "photoLink": "images/products/hikvision-32ch-2mp-2-sata-dvr-ds-7232hghi-m2.webp",
+    "productName": "HIKVISION 32CH 2MP 2 SATA DVR DS-7232HGHI-M2",
+    "productSpec": "Deep learning based human and vehicle targets classification of Motion Detection 2.0\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/AHD/CVI/CVBS/IP video input\r\nAudio via coaxial cable\r\nUp to 18-ch IP camera inputs (up to 5 MP)\r\nUp to 1080p Lite@15 fps encoding capability\r\nMax. 1200 m for 720p HDTVI signal",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 43769,
@@ -3432,13 +3483,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-32ch-2mp-2-sata-dvr-ds-7232hghi-m2.webp",
+    "image": "images/products/hikvision-32ch-2mp-2-sata-dvr-ds-7232hghi-m2.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t342mfwx-e1",
-    "photoLink": "images/products/hikvision-ds-k1t342mfwx-e1.webp",
-    "productName": "HIKVISION DS-K1T342MFWX-E1",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t342mfwx-e1",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t342mfwx-e1.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T342MFWX-E1",
+    "productSpec": "Max.1500 faces capacity, Max.3000 fingerprints capacity, and Max.3000 cards\r\nFace Recognition Terminal, 4.3-inch LCD touch screen, 2 Mega pixel wide-angle lens, built-in M1card reading module\r\nTwo-way audio with client software, indoor station, and main station; Supports TCP/IP, Wi-Fi\r\nSupports ISAPI, ISUP5.0\r\nConfiguration via the web client\r\nFace Recognition Distance: 0.3 m to 1.5 m; Duration ＜ 0.2 s/User; Accuracy rate ≥ 99%\r\nSupports face with mask recognition\r\nPowers supply by standard PoE and at the same time powers supply for door lock (12 VDC/1 A)\r\nSupports platform-applied personal PIN and device-set personal PIN\r\nSupports Push SDK.\r\nSupports the following SIP servers: ASTERISK, 3CX, ELASTIX, miniSipServer, Brekeke, OpenSIPs, Kamailio.\r\nSupports face duplicate check, preventing multiple people from using the same face.\r\nSupports attendance-only function.",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 26414,
@@ -3447,13 +3499,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t342mfwx-e1.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t342mfwx-e1.webp"
   },
   {
-    "id": "prod-hikvision-ds-7208hqhi-m1xt",
-    "photoLink": "images/products/hikvision-ds-7208hqhi-m1xt.webp",
-    "productName": "HIKVISION DS-7208HQHI-M1/XT",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-8ch-metal-5mp-support-dvr-af03a708",
+    "photoLink": "images/products/hikvision-8ch-metal-5mp-support-dvr-ds-7208hqhi-m1xt.webp",
+    "productName": "HIKVISION 8CH METAL 5MP SUPPORT DVR DS-7208HQHI-M1/XT",
+    "productSpec": "8 channels and 1 HDD 1U AcuSense DVR\r\nSupport 2-ch Facial Recognition or 4-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nSupport 4-ch AcuSearch Technology\r\nEfficient H.265 pro+ compression technology\r\nEncoding ability up to 3K/5M Lite @ 12 fps\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nUp to 12 -ch network cameras can be connected\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 15128,
@@ -3462,13 +3515,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-8ch-metal-5mp-support-dvr-ds-7208hqhi-m1xt.webp",
+    "image": "images/products/hikvision-8ch-metal-5mp-support-dvr-ds-7208hqhi-m1xt.webp"
   },
   {
-    "id": "prod-hikvision-ds-7208huhi-m1t",
-    "photoLink": "images/products/hikvision-ds-7208huhi-m1t.webp",
-    "productName": "HIKVISION DS-7208HUHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-8ch-real-5mp-dvr-ds-7208huhi-m1t",
+    "photoLink": "images/products/hikvision-8ch-real-5mp-dvr-ds-7208huhi-m1t.webp",
+    "productName": "HIKVISION 8CH REAL 5MP DVR DS-7208HUHI-M1/T",
+    "productSpec": "8 channels and 1 HDD 1U AcuSense DVR\r\nSupport 4-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nEncoding ability up to 4K/8MP @ 8fps; 3K/5MP @12fps\r\nUp to 16 channels IP camera inputs, each channel up to 8MP\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 16634,
@@ -3477,13 +3531,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-8ch-real-5mp-dvr-ds-7208huhi-m1t.webp",
+    "image": "images/products/hikvision-8ch-real-5mp-dvr-ds-7208huhi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-d5022qe-f",
-    "photoLink": "images/products/hikvision-ds-d5022qe-f.webp",
-    "productName": "HIKVISION DS-D5022QE-F",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-215-fhd-monitor-ds-d5022qe-f",
+    "photoLink": "images/products/hikvision-215-fhd-monitor-ds-d5022qe-f.webp",
+    "productName": "HIKVISION 21.5\" FHD MONITOR DS-D5022QE-F",
+    "productSpec": "21.5 inch FHD Monitor\r\nLED backlit technology with full HD 1920 x 1080\r\nWide view angle: 178°(H)/178°(V)\r\nMultiply inputs: HDMI, VGA\r\n3D comb filter, 3D De-interlace\r\n3D noise reduction\r\nVESA stand bracket\r\nHigh reliability and stability, 24/7 operation\r\nGreen energy: Enter standby mode while no signal input",
     "brand": "Hikvision",
     "category": "MONITORS",
     "price": 9998,
@@ -3492,13 +3547,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-215-fhd-monitor-ds-d5022qe-f.webp",
+    "image": "images/products/hikvision-215-fhd-monitor-ds-d5022qe-f.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce76h0t-itpfs",
-    "photoLink": "images/products/hikvision-ds-2ce76h0t-itpfs.webp",
-    "productName": "HIKVISION DS-2CE76H0T-ITPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-5mp-dome-camera-ds-2ce76h0t-itpfs",
+    "photoLink": "images/products/hikvision-5mp-dome-camera-ds-2ce76h0t-itpfs.webp",
+    "productName": "HIKVISION 5MP DOME CAMERA DS-2CE76H0T-ITPFS",
+    "productSpec": "5 MP Audio Indoor Fixed Turret Camera\r\n5 MP, 2560 × 1944 resolution\r\nDigital WDR\r\n2.8 mm, 3.6 mm, 6 mm fixed focal lens\r\nSmart IR, up to 20 m IR distance\r\nAudio over coaxial cable, built-in mic\r\n4 in 1 video output (switchable TVI/AHD/CVI/CVBS)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 2969,
@@ -3507,13 +3563,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-5mp-dome-camera-ds-2ce76h0t-itpfs.webp",
+    "image": "images/products/hikvision-5mp-dome-camera-ds-2ce76h0t-itpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-e",
-    "photoLink": "images/products/hikvision-ds-kd-e.webp",
-    "productName": "HIKVISION DS-KD-E",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-rfid-vdp-card-reader-ds-kd-e",
+    "photoLink": "images/products/hikvision-rfid-vdp-card-reader-ds-kd-e.webp",
+    "productName": "HIKVISION RFID VDP CARD READER DS-KD-E",
+    "productSpec": "KD8 Series Pro Modular Door Station\r\nEM card reader module of modular door station\r\nSupport unlock door via swiping card, issuing cards\r\nIP65 protection level\r\nBacklight compensation behind the module\r\nEasy to use and extend",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 7291,
@@ -3522,13 +3579,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-rfid-vdp-card-reader-ds-kd-e.webp",
+    "image": "images/products/hikvision-rfid-vdp-card-reader-ds-kd-e.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce10kf0t-pfs",
-    "photoLink": "images/products/hikvision-ds-2ce10kf0t-pfs.webp",
-    "productName": "HIKVISION DS-2CE10KF0T-PFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-3k-5mp-colorvu-bullet-came-4edba15f",
+    "photoLink": "images/products/hikvision-3k-5mp-colorvu-bullet-camera-ds-2ce10kf0t-pfs.webp",
+    "productName": "HIKVISION 3K 5MP COLORVU BULLET CAMERA DS-2CE10KF0T-PFS",
+    "productSpec": "3K ColorVu Audio Fixed Mini Bullet Camera\r\nHigh quality imaging with 3K, 2960 × 1665 resolution\r\n24/7 color imaging with F1.0 aperture\r\n2.8 mm and 3.6 mm fixed focal lens\r\nUp to 20 m white light distance for bright night imaging\r\nOne port for four switchable signals (TVI/AHD/CVI/CVBS)\r\nWater and dust resistant (IP67)\r\nHigh quality audio with audio over coaxial cable, built-in mic",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 5283,
@@ -3537,13 +3595,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-3k-5mp-colorvu-bullet-camera-ds-2ce10kf0t-pfs.webp",
+    "image": "images/products/hikvision-3k-5mp-colorvu-bullet-camera-ds-2ce10kf0t-pfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd-kk",
-    "photoLink": "images/products/hikvision-ds-kd-kk.webp",
-    "productName": "HIKVISION DS-KD-KK",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-vdp-name-tag-module-ds-kd-kk",
+    "photoLink": "images/products/hikvision-vdp-name-tag-module-ds-kd-kk.webp",
+    "productName": "HIKVISION VDP NAME TAG MODULE DS-KD-KK",
+    "productSpec": "KD8 Series Pro Modular Door Station\r\nNametag module of modular door station\r\nSix nametag buttons calling Design For easier calls\r\nIP65 protection level\r\nBacklight compensation behind the nametag buttons\r\nEasy to use and extend",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 5545,
@@ -3552,13 +3611,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-vdp-name-tag-module-ds-kd-kk.webp",
+    "image": "images/products/hikvision-vdp-name-tag-module-ds-kd-kk.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16d0t-lpts",
-    "photoLink": "images/products/hikvision-ds-2ce16d0t-lpts.webp",
-    "productName": "HIKVISION DS-2CE16D0T-LPTS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-two-way-audio-bullet-c-07a89b46",
+    "photoLink": "images/products/hikvision-2mp-two-way-audio-bullet-camera-ds-2ce16d0t-lpts.webp",
+    "productName": "HIKVISION 2MP TWO WAY AUDIO BULLET CAMERA  DS-2CE16D0T-LPTS",
+    "productSpec": "2MP Two Way Audio Fixed Mini Bullet Camera\r\nHigh quality imaging with 2 MP, 1920 × 1080 resolution\r\n2.8 mm, 3.6 mm fixed focal lens\r\nUp to 25 m IR distance for bright night imaging\r\nUp to 20 m white light distance for bright night imaging\r\nSmart-Hybrid Light, optimize your security with flexible lighting options\r\nHigh quality audio with audio over coaxial cable, built-in mic, and built-in speaker\r\nProvide real-time communication via built-in two-way audio\r\nWater and dust resistant (IP67)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 3689,
@@ -3567,13 +3627,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-two-way-audio-bullet-camera-ds-2ce16d0t-lpts.webp",
+    "image": "images/products/hikvision-2mp-two-way-audio-bullet-camera-ds-2ce16d0t-lpts.webp"
   },
   {
-    "id": "prod-hikvision-ds-7116hghi-m1t",
-    "photoLink": "images/products/hikvision-ds-7116hghi-m1t.webp",
-    "productName": "HIKVISION DS-7116HGHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-16ch-dvr-ds-7116hghi-m1t",
+    "photoLink": "images/products/hikvision-2mp-16ch-dvr-ds-7116hghi-m1t.webp",
+    "productName": "HIKVISION 2MP 16CH DVR DS-7116HGHI-M1/T",
+    "productSpec": "16-ch 1080P Lite Mini 1U H.265 DVR\r\nDeep learning based human and vehicle targets classification of Motion Detection 2.0\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/AHD/CVI/CVBS/IP video input\r\nAudio via coaxial cable\r\nUp to 18-ch IP camera input (up to 5 MP)\r\nEncoding ability up to 1080p lite @ 15 fps\r\nSupport all channels HDTVI two-way audio technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 13425,
@@ -3582,13 +3643,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-16ch-dvr-ds-7116hghi-m1t.webp",
+    "image": "images/products/hikvision-2mp-16ch-dvr-ds-7116hghi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-7108hghi-m1t",
-    "photoLink": "images/products/hikvision-ds-7108hghi-m1t.webp",
-    "productName": "HIKVISION DS-7108HGHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-8ch-dvr-ds-7108hghi-m1t",
+    "photoLink": "images/products/hikvision-2mp-8ch-dvr-ds-7108hghi-m1t.webp",
+    "productName": "HIKVISION 2MP 8CH DVR DS-7108HGHI-M1/T",
+    "productSpec": "8-ch 1080p Lite Mini 1U H.265 DVR\r\nSupport all channels motion detection technology\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/CVI/AHD/IP/CVBS video inputs\r\nAudio over coaxial cable\r\nSupport all channels HDTVI two-way audio technology\r\nUp to 10-ch IP camera inputs",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 7968,
@@ -3597,13 +3659,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-8ch-dvr-ds-7108hghi-m1t.webp",
+    "image": "images/products/hikvision-2mp-8ch-dvr-ds-7108hghi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-kd9203-fe6",
-    "photoLink": "images/products/hikvision-ds-kd9203-fe6.webp",
-    "productName": "HIKVISION DS-KD9203-FE6",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-i-vdp-outdoor-unit-with-fi-6af11877",
+    "photoLink": "images/products/hikvision-i-vdp-outdoor-unit-with-fingerprint-ds-kd9203-fe6.webp",
+    "productName": "HIKVISION I[ VDP OUTDOOR UNIT WITH FINGERPRINT DS-KD9203-FE6",
+    "productSpec": "4.3-inch colorful LCD screen with 800 × 480 resolution\r\n2 × 2 MP wide-angle HD lens\r\nIP65 protection level\r\nBuilt-in M1 card reading module\r\nMultiple interfaces: RJ45, RS-485, alarm input, relay, Wiegand\r\nConvenient configuration via Web remotely\r\nConvenient unlock methods: face, cards, PIN code and fingerprints",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 42569,
@@ -3612,13 +3675,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-i-vdp-outdoor-unit-with-fingerprint-ds-kd9203-fe6.webp",
+    "image": "images/products/hikvision-i-vdp-outdoor-unit-with-fingerprint-ds-kd9203-fe6.webp"
   },
   {
-    "id": "prod-hikvision-ds-k1t320mfwx",
-    "photoLink": "images/products/hikvision-ds-k1t320mfwx.webp",
-    "productName": "HIKVISION DS-K1T320MFWX",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-face-access-ds-k1t320mfwx",
+    "photoLink": "images/products/hikvision-face-access-ds-k1t320mfwx.webp",
+    "productName": "HIKVISION FACE ACCESS DS-K1T320MFWX",
+    "productSpec": "2.4-inch LCD screen, 2 MP lens\r\nMultiple authentication methods, including face, fingerprint, card, and PIN, etc.\r\nSupports M1 card\r\nMax. 500 faces, 1,000 cards, 1,000 fingerprints and 100,000 events\r\nFace recognition duration < 0.2 s/User\r\nSupports ISAPI and ISUP 5.0 protocols\r\nConfiguration via the web client",
     "brand": "Hikvision",
     "category": "BIOMETRIC",
     "price": 11133,
@@ -3627,13 +3691,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-face-access-ds-k1t320mfwx.webp",
+    "image": "images/products/hikvision-face-access-ds-k1t320mfwx.webp"
   },
   {
-    "id": "prod-hikvision-ds-7216hqhi-m1xt",
-    "photoLink": "images/products/hikvision-ds-7216hqhi-m1xt.webp",
-    "productName": "HIKVISION DS-7216HQHI-M1/XT",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-16ch-5mp-support-dvr-ds-72-404d86ae",
+    "photoLink": "images/products/hikvision-16ch-5mp-support-dvr-ds-7216hqhi-m1xt.webp",
+    "productName": "HIKVISION 16CH 5MP SUPPORT DVR DS-7216HQHI-M1/XT",
+    "productSpec": "16 channels and 1 HDD 1U AcuSense DVR\r\nSupport 4-ch Facial Recognition or 8-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nSupport 16-ch AcuSearch Technology\r\nEfficient H.265 pro+ compression technology\r\nEncoding ability up to 3K/5MP Lite@12fps\r\nUp to 24-ch IP camera inputs, each channel up to 6MP\r\nUp to 24*1080P@30fps decoding ability\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 24624,
@@ -3642,13 +3707,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-16ch-5mp-support-dvr-ds-7216hqhi-m1xt.webp",
+    "image": "images/products/hikvision-16ch-5mp-support-dvr-ds-7216hqhi-m1xt.webp"
   },
   {
-    "id": "prod-hikvision-ds-7104hqhi-m1t",
-    "photoLink": "images/products/hikvision-ds-7104hqhi-m1t.webp",
-    "productName": "HIKVISION DS-7104HQHI-M1/T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-4ch-5mp-support-dvr-ds-7104hqhi-m1t",
+    "photoLink": "images/products/hikvision-4ch-5mp-support-dvr-ds-7104hqhi-m1t.webp",
+    "productName": "HIKVISION 4CH 5MP SUPPORT DVR DS-7104HQHI-M1/T",
+    "productSpec": "Deep learning based human and vehicle targets classification of Motion Detection 2.0\r\nDeep learning-based perimeter protection\r\nH.265 Pro+/H.265 Pro/H.265 video compression\r\nHDTVI/AHD/CVI/CVBS/IP video inputs\r\nAudio via coaxial cable\r\nUp to 6-ch IP camera inputs (up to 6 MP)\r\nEncoding ability up to 3K/5M Lite @ 12 fps",
     "brand": "Hikvision",
     "category": "HD DVR",
     "price": 8645,
@@ -3657,13 +3723,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-4ch-5mp-support-dvr-ds-7104hqhi-m1t.webp",
+    "image": "images/products/hikvision-4ch-5mp-support-dvr-ds-7104hqhi-m1t.webp"
   },
   {
-    "id": "prod-hikvision-ds-2ce16d0t-itpfs",
-    "photoLink": "images/products/hikvision-ds-2ce16d0t-itpfs.webp",
-    "productName": "HIKVISION DS-2CE16D0T-ITPFS",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-2mp-bullet-camera-ds-2ce16d0t-itpfs",
+    "photoLink": "images/products/hikvision-2mp-bullet-camera-ds-2ce16d0t-itpfs.webp",
+    "productName": "HIKVISION 2MP BULLET CAMERA DS-2CE16D0T-ITPFS",
+    "productSpec": "2 MP coaxial audio camera\r\nEnhancing safety with discreet and economical built-in microphone\r\nTransmits audio over the coaxial cable\r\nEXIR 2.0: advanced infrared technology with 25 m IR distance\r\nWater and dust resistant (IP67)\r\n4 in 1 (4 signals switchable TVI/AHD/CVI/CVBS)",
     "brand": "Hikvision",
     "category": "HD CCTV",
     "price": 2150,
@@ -3672,13 +3739,14 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-2mp-bullet-camera-ds-2ce16d0t-itpfs.webp",
+    "image": "images/products/hikvision-2mp-bullet-camera-ds-2ce16d0t-itpfs.webp"
   },
   {
-    "id": "prod-hikvision-ds-kis204t",
-    "photoLink": "images/products/hikvision-ds-kis204t.webp",
-    "productName": "HIKVISION DS-KIS204T",
-    "productSpec": "High quality product",
+    "id": "prod-hikvision-analog-vdp-kit-ds-kis204t",
+    "photoLink": "images/products/hikvision-analog-vdp-kit-ds-kis204t.webp",
+    "productName": "HIKVISION ANALOG VDP KIT DS-KIS204T",
+    "productSpec": "4-wire analog video intercom bundle for villa or house\r\nOne call button for easier calls\r\nSupports captured picture storage\r\nIncluding DS-KB2411T-IM and DS-KH2220-S, 5-meter 4-wire cable, and other accessories\r\nEuropean power supply adaptor included (please mark for other standards when you order)",
     "brand": "Hikvision",
     "category": "VIDEO DOOR BELL",
     "price": 10915,
@@ -3687,7 +3755,8 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/hikvision-analog-vdp-kit-ds-kis204t.webp",
+    "image": "images/products/hikvision-analog-vdp-kit-ds-kis204t.webp"
   },
   {
     "id": "prod-krystaa-256-gb-memory-card",
