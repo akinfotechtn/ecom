@@ -103,12 +103,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shop.akinfotechcctv.in/product/qubo-wireless-gps-tracker-htbv11nz12.html</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://shop.akinfotechcctv.in/product/qubo-instaview-video-door-phone.html</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>daily</changefreq>
@@ -4568,6 +4562,12 @@
   </url>
   <url>
     <loc>https://shop.akinfotechcctv.in/product/hikvision-2mp-3-camera-kit.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shop.akinfotechcctv.in/product/product-750.html</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
