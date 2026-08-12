@@ -68,10 +68,10 @@ async function uploadProducts() {
     const entries = chunk.map((p, idx) => {
       const slug = slugify(p.productName);
       const base = Number(p.sellingPrice || p.price || 0);
-      const mrpBase = Number(p.price || p.sellingPrice || 0);
       const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
       const finalPrice = (base + Math.round((base * gstRate) / 100)).toFixed(2);
-      const mrpPrice = (mrpBase + Math.round((mrpBase * gstRate) / 100)).toFixed(2);
+      const mrpRaw = Number(p.price || 0);
+      const mrpPrice = mrpRaw > 0 ? mrpRaw.toFixed(2) : finalPrice;
       const photo = p.photoLink ? (p.photoLink.startsWith('http') ? p.photoLink : `${siteUrl}/${p.photoLink.replace(/^\//, '')}`) : `${siteUrl}/images/logo.webp`;
       const description = p.productSpec || `${p.productName} by ${p.brand || 'AK Infotech'}. Authorized wholesale price in Chennai. Fast courier dispatch and warranty.`;
 
