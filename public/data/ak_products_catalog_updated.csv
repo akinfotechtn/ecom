@@ -653,102 +653,1271 @@ European power supply adaptor included (please mark for other standards when you
 "images/products/krystaa-500gb-hard-disk.webp","KRYSTAA 500GB Hard Disk","High quality product","Krystaa","HARDDISK",4012,1700,"5%",FALSE,"In stock",""
 "images/products/krystaa-1-tb-hard-disk.webp","KRYSTAA 1 TB Hard Disk","High quality product","Krystaa","HARDDISK",10030,4250,"5%",FALSE,"In stock",""
 "images/products/krystaa-128gb-memory-card.webp","KRYSTAA 128GB MEMORY CARD","High quality product","Krystaa","MEMORY CARD",3540,1500,"5%",FALSE,"In stock",""
-"images/products/cp-plus-6mp-ip-dome-camera-cp-unc-da61l3c-lq-0360.webp","CP PLUS 6MP IP DOME CAMERA (CP-UNC-DA61L3C-LQ-0360)","High quality product","CPPlus","IP CCTV",9195,5195,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16port-poe-switch-cp-dnw-hpu16g2f1-20.webp","CP PLUS 16PORT POE SWITCH (CP-DNW-HPU16G2F1-20)","High quality product","CPPlus","POE SWITCH",13010,7350,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8port-poe-uplink-giga-cp-dnw-hpu8g2-96-v3.webp","CP PLUS 8PORT POE UPLINK GIGA (CP-DNW-HPU8G2-96-V3)","High quality product","CPPlus","POE SWITCH",4018,2270,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-dual-light-with-mic-dome-camera-cp-unc-da41l3c-d-lq.webp","CP PLUS 4MP DUAL LIGHT WITH MIC DOME CAMERA (CP-UNC-DA41L3C-D-LQ)","High quality product","CPPlus","IP CCTV",7248,4095,"5%",FALSE,"In stock",""
-"images/products/cp-plus-5mp-colour-dome-with-mic-cp-gpc-da50pl2c-se-0360.webp","CP PLUS 5MP COLOUR DOME WITH MIC (CP-GPC-DA50PL2C-SE-0360)","High quality product","CPPlus","HD CAMERA",3106,1755,"5%",FALSE,"In stock",""
-"images/products/cp-plus-64ch-nvr-8-sata-unr-4k564r8-f1.webp","CP PLUS 64CH NVR 8 SATA (UNR-4K564R8-F1)","High quality product","CPPlus","NVR",105395,59545,"5%",FALSE,"In stock",""
-"images/products/cp-plus-cat-6-cable-cp-fut-6tsrh-305.webp","CP PLUS CAT 6 CABLE (CP-FUT-6TSRH-305)","High quality product","CPPlus","CAT 6 CABLES",5487,3100,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-dvr-2mp-cp-uvr-1601e1-ic.webp","CP PLUS 16CH DVR 2MP (CP-UVR-1601E1-IC)","High quality product","CPPlus","HD DVR",11390,6435,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8ch-dvr-5mp-cp-uvr-0801f1v-i.webp","CP PLUS 8CH DVR 5MP  (CP-UVR-0801F1V-I)","High quality product","CPPlus","HD DVR",15603,8815,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-colour-dome-with-mic-cp-gpc-da24pl2c-se-0360.webp","CP PLUS 2MP COLOUR DOME WITH MIC (CP-GPC-DA24PL2C-SE-0360)","High quality product","CPPlus","HD CAMERA",2602,1470,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16-port-poe-cp-anw-gpu16g2f2-20.webp","CP PLUS 16 PORT POE (CP-ANW-GPU16G2F2-20)","High quality product","CPPlus","POE SWITCH",17877,10100,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8port-poe-cp-anw-gpu8g2-n12.webp","CP PLUS 8PORT POE (CP-ANW-GPU8G2-N12)","High quality product","CPPlus","POE SWITCH",5576,3150,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-wifi-cameracp-e41q.webp","CP PLUS 4MP WIFI CAMERA(CP-E41Q)","High quality product","CPPlus","WIFI CCTV",4673,2640,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8mp-dual-light-bullet-camera-50mtr-cp-unc-tc81l5c-vmd-lq.webp","CP PLUS 8MP DUAL LIGHT BULLET CAMERA 50MTR (CP-UNC-TC81L5C-VMD-LQ)","High quality product","CPPlus","IP CCTV",20355,11500,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-robot-camera-e21q.webp","CP PLUS 2MP ROBOT CAMERA (E21Q)","High quality product","CPPlus","WIFI CCTV",3602,2035,"5%",FALSE,"In stock",""
-"images/products/cp-plus-64ch-nvr-4-sata-cp-unr-4k5644-fi.webp","CP PLUS 64CH NVR 4 SATA (CP-UNR-4K5644-FI)","High quality product","CPPlus","NVR",78783,44510,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4-port-poe-switch-cp-anw-hp4h2-n65.webp","CP PLUS 4 PORT POE SWITCH (CP-ANW-HP4H2-N65)","High quality product","CPPlus","POE SWITCH",1963,1109,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-nvr-2-sata-unr-4k-2162-v3.webp","CP PLUS 16CH NVR 2 SATA (UNR-4K-2162-V3)","High quality product","CPPlus","NVR",19240,10870,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-ip-ptz-camera-cp-unp-d2521l10-dpq.webp","CP PLUS 2MP IP PTZ CAMERA (CP-UNP-D2521L10-DPQ)","High quality product","CPPlus","IP CCTV",52525,29675,"5%",FALSE,"In stock",""
+"images/products/cp-plus-6mp-ip-dome-camera-cp-unc-da61l3c-lq-0360.webp","CP PLUS 6MP IP DOME CAMERA (CP-UNC-DA61L3C-LQ-0360)","1/2.7"" 6MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 6MP (3288 x 1850/ 3200 x 1800)@1-20fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+DWDR, Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens
+Support Built-in Mic, PoE, IP67
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",9195,5195,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16port-poe-switch-cp-dnw-hpu16g2f1-20.webp","CP PLUS 16PORT POE SWITCH (CP-DNW-HPU16G2F1-20)","16, 10/100Mbps; RJ45 ports; Max. 30W Output of Single PoE Port
+IEEE802.3/802.3u/802.3ab/802.3z/802.3x
+1000Mbps or Max. 250m/10Mbps;Transmission Distance: 0-100m
+Easy and safe installation: wall-mounting, desktop,Kensington security slot, Plug-and-play.
+Support ESD and Surge Protection","CPPlus","POE SWITCH",13010,7350,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8port-poe-uplink-giga-cp-dnw-hpu8g2-96-v3.webp","CP PLUS 8PORT POE UPLINK GIGA (CP-DNW-HPU8G2-96-V3)","8, 10/100Mbps; RJ45 Ports; Max. 30W Output of Single PoE Port
+IEEE802.3/802.3u/IEEE 802.3ab/802.3x
+2, 1000Mbps; Transmission Distance: 0-100m
+Easy and safe installation: wall-mounting, desktop, Kensington security slot , Plug-and-play.
+Support ESD and Surge Protection","CPPlus","POE SWITCH",4018,2270,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-dual-light-with-mic-dome-camera-cp-unc-da41l3c-d-lq.webp","CP PLUS 4MP DUAL LIGHT WITH MIC DOME CAMERA (CP-UNC-DA41L3C-D-LQ)","1/2.9"" 4MP PS CMOS Image Sensor (0.8758 Centimeters)
+Max. 4MP (2688 × 1520)/ (2560 × 1440)@25/30 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic
+3.6mm Lens (2.8mm Optional)
+WDR (120dB), Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",7248,4095,"5%",FALSE,"In stock",""
+"images/products/cp-plus-5mp-colour-dome-with-mic-cp-gpc-da50pl2c-se-0360.webp","CP PLUS 5MP COLOUR DOME WITH MIC (CP-GPC-DA50PL2C-SE-0360)","1/2.7"" 5MP PS CMOS Image Sensor (0.9407cm)
+Max 25/30fps@5MP
+DWDR, 2D-DNR, AWB, AGC, BLC, HLC
+3.6mm Fixed Lens
+Illumination Distance of 20 Mtrs, IP67
+Support Built-in Mic
+CVI/CVBS/AHD/TVI switchable","CPPlus","HD CAMERA",3106,1755,"5%",FALSE,"In stock",""
+"images/products/cp-plus-64ch-nvr-8-sata-unr-4k564r8-f1.webp","CP PLUS 64CH NVR 8 SATA (UNR-4K564R8-F1)","64Ch. AI Network Video Recorder
+
+Up to 64 Channel IP camera input
+Max. 384 Mbps incoming/recording/outgoing bandwidth
+Instastream, H.265, H.264+, H.264, MJPEG codec decoding
+AI by Recorder: 2 Channel face detection and recognition, up to 20 face databases and 20,000 face images, 4 Channel perimeter protection, 8 Channel SMD Plus
+AI by Camera: Face detection and recognition, Perimeter protection, SMD Plus, Metadata, ANPR, Stereo analysis, Heat map, People counting
+Support 8 SATA HDDs up to 20TB Each, 4 USB Ports (2 front USB 2.0 ports, 2 rear USB 3.0 ports)
+Support RAID 0/1/5/6/10
+Support N+M cluster
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",105395,59545,"5%",FALSE,"In stock",""
+"images/products/cp-plus-cat-6-cable-cp-fut-6tsrh-305.webp","CP PLUS CAT 6 CABLE (CP-FUT-6TSRH-305)","Feature Specification
+Constitution 1/0.50±0.008mm (24AWG)
+Material CCA
+Insulation No 8C
+Insulation Material HDPE
+Nom. O.D. 0.92±0.05mm
+Nom. Thickness 0.21mm
+Cabling Fller The Cross
+Cabling Material Nature PE
+Jacket Nom. O.D. 6.0±0.20mm
+Jacket Material PVC
+Jacket Nom. 0.50 REF
+Color Gray
+Length 305 Mtr.
+Insulation Impedance HDPE-DC 500V 50MΩ.KM. PVC-DC 500V 5MΩ.KM MIN at 20°C
+Dielectric Strength AC-500V/1 SEC Min
+Conductor Resistance 24AWG-250Ω/Km Max at 20°C","CPPlus","CAT 6 CABLES",5487,3100,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-dvr-2mp-cp-uvr-1601e1-ic.webp","CP PLUS 16CH DVR 2MP (CP-UVR-1601E1-IC)","16Ch. 1080N Digital Video Recorder
+
+Auto Adaptive HDCVI/AHD/TVI/CVBS/IP signals
+Max 18 channels IP camera inputs, each channel up to 6MP
+Max 64Mbps Incoming Bandwidth
+Instastream/H.265 dual-stream Video Compression
+Support 1 SATA HDD up to 16TB, 2 USB Ports
+Up to 8 channels video stream (analog channel) SMD Plus
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","HD DVR",11390,6435,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8ch-dvr-5mp-cp-uvr-0801f1v-i.webp","CP PLUS 8CH DVR 5MP  (CP-UVR-0801F1V-I)","8Ch. 1080P Digital Video Recorder
+
+Supports HDCVI, AHD, TVI, CVBS and IP video input
+Supports up to 12 Channels IP camera input and each channel can be up to 6MP
+The incoming bandwidth reaches 64 Mbps
+8 Channels two-way talk over coaxial cable allows for seamless communication between the camera, client and recorder
+8 Channels IMD+ for analog channels or 12 Channels IMD by camera which allows the device to trigger accurate alarms for humans and vehicles
+8 Channels AI Coding saves on storage and bandwidth while maintaining the details of targets in videos
+Instastream, H.265, H.264+, H.264 dual stream video compression
+Mobile Software: iCMOB, gCMOB","CPPlus","HD DVR",15603,8815,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-colour-dome-with-mic-cp-gpc-da24pl2c-se-0360.webp","CP PLUS 2MP COLOUR DOME WITH MIC (CP-GPC-DA24PL2C-SE-0360)","2.4MP Full-color Guard+ Dome Camera - 20Mtr.
+
+1/2.8"" 2.4MP CMOS Image Sensor (0.9071 centimetres)
+Max 25/30fps@2.4MP
+DWDR, 2D-DNR, AWB, AGC, BLC
+3.6mm Fixed lens (2.8mm Optional)
+Illumination Distance of 20 Mtrs, IP67
+Support 24/7 color Imaging
+Support Built-in Mic
+CVI/CVBS/AHD/TVI switchable","CPPlus","HD CAMERA",2602,1470,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16-port-poe-cp-anw-gpu16g2f2-20.webp","CP PLUS 16 PORT POE (CP-ANW-GPU16G2F2-20)","16 Port Gigabit Unmanaged PoE Switch with 2 SFP ports
+
+16 port, 10/100/1000Mbps,RJ45 ports, Max. 30W Output of Single PoE Port
+Support IEEE802.3/802.3u/802.3ab/802.3z/802.3x
+2 Uplink port, 1000Mbps with Transmission distance of 0-100m
+Easy and safe installation: wall-mounting, desktop, Kensington security slot , Plug-and-play.
+Support ESD, Surge Protection
+Bult-in Power Supply","CPPlus","POE SWITCH",17877,10100,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8port-poe-cp-anw-gpu8g2-n12.webp","CP PLUS 8PORT POE (CP-ANW-GPU8G2-N12)","8x Gigabit PoE with 2x Gigabit Uplink, Unmanaged
+
+Networking standard: IEEE 802.3i 10BASE-T/IEEE 802.3u 100BASE-TX, IEEE 802.3ab 1000BASE-T, IEEE 802.3x Flow Control, IEEE 802.3af/at/bt Power over Ethernet
+Support 6KV Lightning and 8KV ESD Protection
+Support: 8 ports PoE + 2 ports Uplink
+PoE Power Budget : 120W
+Support: bt 60W High Power
+Support: AI Watchdog Function","CPPlus","POE SWITCH",5576,3150,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-wifi-cameracp-e41q.webp","CP PLUS 4MP WIFI CAMERA(CP-E41Q)","4MP Wi-Fi PT Camera
+
+1/2.9” 4MP PS CMOS Image Sensor (0.8758 centimeters)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@4MP
+IR Distance of 15 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",4673,2640,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8mp-dual-light-bullet-camera-50mtr-cp-unc-tc81l5c-vmd-lq.webp","CP PLUS 8MP DUAL LIGHT BULLET CAMERA 50MTR (CP-UNC-TC81L5C-VMD-LQ)","8MP Dual Light Bullet Camera - 50Mtr.
+
+1/2.7” 8MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 8MP (3840 × 2160)@1–20 fps
+Instastream, H.265, H.264,H.264H, H.264B, MJPEG
+Support Quad Stream
+WDR(120dB), Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 50 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens (6mm Optional)
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10 (optional)
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",20355,11500,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-robot-camera-e21q.webp","CP PLUS 2MP ROBOT CAMERA (E21Q)","2MP Wi-Fi PT Camera
+
+1/3.2” 2MP PS CMOS Image Sensor (0.7937 centimeters)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@2MP
+IR Distance of 15 Mtr.
+Work With Google Home","CPPlus","WIFI CCTV",3602,2035,"5%",FALSE,"In stock",""
+"images/products/cp-plus-64ch-nvr-4-sata-cp-unr-4k5644-fi.webp","CP PLUS 64CH NVR 4 SATA (CP-UNR-4K5644-FI)","64Ch. 4K AI Network Video Recorder
+
+Up to 64 channel IP camera input
+Max. 384 Mbps incoming/recording/outgoing bandwidth
+Max. 32 × 1080p@30 fps or 32 × 2MP@30 fps decoding capability
+Instastream, H.265, H.264, H.264, MJPEG codec decoding
+AI by Recorder: Supports 2 Channel face detection and recognition, up to 20 face databases and 20,000 face images, 4 Channel Perimeter protection, 8 Channel SMD Plus
+Support 4 SATA HDDs up to 20TB Each, 3 USB Ports (2 USB 3.0 Ports)
+2 HDMI/ 2 VGA simultaneous video output
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",78783,44510,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4-port-poe-switch-cp-anw-hp4h2-n65.webp","CP PLUS 4 PORT POE SWITCH (CP-ANW-HP4H2-N65)","4EP + 2E 10/100Mbps AI PoE Switch
+
+Using CAT.5 network patch cords support power for the wireless AP/CPE and IP/PTZ camera.
+Networking standard: IEEE802.3af/at/bt.
+PoE Watchdog AI Function: Detection front-end PoE cameras and PD, Automatic detection, Automatic restart
+FE ports can support 250 meters long distance transmission automatically
+6KV lightning protection,8KV surge protection, anti-reverse connection, over-current protection, over-voltage protection, over-temperature protection, Short circuit protection
+Support 60W PoE receiving power, free of power adapter & simplify power supply
+The Max output power of the port is 60W, which is convenient for hi-power equipment
+Zero configuration feature power supply is automatically supplied to the adaptive equipment","CPPlus","POE SWITCH",1963,1109,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-nvr-2-sata-unr-4k-2162-v3.webp","CP PLUS 16CH NVR 2 SATA (UNR-4K-2162-V3)","16Ch. 4K Network Video Recorder
+
+Up to 16 Channel IP Camera input
+Instastream, H.265, H.264+, H.264, MJPEG
+AI by Recorder: Support 4 channel SMD
+AI by Camera: Support perimeter protection and SMD
+Max. 144/144/72 Mbps incoming/recording/outgoing bandwidth
+Support 2 SATA HDDs up to 20TB, 2 USB ports(2.0)
+HDMI / VGA simultaneous video output
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",19240,10870,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-ip-ptz-camera-cp-unp-d2521l10-daq.webp","CP PLUS 2MP IP PTZ CAMERA (CP-UNP-D2521L10-DAQ)","1/2.8” 2MP PS CMOS Image sensor (0.9071 centimeters)
+Max. 2MP (1920 × 1080)@1–25fps
+Powerful 25x Optical and 16x Digital zoom
+WDR(120dB), Day/Night(ICR), 2D NR/ 3D NR, Defog, AWB, AGC, BLC, HLC
+Up to 300 Presets, 5 Scan, 8 Tour, 5 Pattern
+Support Starlight Technology
+IR Range of 100 Mtr., IP66, PoE
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",52525,29675,"5%",FALSE,"In stock",""
 "images/products/cp-plus-32ch-dvr-5mp-2-satacp-uvr-3201k2-i3-v2.webp","CP PLUS 32CH DVR 5MP - 2 SATA(CP-UVR-3201K2-I3-V2)","High quality product","CPPlus","HD DVR",51100,28870,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8ch-dvr-2mp-2way-audio-support-cp-uvr-0801e1v-i.webp","CP PLUS 8CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-0801E1V-I)","High quality product","CPPlus","HD DVR",8947,5055,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dual-light-dome-camera-cp-unc-da21l3c-lq.webp","CP PLUS 2MP DUAL LIGHT DOME CAMERA (CP-UNC-DA21L3C-LQ)","High quality product","CPPlus","IP CCTV",5938,3355,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-bullet-with-2-way-audio-color-camera-cp-unc-ta41l3b-d-lq.webp","CP PLUS 4MP BULLET WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-TA41L3B-D-LQ)","High quality product","CPPlus","IP CCTV",7602,4295,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-bullet-camera-tc24pl3c.webp","CP PLUS 2MP BULLET CAMERA (TC24PL3C)","High quality product","CPPlus","HD CAMERA",1735,980,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-nvr-2-sata-cp-unr-4k4162-v4.webp","CP PLUS 16CH NVR 2 SATA (CP-UNR-4K4162-V4)","High quality product","CPPlus","NVR",22054,12460,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-wi-fi-full-color-pt-camera-cp-z45q.webp","CP PLUS 4MP WI-FI FULL COLOR PT CAMERA (CP-Z45Q)","High quality product","CPPlus","WIFI CCTV",6062,3425,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-colour-bullet-with-mic-cp-gpc-ta24pl2c-se-0360.webp","CP PLUS 2MP COLOUR BULLET WITH MIC (CP-GPC-TA24PL2C-SE-0360)","High quality product","CPPlus","HD CAMERA",2708,1530,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-45x-ptz-cp-unp-f4541l30-dpq.webp","CP PLUS 4MP 45X PTZ (CP-UNP-F4541L30-DPQ)","High quality product","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8-port-poe-switch-cp-anw-hpu8h2-n12.webp","CP PLUS 8 PORT POE SWITCH (CP-ANW-HPU8H2-N12)","High quality product","CPPlus","POE SWITCH",2482,1402,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-bullet-camera-with-audio-cp-unc-ta21l3c-q.webp","CP PLUS 2MP BULLET CAMERA WITH AUDIO (CP-UNC-TA21L3C-Q)","High quality product","CPPlus","IP CCTV",5399,3050,"5%",FALSE,"In stock",""
-"images/products/cp-plus-5mp-hd-dome-camera-cp-usc-dc51pl3c.webp","CP-PLUS 5MP HD DOME CAMERA (CP-USC-DC51PL3C)","High quality product","CPPlus","HD CAMERA",2274,1285,"5%",FALSE,"In stock",""
-"images/products/cp-plus-cat6-cable-outdoor-double-jacket-cp-est-6tgd23-305.webp","CP PLUS CAT6 CABLE OUTDOOR DOUBLE JACKET (CP-EST-6TGD23-305)","High quality product","CPPlus","CAT 6 CABLES",18576,10495,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-dome-with-audio-cp-unc-da41l3c-d-q.webp","CP PLUS 4MP DOME WITH AUDIO (CP-UNC-DA41L3C-D-Q)","High quality product","CPPlus","IP CCTV",6576,3715,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-dvr-2mp-2way-audio-support-cp-uvr-1601e1v-i.webp","CP PLUS 16CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-1601E1V-I)","High quality product","CPPlus","HD DVR",15045,8500,"5%",FALSE,"In stock",""
-"images/products/cp-plus-6mp-ip-bullet-camera-colour-ta61l3c-lq.webp","CP PLUS 6MP IP BULLET CAMERA COLOUR (TA61L3C-LQ)","High quality product","CPPlus","IP CCTV",9301,5255,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4ch-4k-nvr-cp-unr-4k2041-v4.webp","CP PLUS 4CH 4K NVR (CP-UNR-4K2041-V4)","High quality product","CPPlus","NVR",12186,6885,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-verifocal-cp-unc-tc41zl6c-vmd-lq.webp","CP PLUS 4MP VERIFOCAL (CP-UNC-TC41ZL6C-VMD-LQ)","High quality product","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8ch-nvr-cp-unr-108f1.webp","CP PLUS 8CH NVR (CP-UNR-108F1)","High quality product","CPPlus","NVR",10372,5860,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8ch-nvr-2-sata-cp-unr-4k-4082-v4.webp","CP PLUS 8CH NVR 2 SATA (CP-UNR-4K-4082-V4)","High quality product","CPPlus","NVR",15187,8580,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4ch-dvr-5mp-0401f1v-i.webp","CP PLUS 4CH DVR 5MP (0401F1V-I)","High quality product","CPPlus","HD DVR",11027,6230,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4ch-nvr-cp-unr-104f1.webp","CP PLUS 4CH NVR (CP-UNR-104F1)","High quality product","CPPlus","NVR",9354,5285,"5%",FALSE,"In stock",""
-"images/products/cp-plus-24-port-poe-switch-cp-dnw-hpu24g2f1-30.webp","CP PLUS 24 PORT POE SWITCH (CP-DNW-HPU24G2F1-30)","High quality product","CPPlus","POE SWITCH",14868,8400,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-dome-with-2-way-audio-color-camera-cp-unc-da41l3b-d-lq.webp","CP PLUS 4MP DOME WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-DA41L3B-D-LQ)","High quality product","CPPlus","IP CCTV",7496,4235,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-45x-300-mtr-ip-ptz-camera-cp-unp-f4521l30-dpq.webp","CP PLUS 2MP 45X 300 MTR IP PTZ CAMERA - (CP-UNP-F4521L30-DPQ)","High quality product","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-wifi-camera-cp-z43q.webp","CP PLUS 4MP WIFI CAMERA CP-Z43Q","High quality product","CPPlus","WIFI CCTV",5956,3365,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-nvr-4-sata-4k4164-fi.webp","CP PLUS 16CH NVR 4 SATA (4K4164-FI)","High quality product","CPPlus","NVR",46843,26465,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8mp-ip-vandal-dome-cp-unc-vc81l5c-vmd-lq.webp","CP PLUS 8MP IP VANDAL DOME CP-UNC-VC81L5C-VMD-LQ","High quality product","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16-channel-nvr-cp-unr-4k-2161-v4.webp","CP PLUS 16 CHANNEL NVR (CP-UNR-4K-2161-V4)","High quality product","CPPlus","NVR",15169,8570,"5%",FALSE,"In stock",""
-"images/products/cp-plus-3mp-indoor-pt-camera-cp-e38q.webp","CP PLUS  3MP INDOOR PT CAMERA (CP-E38Q)","High quality product","CPPlus","WIFI CCTV",3336,1885,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-dual-light-bullet-camera-cp-unc-ta41l3c-d-lq.webp","CP PLUS 4MP DUAL LIGHT BULLET CAMERA (CP-UNC-TA41L3C-D-LQ)","High quality product","CPPlus","IP CCTV",7354,4155,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dome-with-2-way-audio-color-camera-cp-unc-da21l3b-lq.webp","CP PLUS 2MP DOME WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-DA21L3B-LQ)","High quality product","CPPlus","IP CCTV",6354,3590,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-wifi-camera-cp-e41q.webp","CP PLUS 4MP WIFI CAMERA (CP-E41Q)","High quality product","CPPlus","WIFI CCTV",4673,2640,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-ip-motorized-varifocal-dome-cp-unc-vc41zl5c-vmd-q.webp","CP PLUS 4MP IP MOTORIZED VARIFOCAL DOME (CP-UNC-VC41ZL5C-VMD-Q)","High quality product","CPPlus","IP CCTV",26550,15000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dual-light-bullet-camera-cp-unc-ta21l3c-lq.webp","CP PLUS 2MP DUAL LIGHT BULLET CAMERA (CP-UNC-TA21L3C-LQ)","High quality product","CPPlus","IP CCTV",6045,3415,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-bullet-dual-light-cp-urc-tc24pl3c-l-0360.webp","CP PLUS 2MP BULLET DUAL LIGHT (CP-URC-TC24PL3C-L-0360)","High quality product","CPPlus","HD CAMERA",2204,1245,"5%",FALSE,"In stock",""
-"images/products/cp-plus-128ch-nvr-8-sata-cp-unr-4k5128r8-ei.webp","CP PLUS 128CH NVR 8 SATA (CP-UNR-4K5128R8-EI)","High quality product","CPPlus","NVR",265500,150000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dome-camera-with-audio-cp-unc-da21l3c-q.webp","CP PLUS 2MP DOME CAMERA WITH AUDIO (CP-UNC-DA21L3C-Q)","High quality product","CPPlus","IP CCTV",5292,2990,"5%",FALSE,"In stock",""
-"images/products/cp-plus-indoor-pure-copper-305mtr-cp-eut-6tgl23-305.webp","CP PLUS INDOOR PURE COPPER 305MTR (CP-EUT-6TGL23-305)","High quality product","CPPlus","CAT 6 CABLES",16268,9191,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4ch-dvr-2mp-2way-audio-support-cp-uvr-0401e1v-i.webp","CP PLUS 4CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-0401E1V-I)","High quality product","CPPlus","HD DVR",7071,3995,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-32x-ptz-camera-cp-unp-e3241l18-daq.webp","CP PLUS 4MP 32X PTZ CAMERA (CP-UNP-E3241L18-DAQ)","High quality product","CPPlus","IP CCTV",102067,57665,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8mp-verifocal-bullet-camera-cp-unc-tc81zl6c-vmd-lq.webp","CP PLUS 8MP VERIFOCAL BULLET CAMERA (CP-UNC-TC81ZL6C-VMD-LQ)","4 Channel 5MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.","CPPlus","IP CCTV",26550,15000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-ip-dome-cp-unc-vc41l5c-vmd-lq.webp","CP PLUS 4MP IP DOME (CP-UNC-VC41L5C-VMD-LQ)","High quality product","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-dual-light-bullet-camera-50mtr-cp-unc-tc41l5c-vmd-lq.webp","CP PLUS 4MP DUAL LIGHT BULLET CAMERA 50MTR (CP-UNC-TC41L5C-VMD-LQ)","High quality product","CPPlus","IP CCTV",13275,7500,"5%",FALSE,"In stock",""
-"images/products/cp-plus-32ch-dvr-2mp-2-sata-cp-uvr-3201e2-i.webp","CP PLUS 32CH DVR 2MP - 2 SATA (CP-UVR-3201E2-I)","High quality product","CPPlus","HD DVR",42586,24060,"5%",FALSE,"In stock",""
-"images/products/cp-plus-3mp-indoor-pt-camera-cp-e31q.webp","CP PLUS 3MP INDOOR PT CAMERA (CP-E31Q)","High quality product","CPPlus","WIFI CCTV",4053,2290,"5%",FALSE,"In stock",""
-"images/cctv-wholesale.webp","CP PLUS 5MP IP 45X PTZ (CP-UNP-F4551L30-DPQ)","High quality product","CPPlus","IP CCTV",265500,150000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8mp-ip-colour-domecp-unc-da81l3c-lq.webp","CP PLUS 8MP IP COLOUR DOME(CP-UNC-DA81L3C-LQ)","High quality product","CPPlus","IP CCTV",12868,7270,"5%",FALSE,"In stock",""
-"images/products/cpplus-16ch-dvr-5mp-cp-uvr-1601f1-ic.webp","CPPLUS 16CH DVR 5MP (CP-UVR-1601F1-IC)","High quality product","CPPlus","HD DVR",25373,14335,"5%",FALSE,"In stock",""
-"images/products/cp-plus-32ch-nvr-8-sata-cp-unr-4k532r8-fi.webp","CP PLUS 32CH NVR 8 SATA (CP-UNR-4K532R8-FI)","High quality product","CPPlus","NVR",88500,50000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-5mp-hybrid-bullet-camera-with-mic-cp-urc-tc51pl3c-l-0360-v2.webp","CP PLUS 5MP HYBRID BULLET CAMERA WITH MIC (CP-URC-TC51PL3C-L-0360-V2)","High quality product","CPPlus","HD CAMERA",2894,1635,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-bullet-with-audio-cp-unc-ta41l3c-d-q.webp","CP PLUS 4MP BULLET WITH AUDIO (CP-UNC-TA41L3C-D-Q)","High quality product","CPPlus","IP CCTV",6673,3770,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4g-pt-camera-ez-s35t.webp","CP PLUS 4G PT CAMERA (EZ-S35T)","High quality product","CPPlus","4G CCTV",5045,2850,"5%",FALSE,"In stock",""
-"images/cctv-wholesale.webp","CP PLUS 32CH NVR 4 SATA (CP-UNR-4K5324-FI)","High quality product","CPPlus","NVR",61950,35000,"5%",FALSE,"In stock",""
-"images/cctv-wholesale.webp","CP PLUS 6MP IP VANDAL DOME CP-UNC-VC61L5C-VMD-LQ","High quality product","CPPlus","IP CCTV",17700,10000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-6mp-ip-bullet-cp-unc-tc61l5c-vmd-lq.webp","CP PLUS 6MP IP BULLET (CP-UNC-TC61L5C-VMD-LQ)","High quality product","CPPlus","IP CCTV",168150,95000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-5mp-colour-bullet-with-mic-cp-gpc-ta50pl2c-se-0360.webp","CP PLUS 5MP COLOUR BULLET WITH MIC (CP-GPC-TA50PL2C-SE-0360)","High quality product","CPPlus","HD CAMERA",3204,1810,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dome-dual-light-cp-urc-dc24pl3c-l-0360.webp","CP PLUS 2MP DOME DUAL LIGHT (CP-URC-DC24PL3C-L-0360)","High quality product","CPPlus","HD CAMERA",2106,1190,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-bullet-with-2-way-audio-color-camera-cp-unc-ta21l3b-lq.webp","CP PLUS 2MP BULLET WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-TA21L3B-LQ)","4 Channel 2MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.","CPPlus","IP CCTV",6461,3650,"5%",FALSE,"In stock",""
-"images/products/cp-plus-128gb-memory-card-cp-nm128.webp","CP PLUS 128GB MEMORY CARD (CP-NM128)","High quality product","CPPlus","MEMORY CARD",4676,2642,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-indoor-pt-camera-cp-e28-q.webp","CP PLUS 2MP INDOOR PT CAMERA( CP-E28-Q )","High quality product","CPPlus","WIFI CCTV",3505,1980,"5%",FALSE,"In stock",""
-"images/products/cp-plus-31-standard-copper-cable-90-mtr-cp-ecc-90rs.webp","CP PLUS 3+1 STANDARD COPPER CABLE 90 MTR (CP-ECC-90RS)","High quality product","CPPlus","CCTV CABLES",2359,1333,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8ch-4k-nvr-cp-unr-4k2081-v4.webp","CP PLUS 8CH 4K NVR (CP-UNR-4K2081-V4)","High quality product","CPPlus","NVR",13204,7460,"5%",FALSE,"In stock",""
-"images/products/cp-plus-64ch-nvr-8-sata-cp-unr-4k564r8-fi.webp","CP PLUS 64CH NVR 8 SATA (CP-UNR-4K564R8-FI)","32 Channel 2MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.","CPPlus","NVR",105395,59545,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4mp-ip-anpr-bullet-cp-unc-tt41l3-vmd-q.webp","CP PLUS 4MP IP ANPR BULLET CP-UNC-TT41L3-VMD-Q","High quality product","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8port-gigabit-poe-switch-cp-anw-gpu8g2f2-96.webp","CP PLUS 8PORT GIGABIT POE SWITCH CP-ANW-GPU8G2F2-96)","High quality product","CPPlus","POE SWITCH",5930,3350,"5%",FALSE,"In stock",""
-"images/products/cp-plus-8mp-ip-colour-bullet-with-miccp-unc-ta81l3c-lq.webp","CP PLUS 8MP IP COLOUR BULLET WITH MIC(CP-UNC-TA81L3C-LQ)","High quality product","CPPlus","IP CCTV",12974,7330,"5%",FALSE,"In stock",""
-"images/products/cp-plus-24-port-poe-giga-cp-anw-gpu24g2f2-n30.webp","CP PLUS 24 PORT POE GIGA (CP-ANW-GPU24G2F2-N30)","High quality product","CPPlus","POE SWITCH",23895,13500,"5%",FALSE,"In stock",""
-"images/products/cp-plus-32ch-nvr-2-sata-cp-unr-4k4322-v4.webp","CP PLUS 32CH NVR 2 SATA (CP-UNR-4K4322-V4)","16 Channel 5MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.","CPPlus","NVR",27647,15620,"5%",FALSE,"In stock",""
-"images/products/cp-plus-2mp-dome-camera-cp-urc-dc24pl3c-0360.webp","CP PLUS 2MP DOME CAMERA (CP-URC-DC24PL3C-0360)","High quality product","CPPlus","HD CAMERA",1611,910,"5%",FALSE,"In stock",""
-"images/products/cp-plus-32ch-nvr-4-sata-unr-4k4324-fi.webp","CP PLUS 32CH NVR 4 SATA (UNR-4K4324-FI)","High quality product","CPPlus","NVR",58552,33080,"5%",FALSE,"In stock",""
-"images/products/cp-plus-4-port-giga-switch-cp-dnw-gpu4g2-48c.webp","CP PLUS 4 PORT GIGA SWITCH (CP-DNW-GPU4G2-48C)","High quality product","CPPlus","POE SWITCH",4018,2270,"5%",FALSE,"In stock",""
-"images/products/cp-plus-5mp-bullet-camera-with-mic-cp-usc-tc51pl3c.webp","CP PLUS 5MP BULLET CAMERA WITH MIC (CP-USC-TC51PL3C)","High quality product","CPPlus","HD CAMERA",2381,1345,"5%",FALSE,"In stock",""
-"images/products/cp-plus-16ch-nvr-2sata-cp-unr-4k2162-v4.webp","CP PLUS 16CH NVR 2SATA (CP-UNR-4K2162-V4)","High quality product","CPPlus","NVR",19240,10870,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8ch-dvr-2mp-2way-audio-support-cp-uvr-0801e1v-i.webp","CP PLUS 8CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-0801E1V-I)","Supports HDCVI, AHD, TVI, CVBS and IP video input
+Supports up to 12 Channels IP camera input and each channel can be up to 6MP
+The incoming bandwidth reaches 64 Mbps
+8 Channels two-way talk over coaxial cable allows for seamless communication between the camera, client and recorder
+8 Channels IMD+ for analog channels or 12 Channels IMD by camera which allows the device to trigger accurate alarms for humans and vehicles
+8 Channels AI Coding saves on storage and bandwidth while maintaining the details of targets in videos
+Instastream, H.265, H.264+, H.264 dual stream video compression
+Mobile Software: iCMOB, gCMOB","CPPlus","HD DVR",8947,5055,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dual-light-dome-camera-cp-unc-da21l3c-lq.webp","CP PLUS 2MP DUAL LIGHT DOME CAMERA (CP-UNC-DA21L3C-LQ)","1/2.8"" 2MP PS CMOS Image Sensor (0.9071 Centimeters)
+Max. 2MP(1920 × 1080)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic
+3.6mm Lens (2.8mm Lens)
+DWDR, Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",5938,3355,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-bullet-with-2-way-audio-color-camera-cp-unc-ta41l3b-d-lq.webp","CP PLUS 4MP BULLET WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-TA41L3B-D-LQ)","4MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.8"" 4MP PS CMOS Image Sensor (0.9071 centimeters)
+Max. 4MP (2688 × 1520)/ (2560 × 1440)@1-25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic, Built-in speaker
+3.6mm fixed Lens
+WDR (120dB), Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",7602,4295,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-bullet-camera-tc24pl3c.webp","CP PLUS 2MP BULLET CAMERA (TC24PL3C)","2.4MP Dual Light Bullet Camera - 30Mtr.
+
+2.4MP PS CMOS Image Sensor
+Max. 2.4MP (1920×1080)@25/30fps
+DWDR, Day/Night (ICR), 2D DNR, BLC, HLC
+3.6mm Fixed Lens (2.8 mm and 6mm optional)
+IR Range of 30 Mtrs., Warm Light Range of 20 Mtrs., Smart IR
+4 Signals over 1 Coaxial Cable
+Support Built-in Mic, IP67","CPPlus","HD CAMERA",1735,980,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-nvr-2-sata-cp-unr-4k4162-v4.webp","CP PLUS 16CH NVR 2 SATA (CP-UNR-4K4162-V4)","16 Ch. 4K 2HDDs Network Video Recorder
+
+Up to 16 channel IP camera input
+Max. decoding capability: 8 × 1080p@30 fps, 2 × 8 MP@30 fps
+Smart Instastream/H.265/H.264 /MJPEG
+Up to 12Mp resolution preview and playback
+Max. 160/160/80 Mbps incoming/recording/outgoing bandwidth
+Support 2 SATA HDDs up to 20TB, 2 (1 front USB 2.0 port, 1 rear USB 2.0 port)
+HDMI / VGA simultaneous video output
+Support Multi-brand network cameras
+ONVIF Version 2.4 conformance
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS, KVMS Pro","CPPlus","NVR",22054,12460,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-wi-fi-full-color-pt-camera-cp-z45q.webp","CP PLUS 4MP WI-FI FULL COLOR PT CAMERA (CP-Z45Q)","4MP Wi-Fi Full Color PT Camera
+
+1/2.9” 4MP CMOS Image Sensor (0.8758 centimeter)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@4MP
+IR Distance of 15 Mtr.
+White LED Distance of 8-10 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",6062,3425,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-colour-bullet-with-mic-cp-gpc-ta24pl2c-se-0360.webp","CP PLUS 2MP COLOUR BULLET WITH MIC (CP-GPC-TA24PL2C-SE-0360)","2.4MP Full-color Guard+ Bullet Camera - 20Mtr.
+
+1/2.8"" 2.4MP CMOS Image Sensor (0.9071 centimetres)
+Max 25/30fps@2.4MP
+DWDR, 2D-DNR, AWB, AGC, BLC
+3.6mm Fixed lens (2.8mm Optional)
+Illumination Distance of 20 Mtrs, IP67
+Support 24/7 color Imaging
+Support Built-in Mic
+CVI/CVBS/AHD/TVI switchable","CPPlus","HD CAMERA",2708,1530,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-45x-ptz-cp-unp-f4541l30-dpq.webp","CP PLUS 4MP 45X PTZ (CP-UNP-F4541L30-DPQ)","4MP WDR 45x IR Network PTZ Camera- 300 Mtr.
+
+1/2.8” 4MP PS CMOS Image sensor (0.9071 centimeters)
+Max. 4MP (2688 x 1520/ 2560 x 1440)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple Stream
+Powerful 45x Optical and 16x Digital zoom
+WDR(120dB), 2D NR/ 3D NR, Day/Night(ICR), ROI, Defog, AWB, BLC, HLC
+Up to 300 Presets, 5 Scan, 8 Tour, 5 Pattern
+Support Starlight Technology
+IR Range of 300 Mtr.
+Support PoE+, IP67, IK10
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8-port-poe-switch-cp-anw-hpu8h2-n12.webp","CP PLUS 8 PORT POE SWITCH (CP-ANW-HPU8H2-N12)","8 Port PoE + 2 Uplink Port PoE Switch
+
+Networking standard: IEEE 802.3i 10BASE-T, IEEE 802.3u 100BASE-TX, IEEE 802.3x Flow Control, IEEE 802.3af/at/bt Power over Ethernet
+Support 6KV lightning protection, 8KV surge protection.
+PoE Power Budget : 120W.","CPPlus","POE SWITCH",2482,1402,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-bullet-camera-with-audio-cp-unc-ta21l3c-q.webp","CP PLUS 2MP BULLET CAMERA WITH AUDIO (CP-UNC-TA21L3C-Q)","2MP Network IR Bullet Camera - 30Mtr.
+
+1/2.8"" 2MP PS CMOS Image Sensor (0.9071 centimeters)
+Max. 2MP (1920 × 1080)@1-25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic
+3.6mm fixed Lens
+DWDR, Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",5399,3050,"5%",FALSE,"In stock",""
+"images/products/cp-plus-5mp-hd-dome-camera-cp-usc-dc51pl3c.webp","CP-PLUS 5MP HD DOME CAMERA (CP-USC-DC51PL3C)","5MP IR Dome Camera - 30Mtr.
+
+1/2.7” 5MP PS CMOS Image Sensor (0.9407 cm)
+DWDR, Day/Night (ICR), 2D DNR, BLC, HLC
+3.6mm Fixed lens (2.8mm Optional)
+IR Range of 30 Mtrs., Smart IR
+Support Built-in Mic","CPPlus","HD CAMERA",2274,1285,"5%",FALSE,"In stock",""
+"images/products/cp-plus-cat6-cable-outdoor-double-jacket-cp-est-6tgd23-305.webp","CP PLUS CAT6 CABLE OUTDOOR DOUBLE JACKET (CP-EST-6TGD23-305)","Feature Specification
+Conduct Type Solid Bare Electrolytic Grade Copper
+Nominal Conductor Diameter 24 AWG (0.48mm ± 0.020mm)
+Insulation Polyethylene (HDPE)
+Separator Each pair separated with a cross separator
+Pairing 2 insulated conductors twisted together
+Inner Jacket PVC
+Outer Jacket PE
+Colour of Jacket Black
+Approximate OD 5.8mm ± 0.1mm
+Thickness of Outer Jacket 0.55mm ± .05mm
+Thickness of Inner Jacket 0.45mm ± .05mm
+Impedance 100±15% Ω
+Rip Cord No
+Sequential Marking Every Meter
+Characteristic Impedance 100 ±15Ω
+Nominal Velocity of
+Propagation
+69%
+Resistance Unbalance 5% Max
+Conductor Resistance ≤9.38/100m 
+Resistance Unbalance 5% Max
+Capacitance Unbalance 330pF/100m
+Bending Radius < 8 x Cable Diameter at -20° ±1°C 
+Delay Skew <45nS
+Mutual Capacitance <5.6nf/100m
+Packing 305 Mtrs
+Temperature Rating -15 to 60°C
+Storage Temperature -15 to 60°C
+Pulling Force 11.5Kg","CPPlus","CAT 6 CABLES",18576,10495,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-dome-with-audio-cp-unc-da41l3c-d-q.webp","CP PLUS 4MP DOME WITH AUDIO (CP-UNC-DA41L3C-D-Q)","4MP Network IR Dome Camera - 30Mtr.
+
+1/2.9” 4MP PS CMOS Image Sensor (0.8758 centimeters)
+Max. 4MP (2688 × 1520)@1-25/30fps/ (2560 × 1440)@1-25/30
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+WDR (120dB), Day/Night(ICR), 3D NR, AWB, AGC, BLC, HLC, Digital watermarking
+3.6mm Lens (2.8mm Optional)
+Support Built-in Mic
+IR Range of 30 Mtr., IP67, PoE","CPPlus","IP CCTV",6576,3715,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-dvr-2mp-2way-audio-support-cp-uvr-1601e1v-i.webp","CP PLUS 16CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-1601E1V-I)","16Ch. 1080N Digital Video Recorder
+
+Supports HDCVI, AHD, TVI, CVBS and IP video input
+Supports up to 18 channels of IPC access, including 2 additional IP channels + 16 analog channels, with the option to convert all analog channels to IP
+The incoming bandwidth reaches 64 Mbps
+16 Channels two-way talk over coaxial cable allows for seamless communication between the camera, client and recorder
+16 Channels IMD+ for analog channels or 18 Channels IMD by camera which allows the device to trigger accurate alarms for humans and vehicles
+16 Channels AI Coding saves on storage and bandwidth while maintaining the details of targets in videos
+Instastream, H.265, H.264+, H.264 dual stream video compression
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","HD DVR",15045,8500,"5%",FALSE,"In stock",""
+"images/products/cp-plus-6mp-ip-bullet-camera-colour-ta61l3c-lq.webp","CP PLUS 6MP IP BULLET CAMERA COLOUR (TA61L3C-LQ)","6MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.7” 6MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 6MP (3288 x 1850/ 3200 x 1800)@1-20fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+DWDR, Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens
+Support Built-in Mic, PoE, IP67
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",9301,5255,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4ch-4k-nvr-cp-unr-4k2041-v4.webp","CP PLUS 4CH 4K NVR (CP-UNR-4K2041-V4)","4 Ch. 4G Network Video Recorder
+
+Support up to 4Ch. IP Camera Input
+Instastream, H.265, H.264+, H.264, MJPEG
+Support 4G
+Max. 80/80/60 Mbps Incoming/ Recording/ Outgoing bandwidth
+AI by NVR: Support 4 Channel IMD
+AI by Camera: Support perimeter protection and IMD
+Support one-click arming and disarming
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",12186,6885,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-varifocal-cp-unc-tc41zl6c-vmd-lq.webp","CP PLUS 4MP VARIFOCAL (CP-UNC-TC41ZL6C-VMD-LQ)","CP‑UNC‑TC41ZL6C‑VMD‑LQ – 4 MP Dual Light Bullet Camera (60 m IR)
+
+🔍 Image Sensor & Resolution
+
+1/2.9” 4 MP PS CMOS sensor (0.94 cm)
+
+Up to 2688 × 1520 at 20 fps, or 2560 × 1440 at 25/30 fps (cpplusworld.com)
+
+Excellent low-light performance: 0.001 lux (Color @ F1.4), 0.0001 lux (B/W), or 0 lux using IR
+
+💡 Imaging & Lens
+
+WDR (120 dB), Day/Night (ICR), 3D‑NR, ROI, AWB, AGC, HLC, BLC, digital watermarking
+
+Motorized varifocal lens (2.7–13.5 mm) for flexible zoom & focus
+
+Dual‑Light feature: Warm light (up to 30 m) plus IR illumination (up to 60 m) ensures high clarity in total darkness
+
+🎥 Video Encoding & Compression
+
+Supports Instastream, H.265, H.264+, H.264, H.264H, H.264B, and MJPEG (sub-stream only)
+
+Quad‑streaming enables simultaneous main, sub, and mobile streams
+
+🔐 Smart & Security Features
+
+Built‑in microphone for audio capture
+
+IP grade IP67 (water & dust resistant); optional IK10 vandal-resistant version available
+
+Supports SMD, Tripwire, Intrusion, Face detection, People counting, Queue detection, Loitering; integrates with AI NVRs for refined event search
+
+Robust cybersecurity: AES‑256 encryption, configuration encryption, trusted boot/execution, HTTPS, IP/MAC filtering, account lockout, WSSE, syslog
+
+🌐 Network Protocols & Remote Access
+
+Protocol support: HTTP, HTTPS, TCP/IP, IPv4/IPv6, RTSP, SMTP, FTP, DHCP, DNS, DDNS, NTP, SNMP v3, UPnP, 802.1x, ICMP, IGMP, RTMP, Multicast, SMTP, PPPoE (cpplusworld.com)
+
+Compatible with ONVIF Profile S/G/T, CGI, Milestone, Genetec platforms; remote access via InstaOn, iCMOB/gCMOB mobile apps, and KVMS Pro CMS
+
+⚡ Power & Consumption
+
+Can be powered via 12 V DC or PoE (802.3af)
+
+Power usage: 2.6 W (12 VDC) / 3.1 W (PoE) idle; up to 10.2–12.7 W with WDR, intelligence, and illumination on
+
+📦 Physical Specs
+
+Dimensions: ~244 × 244 × 90 mm; Weight: ~900 g (deltonglobal.com)
+
+Operating temperature: –30 °C to +60 °C, humidity up to 95%
+
+🔄 Local Storage
+
+Supports Micro SD card (up to 256 GB, not included); plus external storage via FTP, SFTP, NAS
+
+🚨 Use Case & Key Advantages
+
+Ideal for outdoor surveillance, with strong night vision and adaptability to changing lighting (dual-light + WDR)
+
+Smart analytics reduce false alarms and deliver refined human/vehicle detection
+
+Flexible zoom and wide coverage (starlight + IR) make it perfect for large perimeters, building exteriors, or parking zones
+
+ 
+
+🔧 Summary Table
+
+Feature	Specification
+Resolution	4 MP (2688×1520 @ 20 fps or 2560×1440 @ 25/30 fps)
+Lens	2.7–13.5 mm motorized varifocal
+Illumination	IR up to 60 m + Warm light up to 30 m
+Video Encoding	Instastream, H.265/H.264+, H.264 variants, MJPEG
+Smart Features	SMD, Tripwire, Intrusion, Analytics, Face Detection
+Housing	IP67 (waterproof), optional IK10 vandal rating
+Power	12 VDC / PoE (802.3af)
+Power Consumption	Max 12.7 W
+Operating Range	–30 °C to +60 °C; ≤95% humidity
+Storage Options	Micro SD, FTP, SFTP, NAS
+Remote Viewing	iCMOB, gCMOB, InstaOn, KVMS Pro","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8ch-nvr-cp-unr-108f1.webp","CP PLUS 8CH NVR (CP-UNR-108F1)","8Ch. Network Video Recorder
+
+Support 8 channel IP camera input
+Instastream/H.265/Smart H.264+/H.264 codec decoding
+Up to 8MP resolution preview and playback
+Max 80Mbps Network Bandwidth
+Support 1 SATA HDDs up to 8TB Each, 2 USB Ports (USB2.0)
+VGA/HDMI simultaneous video output, maximum resolution of HDMI is 1080P
+Support Multi-brand network cameras
+ONVIF Version conformance
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro","CPPlus","NVR",10372,5860,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8ch-nvr-2-sata-cp-unr-4k-4082-v4.webp","CP PLUS 8CH NVR 2 SATA (CP-UNR-4K-4082-V4)","8 Ch. 4K Network Video Recorder
+
+Up to 8 Channel IP Camera input
+Instastream, H.265, H.264+, H.264, MJPEG
+Supports IP cameras with a resolution up to 12MP
+Max. 160/160/80 Mbps incoming/recording/outgoing bandwidth
+AI by Recorder: 4 Channel IMD
+AI by Camera: Face detection and recognition, perimeter protection, IMD, people counting, stereo analysis and heat map
+Support 2 SATA HDDs up to 20TB each, 2 USB ports(2.0)
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",15187,8580,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4ch-dvr-5mp-0401f1v-i.webp","CP PLUS 4CH DVR 5MP (0401F1V-I)","4Ch. 1080P Digital Video Recorder
+
+Supports HDCVI, AHD, TVI, CVBS and IP video input
+Supports up to 6 Channels IP camera input and each channel can be up to 6MP
+The incoming bandwidth reaches 32 Mbps
+4 Channels two-way talk over coaxial cable allows for seamless communication between the camera, client and recorder
+4 Channels IMD+ for analog channels or 6 Channels IMD by camera which allows the device to trigger accurate alarms for humans and vehicles
+4 Channels AI Coding saves on storage and bandwidth while maintaining the details of targets in videos
+Instastream, H.265, H.264+, H.264 dual stream video compression
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","HD DVR",11027,6230,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4ch-nvr-cp-unr-104f1.webp","CP PLUS 4CH NVR (CP-UNR-104F1)","4Ch. Network Video Recorder
+
+Support 4 channel IP camera input
+Instastream/H.265/Smart H.264+/H.264 codec decoding
+Up to 8MP resolution preview and playback
+Max 80Mbps Network Bandwidth
+Support 1 SATA HDDs up to 8TB, 2 USB Ports (USB2.0)
+VGA/HDMI simultaneous video output, maximum resolution of HDMI is 1080P
+Support Multi-brand network cameras
+ONVIF Version conformance
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro","CPPlus","NVR",9354,5285,"5%",FALSE,"In stock",""
+"images/products/cp-plus-24-port-poe-switch-cp-dnw-hpu24g2f1-30.webp","CP PLUS 24 PORT POE SWITCH (CP-DNW-HPU24G2F1-30)","PoE Standard: IEEE802.3af, IEEE802.3at
+
+Switching Capacity: 10.8 Gbps
+
+PoE Power Budget: 300W
+
+Transmission Distance: Up to 250m (Extend mode)
+
+Power Supply: Built-in (110–264V AC)
+
+Operating Range: -20°C to 45°C
+
+Dimensions: 320mm x 207mm x 45mm
+
+Weight: 1.8 kg","CPPlus","POE SWITCH",14868,8400,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-dome-with-2-way-audio-color-camera-cp-unc-da41l3b-d-lq.webp","CP PLUS 4MP DOME WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-DA41L3B-D-LQ)","4MP Dual Light Dome Camera - 30Mtr.
+
+1/2.8"" 4MP PS CMOS Image Sensor (0.9071 centimeters)
+Max. 4MP (2688 × 1520)@1-25/30fps/ (2560 × 1440)@1-25/30
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic, Built-in speaker
+3.6mm fixed Lens
+WDR (120dB), Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",7496,4235,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-45x-300-mtr-ip-ptz-camera-cp-unp-f4521l30-dpq.webp","CP PLUS 2MP 45X 300 MTR IP PTZ CAMERA - (CP-UNP-F4521L30-DPQ)","2MP 45x Full HD Network IR PTZ Camera– 300 Mtr.
+
+1/2.8” 2MP PS CMOS Image sensor (0.9071 centimeter)
+Max. 2MP (1920 × 1080)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Penta Stream
+Powerful 45x Optical and 16x Digital zoom
+WDR(120dB), Day/Night(ICR), 2D NR/ 3D NR, ROI, Defog, AWB, AGC, BLC, HLC,
+Up to 300 Presets, 5 Scan, 8 Tour, 5 Pattern
+Support Starlight Technology
+IR Range of 300 Mtr.
+Support PoE+, IP67
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-wifi-camera-cp-z43q.webp","CP PLUS 4MP WIFI CAMERA CP-Z43Q","4MP Wi-Fi Full Color PT Camera
+
+1/2.9” 4MP CMOS Image Sensor (0.8758 centimeter)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@4MP
+IR Distance of 15 Mtr.
+White LED Distance of 8-10 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",5956,3365,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-nvr-4-sata-4k4164-fi.webp","CP PLUS 16CH NVR 4 SATA (4K4164-FI)","16Ch. 4K AI Network Video Recorder
+
+Up to 16 channel IP camera input
+Instastream, H.265, H.264+, H.264, MJPEG
+AI by Recorder: 1 Channel face detection and Recognition, 2 Channel perimeter protection, up to 10 face databases and 20,000 face images, 4 Channel SMD Plus
+AI by Camera: Face detection and Recognition, Perimeter protection, SMD Plus, ANPR, People counting, Stereo analysis, Heat map
+AI disabled: 256 Mbps incoming, AI enabled: 180 Mbps incoming
+Support 4 SATA ports, up to 16TB each, 2 USB (1 front USB 2.0 port, 1 rear USB 3.0 port), 1 RS232, 1 RS485
+1 HDMI, 1 VGA Simultaneous/ Heterogeneous video output
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",46843,26465,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8mp-ip-vandal-dome-cp-unc-vc81l5c-vmd-lq.webp","CP PLUS 8MP IP VANDAL DOME CP-UNC-VC81L5C-VMD-LQ","The CP-UNC-VC81L5C-VMD-LQ is an advanced 8MP vandal-proof dome IP camera featuring dual light technology (IR + warm light) with up to 50m IR range and 30m warm light range. It supports Instastream, H.265/H.264, quad streaming, starlight technology, and a host of intelligent video analytics, making it ideal for both indoor and outdoor surveillance in challenging environments.
+
+3. Key Features
+
+8MP resolution (3840 × 2160) up to 20 fps
+
+1/2.7” 8MP CMOS sensor for crisp imaging
+
+Dual Light Technology – 50m IR + 30m warm light
+
+3.6mm fixed lens (2.8mm optional)
+
+WDR (120dB), 3D NR, BLC, HLC, ROI, AWB, AGC
+
+Quad stream support
+
+Smart IR & True Day/Night (ICR)
+
+Audio – Built-in mic, RCA input/output
+
+Alarm I/O – 1 In / 1 Out
+
+PoE (802.3af) and 12V DC power support
+
+Storage support – up to 512GB Micro SD card, NAS, SFTP
+
+Weatherproof IP67 & Vandal-proof IK10 rating
+
+Metal casing, compact design (81 × 109.9 mm, 360g)
+
+4. Technical Specifications
+
+Specification	Details
+Image Sensor	1/2.7” 8MP CMOS
+Resolution	8MP (3840×2160), 6MP, 5MP, 4MP, 3MP, 2MP, 1.3MP, 720p, D1, VGA, CIF
+Frame Rate	Main stream: 8MP @1–20fps; 4MP @25/30fps
+Lens	3.6mm fixed (2.8mm optional), F1.4
+Angle of View	3.6mm: H 86°, V 49°, D 100° / 2.8mm: H 110°, V 58°, D 132°
+Illumination	Min. 0.001 lux (color), 0.0001 lux (B/W), 0 lux (IR on)
+DORI Distance	Detect: 98.7m, Observe: 39.5m, Recognize: 19.7m, Identify: 9.9m (3.6mm lens)
+Compression	Instastream, H.265, H.264, MJPEG (sub-stream)
+Audio Compression	G.711a/u, PCM, G726, AAC
+Alarms	Motion detection, video tampering, intrusion, tripwire, audio detection, voltage detection, SMD
+Smart Features	Perimeter protection, IVS analytics, ROI (4 areas), Smart search
+Cyber Security	AES 256-bit encryption, IP/MAC filtering, HTTPS, trusted boot/upgrade
+Storage	Micro SD card (up to 512GB), NAS, SFTP
+Operating Conditions	-40°C to +60°C, ≤95% RH
+Power Consumption	Max 6.9W (12V DC), 8.3W (PoE)
+Certifications	ISO9001, CE, FCC, RoHS
+5. Applications
+
+Banks, ATMs, and financial institutions
+
+Airports, railways, and transportation hubs
+
+Warehouses, factories, and logistics centers
+
+Educational institutions, hospitals, and offices
+
+High-security outdoor areas requiring vandal-proof solutions
+
+6. Warranty & Support
+
+Standard Manufacturer Warranty
+
+After-sales support via CP Plus service network
+
+7. Ordering Information
+
+Model: CP-UNC-VC81L5C-VMD-LQ
+
+Category: 8MP IP Dome Cameras
+
+Availability: In stock / Pre-order based on supplier
+
+Package Includes: Camera unit, mounting accessories, user manual","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16-channel-nvr-cp-unr-4k-2161-v4.webp","CP PLUS 16 CHANNEL NVR (CP-UNR-4K-2161-V4)","The CP-UNR-4K2161-V4 is a high-performance 16-channel 4K Network Video Recorder (NVR) designed for advanced IP surveillance systems. It supports ultra HD recording, smart video analytics, and efficient storage management, making it ideal for offices, warehouses, retail outlets, institutions, and residential complexes.
+
+With advanced H.265+ compression technology, this NVR reduces bandwidth and storage usage while maintaining superior video quality.
+
+🔹 Key Features
+
+Supports up to 16 IP Cameras
+
+4K Ultra HD recording & playback
+
+Advanced H.265+/H.265/H.264+/H.264 compression
+
+HDMI & VGA simultaneous video output
+
+Smart motion detection & event recording
+
+ONVIF compatible (supports third-party IP cameras)
+
+Remote access via Mobile App & CMS software
+
+USB backup support
+
+🎥 Video & Recording
+
+Real-time recording up to 4K resolution
+
+Multi-channel synchronous playback
+
+Intelligent video search & playback
+
+Scheduled, motion-based & manual recording modes
+
+Supports smart features (subject to camera compatibility)
+
+💾 Storage
+
+SATA HDD support (capacity depends on configuration)
+
+Efficient storage optimization with H.265+
+
+Automatic overwrite when HDD is full
+
+Backup via USB device
+
+🌐 Network & Connectivity
+
+RJ45 Gigabit Ethernet port
+
+Remote monitoring via web browser
+
+P2P cloud access support
+
+Multi-user login with access control
+
+🏢 Suitable Applications
+
+✔ Corporate Offices
+✔ Retail Stores
+✔ Warehouses
+✔ Schools & Colleges
+✔ Hospitals
+✔ Residential Buildings
+
+📊 Technical Specifications (Summary)
+
+Feature	Details
+Channels	16 IP Channels
+Max Resolution	Up to 4K
+Compression	H.265+ / H.265 / H.264
+Video Output	HDMI & VGA
+Network Port	RJ45 (Gigabit)
+USB Ports	Yes
+HDD Support	SATA Interface
+Remote Access	Mobile App / CMS","CPPlus","NVR",15169,8570,"5%",FALSE,"In stock",""
+"images/products/cp-plus-3mp-indoor-pt-camera-cp-e38q.webp","CP PLUS  3MP INDOOR PT CAMERA (CP-E38Q)","3MP Wi-Fi PT Camera
+
+1/2.7” 3MP PS CMOS Image Sensor (0.9407 centimeters)
+4mm Lens
+H.265 Video compression
+Wi-Fi Support
+Max. 20fps@3MP
+IR Distance of 15 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",3336,1885,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-dual-light-bullet-camera-cp-unc-ta41l3c-d-lq.webp","CP PLUS 4MP DUAL LIGHT BULLET CAMERA (CP-UNC-TA41L3C-D-LQ)","4MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.9” 4MP PS CMOS Image Sensor (0.8758 centimeters)
+Max. 4MP (2688 × 1520)@1-25/30fps/ (2560 × 1440)@1-25/30
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+WDR (120dB), Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr.
+3.6mm fixed Lens
+Support Built-in Mic, PoE,","CPPlus","IP CCTV",7354,4155,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dome-with-2-way-audio-color-camera-cp-unc-da21l3b-lq.webp","CP PLUS 2MP DOME WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-DA21L3B-LQ)","2MP Dual Light Dome Camera - 30Mtr.
+
+1/2.7"" 2MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 2MP (1920 × 1080)@1–25/30 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic, Built-in speaker
+3.6mm fixed Lens
+DWDR, Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE,","CPPlus","IP CCTV",6354,3590,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-wifi-camera-cp-e41q.webp","CP PLUS 4MP WIFI CAMERA (CP-E41Q)","4MP Wi-Fi PT Camera
+
+1/2.9” 4MP PS CMOS Image Sensor (0.8758 centimeters)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@4MP
+IR Distance of 15 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",4673,2640,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-ip-motorized-varifocal-dome-cp-unc-vc41zl5c-vmd-q.webp","CP PLUS 4MP IP MOTORIZED VARIFOCAL DOME (CP-UNC-VC41ZL5C-VMD-Q)","4MP Network IR Vandal Dome Camera - 50Mtr.
+
+1/2.7"" 4MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 4MP (2688 x 1520)@ 1-25/30FPS
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad Stream
+WDR(120dB), Day/Night(ICR), 2D NR, 3D NR, ROI, BLC, HLC, AWB, AGC
+2.7mm~13.5mm Motorized Lens
+IR Range of 50 Mtr.
+Support Starlight Technology
+Support Built-in Mic
+Micro SD Card, IP67, IK10, PoE
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",26550,15000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dual-light-bullet-camera-cp-unc-ta21l3c-lq.webp","CP PLUS 2MP DUAL LIGHT BULLET CAMERA (CP-UNC-TA21L3C-LQ)","2MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.8"" 2MP PS CMOS Image Sensor (0.9071 Centimeters)
+Max. 2MP (1920 ×1080)@25/30 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic
+3.6mm fixed Lens
+DWDR, Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",6045,3415,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-bullet-dual-light-cp-urc-tc24pl3c-l-0360.webp","CP PLUS 2MP BULLET DUAL LIGHT (CP-URC-TC24PL3C-L-0360)","Key Features
+ • 2.4MP CMOS sensor delivering Full HD (1080p) video at 25/30fps for clear surveillance footage
+
+ • Dual light technology: IR up to 30m + warm light up to 20m for color night vision
+
+ • Built-in microphone enables simultaneous audio and video recording
+
+ • 3.6mm fixed lens (optional 2.8mm/6mm) for flexible wide-angle coverage
+
+ • Supports multiple formats (CVI/TVI/AHD/CVBS) via single coaxial cable
+
+ • Advanced image enhancement: DWDR, 2D-DNR, BLC, HLC for better clarity
+
+ • IP67 weatherproof housing for reliable outdoor performance in harsh conditions","CPPlus","HD CAMERA",2204,1245,"5%",FALSE,"In stock",""
+"images/products/cp-plus-128ch-nvr-8-sata-cp-unr-4k5128r8-ei.webp","CP PLUS 128CH NVR 8 SATA (CP-UNR-4K5128R8-EI)","128Ch. 4K AI Network Video Recorder
+
+Up to 128 channel IP camera input
+Max. Decoding capability: 32 × 1080p@30fps
+Max. 512/512/512 Mbps Incoming/ Recording/ Outgoing bandwidth
+AI by Recorder: Supports 8 channel face detection and recognition, up to 20 face databases and 200,000 face images, 8 channel metadata, 24 Channel perimeter protection, 32 channel IMD+ (Intelligent motion detection)
+AI by Camera: Supports face detection and recognition, Perimeter protection, IMD+, Metadata, ANPR, Stereo analysis, Heat map, and people counting
+Support redundant power, RAID 0/1/5/6/10, N+M cluster
+Support 8 SATA HDDs up to 20TB Each, 4 USB Ports
+2 HDMI/ 2 VGA simultaneous video output
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",265500,150000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dome-camera-with-audio-cp-unc-da21l3c-q.webp","CP PLUS 2MP DOME CAMERA WITH AUDIO (CP-UNC-DA21L3C-Q)","2MP Network IR Dome Camera - 30Mtr.
+
+1/2.8"" 2MP PS CMOS Image Sensor (0.9071 centimeters)
+Max. 2MP (1920 × 1080)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic
+3.6mm Lens (2.8mm optional)
+DWDR, Day/Night (ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",5292,2990,"5%",FALSE,"In stock",""
+"images/products/cp-plus-indoor-pure-copper-305mtr-cp-eut-6tgl23-305.webp","CP PLUS INDOOR PURE COPPER 305MTR (CP-EUT-6TGL23-305)","Feature Specification
+Conduct Type Solid Bare Electrolytic Grade Copper
+Nominal Conductor Diameter 24 AWG
+Insulation Polyethylene (HDPE)
+Separator Each pair separated with a cross separator
+Pairing 2 insulated conductors twisted together
+Separator Material Polyethylene (HDPE)
+Outer Sheath FR PVC
+Colour of Sheath Grey
+Approximate OD 5.8mm ± 0.1mm
+Sheath Thickness .45mm ± .05mm
+Rip Cord Yes
+Sequential Marking Every Meter
+Characteristic Impedance 100 ±15Ω
+Nominal Velocity of
+Propagation
+69%
+Resistance Unbalance 5% Max
+Conductor Resistance ≤9.38/100m
+Capacitance Unbalance 330pF/100m
+Bending Radius < 4 x Cable Diameter at -20° ±1°C
+Delay Skew <45nS
+Mutual Capacitance <5.6nf/100m
+Packing 305 Mtrs
+Temperature Rating 0 to 50°C
+Storage Temperature -15 to 70°C
+Impedance 100±15% Ω
+Pulling Force 11.5Kg","CPPlus","CAT 6 CABLES",16268,9191,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4ch-dvr-2mp-2way-audio-support-cp-uvr-0401e1v-i.webp","CP PLUS 4CH DVR 2MP & 2WAY AUDIO SUPPORT (CP-UVR-0401E1V-I)","4Ch. 1080N Digital Video Recorder
+
+Supports HDCVI, AHD, TVI, CVBS and IP video input
+Supports up to 5 Channels IP camera input and each channel can be up to 2MP
+The incoming bandwidth reaches 20 Mbps
+4 Channels two-way talk over coaxial cable allows for seamless communication between the camera, Client and recorder
+4 Channels IMD+ for analog channels which allows the device to trigger accurate alarms for humans and vehicles
+4 Channels AI Coding saves on storage and bandwidth while maintaining the details of targets in videos
+Instastream, H.265, H.264+, H.264 dual stream video compression
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","HD DVR",7071,3995,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-32x-ptz-camera-cp-unp-e3241l18-daq.webp","CP PLUS 4MP 32X PTZ CAMERA (CP-UNP-E3241L18-DAQ)","4MP WDR 32x IR Network PTZ Camera- 180 Mtr.
+
+1/2.8” 4MP PS CMOS Image sensor (0.9071 centimeters)
+Max. 4MP (2688 x 1520)@1-25fps
+Instastream, H.265, H.264, H.264B, H.264H, MJPEG
+Support Triple stream
+Powerful 32x Optical and 16x Digital zoom
+WDR(120dB), 2D NR/ 3D NR, Day/Night(ICR), ROI, Defog, AWB, BLC
+Up to 300 Presets, 5 Scan, 8 Tour, 5 Pattern
+Support Starlight Technology
+IR Range of 180 Mtr..
+Support PoE, IP67, IK10
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",102067,57665,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8mp-verifocal-bullet-camera-cp-unc-tc81zl6c-vmd-lq.webp","CP PLUS 8MP VERIFOCAL BULLET CAMERA (CP-UNC-TC81ZL6C-VMD-LQ)","4 Channel 5MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.8MP Dual Light Bullet Camera - 60Mtr.
+
+1/2.7” 8MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 8MP (3840 × 2160)@20fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad Stream
+WDR(120dB), Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 60 Mtr., Warm Light Range of 60 Mtr.
+2.7 mm–13.5 mm Motorized Lens
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10 (optional)","CPPlus","IP CCTV",26550,15000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-ip-dome-cp-unc-vc41l5c-vmd-lq.webp","CP PLUS 4MP IP DOME (CP-UNC-VC41L5C-VMD-LQ)","4MP Dual Light Vandal Dome Camera - 50Mtr.
+
+1/2.7"" 4MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 4MP (2688 × 1520)/ (2560 × 1440)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad Stream
+WDR(120dB), Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+Support Built-in Mic
+IR Range of 50 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens (2.8mm Optional)
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10","CPPlus","IP CCTV",21240,12000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-dual-light-bullet-camera-50mtr-cp-unc-tc41l5c-vmd-lq.webp","CP PLUS 4MP DUAL LIGHT BULLET CAMERA 50MTR (CP-UNC-TC41L5C-VMD-LQ)","4MP Dual Light Bullet Camera - 50Mtr.
+
+1/2.7"" 4MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 4MP (2688 × 1520)@1–25/30fps/ (2560×1440)@1–25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad stream
+WDR(120dB), Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 50 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens (6mm Optional)
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10 (optional)","CPPlus","IP CCTV",13275,7500,"5%",FALSE,"In stock",""
+"images/products/cp-plus-32ch-dvr-2mp-2-sata-cp-uvr-3201e2-i.webp","CP PLUS 32CH DVR 2MP - 2 SATA (CP-UVR-3201E2-I)","32 Ch. 1080N/720P Digital Video Recorder
+
+Supports HDCVI/AHD/TVI/CVBS/IP video inputs
+Max 16 channels IP camera inputs, each channel up to 6MP; Max 128 Mbps incoming bandwidth.
+Supports 8-channel AI Instastream
+AI Instastream/ Instastream/ H.265 dual-stream video compression
+Up to 16 channels video stream (analog channel) SMD Plus
+Support 2 SATA HDDs up to 16TB Each, 2 USB Ports
+1 HDMI / 1 VGA / 1 TV Video output.
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro","CPPlus","HD DVR",42586,24060,"5%",FALSE,"In stock",""
+"images/products/cp-plus-3mp-indoor-pt-camera-cp-e31q.webp","CP PLUS 3MP INDOOR PT CAMERA (CP-E31Q)","3MP Wi-Fi PT Camera
+
+1/2.7” 3MP PS CMOS Image Sensor (0.9407 centimeters)
+4mm Lens
+H.265 Video Compression
+Wi-Fi Support
+Max. 20fps@3MP
+IR Distance of 15 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",4053,2290,"5%",FALSE,"In stock",""
+"images/cctv-wholesale.webp","CP PLUS 5MP IP 45X PTZ (CP-UNP-F4551L30-DPQ)","5MP WDR 45x IR Network PTZ Camera- 300 Mtr.
+
+1/2.8” 5MP PS CMOS Image sensor (0.9071 centimeter)
+Max. 5MP (2960 × 1668)@1–25fps
+Powerful 45x Optical and 16x Digital zoom
+AI Instastream, Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple Stream
+WDR(120dB), 2D NR/ 3D NR, Day/Night(ICR), ROI, Defog, AWB, AGC, BLC, HLC
+Up to 300 Presets, 5 Scan, 8 Tour, 5 Pattern
+Support Starlight Technology
+IR Range of 300 Mtr.
+Support PoE+, IP67, IK10
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",265500,150000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8mp-ip-colour-domecp-unc-da81l3c-lq.webp","CP PLUS 8MP IP COLOUR DOME(CP-UNC-DA81L3C-LQ)","8MP Dual Light Dome Camera - 30Mtr.
+
+1/2.7"" 8MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 8MP (3840 × 2160)@1–20 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+DWDR, Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens
+Support Built-in Mic, PoE, IP67
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",12868,7270,"5%",FALSE,"In stock",""
+"images/products/cpplus-16ch-dvr-5mp-cp-uvr-1601f1-ic.webp","CPPLUS 16CH DVR 5MP (CP-UVR-1601F1-IC)","16Ch. 5M-N Digital Video Recorder
+
+Supports HDCVI/AHD/TVI/CVBS/IP video inputs
+Max 24 channels IP camera inputs, each channel up to 6MP
+Supports Full-channel AI Instastream
+Instastream/H.265 dual-stream video compression
+Up to 16 channels video stream (analog channel) SMD Plus
+Support 1 SATA HDD up to 16TB Each, 2 USB Ports
+1 HDMI / 1 VGA Simultaneous Video Output
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro","CPPlus","HD DVR",25373,14335,"5%",FALSE,"In stock",""
+"images/products/cp-plus-32ch-nvr-8-sata-cp-unr-4k532r8-fi.webp","CP PLUS 32CH NVR 8 SATA (CP-UNR-4K532R8-FI)","32Ch. 4K AI Network Video Recorder
+
+Up to 32 Channel IP camera input
+Max. 384 Mbps incoming/recording/outgoing bandwidth
+Instastream, H.265, H.264+, H.264, MJPEG codec decoding
+AI by Recorder: 2 Channel face detection and recognition, up to 20 face databases and 20,000 face images, 4 Channel perimeter protection, 8 Channel IMD+
+Support N+M cluster
+Support 8 SATA HDDs up to 20TB Each, 4 USB Ports (2 front USB 2.0 ports, 2 rear USB 3.0 ports)
+AI by Camera: Face detection and recognition, Perimeter protection, IMD+, Metadata, ANPR, Stereo analysis, Heat map, People counting
+Support RAID 0/1/5/6/10
+Support Multi-brand network camera
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",88500,50000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-5mp-hybrid-bullet-camera-with-mic-cp-urc-tc51pl3c-l-0360-v2.webp","CP PLUS 5MP HYBRID BULLET CAMERA WITH MIC (CP-URC-TC51PL3C-L-0360-V2)","5MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.7” 5MP PS CMOS Image Sensor (0.9407 centimetres)
+DWDR, Day/Night (ICR), 2D DNR,BLC, HLC
+3.6mm fixed lens (2.8 mm, 6mm optional)
+IR Range of 30 Mtrs., Warm Light Range of 20 Mtrs., IP67
+4 Signals over 1 Coaxial Cable
+Support Built-in Mic","CPPlus","HD CAMERA",2894,1635,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-bullet-with-audio-cp-unc-ta41l3c-d-q.webp","CP PLUS 4MP BULLET WITH AUDIO (CP-UNC-TA41L3C-D-Q)","4MP IR Network Bullet Camera - 30Mtr.
+
+1/2.9” 4MP PS CMOS Image Sensor (0.8758 centimeters)
+Max. 4MP (2688 × 1520)@1-25/30fps/ (2560 × 1440)@1-25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+WDR(120dB), Day/Night(ICR), 3D NR, AWB, AGC, BLC, HLC, Digital watermarking
+3.6mm fixed Lens
+Support Built-in Mic
+IR Range of 30 Mtr., IP67, PoE","CPPlus","IP CCTV",6673,3770,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4g-pt-camera-ez-s35t.webp","CP PLUS 4G PT CAMERA (EZ-S35T)","3MP 4G PT Camera
+
+1/3” 3MP CMOS Image Sensor (0.84667 centimeter)
+4mm Lens
+H.265 Video Compression
+4G Support
+Max. 15fps@3MP
+IR Distance of 20-30 Mtr.
+White LED Distance of 15-20 Mtr.
+Works with Google Home","CPPlus","4G CCTV",5045,2850,"5%",FALSE,"In stock",""
+"images/cctv-wholesale.webp","CP PLUS 32CH NVR 4 SATA (CP-UNR-4K5324-FI)","32Ch. 4K AI Network Video Recorder
+
+Up to 32 channel IP camera input
+Max. 384 Mbps Incoming/ Recording/ Outgoing bandwidth
+Instastream, H.265, H.264+, H.264, MJPEG codec decoding
+AI by recorder: 2 Channel face detection and recognition, up to 20 face databases and 20,000 face images, 4 Channel perimeter protection, 8 Channel IMD+
+AI by camera: Face detection and recognition, Perimeter protection, IMD+, Metadata, ANPR, Stereo analysis, Heat map, People counting
+Support N+M cluster
+Support 4 SATA HDDs up to 20TB Each, 3 USB Ports (1 front USB 2.0 port, 2 rear USB 3.0 ports)
+2 HDMI/ 2 VGA Heterogeneous, simultaneous video output
+Support Multi-brand network cameras
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",61950,35000,"5%",FALSE,"In stock",""
+"images/cctv-wholesale.webp","CP PLUS 6MP IP VANDAL DOME CP-UNC-VC61L5C-VMD-LQ","6MP Dual Light Vandal Dome Camera - 50Mtr.
+
+1/2.7” 6MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 6MP (3288 × 1850)@20fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad stream
+Support Built-in Mic
+WDR(120dB), Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 50 Mtr., Warm Light Range of 30 Mtr.
+3.6 mm fixed Lens (2.8 mm optional)
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10","CPPlus","IP CCTV",17700,10000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-6mp-ip-bullet-cp-unc-tc61l5c-vmd-lq.webp","CP PLUS 6MP IP BULLET (CP-UNC-TC61L5C-VMD-LQ)","6MP Dual Light Bullet Camera - 50Mtr.
+
+1/2.7” 6MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 6MP (3288 × 1850)@1–20 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Quad Stream
+WDR(120dB), Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 50 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens
+Support Starlight Technology
+Micro SD Card, PoE, IP67, IK10 (optional)","CPPlus","IP CCTV",168150,95000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-5mp-colour-bullet-with-mic-cp-gpc-ta50pl2c-se-0360.webp","CP PLUS 5MP COLOUR BULLET WITH MIC (CP-GPC-TA50PL2C-SE-0360)","5MP Full-Color Guard+ Bullet Camera - 20Mtr.
+
+1/2.7"" 5MP PS CMOS Image Sensor (0.9407cm)
+Max 25/30fps@5MP
+DWDR, 2D-DNR, AWB, AGC, BLC, HLC
+3.6mm Fixed Lens
+Illumination Distance of 20 Mtrs, IP67
+Support Built-in Mic
+CVI/CVBS/AHD/TVI switchable","CPPlus","HD CAMERA",3204,1810,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dome-dual-light-cp-urc-dc24pl3c-l-0360.webp","CP PLUS 2MP DOME DUAL LIGHT (CP-URC-DC24PL3C-L-0360)","2.4MP Dual Light Dome Camera - 30Mtr.
+
+2.4MP PS CMOS Image Sensor
+Max. 2.4MP (1920 × 1080) @
+DWDR, Day/Night (ICR), 2D DNR, BLC, HLC
+3.6mm fixed lens (2.8 mm Optional)
+IR Range of 30 Mtr., Warm Light Range of 20 Mtr., Smart IR
+4 Signals over 1 C","CPPlus","HD CAMERA",2106,1190,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-bullet-with-2-way-audio-color-camera-cp-unc-ta21l3b-lq.webp","CP PLUS 2MP BULLET WITH 2 WAY AUDIO + COLOR CAMERA (CP-UNC-TA21L3B-LQ)","4 Channel 2MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.2MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.7"" 2MP PS CMOS Image Sensor (0.9407 Centimeters)
+Max. 2MP (1920 × 1080)@25/30fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+Support Built-in Mic, Built-in Speaker
+3.6mm fixed Lens
+DWDR, Day/Night(ICR), 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr., PoE, IP67","CPPlus","IP CCTV",6461,3650,"5%",FALSE,"In stock",""
+"images/products/cp-plus-128gb-memory-card-cp-nm128.webp","CP PLUS 128GB MEMORY CARD (CP-NM128)","Compatible with micro SDHC & micro SDXC supporting Host devices
+High Speed Data transfer
+Video Speed class 30
+Speed Grade UHS (U3)","CPPlus","MEMORY CARD",4676,2642,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-indoor-pt-camera-cp-e28-q.webp","CP PLUS 2MP INDOOR PT CAMERA( CP-E28-Q )","2MP Wi-Fi PT Camera
+
+1/3.2” 2MP PS CMOS Image Sensor (0.7937 centimeters)
+4mm Lens
+H.265 Video compression
+Wi-Fi Support
+Max. 20fps@2MP
+IR Distance of 15 Mtr.
+Works with Google Home","CPPlus","WIFI CCTV",3505,1980,"5%",FALSE,"In stock",""
+"images/products/cp-plus-31-standard-copper-cable-90-mtr-cp-ecc-90rs.webp","CP PLUS 3+1 STANDARD COPPER CABLE 90 MTR (CP-ECC-90RS)","Material	Annealed Bare Copper
+Diameter	.52 ± .02mm
+Cable Length	90 Mtrs.
+Diameter	0.100 ± .002mm (Power Core)
+Conductor	Annealed Bare Copper
+Insulation	LLDPE","CPPlus","CCTV CABLES",2359,1333,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8ch-4k-nvr-cp-unr-4k2081-v4.webp","CP PLUS 8CH 4K NVR (CP-UNR-4K2081-V4)","8 Ch. 4K Network Video Recorder
+
+Up to 8 channel IP camera input
+Instastream, H.265, H.264+, H.264, MJPEG Decoding
+Max. decoding capability: 6 × 1080p@30 fps
+Max. 80/80/60 Mbps incoming/recording/outgoing bandwidth
+AI by NVR: Supports 4 Channel IMD
+AI by Camera: Supports perimeter protection, IMD
+Support 1 SATA HDD up to 20TB Each, 2 USB Ports, 1 HDMI, 1 VGA, 1 RJ45
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",13204,7460,"5%",FALSE,"In stock",""
+"images/products/cp-plus-64ch-nvr-8-sata-cp-unr-4k564r8-fi.webp","CP PLUS 64CH NVR 8 SATA (CP-UNR-4K564R8-FI)","64Ch. AI Network Video Recorder
+
+Up to 64 Channel IP camera input
+Max. 384 Mbps incoming/recording/outgoing bandwidth
+Instastream, H.265, H.264+, H.264, MJPEG codec decoding
+AI by Recorder: 2 Channel face detection and recognition, up to 20 face databases and 20,000 face images, 4 Channel perimeter protection, 8 Channel SMD Plus
+AI by Camera: Face detection and recognition, Perimeter protection, SMD Plus, Metadata, ANPR, Stereo analysis, Heat map, People counting
+Support 8 SATA HDDs up to 20TB Each, 4 USB Ports (2 front USB 2.0 ports, 2 rear USB 3.0 ports)
+Support RAID 0/1/5/6/10
+Support N+M cluster
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",105395,59545,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4mp-ip-anpr-bullet-cp-unc-tt41l3-vmd-q.webp","CP PLUS 4MP IP ANPR BULLET CP-UNC-TT41L3-VMD-Q","4MP IR AI Enforcement Camera
+
+1/1.8"" 4 MP CMOS sensor (1.411 Centimeters)
+Max. 4MP (2688 × 1520)@30fps
+H.265, H.264M, H.264H, H.264B, MJPEG
+10 mm–50 mm Motorized Lens
+WDR(140dB), Day/Night(ICR), 3D NR, BLC, HLC
+IR Range of 30 Mtr., IP67, IK10","CPPlus","IP CCTV",132750,75000,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8port-gigabit-poe-switch-cp-anw-gpu8g2f2-96.webp","CP PLUS 8PORT GIGABIT POE SWITCH CP-ANW-GPU8G2F2-96)","8, 1000Mbps; RJ45 ports; Max. 30W Output of Single PoE Port
+Support IEEE802.3i/802.3u/802.3x/802.3af/802.3ab
+2, 1000Mbps; Transmission Distance: 0-100m","CPPlus","POE SWITCH",5930,3350,"5%",FALSE,"In stock",""
+"images/products/cp-plus-8mp-ip-colour-bullet-with-miccp-unc-ta81l3c-lq.webp","CP PLUS 8MP IP COLOUR BULLET WITH MIC(CP-UNC-TA81L3C-LQ)","8MP Dual Light Bullet Camera - 30Mtr.
+
+1/2.7” 8MP PS CMOS Image Sensor (0.9407 centimeters)
+Max. 8MP (3840 × 2160)@1–20 fps
+Instastream, H.265, H.264, H.264H, H.264B, MJPEG
+Support Triple stream
+DWDR, Day/Night(ICR), 2D NR, 3D NR, ROI, AWB, AGC, BLC, HLC, Digital watermarking
+IR Range of 30 Mtr., Warm Light Range of 30 Mtr.
+3.6mm Lens
+Support Built-in Mic, PoE, IP67
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite, EVMS Pro","CPPlus","IP CCTV",12974,7330,"5%",FALSE,"In stock",""
+"images/products/cp-plus-24-port-poe-giga-cp-anw-gpu24g2f2-n30.webp","CP PLUS 24 PORT POE GIGA (CP-ANW-GPU24G2F2-N30)","28 Ports Switch with 24 Gigabit PoE Ports & 2 Gigabit Uplink Ports + 2 SFP Ports
+
+24 port, 10/100/1000Mbps; RJ45 ports; Max. 30W Output of Single PoE Port
+Support IEEE802.3/802.3u/802.3ab/802.3z/802.3x
+2 Uplink port, 1000Mbps RJ45 ports and 2 Gigabit SFP ports
+Easy and safe installation: wall-mounting, desktop, Kensington security slot , Plug-and-play.
+Support ESD, Surge Protection
+Bult-in Power Supply","CPPlus","POE SWITCH",23895,13500,"5%",FALSE,"In stock",""
+"images/products/cp-plus-32ch-nvr-2-sata-cp-unr-4k4322-v4.webp","CP PLUS 32CH NVR 2 SATA (CP-UNR-4K4322-V4)","16 Channel 5MP Hybrid XVR. Supports AHD/TVI/CVI/CVBS/IP camera formats. H.265 video compression. 1 SATA port for HDD.32 Ch. 4K Network Video Recorder
+
+Up to 32 channel IP camera input
+Instastream, H.265, H.264 , H.264, MJPEG Decoding
+Max. decoding capability: 8 × 1080p@30 fps or 2 × 8 MP@30 fps
+Max. 160/128/60 Mbps Incoming/ Recording/ Outgoing Bandwidth
+Support 2 SATA HDDs up to 20TB Each, 2 USB Ports
+HDMI / VGA simultaneous video output
+AI by Camera: Face detection and recognition, Perimeter protection, SMD Plus, People counting, Stereo analysis and heat map
+Support Multi-brand network cameras
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",27647,15620,"5%",FALSE,"In stock",""
+"images/products/cp-plus-2mp-dome-camera-cp-urc-dc24pl3c-0360.webp","CP PLUS 2MP DOME CAMERA (CP-URC-DC24PL3C-0360)","CP-URC-DC24PL3C
+2.4MP IR Dome Camera - 30Mtr.
+
+2.4 MP PS CMOS Image Sensor
+Max. Outputs 2.4MP (1920 × 1080)@25/30fps
+DWDR, Day/Night (ICR), 2D DNR, BLC, HLC
+3.6mm Fixed Lens (2.8 mm Optional)
+IR Range of 30 Mtrs., Smart IR
+4 Signals over 1 Coaxial Cable
+Support Built-in Mic","CPPlus","HD CAMERA",1611,910,"5%",FALSE,"In stock",""
+"images/products/cp-plus-32ch-nvr-4-sata-unr-4k4324-fi.webp","CP PLUS 32CH NVR 4 SATA (UNR-4K4324-FI)","32 Ch. H.265 Network Video Recorder
+
+Up to 32 channel IP camera input
+AI disabled: 2-channel 16 MP@30 fps, AI enabled: 1-channel 16 MP@30 fps
+H.265, H.264, MJPEG
+Up to 16Mp Video Resolution
+AI disabled: 256 Mbps incoming, AI enabled: 180 Mbps incoming
+Support 4 SATA ports, up to 16TB each, 3 USB (1 front USB 2.0 port, 2 rear USB3.0 ports)
+1 HDMI, 1 VGA simultaneous video output
+Support ONVIF
+Support SMD Plus
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro Lite","CPPlus","NVR",58552,33080,"5%",FALSE,"In stock",""
+"images/products/cp-plus-4-port-giga-switch-cp-dnw-gpu4g2-48c.webp","CP PLUS 4 PORT GIGA SWITCH (CP-DNW-GPU4G2-48C)","4x Gigabit PoE with 2x Gigabit Uplink, Unmanaged
+
+4, 1000Mbps, RJ45 ports, Max. 30W Output of Single PoE Port
+Support IEEE 802.3, IEEE 802.3u, IEEE 802.3ab, IEEE 802.3z, IEEE802.3x
+Uplink Port: 2, 1000Mbps, Transmission Distance: Default: 0-100m
+PoE Power Budget: 48W","CPPlus","POE SWITCH",4018,2270,"5%",FALSE,"In stock",""
+"images/products/cp-plus-5mp-bullet-camera-with-mic-cp-usc-tc51pl3c.webp","CP PLUS 5MP BULLET CAMERA WITH MIC (CP-USC-TC51PL3C)","5MP IR Bullet Camera - 30Mtr.
+
+1/2.7” 5MP PS CMOS Image Sensor (0.9407 cm)
+Max. 25fps@5MP (16:9 video output)
+DWDR, Day/Night (ICR), 2D-DNR, AWB, AGC, BLC, HLC
+3.6mm fixed lens (2.8mm optional)
+IR Range of 30 Mtrs., IP67
+Support Built-in Mic
+OSD Menu, control over coaxial cable, 2D-DNR
+CVI/CVBS/AHD/TVI Switchable","CPPlus","HD CAMERA",2381,1345,"5%",FALSE,"In stock",""
+"images/products/cp-plus-16ch-nvr-2sata-cp-unr-4k2162-v2.webp","CP PLUS 16CH NVR 2SATA (CP-UNR-4K2162-V2)","16 Ch. Network Video Recorder
+
+Support up to 1ch@8MP/4ch@1080P decoding
+Instastream/H.265/ H.264+ dual codec decoding
+Up to 8MP resolution preview and playback
+Total Throughput 320Mbps
+Support 2 SATA HDDs up to 10TB Each, 2 USB ports(2.0)
+HDMI / VGA simultaneous video output
+Support Multi-brand network cameras
+ONVIF Version 2.4 conformance
+Mobile Software: iCMOB, gCMOB
+CMS Software: KVMS Pro","CPPlus","NVR",19240,10870,"5%",FALSE,"In stock",""
 "images/products/folla-decode.webp","FOLLA DECODE","High quality product","Folla","CASH COUNTING MACHINES",6166,4750,"5%",FALSE,"In stock",""
-"images/products/folla-fm-eco-500v.webp","FOLLA FM-ECO 500V","High quality product","Folla","CASH COUNTING MACHINES",11358,8750,"5%",FALSE,"In stock",""
-"images/products/folla-fm-i50pro.webp","FOLLA FM-I50PRO","High quality product","Folla","CASH COUNTING MACHINES",7788,6000,"5%",FALSE,"In stock",""
+"images/products/folla-fm-eco-500v.webp","FOLLA FM-ECO 500V","Based on the image and details provided on the page, here is the specification sheet for the currency counting machine:
+
+Spec Sheet: Folla FM-ECO 500V
+General Overview
+
+Machine Type: Floor Model
+
+Counting Type: Mix Note Counting with Fake Note Detection
+
+Detection & Sensor Technology
+
+UV Detection: Built-in UV Detecting Sensor
+
+Magnetic Detection: Built-in Magnetic Sensor
+
+Color Sensor Technology: Records the amount of light received for each of the 3 light types as an RGB ratio (color composition). This allows the sensor to differentiate between a variety of subtle color differences that cannot be detected by single-color light.
+
+Performance & Capacity
+
+Counting Speed: 1000 Notes/min
+
+Hopper Capacity: 500 Notes
+
+Stacker Capacity: 500 Notes
+
+Additional Features
+
+Batching: Supports Adding & Batching functions
+
+Maintenance: Designed for easier maintenance
+
+Verification: Promotes instant cash verification","Folla","CASH COUNTING MACHINES",11358,8750,"5%",FALSE,"In stock",""
+"images/products/folla-fm-i50pro.webp","FOLLA FM-I50PRO","General Overview
+
+Machine Type: Basic Heavy Duty Money Counting & Detecting Machine
+
+Counting Speed: 1100 notes per minute
+
+Continuous Operation: Up to 8 hours
+
+Supported Currencies: INR, USD, EURO
+
+Ideal For: Banks, Jewelleries, Industries, Petrol Pumps, Chit Funds, Educational Institutes, etc. (Large Scale Enterprises)
+
+Detection & Sensor Technology
+
+UV Sensor: Detects fake and paper notes.
+
+Magnetic Sensor: Scans multiple places on the banknote for detection.
+
+IR Sensor: Scans double sides of the banknote for image authentication.
+
+Performance & Capacity
+
+Hopper Space: Maximum 200 notes capacity in static status (allows continuous adding).
+
+Stacker Space: More than 200 notes (efficient for batching 100 notes).
+
+Key Features
+
+Display: Crystal Clear Big LCD Display (two parallel colored screens—one for data/information, one for image status).
+
+Advanced Calculation: ""Semi Value + Add"" feature calculates the value of each denomination.
+
+Functions: Batch, Add, Auto/Manual, and Automatic Start-up Diagnostic.
+
+Extras: Voice Reading, Software Upgradeable, supports Auxiliary External Display.
+
+Build & Maintenance: Solid steel frame and sturdy construction; designed for easy jam clearance and dust cleaning.
+
+Technical Specification Data
+
+Power Supply: AC 220V±10% 50HZ
+
+Power Consumption: ≤ 80W
+
+Size of Countable Notes: 50X110 - 90X190 mm
+
+Thickness of Countable Notes: 0.075 - 0.15 mm
+
+Net Weight: 5.3 Kg
+
+Gross Weight: 6.3 Kg
+
+Box Size: 345 X 305 X 235 mm","Folla","CASH COUNTING MACHINES",7788,6000,"5%",FALSE,"In stock",""
 "images/products/folla-fm-eco-007.webp","FOLLA FM-ECO 007","High quality product","Folla","CASH COUNTING MACHINES",6490,5000,"5%",FALSE,"In stock",""
 "images/products/folla-bpm-tycoon-ai.webp","FOLLA BPM-TYCOON-AI","High quality product","Folla","CASH COUNTING MACHINES",13954,10750,"5%",FALSE,"In stock",""
 "images/products/folla-fm-i10.webp","FOLLA FM-I10","High quality product","Folla","CASH COUNTING MACHINES",7139,5500,"5%",FALSE,"In stock",""
@@ -867,37 +2036,634 @@ European power supply adaptor included (please mark for other standards when you
 "images/products/yadon-8-port-full-giga-with-sfp-poe-switch-with-battery-y1g-8p2g2fb.webp","YADON 8 PORT FULL GIGA WITH SFP POE SWITCH WITH BATTERY (Y1G-8P2G2F/B)","High quality product","Yadon","POE SWITCH",10874,4850,"5%",FALSE,"In stock",""
 "images/products/yadon-4-port-poe-switch-with-batteryy100-4p2upb.webp","YADON 4 PORT POE SWITCH WITH BATTERY(Y100-4P2UP/B)","High quality product","Yadon","POE SWITCH",7287,3250,"5%",FALSE,"In stock",""
 "images/products/yadon-8-port-poe-switch-with-batteryy100-8p2upb.webp","YADON 8 PORT POE SWITCH WITH BATTERY(Y100-8P2UP/B)","High quality product","Yadon","POE SWITCH",8408,3750,"5%",FALSE,"In stock",""
-"images/products/prama-16ch-nvr-4-sata-pt-nras2b16-k4.webp","PRAMA 16CH NVR 4 SATA (PT-NRAS2B16-K4)","High quality product","PRAMA","NVR",39011,17400,"5%",FALSE,"In stock",""
-"images/products/prama-6mp-ip-bullet-with-2way-audio-pt-nc160d3-wnmsawd2.webp","PRAMA 6MP IP BULLET WITH 2WAY AUDIO (PT-NC160D3-WNMS/AW(D2)","High quality product","PRAMA","IP CCTV",13004,5800,"5%",FALSE,"In stock",""
-"images/products/prama-6mp-ip-dome-camera-with-2way-audiopt-nc-163d3-wnmsawd2-28mm.webp","PRAMA 6MP IP DOME CAMERA WITH 2WAY AUDIO(PT-NC-163D3-WNMS/AW(D2) 2.8mm","High quality product","PRAMA","IP CCTV",12892,5750,"5%",FALSE,"In stock",""
-"images/products/prama-8ch-1-sata-nvr-pt-nr2a08-q1.webp","PRAMA 8CH 1 SATA NVR (PT-NR2A08-Q1)","High quality product","PRAMA","NVR",11546,5150,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-varifocal-dome-camerapt-nc-147d3-wnram.webp","PRAMA 4MP IP VARIFOCAL DOME CAMERA(PT-NC-147D3-WNRAM)","High quality product","PRAMA","IP CCTV",16815,7500,"5%",FALSE,"In stock",""
-"images/products/prama-6mp-ip-bullet-camera-hybrid-with-mic-nc160d3-wnm.webp","PRAMA 6MP IP BULLET CAMERA HYBRID WITH MIC (NC160D3-WNM)","High quality product","PRAMA","IP CCTV",11098,4950,"5%",FALSE,"In stock",""
-"images/products/prama-8ch-nvr-pt-nr2a08-q2.webp","PRAMA 8CH NVR (PT-NR2A08-Q2)","High quality product","PRAMA","NVR",12959,5780,"5%",FALSE,"In stock",""
-"images/products/prama-4ch-nvr-pt-nr1a04-q1.webp","PRAMA 4CH NVR (PT-NR1A04-Q1)","High quality product","PRAMA","NVR",7399,3300,"5%",FALSE,"In stock",""
-"images/products/prama-2mp-ip-bullet-camera-pt-nc120d3-nd2.webp","PRAMA 2MP IP BULLET CAMERA (PT-NC120D3-N(D2)","High quality product","PRAMA","IP CCTV",6278,2800,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-hybrid-color-dome-pt-nc143d3-wnmd2.webp","PRAMA 4MP IP HYBRID COLOR DOME (PT-NC143D3-WNM(D2)","High quality product","PRAMA","IP CCTV",8520,3800,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-dome-camerapt-nc143d3-nd2-28mm.webp","PRAMA 4MP IP DOME CAMERA(PT-NC143D3-N(D2) 2.8mm","High quality product","PRAMA","IP CCTV",7937,3540,"5%",FALSE,"In stock",""
-"images/products/prama-16ch-nvr-2sata-pt-nras2a16-k2.webp","PRAMA 16CH NVR 2SATA (PT-NRAS2A16-K2)","High quality product","PRAMA","NVR",21635,9650,"5%",FALSE,"In stock",""
-"images/products/prama-2mp-ip-hybrid-color-dome-pt-nc123d3-wnmd2.webp","PRAMA 2MP IP HYBRID COLOR DOME (PT-NC123D3-WNM(D2)","High quality product","PRAMA","IP CCTV",6816,3040,"5%",FALSE,"In stock",""
-"images/products/prama-64ch-nvr-4sata-pt-nr2b64-k4.webp","PRAMA 64CH NVR 4SATA (PT-NR2B64-K4)","High quality product","PRAMA","NVR",65018,29000,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-bullet-2way-audio-pt-nc140d7-wnmsawd2.webp","PRAMA 4MP IP BULLET 2WAY AUDIO (PT-NC140D7-WNMS/AW(D2)","High quality product","PRAMA","IP CCTV",11771,5250,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-dome-2way-audio-pt-nc-143d7-wnmsawd2.webp","PRAMA 4MP IP DOME 2WAY AUDIO (PT-NC 143D7-WNMS/AW(D2)","High quality product","PRAMA","IP CCTV",11658,5200,"5%",FALSE,"In stock",""
-"images/products/prama-32ch-nvr-4-sata-pt-nras2b32-k4.webp","PRAMA 32CH NVR 4 SATA (PT-NRAS2B32-K4)","High quality product","PRAMA","NVR",47306,21100,"5%",FALSE,"In stock",""
-"images/products/prama-8ch-2-sata-nvr-pt-nras2a08-k2.webp","PRAMA 8CH 2 SATA NVR (PT-NRAS2A08-K2)","High quality product","PRAMA","NVR",18721,8350,"5%",FALSE,"In stock",""
-"images/products/prama-4ch-nvr-pt-nras2a04-k1.webp","PRAMA 4CH NVR (PT-NRAS2A04-K1)","High quality product","PRAMA","NVR",13676,6100,"5%",FALSE,"In stock",""
-"images/products/prama-4ch-nvr-1-sata-pt-nr2a04-q1.webp","PRAMA 4CH NVR 1 SATA (PT-NR2A04-Q1)","High quality product","PRAMA","NVR",9641,4300,"5%",FALSE,"In stock",""
-"images/products/prama-16ch-1-sata-nvr-pt-nras2a16-k1.webp","PRAMA 16CH 1 SATA NVR (PT-NRAS2A16-K1)","High quality product","PRAMA","NVR",17824,7950,"5%",FALSE,"In stock",""
-"images/products/prama-8ch-nvr-pt-nr1a08-q1.webp","PRAMA 8CH NVR (PT-NR1A08-Q1)","High quality product","PRAMA","NVR",8295,3700,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-hybrid-color-bullet-pt-nc140d3-wnmd2.webp","PRAMA 4MP IP HYBRID COLOR BULLET (PT-NC140D3-WNM(D2)","High quality product","PRAMA","IP CCTV",8654,3860,"5%",FALSE,"In stock",""
-"images/products/prama-6mp-ip-dome-camera-hybrid-with-mic-pt-nc163d3-wnmd2-28mm.webp","PRAMA 6MP IP DOME CAMERA HYBRID WITH MIC (PT-NC163D3-WNM(D2) 2.8mm","High quality product","PRAMA","IP CCTV",10986,4900,"5%",FALSE,"In stock",""
-"images/products/prama-8ch-1-sata-nvr-pt-nras2a08-k1.webp","PRAMA 8CH 1 SATA NVR (PT-NRAS2A08-K1)","High quality product","PRAMA","NVR",16030,7150,"5%",FALSE,"In stock",""
-"images/products/prama-4mp-ip-bullet-camera-pt-nc140d3-nd2-4mm.webp","PRAMA 4MP IP BULLET CAMERA (PT-NC140D3-N(D2) 4MM","High quality product","PRAMA","IP CCTV",8049,3590,"5%",FALSE,"In stock",""
-"images/products/prama-16ch-nvr-pt-nr2a16-q1.webp","PRAMA 16CH NVR (PT-NR2A16-Q1)","High quality product","PRAMA","NVR",12555,5600,"5%",FALSE,"In stock",""
-"images/products/prama-2mp-ip-dome-camera-pt-nc123d3-nd2.webp","PRAMA 2MP IP DOME CAMERA (PT-NC123D3-N(D2)","High quality product","PRAMA","IP CCTV",6166,2750,"5%",FALSE,"In stock",""
-"images/products/prama-16ch-2-sata-nvr-pt-nr2a16-q2.webp","PRAMA 16CH 2 SATA NVR (PT-NR2A16-Q2)","High quality product","PRAMA","NVR",15201,6780,"5%",FALSE,"In stock",""
-"images/products/prama-32ch-nvr-2-sata-pt-nras2a32-k2.webp","PRAMA 32CH NVR 2 SATA (PT-NRAS2A32-K2)","High quality product","PRAMA","NVR",26231,11700,"5%",FALSE,"In stock",""
-"images/products/prama-2mp-ip-hybrid-color-bulletpt-nc120d3-wnmd2.webp","PRAMA 2MP IP HYBRID COLOR BULLET(PT-NC120D3-WNM(D2)","High quality product","PRAMA","IP CCTV",6928,3090,"5%",FALSE,"In stock",""
+"images/products/prama-16ch-nvr-4-sata-pt-nras2b16-k4.webp","PRAMA 16CH NVR 4 SATA (PT-NRAS2B16-K4)","16 Channel AI NVR for CCTV Security Systems
+AI Face Recognition & Smart Motion Detection
+4K Ultra HD HDMI Output
+H.265+ Compression for Storage Saving
+Up to 4 HDD Support & 16 Channel Playback","PRAMA","NVR",39011,17400,"5%",FALSE,"In stock",""
+"images/products/prama-6mp-ip-bullet-with-2way-audio-pt-nc160d3-wnmsawd2.webp","PRAMA 6MP IP BULLET WITH 2WAY AUDIO (PT-NC160D3-WNMS/AW(D2)","High-Quality Imaging: 6MP resolution ensures superior image quality
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms
+Smart Dual Light: Advanced technology with long range
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+On-Board Storage: Supports storage up to 512 GB (SD card slot)
+Audio Security: Provide real-time security via built-in two-way audio
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",13004,5800,"5%",FALSE,"In stock",""
+"images/products/prama-6mp-ip-dome-camera-with-2way-audiopt-nc-163d3-wnmsawd2-28mm.webp","PRAMA 6MP IP DOME CAMERA WITH 2WAY AUDIO(PT-NC-163D3-WNMS/AW(D2) 2.8mm","High-Quality Imaging: 6MP resolution ensures superior image quality
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms
+Smart Dual Light: Advanced technology with long range
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+On-Board Storage: Supports storage up to 512 GB (SD card slot)
+Audio Security: Provide real-time security via built-in two-way audio
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",12892,5750,"5%",FALSE,"In stock",""
+"images/products/prama-8ch-1-sata-nvr-pt-nr2a08-q1.webp","PRAMA 8CH 1 SATA NVR (PT-NR2A08-Q1)","• 265+/H.265/H.264/H.264+ video formats
+• Connectable to the third-party network cameras
+• Up to 8 IP cameras can be connected
+• Recording at up to 8 MP resolution
+• Live view, storage, and playback of the connected camera at up to 8 MP resolution
+• HDMI and VGA independent outputs (PT-NR2A08-Q1 and PT-NR2A16-Q1)
+• HDMI Video output at up to 4K (3840 × 2160) resolution
+• 1 SATA interface connectable for recording and backup
+• 1 self-adaptive 10/100/1000 Mbps network interface.","PRAMA","NVR",11546,5150,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-varifocal-dome-camerapt-nc-147d3-wnram.webp","PRAMA 4MP IP VARIFOCAL DOME CAMERA(PT-NC-147D3-WNRAM)","Highlights
+
+High-Quality Imaging: 4MP resolution ensures superior image
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+Superior Imaging in Backlight: Clear imaging against strong back light due to 120 dB WDR technology
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+Audio Security: Built-in microphone for real-time audio security
+On-Board Storage: Supports storage up to 512 GB (SD card slot)
+Motorized Focus Lens: 2.8 to 12 mm motorized Varifocal lens for easy installation and monitoring
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",16815,7500,"5%",FALSE,"In stock",""
+"images/products/prama-6mp-ip-bullet-camera-hybrid-with-mic-nc160d3-wnm.webp","PRAMA 6MP IP BULLET CAMERA HYBRID WITH MIC (NC160D3-WNM)","Highlights
+High-Quality Imaging: 6MP resolution ensures superior image quality
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms
+Smart Dual Light: Advanced technology with long range
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+On-Board Storage: Supports storage up to 512 GB (SD card slot)
+Audio Security: Provide real-time security via built-in two-way audio
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",11098,4950,"5%",FALSE,"In stock",""
+"images/products/prama-8ch-nvr-pt-nr2a08-q2.webp","PRAMA 8CH NVR (PT-NR2A08-Q2)","Up to 8/16-ch IP camera inputs
+
+265+/H.265/H.264+/H.264 video formats
+
+Up to 1-ch@8 MP/5-ch@1080p decoding capacity
+
+Up to 80/160 Mbps incoming bandwidth","PRAMA","NVR",12959,5780,"5%",FALSE,"In stock",""
+"images/products/prama-4ch-nvr-pt-nr1a04-q1.webp","PRAMA 4CH NVR (PT-NR1A04-Q1)","H.265+/H.265/H.264/H.264+ video formats
+
+Connectable to the third-party network cameras
+
+Up to 16 IP cameras can be connected
+
+Recording at up to 8MP resolution
+
+Live view, storage, and playback of the connected camera at up to 8MP resolution HD Output
+
+HDMI/VGA simultaneous output (PT-N12A04-Q1)
+
+HDMI and VGA independent outputs (PT-NR1A08-Q1 and PT-NR1A16-Q1)
+
+HDMI Video output at up to 4K (3840 × 2160) resolution HD Storage
+
+1 SATA interface connectable for recording and backup
+
+H.265+ compression effectively reduces the storage space and costs by up to 75% HD","PRAMA","NVR",7399,3300,"5%",FALSE,"In stock",""
+"images/products/prama-2mp-ip-bullet-camera-pt-nc120d3-nd2.webp","PRAMA 2MP IP BULLET CAMERA (PT-NC120D3-N(D2)","NiceDeal Enterprises provide services on GeM Portal
+NiceDeal Enterprises Logo
+NiceDeal Enterprises
+Best Brands Deal at Best Price!
+Search...
+
+
+Log In
+☏ : 011-49060963
+
+0
+CCTV Video Analytics
+
+About Us
+Services
+
+Network IP CCTV
+
+Analog HD CCTV
+
+CCTV Accessories
+
+Acess Control
+
+Metal Detector
+
+IT & Networking
+
+EPABX
+VDP
+Contact Us
+Home / STQC | Prama 2MP IP Bullet Network CCTV Camera | PT-NC120D3-N(D2)
+
+STQC | Prama 2MP IP Bullet Network CCTV Camera | PT-NC120D3-N(D2)
+Prama STQC Approved 2MP Fixed Bullet IR PoE IP Camera – PT-NC120D3-N(D2)
+
+The Prama PT-NC120D3-N(D2) is a high-performance STQC Approved 2MP Fixed Bullet IP Camera designed for secure, reliable, and government-compliant surveillance. Certified by STQC (Standardisation Testing and Quality Certification), it meets stringent national security standards—making it the ideal choice for critical infrastructure, government projects, banking, defense, and smart city applications.
+
+Equipped with a 2MP Full HD CMOS sensor, the camera captures sharp and detailed video at 1920 × 1080 resolution. Its advanced Smart IR technology (up to 30m) ensures clear visibility even in complete darkness. With ultra-low light performance of 0.005 Lux (Color) and 0 Lux with IR (B/W), it delivers reliable round-the-clock monitoring.
+
+A key highlight of this model is its AI-powered Human and Vehicle Classification, which significantly reduces false alarms by focusing only on relevant security events. Combined with motion detection, tamper alarms, and privacy masking, it provides intelligent and proactive threat detection.
+
+Featuring H.265 compression, the camera optimizes bandwidth and storage without compromising video quality. PoE support allows easy installation by delivering both power and data through a single Ethernet cable.
+
+Key Features & Benefits
+
+STQC Approved: Government-grade certification for enhanced trust and compliance
+
+2MP Full HD Resolution (1920 × 1080): Crisp, clear imaging for detailed monitoring
+
+Smart IR up to 30m: Superior night vision performance
+
+AI Human & Vehicle Classification: Reduces false alarms and improves accuracy
+
+H.265 Compression: Saves bandwidth and storage costs
+
+IP67 Weatherproof Rating: Reliable protection in harsh outdoor environments
+
+PoE Support: Simplified installation with single-cable connectivity
+
+Advanced Imaging Modes: Digital WDR, BLC, HLC, and 3D DNR for clear visuals in all lighting conditions
+
+Enhanced Security: TLS 1.3 encryption, password protection, and ONVIF compliance
+
+Built with a durable metal and plastic housing, the PT-NC120D3-N(D2) is rugged, weather-resistant, and engineered for long-term stability. Whether deployed in enterprise offices, public surveillance networks, or government-certified environments, this camera delivers dependable, future-ready security performance.","PRAMA","IP CCTV",6278,2800,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-hybrid-color-dome-pt-nc143d3-wnmd2.webp","PRAMA 4MP IP HYBRID COLOR DOME (PT-NC143D3-WNM(D2)","PRAMA 4MP IP HYBRID COLOR DOME (PT-NC143D3-WNM(D2)","PRAMA","IP CCTV",8520,3800,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-dome-camerapt-nc143d3-nd2-28mm.webp","PRAMA 4MP IP DOME CAMERA(PT-NC143D3-N(D2) 2.8mm","High-Quality Imaging: 4MP resolution ensures superior image
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+IR Technology: Support Advance IR technology
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",7937,3540,"5%",FALSE,"In stock",""
+"images/products/prama-16ch-nvr-2sata-pt-nras2a16-k2.webp","PRAMA 16CH NVR 2SATA (PT-NRAS2A16-K2)","Up to 16-ch IP camera inputs
+
+H.265+/H.265/H.264+/H.264 video formats
+
+Up to 2-ch@12 MP or 3-ch@8 MP or 6-ch@4 MP or 12-ch@1080p decoding capacity
+
+Up to 160 Mbps incoming bandwidth
+
+Adopt PRAMA Aisense technology to minimize manual effort and security costs","PRAMA","NVR",21635,9650,"5%",FALSE,"In stock",""
+"images/products/prama-2mp-ip-hybrid-color-dome-pt-nc123d3-wnmd2.webp","PRAMA 2MP IP HYBRID COLOR DOME (PT-NC123D3-WNM(D2)","High-Quality Imaging: 2MP resolution ensures superior image quality.Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.Smart Dual Light: Advanced technology with long range.Audio Security: Built-in microphone for real-time audio security.Efficient Compression: Efficient H.265+ compression technology.Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",6816,3040,"5%",FALSE,"In stock",""
+"images/products/prama-64ch-nvr-4sata-pt-nr2b64-k4.webp","PRAMA 64CH NVR 4SATA (PT-NR2B64-K4)","Prama PT-NR2B64-K4 is a high-end 64-channel 4K Network Video Recorder (NVR) designed for large-scale and enterprise-level CCTV surveillance systems. It supports multiple high-resolution IP cameras with efficient H.265+ compression, ensuring optimized storage and bandwidth usage. With 4 SATA bays and high incoming bandwidth, this NVR is ideal for campuses, industries, smart city, and government surveillance projects.
+
+⚙️ Key Specifications
+
+🎥 Video Input & Recording
+
+Video Input: Up to 64 IP Cameras
+
+Recording Resolution: Up to 4K Ultra HD
+
+Compression: H.265+ / H.265 / H.264+ / H.264
+
+Decoding Capacity: Multi-channel decoding (depends on resolution)
+
+💾 Storage
+
+HDD Support: 4 × SATA HDD
+
+Max Capacity: Up to 10TB per HDD (approx.)
+
+Supports long-duration recording for large projects
+
+🌐 Network
+
+Incoming Bandwidth: High bandwidth (~160–256 Mbps approx.)
+
+Network Interface: 1 × RJ45 (Gigabit LAN)
+
+Protocols: TCP/IP, DHCP, DNS, DDNS, NTP, RTSP, etc.
+
+📺 Video Output
+
+HDMI Output: Up to 4K (3840×2160)
+
+VGA Output: Up to 1080P
+
+Dual display support
+
+🎞️ Playback
+
+Multi-channel playback (up to 16 channels typical)
+
+Smart search & playback
+
+🧠 Smart Features
+
+Motion Detection
+
+Smart Search
+
+Event Recording
+
+(AI features depend on series / firmware)
+
+🔌 Interface
+
+USB Ports: 2 × USB 2.0 / 3.0
+
+Alarm I/O: Available (model dependent)
+
+📱 Remote Access
+
+Mobile App: Prama App (Android / iOS)
+
+CMS Software: Supported
+
+Web Access: Yes
+
+⚡ Power
+
+Power Supply: 220V AC / 12V DC (model dependent)
+
+Power Consumption: <20W (without HDD)
+
+🌡️ Operating Conditions
+
+Temperature: -10°C to +55°C
+
+Suitable for continuous 24x7 operation
+
+✅ Key Features
+
+Supports 64 IP cameras (large projects)
+
+4K Ultra HD recording & output
+
+4 SATA HDD for high storage capacity
+
+Efficient H.265+ compression
+
+Ideal for enterprise & government surveillance
+
+📌 Applications
+
+Smart City Projects
+
+Industrial & Warehouse Surveillance
+
+Airports / Railway Stations
+
+Large Campuses & Institutions
+
+Government & High-Security Installations","PRAMA","NVR",65018,29000,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-bullet-2way-audio-pt-nc140d7-wnmsawd2.webp","PRAMA 4MP IP BULLET 2WAY AUDIO (PT-NC140D7-WNMS/AW(D2)","High-Quality Imaging: 4MP resolution ensures superior image
+Advanced Imaging: 24/7 colorful imaging
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+Smart Dual Light: advanced technology with long range
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+Enhanced Security: Provide real-time security via built-in two-way audio and strobe light alarm
+On-Board Storage: Supports storage up to 512 GB (SD card slot)
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",11771,5250,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-dome-2way-audio-pt-nc-143d7-wnmsawd2.webp","PRAMA 4MP IP DOME 2WAY AUDIO (PT-NC 143D7-WNMS/AW(D2)","High-Quality Imaging: 4MP resolution ensures superior image quality.
+• Advanced Imaging: 24/7 colorful imaging
+• Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+• Smart Dual Light: advanced technology with long range
+• Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+• Enhanced Security: Provide real-time security via built-in two-way audio and strobe light alarm
+• On-Board Storage: Supports storage up to 512 GB (SD card slot)
+• Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",11658,5200,"5%",FALSE,"In stock",""
+"images/products/prama-32ch-nvr-4-sata-pt-nras2b32-k4.webp","PRAMA 32CH NVR 4 SATA (PT-NRAS2B32-K4)","• Up to 32-ch IP camera inputs
+• H.265/H.264 video formats
+• Up to 2-ch@12 MP or 3-ch@8 MP or 6-ch@4 MP or 12-ch@1080p decoding capacity
+• Up to 256 Mbps incoming bandwidth
+• Adopt Prama Aisense technology to minimize manual effort and security costs
+
+Smart Function
+
+All channels support intelligent learning based Motion Detection
+1-ch facial recognition for video stream, or 4-ch facial recognition for face picture
+Smart search for the selected area in the video, and smart playback to improve the playback efficiency
+Professional and Reliability
+
+H.265+ compression effectively reduces the storage space by up to 75%
+Adopt stream over TLS encryption technology which provides more secure stream transmission service
+HD Video Output
+
+Provide independent HDMI and VGA outputs
+HDMI video output at up to 4K resolution
+Storage and Playback
+
+4 SATA interfaces for HDD connection (up to 10 TB capacity per HDD)
+16-ch synchronous playback
+Network & Ethernet Access
+
+2 self-adaptive 10/100/1000 Mbps Ethernet interfaces","PRAMA","NVR",47306,21100,"5%",FALSE,"In stock",""
+"images/products/prama-8ch-2-sata-nvr-pt-nras2a08-k2.webp","PRAMA 8CH 2 SATA NVR (PT-NRAS2A08-K2)","Up to 8-ch IP camera inputs
+
+H.265+/H.265/H.264+/H.264 video formats
+
+Up to 2-ch@12 MP or 3-ch@8 MP or 6-ch@4 MP or 12ch@1080P decoding capacity
+
+Up to 80 Mbps incoming bandwidth
+
+Adopt Prama Aisense technology to minimize manual effort and security costs","PRAMA","NVR",18721,8350,"5%",FALSE,"In stock",""
+"images/products/prama-4ch-nvr-pt-nras2a04-k1.webp","PRAMA 4CH NVR (PT-NRAS2A04-K1)","Up to 4-ch IP camera inputs
+H.265/H.264 video formats
+Up to 1-ch@12 MP or 2-ch@8 MP or 4-ch@4 MP decoding capacity
+Up to 40 Mbps incoming bandwidth
+Adopt Prama Aisense technology to minimize manual effort and security costs
+Smart Function
+All channels support intelligent learning based Motion Detection
+1-ch facial recognition for video stream, or 4-ch facial recognition for face picture
+Smart search for the selected area in the video, and smart playback to improve the playback efficiency
+Professional and Reliability
+265+ compression effectively reduces the storage space by up to 75%
+Adopt stream over TLS encryption technology which provides more secure stream transmission service
+HD Video Output
+Provide simultaneous HDMI and VGA outputs
+HDMI video output at up to 4K resolution
+Storage and Playback
+1 SATA interface for HDD connection (up to 10 TB capacity)
+4-ch synchronous playback
+Network & Ethernet Access
+1 self-adaptive 10/100/1000 Mbps Ethernet interface","PRAMA","NVR",13676,6100,"5%",FALSE,"In stock",""
+"images/products/prama-4ch-nvr-1-sata-pt-nr2a04-q1.webp","PRAMA 4CH NVR 1 SATA (PT-NR2A04-Q1)","• H.265/H.264 video formats
+• Connectable to the third-party network cameras
+• Up to 8 IP cameras can be connected
+• Recording at up to 8 MP resolution
+• Live view, storage, and playback of the connected camera at up to 8 MP resolution HD Output
+• HDMI/VGA simultaneous output (PT-NR2A04-Q1)
+• HDMI and VGA independent outputs (PT-NR2A08-Q1 and PT-NR2A16-Q1)
+• HDMI Video output at up to 4K (3840 × 2160) resolution HD Storage
+• 1 SATA interface connectable for recording and backup
+• H.265+ compression effectively reduces the storage space and costs by up to 75% HD Transmission.","PRAMA","NVR",9641,4300,"5%",FALSE,"In stock",""
+"images/products/prama-16ch-1-sata-nvr-pt-nras2a16-k1.webp","PRAMA 16CH 1 SATA NVR (PT-NRAS2A16-K1)","Up to 16-ch IP camera inputs
+H.265/H.264 video formats
+Up to 1-ch@12 MP or 2-ch@8 MP or 4-ch@4 MP or 8ch@1080P decoding capacity
+Up to 160 Mbps incoming bandwidth
+Adopt Prama Aisense technology to minimize manual effort and security costs
+Smart Function
+All channels support intelligent learning based Motion Detection
+1-ch facial recognition for video stream, or 4-ch facial recognition for face picture
+Smart search for the selected area in the video, and smart playback to improve the playback efficiency
+Professional and Reliability
+265+ compression effectively reduces the storage space by up to 75%
+Adopt stream over TLS encryption technology which provides more secure stream transmission service
+HD Video Output
+Provide independent HDMI and VGA outputs
+HDMI video output at up to 4K resolution
+Storage and Playback
+1 SATA interface for HDD connection (up to 10 TB capacity)
+16-ch synchronous playback
+Network & Ethernet Access
+1 self-adaptive 10/100/1000 Mbps Ethernet interface","PRAMA","NVR",17824,7950,"5%",FALSE,"In stock",""
+"images/products/prama-8ch-nvr-pt-nr1a08-q1.webp","PRAMA 8CH NVR (PT-NR1A08-Q1)","8 Channel 4MP NVR
+H.265+ Compression
+Full HD HDMI & VGA Output
+Smart Detection Features
+Up to 6TB Storage Support","PRAMA","NVR",8295,3700,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-hybrid-color-bullet-pt-nc140d3-wnmd2.webp","PRAMA 4MP IP HYBRID COLOR BULLET (PT-NC140D3-WNM(D2)","Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+Audio Security: Built-in microphone for real-time audio security
+High-Quality Imaging: 4MP resolution ensures superior image
+Smart Dual Light: advanced technology with long range
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",8654,3860,"5%",FALSE,"In stock",""
+"images/products/prama-6mp-ip-dome-camera-hybrid-with-mic-pt-nc163d3-wnmd2-28mm.webp","PRAMA 6MP IP DOME CAMERA HYBRID WITH MIC (PT-NC163D3-WNM(D2) 2.8mm","The Prama PT-NC163D3-WNM(D2) is a professional-grade 6MP IP Dome CCTV Camera designed for high-clarity surveillance in both indoor and outdoor environments. It features Smart Dual Light, AI-based Human & Vehicle Classification, Built-in Microphone, Wide Dynamic Range, and IP67 weather protection, making it ideal for homes, offices, factories, shops, parking areas, and perimeter security.
+
+Key Features
+
+6MP Ultra-HD Resolution (3200 × 1800) for crystal-clear video.
+
+Smart Dual Light (IR + White Light) for excellent night vision and colour video at night when needed.
+
+AI Human & Vehicle Classification reduces false motion alerts.
+
+Built-in High-Quality Microphone for real-time audio recording.
+
+H.265+/H.265/H.264+/H.264 Video Compression saves storage and bandwidth.
+
+IP67 Dust & Water Protection suitable for outdoor use.
+
+Wide Angle View with 2.8mm or 4mm fixed lens options.
+
+120dB True WDR for clear images in challenging lighting.
+
+PoE Support (IEEE 802.3af Class 3) for easy installation using a single LAN cable.
+
+Smart Motion Detection, video tampering alarm, and privacy masking.
+
+ONVIF compatibility ensures support with all major NVR brands.
+
+Technical Specifications
+
+Camera
+
+Image Sensor: 1/2.4"" Progressive Scan CMOS
+
+Maximum Resolution: 3200 × 1800
+
+Shutter Speed: 1/3s to 1/100,000s
+
+Minimum Illumination:
+
+0.005 Lux (Colour, AGC ON)
+
+0 Lux (IR ON)
+
+Day/Night: Auto (IR Cut Filter)
+
+Lens
+
+Lens Options: 2.8mm / 4mm
+
+Field of View (2.8mm):
+
+Horizontal: ~105°
+
+Vertical: ~55°
+
+Diagonal: ~127°
+
+Adjustment Range:
+
+Pan: 0° to 360°
+
+Tilt: 0° to 75°
+
+Rotate: 0° to 360°
+
+Illuminator
+
+Type: Smart Dual Light (IR + White Light)
+
+Range: Up to 30 meters
+
+IR Wavelength: 850 nm
+
+Video
+
+Main Stream: Up to 6MP @ 20fps
+
+Sub Stream: Up to 720p @ 20fps
+
+Video Compression: H.265+, H.265, H.264+, H.264
+
+Bitrate: 32 Kbps to 16 Mbps
+
+Image Enhancement
+
+WDR: 120dB
+
+3D DNR, BLC, HLC
+
+Adjustable: Brightness, Contrast, Saturation, Sharpness, Gain, White Balance
+
+Privacy Masking: Up to 4 zones
+
+Audio
+
+Built-in Microphone
+
+Audio Compression: G.711, G.722.1, G.726, MP2L2, PCM, AAC-LC
+
+Sampling Rate: 8kHz / 16kHz
+
+Network
+
+Interface: 1 × RJ45 (10/100 Mbps)
+
+Supported Protocols: TCP/IP, DHCP, DNS, HTTP, HTTPS, RTSP, NTP, UDP, IPv6, SMTP, IGMP, QoS
+
+ONVIF Profile S/T
+
+Smart Features
+
+Human & Vehicle Classification
+
+Motion Detection
+
+Video Tampering Alert
+
+Snapshot & Email Notification
+
+General
+
+Power: 12V DC ±25% or PoE (IEEE 802.3af Class 3)
+
+Power Consumption: Max 6.5W
+
+Protection: IP67 Weatherproof
+
+Material: Metal + Plastic
+
+Dimensions: Ø112mm × 82mm
+
+Weight: Approx. 340g (560g with packaging)
+
+Operating Temperature: –30°C to 60°C
+
+Humidity: ≤ 95% (non-condensing)
+
+Package Contents
+
+Prama PT-NC163D3-WNM(D2) Camera
+
+Mounting Screws
+
+Installation Guide
+
+Ideal Applications
+
+Homes & Apartments
+
+Shops & Showrooms
+
+Schools & Institutes
+
+Warehouses & Factories
+
+Parking Areas
+
+Outdoor Perimeter Security
+
+Offices & Commercial Buildings","PRAMA","IP CCTV",10986,4900,"5%",FALSE,"In stock",""
+"images/products/prama-8ch-1-sata-nvr-pt-nras2a08-k1.webp","PRAMA 8CH 1 SATA NVR (PT-NRAS2A08-K1)","Up to 8-ch IP camera inputs
+H.265/H.264 video formats
+Up to 1-ch@12 MP or 2-ch@8 MP or 4-ch@4 MP or 8ch@1080P decoding capacity
+Up to 80 Mbps incoming bandwidth
+Adopt Prama Aisense technology to minimize manual effort and security costs
+Smart Function
+All channels support intelligent learning based Motion Detection
+1-ch facial recognition for video stream, or 4-ch facial recognition for face picture
+Smart search for the selected area in the video, and smart playback to improve the playback efficiency
+Professional and Reliability
+265+ compression effectively reduces the storage space by up to 75%
+Adopt stream over TLS encryption technology which provides more secure stream transmission service
+HD Video Output
+Provide independent HDMI and VGA outputs
+HDMI video output at up to 4K resolution
+Storage and Playback
+1 SATA interface for HDD connection (up to 10 TB capacity)
+8-ch synchronous playback
+Network & Ethernet Access
+1 self-adaptive 10/100/1000 Mbps Ethernet interface","PRAMA","NVR",16030,7150,"5%",FALSE,"In stock",""
+"images/products/prama-4mp-ip-bullet-camera-pt-nc140d3-nd2-4mm.webp","PRAMA 4MP IP BULLET CAMERA (PT-NC140D3-N(D2) 4MM","Highlights
+High-Quality Imaging: 4MP resolution ensures superior image
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+IR Technology: Support Advance IR technology
+Efficient Compression: Efficient H.265 compression technology saves bandwidth and storage
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",8049,3590,"5%",FALSE,"In stock",""
+"images/products/prama-16ch-nvr-pt-nr2a16-q1.webp","PRAMA 16CH NVR (PT-NR2A16-Q1)","• H.265/H.264 video formats
+• Connectable to the third-party network cameras
+• Up to 16 IP cameras can be connected
+• Recording at up to 8 MP resolution
+• Live view, storage, and playback of the connected camera at up to 8 MP resolution.
+• HDMI and VGA independent outputs (PT-NR2A16-Q1)
+• 1 SATA interface connectable for recording and backup
+• 265+ compression effectively reduces the storage space and costs by up to 75%","PRAMA","NVR",12555,5600,"5%",FALSE,"In stock",""
+"images/products/prama-2mp-ip-dome-camera-pt-nc123d3-nd2.webp","PRAMA 2MP IP DOME CAMERA (PT-NC123D3-N(D2)","2MP Fixed Turret Network Camera
+
+High-Quality Imaging: 2MP resolution ensures superior image quality.
+Target Classification: Focus on human and vehicle classification based on advanced intelligent algorithms.
+IR Technology: Support Advance IR technology
+Efficient Compression: Efficient H.265+ compression technology saves bandwidth and storage
+Durable Design: Water and dust resistant (IP67)","PRAMA","IP CCTV",6166,2750,"5%",FALSE,"In stock",""
+"images/products/prama-16ch-2-sata-nvr-pt-nr2a16-q2.webp","PRAMA 16CH 2 SATA NVR (PT-NR2A16-Q2)","16-Channel 8MP NVR
+H.265+ Video Compression
+4K HDMI & VGA Output
+Dual SATA Storage
+Smart VCA & Remote Access","PRAMA","NVR",15201,6780,"5%",FALSE,"In stock",""
+"images/products/prama-32ch-nvr-2-sata-pt-nras2a32-k2.webp","PRAMA 32CH NVR 2 SATA (PT-NRAS2A32-K2)","Up to 32-ch IP camera inputs
+H.265/H.264 video formats
+Up to 2-ch@12 MP or 3-ch@8 MP or 6-ch@4 MP or 12-ch@1080p decoding capacity
+Up to 256 Mbps incoming bandwidth Adopt PRAMA Aisense technology to minimize manual effort and security costs","PRAMA","NVR",26231,11700,"5%",FALSE,"In stock",""
+"images/products/prama-2mp-ip-hybrid-color-bulletpt-nc120d3-wnmd2.webp","PRAMA 2MP IP HYBRID COLOR BULLET(PT-NC120D3-WNM(D2)","The Prama PT-NC120D3-WNM(D2) is a high-performance 2MP Fixed Bullet IP Camera, designed for clear, intelligent, and reliable 24/7 surveillance. With advanced Smart Dual Light technology, built-in audio capture, and rugged IP67 weatherproof housing, this camera is ideal for commercial buildings, outdoor perimeters, residential societies, retail stores, warehouses, and industrial sites.
+
+Powered by a 1/2.9"" Progressive Scan CMOS sensor, it delivers crisp Full HD 1920 × 1080 video at up to 30 fps, offering detailed and smooth surveillance footage. Its ultra-low light performance (0.005 Lux Color and 0 Lux with IR) ensures consistent imaging day and night.
+
+The camera’s Smart Dual Light system — combining both IR and white light — intelligently activates white light when a human or vehicle is detected, enabling full-color monitoring during important security events.
+
+Equipped with AI-based Human & Vehicle Detection, H.265+ compression, and a built-in microphone, the PT-NC120D3-WNM(D2)** offers efficient, accurate, and intelligent surveillance with minimized false alarms and reduced storage requirements.
+
+Key Features & Benefits
+
+2MP Full HD (1920 × 1080): Sharp, detailed imaging
+
+Smart Dual Light (IR + White Light):
+
+Up to 30m night vision
+
+Full-color capture on motion detection
+
+Built-in Microphone: Real-time audio monitoring
+
+AI Human & Vehicle Detection: Reduces false alerts
+
+H.265+ / H.264+ Compression: Lower bandwidth and storage usage
+
+IP67 Weatherproof Housing: Reliable for outdoor conditions
+
+Lens Options:
+
+2.8mm (wide ~103° view)
+
+4mm (focused ~83° view)
+
+PoE Support (IEEE 802.3af) + 12V DC: Flexible installation
+
+Durable Metal & Plastic Body: Long-term outdoor performance
+
+Technical Specifications (Summary)
+
+Feature	Specification
+Model	PT-NC120D3-WNM(D2)
+Resolution	2MP (1920 × 1080)
+Sensor	1/2.9"" Progressive Scan CMOS
+Min. Illumination	0.005 Lux (Color), 0 Lux with IR
+Night Vision	Up to 30m (Smart Dual Light)
+Lens Options	2.8mm / 4mm
+Audio	Built-in Microphone
+Compression	H.265+, H.264+
+Protection Rating	IP67
+Power	12V DC ±25% / PoE (802.3af)
+Body Material	Metal + Plastic
+The PT-NC120D3-WNM(D2) is an advanced, durable, and smart surveillance solution—perfect for outdoor installations that require clear video, intelligent detection, and reliable performance.","PRAMA","IP CCTV",6928,3090,"5%",FALSE,"In stock",""
 "images/products/elco-6u-rack-500d.webp","ELCO 6U RACK (500D)","High quality product","ELCO","CCTV RACK",5900,2000,"5%",FALSE,"In stock",""
 "images/products/elco-6u-rack-350d.webp","ELCO 6U RACK (350D)","High quality product","ELCO","CCTV RACK",4130,1400,"5%",FALSE,"In stock",""
 "images/products/elco-4u-rack-350d.webp","ELCO 4U RACK (350D)","High quality product","ELCO","CCTV RACK",2876,975,"5%",FALSE,"In stock",""
