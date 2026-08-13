@@ -13,28 +13,16 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script>
-    (function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const name = urlParams.get('name') || urlParams.get('brand');
-      const isDynamicPage = window.location.pathname.endsWith('brand.html') || window.location.pathname.endsWith('brand');
-      if (name && isDynamicPage) {
-        if (name.toLowerCase() === 'all brands') {
-          return;
-        }
-        const slug = name.toString().toLowerCase().trim()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w\-]+/g, '')
-          .replace(/\-\-+/g, '-')
-          .replace(/^-+/, '')
-          .replace(/-+$/, '');
-        window.location.replace('brands/' + slug + '.html');
-      }
-    })();
-  </script>
-  <title id="brandPageTitle">Gopix CCTV Security Products | AK Infotech</title>
-  <meta name="description" id="brandPageMeta" content="Shop 100% genuine Gopix CCTV cameras, DVR/NVR, surveillance systems, and accessories at wholesale &amp; retail prices at AK Infotech Chennai.">
-  <link rel="canonical" href="https://shop.akinfotechcctv.in/brands/gopix.html">
+  <title>HIKVISION 8CH REAL 5MP DVR iDS-7208HUHI-M1/T | AK Infotech Security Store</title>
+  <meta name="description" content="8-ch 5MP 1U H.265 AcuSense DVR
+8 channels and 1 HDD 1U AcuSense DVR
+Support 4-ch advanced model Perimeter Protection based on Deep Learning algorithm
+Encoding ability up to 4K/8MP @ 8fps; 3K/5MP @12fps
+Up to 16 channels IP camera inputs, each channel up to 8MP
+5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)
+Support All channels Motion Detection Technology
+Support All channels HDTVI Two-Way Audio Technology">
+  <link rel="canonical" href="https://shop.akinfotechcctv.in/product/hikvision-8ch-real-5mp-dvr-ids-7208huhi-m1t.html">
 
   <!-- Favicon -->
   <link rel="icon" type="image/webp" href="../images/logo.webp">
@@ -43,72 +31,99 @@
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    .brand-hero-section {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #ffffff;
-      padding: 32px 20px;
-      border-radius: var(--radius-lg);
-      margin: 16px 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      box-shadow: var(--shadow-md);
-      border: 1px solid #334155;
+    .product-detail-container {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
     }
-    .brand-hero-info {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .brand-hero-logo {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-    }
-    .brand-hero-title {
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }
-    .brand-hero-sub {
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
-    .brand-badge-pill {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 0.82rem;
-    }
-    .breadcrumb-wrap {
-      padding: 12px 20px 0;
+    .breadcrumb {
       font-size: 0.85rem;
       color: var(--text-muted);
+      margin-bottom: 20px;
     }
-    .breadcrumb-wrap a {
+    .breadcrumb a {
       color: var(--accent-cyan);
-      text-decoration: none;
       font-weight: 600;
     }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .gallery-box {
+      width: 100%;
+      height: 340px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    .specs-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.88rem;
+    }
+    .specs-table td:first-child {
+      font-weight: 700;
+      color: var(--text-muted);
+      width: 35%;
+    }
+    .btn-buy-now {
+      background: linear-gradient(135deg, var(--accent-orange), #c2410c);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
+    }
+    .btn-whatsapp-quote {
+      background: #25d366;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    @media (min-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 440px 1fr;
+      }
+      .gallery-box {
+        height: 420px;
+      }
+    }
   </style>
-<script>window.staticBrandData = {"id":"brand-4","name":"Gopix","imageLink":"images/brands/gopix.webp"};</script>
+<script>window.staticProductData = {"id":"prod-hikvision-8ch-real-5mp-dvr-ids-7208huhi-m1t","photoLink":"images/products/hikvision-8ch-real-5mp-dvr-ids-7208huhi-m1t.webp","productName":"HIKVISION 8CH REAL 5MP DVR iDS-7208HUHI-M1/T","productSpec":"8-ch 5MP 1U H.265 AcuSense DVR\r\n8 channels and 1 HDD 1U AcuSense DVR\r\nSupport 4-ch advanced model Perimeter Protection based on Deep Learning algorithm\r\nEncoding ability up to 4K/8MP @ 8fps; 3K/5MP @12fps\r\nUp to 16 channels IP camera inputs, each channel up to 8MP\r\n5 signals input adaptively (HDTVI/AHD/CVI/CVBS/IP)\r\nSupport All channels Motion Detection Technology\r\nSupport All channels HDTVI Two-Way Audio Technology","brand":"Hikvision","category":"HD DVR","price":16634,"sellingPrice":8000,"baseSellingPrice":7620,"dealerMarginPercent":5,"inStock":true,"isCombo":false,"imageUrl":"images/products/hikvision-8ch-real-5mp-dvr-ids-7208huhi-m1t.webp","image":"images/products/hikvision-8ch-real-5mp-dvr-ids-7208huhi-m1t.webp"};</script>
 </head>
 <body>
 
   <!-- TOP UTILITY STRIP -->
   <div class="announcement-bar">
     <div class="announcement-left">
-      <span class="badge-glow">AK INFOTECH OFFICIAL BRANDS</span>
+      <span class="badge-glow">AK INFOTECH DEALS</span>
       <span>⚡ Cash on Delivery (COD): Pay Small Advance & Remaining Balance at Doorstep!</span>
     </div>
     <div class="announcement-right">
@@ -117,19 +132,13 @@
     </div>
   </div>
 
-  <!-- MAIN HEADER / NAVBAR -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-container">
       <a href="../index.html" class="logo">
-        <img src="../images/logo.webp" alt="AK Infotech Logo" class="logo-img">
+        <img src="../images/logo.webp" alt="AK Infotech Logo" class="logo-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9';">
         <span>AK INFOTECH</span>
       </a>
-
-      <!-- SEARCH BOX -->
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="brandSearchInput" placeholder="Search within this brand...">
-      </div>
 
       <!-- NAV ACTIONS -->
       <div class="nav-actions" style="display: flex; align-items: center; gap: 12px;">
@@ -156,52 +165,23 @@
     </div>
   </nav>
 
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb-wrap">
-    <a href="../index.html">Home</a> &gt; <span>Brands</span> &gt; <strong id="breadcrumbBrandName" style="color: var(--text-dark);">Gopix</strong>
-  </div>
+  <!-- PRODUCT DETAIL SECTION -->
+  <main class="product-detail-container">
+    <div class="breadcrumb" id="productBreadcrumb">
+      <a href="../index.html">Home</a> &gt; <span id="bcCategory">Product</span> &gt; <span id="bcName">Loading...</span>
+    </div>
 
-  <!-- DYNAMIC BRAND HERO BANNER -->
-  <section class="brand-hero-section">
-    <div class="brand-hero-info">
-      <img id="brandHeroLogo" src="../images/logo.webp" alt="Brand Logo" class="brand-hero-logo" onerror="this.src='images/logo.webp'">
-      <div>
-        <h1 class="brand-hero-title" id="brandHeroName">Gopix Products</h1>
-        <p class="brand-hero-sub" id="brandHeroSub">Authorized Wholesale & Retail Gopix Security Equipment</p>
+    <div class="detail-grid" id="productDetailGrid">
+      <div style="text-align: center; padding: 60px; color: var(--text-muted);">
+        Loading product details...
       </div>
     </div>
-    <div class="brand-badge-pill" id="brandItemCountBadge">
-      📦 0 Products Available
-    </div>
-  </section>
 
-  <!-- CATEGORIES AVAILABLE FOR THIS BRAND SECTION -->
-  <section id="brandCategoriesSection" style="margin: 12px 10px; padding: 16px 12px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: none;">
-    <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-      <span>📂</span> Categories Available in <span id="brandCategoriesTitleName">Brand</span>
-    </h3>
-    <div id="brandCategoriesGrid" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin;">
-      <!-- Category Chips / Cards rendered dynamically by JS -->
-    </div>
-  </section>
-
-  <!-- BRAND PRODUCTS CATALOG -->
-  <main class="catalog-section">
-    <div class="section-title-row" style="margin-bottom: 16px;">
-      <h2 class="section-title">
-        <span class="title-badge">📦</span> <span id="brandCatalogTitle">Brand Catalog</span>
-      </h2>
-      <a href="../index.html" class="pill-btn">
-        ← View All Brands
-      </a>
-    </div>
-
-    <div class="product-grid" id="brandProductGrid">
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
-        Loading brand catalog...
-      </div>
-    </div>
-    <div class="pagination-bar" id="brandPaginationBar" style="display: none; justify-content: center; align-items: center; gap: 8px; margin: 32px 0 16px; flex-wrap: wrap;"></div>
+    <!-- RELATED PRODUCTS SECTION -->
+    <section style="margin-top: 40px;">
+      <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 16px; color: var(--text-dark);">📦 Related Security Products</h2>
+      <div class="product-grid" id="relatedProductsGrid"></div>
+    </section>
   </main>
 
   <!-- MOBILE / BOTTOM NAVIGATION BAR -->
@@ -214,7 +194,7 @@
       <div class="mobile-nav-icon">📁</div>
       <span>Categories</span>
     </a>
-    <a href="../brand.html" class="mobile-nav-item active">
+    <a href="../brand.html" class="mobile-nav-item">
       <div class="mobile-nav-icon">🏷️</div>
       <span>Brands</span>
     </a>
@@ -224,7 +204,7 @@
     </a>
   </nav>
 
-  <script type="module" src="../js/brand.js"></script>
+  <script type="module" src="../js/product.js"></script>
   <script>
     function toggleDesktopNavMenu() {
       const menu = document.getElementById('desktopNavMenu');
