@@ -79,14 +79,15 @@
     "photoLink": "images/products/qubo-wireless-gps-tracker-htbv11nz12.webp",
     "productName": "QUBO WIRELESS GPS TRACKER (HTBV11NZ12)",
     "productSpec": "High quality product",
-    "brand": "Generic",
-    "category": "General",
-    "price": 0,
-    "sellingPrice": 0,
-    "baseSellingPrice": 0,
-    "dealerMarginPercent": 0,
+    "brand": "Qubo",
+    "category": "GPS",
+    "price": 9990,
+    "sellingPrice": 4200,
+    "baseSellingPrice": 4000,
+    "dealerMarginPercent": 5,
     "inStock": true,
-    "isCombo": false
+    "isCombo": false,
+    "isFeatured": false
   },
   {
     "id": "prod-qubo-instaview-video-door-phone",
@@ -3716,8 +3717,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/hikvision-8ch-k1-nvr-ds-7608nxi-k1.webp",
-    "image": "images/products/hikvision-8ch-k1-nvr-ds-7608nxi-k1.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-16ch-k1-nvr-ds-7616nxi-k1",
@@ -3732,8 +3732,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/hikvision-16ch-k1-nvr-ds-7616nxi-k1.webp",
-    "image": "images/products/hikvision-16ch-k1-nvr-ds-7616nxi-k1.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-16ch-k2-nvr-ds-7616nxi-k2",
@@ -3748,8 +3747,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/hikvision-16ch-k2-nvr-ds-7616nxi-k2.webp",
-    "image": "images/products/hikvision-16ch-k2-nvr-ds-7616nxi-k2.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-32ch-k2-nvr-ds-7632nxi-k2",
@@ -3764,8 +3762,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/hikvision-32ch-k2-nvr-ds-7632nxi-k2.webp",
-    "image": "images/products/hikvision-32ch-k2-nvr-ds-7632nxi-k2.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-hikvision-32ch-k4-nvr-ds-7732nxi-k4",
@@ -3780,8 +3777,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/hikvision-32ch-k4-nvr-ds-7732nxi-k4.webp",
-    "image": "images/products/hikvision-32ch-k4-nvr-ds-7732nxi-k4.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-krystaa-256-gb-memory-card",
