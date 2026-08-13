@@ -136,16 +136,16 @@ async function renderBrandCategories() {
   `;
 
   availableCatNames.forEach(catName => {
-    const catObj = allCategories.find(c => c.name?.toLowerCase() === catName.toLowerCase());
+    const catObj = allCategories.find(c => c.name && c.name.toLowerCase().trim() === catName.toLowerCase().trim());
     let imgUrl = catObj?.imageLink || 'images/cctv-wholesale.webp';
     if (imgUrl && !imgUrl.startsWith('http') && !imgUrl.startsWith('data:')) {
-      imgUrl = DbService.getLinkPrefix() + imgUrl;
+      imgUrl = DbService.getLinkPrefix() + imgUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
     }
-    const count = brandProducts.filter(p => p.category?.toLowerCase() === catName.toLowerCase()).length;
+    const count = brandProducts.filter(p => p.category && p.category.toLowerCase().trim() === catName.toLowerCase().trim()).length;
 
     html += `
       <button class="category-chip" data-cat="${escapeHtml(catName)}" onclick="filterBrandCategory('${escapeHtml(catName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
-        <img src="${imgUrl}" alt="${escapeHtml(catName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #f8fafc; padding: 2px;" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+        <img src="${imgUrl}" alt="${escapeHtml(catName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px; background: #f8fafc; padding: 2px;" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
         <span>${escapeHtml(catName)} (${count})</span>
       </button>
     `;

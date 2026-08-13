@@ -123,6 +123,7 @@ function adjustPaths(html) {
     .replace(/src="js\//g, 'src="../js/')
     .replace(/src="images\//g, 'src="../images/')
     .replace(/href="images\//g, 'href="../images/')
+    .replace(/this\.src='images\//g, "this.src='../images/")
     .replace(/href="index\.html/g, 'href="../index.html')
     .replace(/href="account\.html/g, 'href="../account.html')
     .replace(/href="admin\.html/g, 'href="../admin.html')
@@ -287,10 +288,14 @@ function generateStaticPages() {
           html = html.replace('</head>', `<link rel="canonical" href="${brandCanonical}">\n</head>`);
         }
 
-        // Distinct Static H1, Hero Sub, and Breadcrumb for search engine crawlers
+        // Distinct Static H1, Hero Sub, Logo and Breadcrumb for search engine crawlers
         html = html.replace(/<h1 class="brand-hero-title" id="brandHeroName">.*?<\/h1>/, `<h1 class="brand-hero-title" id="brandHeroName">${escapeHtml(b.name)} Products</h1>`);
         html = html.replace(/<p class="brand-hero-sub" id="brandHeroSub">.*?<\/p>/, `<p class="brand-hero-sub" id="brandHeroSub">Authorized Wholesale & Retail ${escapeHtml(b.name)} Security Equipment</p>`);
         html = html.replace(/<strong id="breadcrumbBrandName".*?>.*?<\/strong>/, `<strong id="breadcrumbBrandName" style="color: var(--text-dark);">${escapeHtml(b.name)}</strong>`);
+        if (b.imageLink) {
+          const imgClean = b.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '');
+          html = html.replace(/<img id="brandHeroLogo" src=".*?" alt=".*?"/g, `<img id="brandHeroLogo" src="../${imgClean}" alt="${escapeHtml(b.name)} Logo"`);
+        }
 
         html = adjustPaths(html);
 
@@ -312,7 +317,7 @@ function generateStaticPages() {
 
       const allCats = [...categories];
       if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
-        allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/generic.png' });
+        allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/combo-packs.webp' });
       }
 
       for (const c of allCats) {
@@ -342,10 +347,14 @@ function generateStaticPages() {
           html = html.replace('</head>', `<link rel="canonical" href="${catCanonical}">\n</head>`);
         }
 
-        // Distinct Static H1, Hero Sub, and Breadcrumb for search engine crawlers
+        // Distinct Static H1, Hero Sub, Logo and Breadcrumb for search engine crawlers
         html = html.replace(/<h1 class="category-hero-title" id="categoryHeroName">.*?<\/h1>/, `<h1 class="category-hero-title" id="categoryHeroName">${escapeHtml(c.name)} Products</h1>`);
         html = html.replace(/<p class="category-hero-sub" id="categoryHeroSub">.*?<\/p>/, `<p class="category-hero-sub" id="categoryHeroSub">Explore top wholesale & retail ${escapeHtml(c.name)} security equipment</p>`);
         html = html.replace(/<strong id="breadcrumbCategoryName".*?>.*?<\/strong>/, `<strong id="breadcrumbCategoryName" style="color: var(--text-dark);">${escapeHtml(c.name)}</strong>`);
+        if (c.imageLink) {
+          const imgClean = c.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '');
+          html = html.replace(/<img id="categoryHeroLogo" src=".*?" alt=".*?"/g, `<img id="categoryHeroLogo" src="../${imgClean}" alt="${escapeHtml(c.name)} Icon"`);
+        }
 
         html = adjustPaths(html);
 

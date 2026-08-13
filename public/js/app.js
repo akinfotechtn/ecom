@@ -123,7 +123,7 @@ function renderBrandLogosStrip() {
   ` + storeBrands.map(b => {
     let logoUrl = b.imageLink || 'images/logo.webp';
     if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
-      logoUrl = DbService.getLinkPrefix() + logoUrl;
+      logoUrl = DbService.getLinkPrefix() + logoUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
     }
     return `
       <a href="${DbService.getLinkPrefix()}brands/${DbService.slugify(b.name)}.html" class="brand-logo-card ${activeBrand.toLowerCase() === b.name.toLowerCase() ? 'active' : ''}" style="text-decoration:none;" title="${escapeHtml(b.name)}">
@@ -150,7 +150,7 @@ function renderCategoryScrollRow() {
   ` + storeCategories.map(c => {
     let catUrl = c.imageLink || 'images/cctv-wholesale.webp';
     if (catUrl && !catUrl.startsWith('http') && !catUrl.startsWith('data:')) {
-      catUrl = DbService.getLinkPrefix() + catUrl;
+      catUrl = DbService.getLinkPrefix() + catUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
     }
     return `
       <a href="${DbService.getLinkPrefix()}categories/${DbService.slugify(c.name)}.html" class="category-scroll-card ${activeCategory.toLowerCase() === c.name.toLowerCase() && !isComboOnly ? 'active' : ''}" style="text-decoration:none;">

@@ -256,5 +256,29 @@
     "deliveryCharge": null,
     "imageLink": "images/categories/accessories.webp",
     "name": "ACCESSORIES"
+  },
+  {
+    "id": "cat-switch",
+    "name": "SWITCH",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/poe-switch.webp"
+  },
+  {
+    "id": "cat-nvr",
+    "name": "NVR",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/wifi-nvr.webp"
+  },
+  {
+    "id": "cat-harddisk",
+    "name": "HARDDISK",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/hard-disk.webp"
+  },
+  {
+    "id": "cat-general",
+    "name": "General",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/accessories.webp"
   }
 ]

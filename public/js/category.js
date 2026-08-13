@@ -146,9 +146,17 @@ function renderCategoryHero() {
   if (heroName) heroName.textContent = displayName;
   if (catalogTitle) catalogTitle.textContent = `${displayName} Catalog`;
 
-  const matchCat = allCategories.find(c => c.name && c.name.toLowerCase() === displayName.toLowerCase());
+  const matchCat = allCategories.find(c => c.name && c.name.toLowerCase().trim() === displayName.toLowerCase().trim());
   if (matchCat && matchCat.imageLink) {
-    if (heroLogo) heroLogo.src = matchCat.imageLink;
+    let catImg = matchCat.imageLink;
+    if (catImg && !catImg.startsWith('http') && !catImg.startsWith('data:')) {
+      catImg = DbService.getLinkPrefix() + catImg.replace(/^\.\.\//, '').replace(/^\/+/, '');
+    }
+    if (heroLogo) {
+      heroLogo.src = catImg;
+      heroLogo.alt = displayName;
+      heroLogo.onerror = () => { heroLogo.src = DbService.getLinkPrefix() + 'images/cctv-wholesale.webp'; };
+    }
   }
 
   if (heroSub) {
@@ -187,14 +195,16 @@ function renderCategoryBrandsSection() {
   categoryBrandsList.forEach(bName => {
     const count = brandCounts[bName] || 0;
     const matchBrand = allBrands.find(b => b.name && b.name.toLowerCase().trim() === bName.toLowerCase().trim());
-    let logoUrl = matchBrand?.imageLink || matchBrand?.logoLink || 'images/logo.webp';
+    let logoUrl = matchBrand?.imageLink || matchBrand?.logoLink || '';
     if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
-      logoUrl = DbService.getLinkPrefix() + logoUrl;
+      logoUrl = DbService.getLinkPrefix() + logoUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
     }
+
+    const logoImgHtml = logoUrl ? `<img src="${logoUrl}" alt="${escapeHtml(bName)}" style="height: 18px; max-width: 48px; width: auto; object-fit: contain; background: #ffffff; padding: 1px; vertical-align: middle;" onerror="this.style.display='none'">` : '';
 
     html += `
       <button class="brand-chip" data-brand="${escapeHtml(bName)}" onclick="filterCategoryBrand('${escapeHtml(bName)}', this)" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #ffffff; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); cursor: pointer; flex-shrink: 0; transition: all 0.2s ease;">
-        <img src="${logoUrl}" alt="${escapeHtml(bName)}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 2px;" onerror="this.src='${DbService.getLinkPrefix()}images/logo.webp'">
+        ${logoImgHtml}
         <span>${escapeHtml(bName)} ${count ? `(${count})` : ''}</span>
       </button>
     `;
