@@ -2941,6 +2941,112 @@ window.toggleProductFeatured = async function (productId, checkbox) {
 let adminCarts = [];
 let selectedCartFilter = 'ALL';
 
+async function enrichCartsWithPhoneNumbers(carts) {
+  const userCache = new Map();
+
+  for (const c of carts) {
+    const phoneMap = new Map();
+
+    // 1. Phone directly entered in checkout
+    if (c.customerPhone && c.customerPhone.trim()) {
+      const clean = c.customerPhone.replace(/\D/g, '');
+      if (clean.length >= 10) {
+        phoneMap.set(clean.slice(-10), {
+          number: c.customerPhone.trim(),
+          source: 'Entered at Checkout'
+        });
+      }
+    }
+
+    // 2. Check User Document in Firestore (/users/{uid})
+    const userUid = c.userUid || (c.id && c.id.startsWith('user_') ? c.id.replace('user_', '') : null);
+    if (userUid) {
+      let userAddrs = userCache.get(userUid);
+      if (userAddrs === undefined) {
+        try {
+          userAddrs = await DbService.getUserAddresses(userUid);
+          userCache.set(userUid, userAddrs || []);
+        } catch (e) {
+          userAddrs = [];
+          userCache.set(userUid, []);
+        }
+      }
+
+      if (Array.isArray(userAddrs) && userAddrs.length > 0) {
+        userAddrs.forEach((addr, idx) => {
+          if (addr.phone && addr.phone.trim()) {
+            const clean = addr.phone.replace(/\D/g, '');
+            if (clean.length >= 10) {
+              const key = clean.slice(-10);
+              if (!phoneMap.has(key)) {
+                phoneMap.set(key, {
+                  number: addr.phone.trim(),
+                  source: idx === 0 ? 'Saved Profile Address' : `Saved Address #${idx + 1}`
+                });
+              }
+            }
+          }
+          if (!c.customerAddress && (addr.street || addr.address)) {
+            c.customerAddress = addr.street || addr.address;
+          }
+          if (!c.customerCity && addr.cityState) {
+            c.customerCity = addr.cityState;
+          }
+          if (!c.customerPincode && addr.pincode) {
+            c.customerPincode = addr.pincode;
+          }
+          if ((!c.customerName || c.customerName === 'Guest Shopper') && (addr.fullName || addr.name)) {
+            c.customerName = addr.fullName || addr.name;
+          }
+        });
+      }
+    }
+
+    // 3. Search past orders for matching UID or matching Email
+    if (adminOrders && Array.isArray(adminOrders)) {
+      const custEmail = (c.customerEmail || '').trim().toLowerCase();
+      for (const ord of adminOrders) {
+        const ordUid = ord.userUid;
+        const ordEmail = (ord.email || ord.customerEmail || ord.userEmail || '').trim().toLowerCase();
+        const matches = (userUid && ordUid && String(ordUid) === String(userUid)) ||
+                        (custEmail && ordEmail && custEmail === ordEmail);
+        if (matches) {
+          const ordPhone = (ord.phone || ord.custPhone || '').trim();
+          if (ordPhone) {
+            const clean = ordPhone.replace(/\D/g, '');
+            if (clean.length >= 10) {
+              const key = clean.slice(-10);
+              if (!phoneMap.has(key)) {
+                phoneMap.set(key, {
+                  number: ordPhone,
+                  source: `Past Order #${ord.id || ''}`.trim()
+                });
+              }
+            }
+          }
+          if (!c.customerAddress && (ord.address || ord.street)) {
+            c.customerAddress = ord.address || ord.street;
+          }
+          if (!c.customerCity && (ord.city || ord.cityState)) {
+            c.customerCity = ord.city || ord.cityState;
+          }
+          if (!c.customerPincode && ord.pincode) {
+            c.customerPincode = ord.pincode;
+          }
+          if ((!c.customerName || c.customerName === 'Guest Shopper') && (ord.name || ord.customerName || ord.fullName)) {
+            c.customerName = ord.name || ord.customerName || ord.fullName;
+          }
+        }
+      }
+    }
+
+    c.allPhones = Array.from(phoneMap.values());
+    if (c.allPhones.length > 0 && !c.customerPhone) {
+      c.customerPhone = c.allPhones[0].number;
+    }
+  }
+}
+
 async function fetchAdminCarts() {
   const container = document.getElementById('adminCartsContainer');
   const badge = document.getElementById('adminCartsCountBadge');
@@ -2949,6 +3055,8 @@ async function fetchAdminCarts() {
       container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Fetching active & abandoned carts...</div>`;
     }
     adminCarts = await DbService.getActiveCarts();
+    await enrichCartsWithPhoneNumbers(adminCarts);
+
     if (badge) {
       badge.textContent = adminCarts.length;
       badge.style.display = adminCarts.length > 0 ? 'inline-block' : 'none';
@@ -2999,7 +3107,7 @@ function renderCartsList() {
   for (const c of adminCarts) {
     const cartVal = Number(c.totalValue || 0);
     totalPipelineValue += cartVal;
-    if (c.customerPhone && c.customerPhone.trim().length >= 6) {
+    if (c.allPhones && c.allPhones.length > 0) {
       leadsCount++;
     }
     const ageMs = now - new Date(c.updatedAt || 0).getTime();
@@ -3046,7 +3154,7 @@ function renderCartsList() {
   // Filter list based on selected tab
   let visibleCarts = [...adminCarts];
   if (selectedCartFilter === 'WITH_PHONE') {
-    visibleCarts = visibleCarts.filter(c => c.customerPhone && c.customerPhone.trim().length >= 6);
+    visibleCarts = visibleCarts.filter(c => c.allPhones && c.allPhones.length > 0);
   } else if (selectedCartFilter === 'ABANDONED') {
     visibleCarts = visibleCarts.filter(c => (now - new Date(c.updatedAt || 0).getTime()) > 60 * 60 * 1000);
   } else if (selectedCartFilter === 'RECENT') {
@@ -3067,12 +3175,12 @@ function renderCartsList() {
     const cId = escapeHtml(String(c.id || 'cart'));
     const isUser = !!c.isLoggedIn || !!c.userUid;
     const custName = escapeHtml(c.customerName || (isUser ? 'Registered Customer' : 'Guest Shopper'));
-    const custPhone = c.customerPhone ? escapeHtml(c.customerPhone) : '';
     const custEmail = c.customerEmail ? escapeHtml(c.customerEmail) : '';
     const custCity = c.customerCity ? escapeHtml(c.customerCity) : '';
     const custPincode = c.customerPincode ? escapeHtml(c.customerPincode) : '';
     const totalVal = Number(c.totalValue || 0);
     const itemCount = Number(c.itemCount || (c.items ? c.items.length : 0));
+    const hasPhones = c.allPhones && c.allPhones.length > 0;
 
     // Calculate age & status
     const updatedTime = new Date(c.updatedAt || 0).getTime();
@@ -3098,11 +3206,6 @@ function renderCartsList() {
       statusLabel = `🟢 Active (${mins}m ago)`;
     }
 
-    // Clean phone for wa.me link
-    const cleanPhone = (c.customerPhone || '').replace(/\D/g, '');
-    const phoneValid = cleanPhone.length >= 10;
-    const waPhone = cleanPhone.startsWith('91') && cleanPhone.length === 12 ? cleanPhone : (cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone);
-
     // Build items summary for WhatsApp message
     const itemNames = (c.items || []).map(i => `${i.name} (x${i.qty})`).slice(0, 3).join(', ');
     const waMessage = `Hello ${custName !== 'Guest Shopper' ? custName : ''}! We noticed you left items in your cart at AK Infotech (${itemNames || 'Security Equipment'}, Total: ₹${totalVal.toLocaleString('en-IN')}). Would you like any assistance completing your order, or a special wholesale discount?`;
@@ -3122,7 +3225,7 @@ function renderCartsList() {
       : `<div style="font-size:0.8rem; color:var(--text-muted); padding:6px 0;">No items detail available</div>`;
 
     return `
-      <div class="order-card" style="border-left: 4px solid ${phoneValid ? 'var(--accent-green)' : 'var(--accent-cyan)'};">
+      <div class="order-card" style="border-left: 4px solid ${hasPhones ? 'var(--accent-green)' : 'var(--accent-cyan)'};">
         <div class="order-card-header" style="background:#f8fafc; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-weight:800; font-size:0.92rem; color:var(--text-dark);">${isUser ? '👤' : '🚶'} ${cId}</span>
@@ -3134,27 +3237,52 @@ function renderCartsList() {
           </div>
         </div>
 
-        <div class="order-card-body" style="padding:18px; display:grid; grid-template-columns: 1.1fr 1.3fr 0.9fr; gap:20px;">
-          <!-- Column 1: Customer Lead & 1-Click Follow Up -->
+        <div class="order-card-body" style="padding:18px; display:grid; grid-template-columns: 1.15fr 1.25fr 0.9fr; gap:20px;">
+          <!-- Column 1: Customer Lead & All Phone Numbers -->
           <div class="order-info-sec">
             <h4>👤 Customer Contact & Follow-Up</h4>
             <div class="order-info-item">
               <span class="icon">👤</span>
               <div><strong style="color:var(--text-dark); font-size:0.95rem;">${custName}</strong></div>
             </div>
-            
-            <div class="order-info-item">
-              <span class="icon">📞</span>
-              <div>
-                ${phoneValid 
-                  ? `<a href="tel:${cleanPhone}" style="color:var(--accent-cyan); font-weight:800; text-decoration:none; font-size:0.95rem;">+${cleanPhone}</a>`
-                  : `<span style="color:#94a3b8; font-style:italic;">No phone entered yet</span>`
-                }
+
+            <!-- All Discovered Phone Numbers List -->
+            <div style="margin-top:8px;">
+              <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>📞 Phone Number${c.allPhones && c.allPhones.length > 1 ? 's (' + c.allPhones.length + ')' : ''}:</span>
               </div>
+              ${c.allPhones && c.allPhones.length > 0 ? `
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  ${c.allPhones.map(p => {
+                    const clean = p.number.replace(/\D/g, '');
+                    const wa = clean.startsWith('91') && clean.length === 12 ? clean : (clean.length === 10 ? `91${clean}` : clean);
+                    return `
+                      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px 10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                          <a href="tel:${clean}" style="font-weight:800; font-size:0.95rem; color:var(--accent-cyan); text-decoration:none;">+${clean}</a>
+                          <span style="font-size:0.7rem; background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:10px; margin-left:6px; font-weight:700;">${escapeHtml(p.source)}</span>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                          <a href="https://wa.me/${wa}?text=${encodeURIComponent(waMessage)}" target="_blank" rel="noopener" class="hero-btn" style="background:#25D366; color:#fff; text-decoration:none; padding:5px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(37,211,102,0.25);">
+                            💬 WhatsApp
+                          </a>
+                          <a href="tel:${clean}" class="hero-btn" style="background:#0284c7; color:#fff; text-decoration:none; padding:5px 12px; font-size:0.78rem; font-weight:700; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                            📞 Call
+                          </a>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              ` : `
+                <div style="font-size:0.75rem; color:#94a3b8; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px; padding:8px 10px;">
+                  ⏳ Waiting for customer to enter contact details at checkout
+                </div>
+              `}
             </div>
 
             ${custEmail ? `
-            <div class="order-info-item">
+            <div class="order-info-item" style="margin-top:8px;">
               <span class="icon">📧</span>
               <div style="word-break:break-all; font-size:0.82rem; color:#475569;">
                 <a href="mailto:${custEmail}" style="color:inherit; text-decoration:none;">${custEmail}</a>
@@ -3172,22 +3300,6 @@ function renderCartsList() {
               <span class="icon">🏠</span>
               <div style="font-size:0.8rem; color:#475569; word-break:break-word;">${escapeHtml(c.customerAddress)}</div>
             </div>` : ''}
-
-            <!-- 1-Click Follow-up Action Buttons -->
-            <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
-              ${phoneValid ? `
-                <a href="https://wa.me/${waPhone}?text=${encodeURIComponent(waMessage)}" target="_blank" rel="noopener" class="hero-btn" style="background:#25D366; color:#fff; text-decoration:none; text-align:center; padding:8px 12px; font-size:0.85rem; font-weight:800; border-radius:var(--radius-sm); display:inline-flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(37,211,102,0.3);">
-                  <span>💬 WhatsApp Follow-Up</span>
-                </a>
-                <a href="tel:${cleanPhone}" class="hero-btn" style="background:#0284c7; color:#fff; text-decoration:none; text-align:center; padding:6px 12px; font-size:0.8rem; font-weight:700; border-radius:var(--radius-sm); display:inline-flex; align-items:center; justify-content:center; gap:6px;">
-                  <span>📞 Call Customer</span>
-                </a>
-              ` : `
-                <div style="font-size:0.75rem; color:#94a3b8; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px; padding:8px; text-align:center;">
-                  ⏳ Waiting for customer to enter contact details at checkout
-                </div>
-              `}
-            </div>
           </div>
 
           <!-- Column 2: Cart Items & Value -->

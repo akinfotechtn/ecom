@@ -661,14 +661,28 @@ export class DbService {
   static async getUserAddresses(uid) {
     if (!uid) return [];
     try {
-      const docSnap = await getDoc(doc(db, "users", uid));
-      if (docSnap.exists() && docSnap.data().addresses) {
+      const docSnap = await this._withTimeout(getDoc(doc(db, "users", uid)), 3000, null);
+      if (docSnap && docSnap.exists && docSnap.exists() && docSnap.data().addresses) {
         return docSnap.data().addresses;
       }
-      const local = JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
-      return local;
-    } catch (err) {
+    } catch (err) {}
+
+    // Fallback to direct Firestore REST API
+    try {
+      const res = await fetch(`https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/users/${uid}`);
+      if (res.ok) {
+        const json = await res.json();
+        const parsed = this._parseFirestoreRestDoc(json);
+        if (parsed && parsed.addresses && Array.isArray(parsed.addresses)) {
+          return parsed.addresses;
+        }
+      }
+    } catch (e) {}
+
+    try {
       return JSON.parse(localStorage.getItem(`ak_addresses_${uid}`) || '[]');
+    } catch (err) {
+      return [];
     }
   }
 
@@ -1123,6 +1137,26 @@ export class DbService {
         }
 
         const user = auth.currentUser;
+        let userUid = user ? user.uid : null;
+        if (!userUid && cartId && cartId.startsWith('user_')) {
+          userUid = cartId.replace('user_', '');
+        }
+
+        // Auto-lookup phone & address from saved user profile if missing from lead
+        if (userUid && (!storedLead.phone || !storedLead.address)) {
+          try {
+            const addrs = await this.getUserAddresses(userUid);
+            if (addrs && addrs.length > 0) {
+              const primary = addrs[0];
+              if (!storedLead.phone && primary.phone) storedLead.phone = primary.phone;
+              if (!storedLead.name && (primary.fullName || primary.name)) storedLead.name = primary.fullName || primary.name;
+              if (!storedLead.address && (primary.street || primary.address)) storedLead.address = primary.street || primary.address;
+              if (!storedLead.city && primary.cityState) storedLead.city = primary.cityState;
+              if (!storedLead.pincode && primary.pincode) storedLead.pincode = primary.pincode;
+              try { localStorage.setItem('ak_cart_lead', JSON.stringify(storedLead)); } catch (e) {}
+            }
+          } catch (e) {}
+        }
 
         // 3. LEAN PAYLOAD: Strip bulky specs & long descriptions to minimize storage bytes
         const leanItems = items.map(i => ({
