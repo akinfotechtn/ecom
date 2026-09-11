@@ -228,20 +228,91 @@ function generateStaticPages() {
         const filePath = path.join(prodDir, fileName);
 
         const prodTitle = `${p.productName} | AK Infotech Security Store`;
-        const prodDesc = p.productSpec || `Buy ${p.productName} at wholesale price ₹${p.sellingPrice || ''} from AK Infotech Chennai. Fast delivery & COD available.`;
+        const prodDesc = (p.productSpec || `Buy ${p.productName} at wholesale price ₹${p.sellingPrice || ''} from AK Infotech Chennai. Fast delivery & COD available.`).slice(0, 160);
         const prodCanonical = `${siteUrl}/product/${slug}.html`;
+        
+        let photoUrl = p.photoLink || 'images/cctv-wholesale.webp';
+        const absolutePhotoUrl = (photoUrl.startsWith('http://') || photoUrl.startsWith('https://'))
+          ? photoUrl
+          : `${siteUrl}/${photoUrl.replace(/^\.?\/?/, '')}`;
+
+        const isInStock = p.inStock !== false;
+        const sellingPrice = p.sellingPrice || 0;
+        const mrpPrice = p.price || 0;
+        const brandName = p.brand || 'AK Infotech';
+        const categoryName = p.category || 'Security Equipment';
+
+        // Structured Data (JSON-LD) Object
+        const schemaObj = {
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": p.productName,
+          "image": [absolutePhotoUrl],
+          "description": (p.productSpec || prodDesc).slice(0, 300),
+          "sku": String(p.id || 'PROD-' + slug.slice(0, 12)),
+          "mpn": String(p.id || 'MPN-' + slug.slice(0, 12)),
+          "brand": {
+            "@type": "Brand",
+            "name": brandName
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": prodCanonical,
+            "priceCurrency": "INR",
+            "price": String(sellingPrice),
+            "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": isInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "seller": {
+              "@type": "Organization",
+              "name": "AK Infotech"
+            }
+          }
+        };
 
         const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
         let html = productTemplate.replace('</head>', `${injectScript}\n</head>`);
+        html = html.replace(/<title id="metaPageTitle">.*?<\/title>/, `<title id="metaPageTitle">${escapeHtml(prodTitle)}</title>`);
         html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(prodTitle)}</title>`);
+        html = html.replace(/<meta name="title" id="metaTitle" content=".*?"\s*\/?>/, `<meta name="title" id="metaTitle" content="${escapeHtml(prodTitle)}">`);
+        html = html.replace(/<meta name="description" id="metaDescription" content=".*?"\s*\/?>/, `<meta name="description" id="metaDescription" content="${escapeHtml(prodDesc)}">`);
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(prodDesc)}">`);
         
         // Canonical tag
         if (html.includes('<link rel="canonical"')) {
-          html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${prodCanonical}">`);
+          html = html.replace(/<link rel="canonical"( id="canonicalLink")? href=".*?"\s*\/?>/, `<link rel="canonical" id="canonicalLink" href="${prodCanonical}">`);
         } else {
-          html = html.replace('</head>', `<link rel="canonical" href="${prodCanonical}">\n</head>`);
+          html = html.replace('</head>', `<link rel="canonical" id="canonicalLink" href="${prodCanonical}">\n</head>`);
         }
+
+        // Open Graph Tags
+        html = html.replace(/<meta property="og:title" id="ogTitle" content=".*?"\s*\/?>/, `<meta property="og:title" id="ogTitle" content="${escapeHtml(prodTitle)}">`);
+        html = html.replace(/<meta property="og:description" id="ogDescription" content=".*?"\s*\/?>/, `<meta property="og:description" id="ogDescription" content="${escapeHtml(prodDesc)}">`);
+        html = html.replace(/<meta property="og:url" id="ogUrl" content=".*?"\s*\/?>/, `<meta property="og:url" id="ogUrl" content="${prodCanonical}">`);
+        html = html.replace(/<meta property="og:image" id="ogImage" content=".*?"\s*\/?>/, `<meta property="og:image" id="ogImage" content="${escapeHtml(absolutePhotoUrl)}">`);
+        html = html.replace(/<meta property="og:image:alt" id="ogImageAlt" content=".*?"\s*\/?>/, `<meta property="og:image:alt" id="ogImageAlt" content="${escapeHtml(p.productName)}">`);
+        html = html.replace(/<meta property="product:price:amount" id="ogPriceAmount" content=".*?"\s*\/?>/, `<meta property="product:price:amount" id="ogPriceAmount" content="${sellingPrice}">`);
+        html = html.replace(/<meta property="product:availability" id="ogAvailability" content=".*?"\s*\/?>/, `<meta property="product:availability" id="ogAvailability" content="${isInStock ? 'instock' : 'oos'}">`);
+        html = html.replace(/<meta property="product:brand" id="ogBrand" content=".*?"\s*\/?>/, `<meta property="product:brand" id="ogBrand" content="${escapeHtml(brandName)}">`);
+
+        // Twitter Card Tags
+        html = html.replace(/<meta name="twitter:title" id="twitterTitle" content=".*?"\s*\/?>/, `<meta name="twitter:title" id="twitterTitle" content="${escapeHtml(prodTitle)}">`);
+        html = html.replace(/<meta name="twitter:description" id="twitterDescription" content=".*?"\s*\/?>/, `<meta name="twitter:description" id="twitterDescription" content="${escapeHtml(prodDesc)}">`);
+        html = html.replace(/<meta name="twitter:image" id="twitterImage" content=".*?"\s*\/?>/, `<meta name="twitter:image" id="twitterImage" content="${escapeHtml(absolutePhotoUrl)}">`);
+        html = html.replace(/<meta name="twitter:image:alt" id="twitterImageAlt" content=".*?"\s*\/?>/, `<meta name="twitter:image:alt" id="twitterImageAlt" content="${escapeHtml(p.productName)}">`);
+
+        // Structured Data (JSON-LD)
+        html = html.replace(/<script type="application\/ld\+json" id="jsonLdProductSchema">[\s\S]*?<\/script>/, `<script type="application/ld+json" id="jsonLdProductSchema">\n${JSON.stringify(schemaObj, null, 2)}\n  </script>`);
+
+        // Pre-render Crawler SSR Fallback elements inside detail-grid
+        html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
+        html = html.replace(/id="fallbackProductTitle".*?>.*?<\/h1>/, `id="fallbackProductTitle" itemprop="name" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(p.productName)}</h1>`);
+        html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge" itemprop="brand">${escapeHtml(brandName)}</span>`);
+        html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;">${escapeHtml(categoryName)}</span>`);
+        html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice" itemprop="price" content="${sellingPrice}" style="font-size: 1.8rem;">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
+        html = html.replace(/id="fallbackProductSpec".*?>[\s\S]*?<\/div>/, `id="fallbackProductSpec" itemprop="description" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(p.productSpec || prodDesc)}</div>`);
+        html = html.replace(/id="bcCategory">.*?<\/span>/, `id="bcCategory">${escapeHtml(categoryName)}</span>`);
+        html = html.replace(/id="bcName">.*?<\/span>/, `id="bcName">${escapeHtml(p.productName)}</span>`);
 
         html = adjustPaths(html);
 

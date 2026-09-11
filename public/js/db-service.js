@@ -1012,29 +1012,72 @@ export class DbService {
     }
   }
 
-  // DYNAMIC SEO INJECTION
+  // DYNAMIC SEO INJECTION (Schema.org JSON-LD & Open Graph)
   static injectProductSEO(product) {
     if (!product) return;
 
-    document.title = `${product.productName} | AK Infotech Security Store`;
+    const siteName = "AK Infotech Security Store";
+    const title = `${product.productName} | ${siteName}`;
+    const description = (product.productSpec || product.description || `Buy ${product.productName} at wholesale price ₹${product.sellingPrice} from AK Infotech.`).slice(0, 160);
+    const origin = typeof window !== 'undefined' && window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
+    const canonicalUrl = typeof window !== 'undefined' ? `${origin}${window.location.pathname}` : 'https://shop.akinfotechcctv.in/product.html';
+    
+    let photoUrl = product.photoLink || 'images/cctv-wholesale.webp';
+    if (!photoUrl.startsWith('http://') && !photoUrl.startsWith('https://')) {
+      photoUrl = `${origin}/${photoUrl.replace(/^\.?\/?/, '')}`;
+    }
 
-    const setMeta = (property, content) => {
-      let el = document.querySelector(`meta[property="${property}"]`);
+    document.title = title;
+
+    const setMeta = (attr, key, content) => {
+      if (!content && content !== 0) return;
+      let el = document.querySelector(`meta[${attr}="${key}"]`);
       if (!el) {
         el = document.createElement('meta');
-        el.setAttribute('property', property);
+        el.setAttribute(attr, key);
         document.head.appendChild(el);
       }
-      el.setAttribute('content', content);
+      el.setAttribute('content', String(content));
     };
 
-    setMeta('og:title', `${product.productName} - AK Infotech`);
-    setMeta('og:description', `${product.productSpec} | Best Price: ₹${product.sellingPrice}`);
-    setMeta('og:image', product.photoLink || 'images/logo.webp');
-    setMeta('og:type', 'product');
-    setMeta('og:price:amount', product.sellingPrice);
-    setMeta('og:price:currency', 'INR');
+    // Primary Meta
+    setMeta('name', 'title', title);
+    setMeta('name', 'description', description);
 
+    // Canonical link
+    let canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (!canonicalEl) {
+      canonicalEl = document.createElement('link');
+      canonicalEl.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalEl);
+    }
+    canonicalEl.setAttribute('href', canonicalUrl);
+
+    // Standard Open Graph
+    setMeta('property', 'og:type', 'product');
+    setMeta('property', 'og:site_name', siteName);
+    setMeta('property', 'og:locale', 'en_IN');
+    setMeta('property', 'og:title', title);
+    setMeta('property', 'og:description', description);
+    setMeta('property', 'og:image', photoUrl);
+    setMeta('property', 'og:image:alt', product.productName);
+    setMeta('property', 'og:url', canonicalUrl);
+
+    // Product-Specific Open Graph
+    setMeta('property', 'product:price:amount', product.sellingPrice || 0);
+    setMeta('property', 'product:price:currency', 'INR');
+    setMeta('property', 'product:availability', product.inStock !== false ? 'instock' : 'oos');
+    setMeta('property', 'product:brand', product.brand || 'AK Infotech');
+    setMeta('property', 'product:condition', 'new');
+
+    // Twitter Cards
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    setMeta('name', 'twitter:title', title);
+    setMeta('name', 'twitter:description', description);
+    setMeta('name', 'twitter:image', photoUrl);
+    setMeta('name', 'twitter:image:alt', product.productName);
+
+    // Schema.org JSON-LD
     let jsonLd = document.getElementById('jsonLdProductSchema');
     if (!jsonLd) {
       jsonLd = document.createElement('script');
@@ -1047,18 +1090,20 @@ export class DbService {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.productName,
-      "image": [product.photoLink],
-      "description": product.productSpec,
-      "sku": product.id,
+      "image": [photoUrl],
+      "description": description,
+      "sku": String(product.id || 'PROD-' + product.productName.slice(0, 10)),
+      "mpn": String(product.id || 'MPN-' + product.productName.slice(0, 10)),
       "brand": {
         "@type": "Brand",
         "name": product.brand || "AK Infotech"
       },
       "offers": {
         "@type": "Offer",
-        "url": window.location.href,
+        "url": canonicalUrl,
         "priceCurrency": "INR",
-        "price": product.sellingPrice,
+        "price": String(product.sellingPrice || 0),
+        "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         "itemCondition": "https://schema.org/NewCondition",
         "availability": product.inStock !== false ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
         "seller": {

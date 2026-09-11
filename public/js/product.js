@@ -67,29 +67,48 @@ async function loadProductDetail(idOrProduct) {
   }
 
   // Inject dynamic SEO OpenGraph & Schema.org JSON-LD
-  DbService.injectProductSEO(currentProduct);
-
-  // Update Breadcrumb
-  document.getElementById('bcCategory').textContent = currentProduct.category || 'General';
-  document.getElementById('bcName').textContent = currentProduct.productName;
-
   const basePrice = currentProduct.sellingPrice || 0;
   const gstRate = (currentProduct.gstPercent !== undefined && currentProduct.gstPercent !== null && currentProduct.gstPercent !== '') ? Number(currentProduct.gstPercent) : 18;
   const gstAmount = Math.round((basePrice * gstRate) / 100);
   const priceWithGst = basePrice + gstAmount;
   const savings = currentProduct.price > priceWithGst ? Math.round(((currentProduct.price - priceWithGst) / currentProduct.price) * 100) : 0;
 
+  // Runtime verification & injection of SEO Tags and Schema.org JSON-LD
+  updateProductSEOTags(currentProduct, priceWithGst);
+  verifyOrInjectProductSchema(currentProduct, priceWithGst);
+
+  // Update Breadcrumb
+  const bcCategory = document.getElementById('bcCategory');
+  if (bcCategory) bcCategory.textContent = currentProduct.category || 'General';
+  const bcName = document.getElementById('bcName');
+  if (bcName) bcName.textContent = currentProduct.productName;
+
   const isAvailable = currentProduct.inStock !== false;
   const inCartItem = cart.find(i => String(i.id) === String(currentProduct.id));
   const cartQty = inCartItem ? (inCartItem.quantity || inCartItem.qty || 0) : 0;
 
+  const primaryImgSrc = currentProduct.photoLink && (currentProduct.photoLink.startsWith('http') || currentProduct.photoLink.startsWith('data:')) 
+    ? currentProduct.photoLink 
+    : (DbService.getLinkPrefix() + (currentProduct.photoLink || 'images/cctv-wholesale.webp'));
+
   detailGrid.innerHTML = `
+    <!-- PRIMARY GALLERY BOX WITH HIGH PRIORITY EAGER IMAGE (LCP) -->
     <div class="gallery-box">
-      <img src="${currentProduct.photoLink && (currentProduct.photoLink.startsWith('http') || currentProduct.photoLink.startsWith('data:')) ? currentProduct.photoLink : (DbService.getLinkPrefix() + (currentProduct.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(currentProduct.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+      <img 
+        src="${primaryImgSrc}" 
+        alt="${escapeHtml(currentProduct.productName)} - AK Infotech" 
+        loading="eager" 
+        fetchpriority="high"
+        decoding="sync"
+        width="440"
+        height="420"
+        itemprop="image"
+        onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'"
+      >
     </div>
     <div class="product-info-box">
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
-        <span class="badge-glow">${escapeHtml(currentProduct.brand || 'AK Infotech')}</span>
+        <span class="badge-glow" itemprop="brand">${escapeHtml(currentProduct.brand || 'AK Infotech')}</span>
         <a href="${DbService.getLinkPrefix()}categories/${DbService.slugify(currentProduct.category)}.html" class="badge-glow" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd; text-decoration:none;" title="View Category Page">${escapeHtml(currentProduct.category)}</a>
         ${currentProduct.isCombo ? `<span class="badge-glow" style="background:#fff7ed; color:#c2410c; border-color:#fdba74;">🔥 Combo Package</span>` : ''}
         ${isAvailable ? `
@@ -99,17 +118,20 @@ async function loadProductDetail(idOrProduct) {
         `}
       </div>
 
-      <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(currentProduct.productName)}</h1>
+      <h1 itemprop="name" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(currentProduct.productName)}</h1>
 
-      <div class="price-row" style="margin-bottom: 16px;">
-        <span class="selling-price" style="font-size: 1.8rem;">₹${priceWithGst.toLocaleString('en-IN')}</span>
+      <div class="price-row" style="margin-bottom: 16px;" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="INR">
+        <span class="selling-price" itemprop="price" content="${priceWithGst}" style="font-size: 1.8rem;">₹${priceWithGst.toLocaleString('en-IN')}</span>
         ${currentProduct.price > priceWithGst ? `<span class="mrp-price" style="font-size: 1.1rem;">₹${currentProduct.price.toLocaleString('en-IN')}</span>` : ''}
         ${savings > 0 ? `<span class="discount-tag" style="font-size: 0.85rem;">SAVE ${savings}%</span>` : ''}
+        <link itemprop="availability" href="${isAvailable ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'}">
+        <link itemprop="itemCondition" href="https://schema.org/NewCondition">
       </div>
 
       <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
-        <div style="font-size:0.8rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">📋 Product Overview & Specifications:</div>
-        <div class="product-text-formatted" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.').split('\n').map(line => {
+        <h2 style="font-size:0.8rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">📋 Product Overview & Specifications:</h2>
+        <div class="product-text-formatted" itemprop="description" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.').split('\n').map(line => {
           if (line.trim().startsWith('*')) {
             return '<span style="color: #ef4444; font-weight: 700;">' + escapeHtml(line) + '</span>';
           }
@@ -121,9 +143,9 @@ async function loadProductDetail(idOrProduct) {
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; align-items: center;">
           ${cartQty > 0 ? `
             <div class="card-qty-stepper" style="height: 44px; padding: 4px;">
-              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', -1)" style="width: 36px; height: 36px; font-size: 1.1rem;">-</button>
+              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', -1)" style="width: 36px; height: 36px; font-size: 1.1rem;" aria-label="Decrease Quantity">-</button>
               <span class="card-qty-count" style="font-size: 1.1rem; min-width: 36px;">${cartQty}</span>
-              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', 1)" style="width: 36px; height: 36px; font-size: 1.1rem;">+</button>
+              <button class="qty-btn-sm" onclick="updateCartQty('${currentProduct.id}', 1)" style="width: 36px; height: 36px; font-size: 1.1rem;" aria-label="Increase Quantity">+</button>
             </div>
             <button class="btn-view-cart" onclick="openCartDrawer()" style="padding: 12px 20px; font-size: 0.95rem; height: 44px;">
               🛒 View Cart
@@ -169,7 +191,15 @@ async function loadRelatedProducts(category, currentId) {
   container.innerHTML = related.map(p => `
     <div class="product-card">
       <div class="product-image-wrap">
-        <img src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" alt="${escapeHtml(p.productName)}" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+        <img 
+          src="${p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:')) ? p.photoLink : (DbService.getLinkPrefix() + (p.photoLink || 'images/cctv-wholesale.webp'))}" 
+          alt="${escapeHtml(p.productName)} - AK Infotech" 
+          loading="lazy" 
+          decoding="async"
+          width="220"
+          height="180"
+          onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'"
+        >
       </div>
       <div class="product-body">
         <h3 class="product-name"><a href="${DbService.getLinkPrefix()}product/${DbService.slugify(p.productName)}.html">${escapeHtml(p.productName)}</a></h3>
@@ -182,6 +212,140 @@ async function loadRelatedProducts(category, currentId) {
       </div>
     </div>
   `).join('');
+}
+
+/**
+ * TECHNICAL SEO & RUNTIME STRUCTURED DATA HELPERS
+ */
+
+// Helper to convert relative or domain paths to canonical absolute URLs
+export function toAbsoluteUrl(urlPath) {
+  if (!urlPath) return 'https://shop.akinfotechcctv.in/images/cctv-wholesale.webp';
+  if (urlPath.startsWith('http://') || urlPath.startsWith('https://') || urlPath.startsWith('data:')) {
+    return urlPath;
+  }
+  const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
+  const cleanPath = urlPath.replace(/^\.?\/?/, '');
+  return `${origin}/${cleanPath}`;
+}
+
+// Helper to update or insert <meta> elements
+function setOrUpdateMetaTag(attrName, attrValue, content) {
+  if (content === undefined || content === null) return;
+  let tag = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+  if (!tag) {
+    tag = document.createElement('meta');
+    tag.setAttribute(attrName, attrValue);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('content', String(content));
+}
+
+/**
+ * Runtime Verification and Fallback Injection for Schema.org JSON-LD Product Object
+ * Maps: name, image, description, brand, offers (price, priceCurrency: INR, availability, url, priceValidUntil), itemCondition, sku, mpn
+ */
+export function verifyOrInjectProductSchema(product, effectivePrice) {
+  if (!product) return;
+
+  const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
+  const canonicalUrl = `${origin}${window.location.pathname}${window.location.search || ''}`;
+  const absoluteImageUrl = toAbsoluteUrl(product.photoLink);
+  const priceNumber = effectivePrice !== undefined ? effectivePrice : (product.sellingPrice || 0);
+  const isInStock = product.inStock !== false;
+
+  const schemaObj = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.productName,
+    "image": [absoluteImageUrl],
+    "description": (product.productSpec || product.description || `Buy ${product.productName} online from AK Infotech with COD and warranty.`).slice(0, 300),
+    "sku": String(product.id || 'PROD-' + (product.productName || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)),
+    "mpn": String(product.id || 'MPN-' + (product.productName || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)),
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand || "AK Infotech"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": canonicalUrl,
+      "priceCurrency": "INR",
+      "price": String(priceNumber),
+      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": isInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "AK Infotech"
+      }
+    }
+  };
+
+  let jsonLd = document.getElementById('jsonLdProductSchema');
+  if (!jsonLd) {
+    jsonLd = document.createElement('script');
+    jsonLd.id = 'jsonLdProductSchema';
+    jsonLd.type = 'application/ld+json';
+    document.head.appendChild(jsonLd);
+  }
+
+  jsonLd.textContent = JSON.stringify(schemaObj, null, 2);
+}
+
+/**
+ * Runtime verification and injection for complete Meta, Canonical, Open Graph, and Twitter Cards
+ */
+export function updateProductSEOTags(product, effectivePrice) {
+  if (!product) return;
+
+  const siteName = "AK Infotech Security Store";
+  const title = `${product.productName} | ${siteName}`;
+  const description = (product.productSpec || product.description || `Buy ${product.productName} at wholesale price ₹${product.sellingPrice} from AK Infotech.`).slice(0, 160);
+  const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
+  const canonicalUrl = `${origin}${window.location.pathname}${window.location.search || ''}`;
+  const absoluteImageUrl = toAbsoluteUrl(product.photoLink);
+  const priceNumber = effectivePrice !== undefined ? effectivePrice : (product.sellingPrice || 0);
+  const isInStock = product.inStock !== false;
+
+  // Title & Primary Meta
+  document.title = title;
+  const pageTitleEl = document.getElementById('metaPageTitle');
+  if (pageTitleEl) pageTitleEl.textContent = title;
+  setOrUpdateMetaTag('name', 'title', title);
+  setOrUpdateMetaTag('name', 'description', description);
+
+  // Canonical link tag
+  let canonicalEl = document.querySelector('link[rel="canonical"]');
+  if (!canonicalEl) {
+    canonicalEl = document.createElement('link');
+    canonicalEl.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonicalEl);
+  }
+  canonicalEl.setAttribute('href', canonicalUrl);
+
+  // Standard Open Graph
+  setOrUpdateMetaTag('property', 'og:type', 'product');
+  setOrUpdateMetaTag('property', 'og:site_name', siteName);
+  setOrUpdateMetaTag('property', 'og:locale', 'en_IN');
+  setOrUpdateMetaTag('property', 'og:title', title);
+  setOrUpdateMetaTag('property', 'og:description', description);
+  setOrUpdateMetaTag('property', 'og:url', canonicalUrl);
+  setOrUpdateMetaTag('property', 'og:image', absoluteImageUrl);
+  setOrUpdateMetaTag('property', 'og:image:alt', product.productName);
+
+  // Product-Specific Open Graph Tags
+  setOrUpdateMetaTag('property', 'product:price:amount', priceNumber);
+  setOrUpdateMetaTag('property', 'product:price:currency', 'INR');
+  setOrUpdateMetaTag('property', 'product:availability', isInStock ? 'instock' : 'oos');
+  setOrUpdateMetaTag('property', 'product:brand', product.brand || 'AK Infotech');
+  setOrUpdateMetaTag('property', 'product:condition', 'new');
+
+  // Twitter Card Tags
+  setOrUpdateMetaTag('name', 'twitter:card', 'summary_large_image');
+  setOrUpdateMetaTag('name', 'twitter:title', title);
+  setOrUpdateMetaTag('name', 'twitter:description', description);
+  setOrUpdateMetaTag('name', 'twitter:image', absoluteImageUrl);
+  setOrUpdateMetaTag('name', 'twitter:image:alt', product.productName);
 }
 
 window.addToCart = async function (id) {
