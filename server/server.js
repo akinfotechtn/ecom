@@ -306,7 +306,7 @@ function generateStaticPages() {
 
         // Pre-render Crawler SSR Fallback elements inside detail-grid
         html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
-        html = html.replace(/id="fallbackProductTitle".*?>.*?<\/h1>/, `id="fallbackProductTitle" itemprop="name" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(p.productName)}</h1>`);
+        html = html.replace(/id="fallbackProductTitle"[\s\S]*?<\/h1>/, `id="fallbackProductTitle" itemprop="name" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(p.productName)}</h1>`);
         html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge" itemprop="brand">${escapeHtml(brandName)}</span>`);
         html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;">${escapeHtml(categoryName)}</span>`);
         html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice" itemprop="price" content="${sellingPrice}" style="font-size: 1.8rem;">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
