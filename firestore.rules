@@ -49,5 +49,11 @@ service cloud.firestore {
     match /users/{userId=**} {
       allow read, write: if true;
     }
+
+    // 8. LIVE & ABANDONED CARTS COLLECTION
+    match /carts/{cartId=**} {
+      allow read, write: if true;
+      allow delete: if true;
+    }
   }
 }

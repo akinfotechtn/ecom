@@ -645,6 +645,27 @@
           }
         }
       }, 200);
+
+      // Real-time cart lead capture for Live & Abandoned Cart follow-up
+      function captureCheckoutLead() {
+        if (window.DbService && window.DbService.syncCartToFirestore) {
+          window.DbService.syncCartToFirestore(null, {
+            name: document.getElementById('custName')?.value?.trim() || '',
+            phone: document.getElementById('custPhone')?.value?.trim() || '',
+            email: document.getElementById('custEmail')?.value?.trim() || '',
+            city: document.getElementById('custCityState')?.value?.trim() || '',
+            pincode: document.getElementById('custPincode')?.value?.trim() || ''
+          });
+        }
+      }
+
+      ['custName', 'custPhone', 'custEmail', 'custCityState', 'custPincode'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', captureCheckoutLead);
+          el.addEventListener('change', captureCheckoutLead);
+        }
+      });
     });
 
     window.checkoutWithGoogle = function () {
@@ -655,6 +676,14 @@
             if (window.currentUser) {
               var nameEl = document.getElementById('custName');
               if (nameEl) nameEl.value = window.currentUser.displayName || '';
+              var emailEl = document.getElementById('custEmail');
+              if (emailEl && !emailEl.value) emailEl.value = window.currentUser.email || '';
+              if (window.DbService && window.DbService.syncCartToFirestore) {
+                window.DbService.syncCartToFirestore(null, {
+                  name: window.currentUser.displayName || '',
+                  email: window.currentUser.email || ''
+                });
+              }
             }
           })
           .catch(function (err) {

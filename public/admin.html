@@ -326,13 +326,14 @@
     <!-- TABS -->
     <div class="admin-tabs">
       <button class="tab-btn active" onclick="switchAdminTab('ordersTab', this); fetchAdminOrdersNow()">📋 Orders History</button>
+      <button class="tab-btn" onclick="switchAdminTab('cartsTab', this); fetchAdminCartsNow()">🛒 Live & Abandoned Carts <span id="adminCartsCountBadge" style="background:#ef4444; color:#fff; border-radius:12px; padding:2px 7px; font-size:0.75rem; margin-left:4px;">0</span></button>
       <button class="tab-btn" onclick="switchAdminTab('heroTab', this)">🖼️ Hero Banners & Slider</button>
       <button class="tab-btn" onclick="switchAdminTab('featuredTab', this)">⭐ Featured Products</button>
       <button class="tab-btn" onclick="switchAdminTab('couponsTab', this)">🎟️ Coupons Generator</button>
       <button class="tab-btn" onclick="switchAdminTab('settingsTab', this)">⚙️ Store Settings</button>
     </div>
 
-    <!-- TAB 7: ORDERS HISTORY -->
+    <!-- TAB 1: ORDERS HISTORY -->
     <div class="tab-content active" id="ordersTab">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
         <div>
@@ -365,6 +366,71 @@
       <!-- UNIFIED RESPONSIVE ORDERS LIST -->
       <div id="adminOrdersContainer" style="display: flex; flex-direction: column; gap: 20px;">
         <div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Loading orders...</div>
+      </div>
+    </div>
+
+    <!-- TAB 2: LIVE & ABANDONED CARTS TRACKER -->
+    <div class="tab-content" id="cartsTab">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.4rem; margin-bottom: 4px; color: var(--text-dark); font-weight: 800;">🛒 Live & Abandoned Carts Tracker</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">
+            Real-time cart activity. Follow up with customers via WhatsApp/Phone and clean old carts to save database storage.
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="hero-btn" onclick="fetchAdminCartsNow()" style="background: linear-gradient(135deg, var(--accent-cyan), #0284c7); padding: 9px 16px; font-size: 0.85rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+            🔄 Refresh
+          </button>
+          <button class="hero-btn" onclick="cleanOldCartsPrompt()" style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 9px 16px; font-size: 0.85rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);" title="Delete carts inactive for over 48 hours to save Firestore space">
+            🧹 Clean Old Carts (&gt;48h)
+          </button>
+          <button class="hero-btn" onclick="clearAllCartsPrompt()" style="background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; padding: 9px 16px; font-size: 0.85rem; border-radius: var(--radius-md); font-weight: 700;" title="Permanently delete all cart documents from Firestore">
+            🗑️ Clear All Carts
+          </button>
+        </div>
+      </div>
+
+      <!-- METRIC CARDS -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+        <div style="background:#fff; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm);">
+          <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Active Carts</div>
+          <div style="font-size:1.6rem; font-weight:800; color:var(--accent-cyan); margin-top:4px;" id="cartMetricTotal">0</div>
+        </div>
+        <div style="background:#fff; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm);">
+          <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Actionable Leads</div>
+          <div style="font-size:1.6rem; font-weight:800; color:#16a34a; margin-top:4px;" id="cartMetricLeads">0</div>
+          <div style="font-size:0.72rem; color:var(--text-muted);">With Phone/Contact</div>
+        </div>
+        <div style="background:#fff; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm);">
+          <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Cart Pipeline Value</div>
+          <div style="font-size:1.6rem; font-weight:800; color:#2563eb; margin-top:4px;" id="cartMetricValue">₹0</div>
+        </div>
+        <div style="background:#fff; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm);">
+          <div style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Abandoned (&gt;1h)</div>
+          <div style="font-size:1.6rem; font-weight:800; color:#dc2626; margin-top:4px;" id="cartMetricAbandoned">0</div>
+        </div>
+      </div>
+
+      <!-- SUB-TABS FILTER FOR CARTS -->
+      <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+        <button class="order-filter-btn active" onclick="filterCartsByTab('ALL', this)">
+          All Carts <span style="background: #e2e8f0; padding: 2px 6px; border-radius: 10px; font-size: 0.72rem;" id="cart-count-all">0</span>
+        </button>
+        <button class="order-filter-btn" onclick="filterCartsByTab('WITH_PHONE', this)">
+          📞 With Phone <span style="background: #dcfce7; color: #16a34a; padding: 2px 6px; border-radius: 10px; font-size: 0.72rem;" id="cart-count-phone">0</span>
+        </button>
+        <button class="order-filter-btn" onclick="filterCartsByTab('ABANDONED', this)">
+          ⏳ Abandoned (&gt;1h) <span style="background: #fee2e2; color: #dc2626; padding: 2px 6px; border-radius: 10px; font-size: 0.72rem;" id="cart-count-abandoned">0</span>
+        </button>
+        <button class="order-filter-btn" onclick="filterCartsByTab('RECENT', this)">
+          🟢 Recent Active <span style="background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 10px; font-size: 0.72rem;" id="cart-count-recent">0</span>
+        </button>
+      </div>
+
+      <!-- CARTS CONTAINER -->
+      <div id="adminCartsContainer" style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Loading active & abandoned carts...</div>
       </div>
     </div>
 

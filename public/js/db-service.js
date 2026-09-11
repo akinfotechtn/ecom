@@ -825,6 +825,14 @@ export class DbService {
     } catch (err) {
       console.warn("Firestore setDoc order failed:", err);
     }
+
+    // Auto-clean cart from Firestore immediately upon order creation to save storage space
+    try {
+      await this.deleteCartOnOrderPlaced();
+    } catch (cleanErr) {
+      console.warn("Auto-clean cart failed:", cleanErr);
+    }
+
     return fullOrder;
   }
 
@@ -1012,6 +1020,205 @@ export class DbService {
     }
   }
 
+  // --------------------------------------------------------------------------
+  // LIVE & ABANDONED CARTS TRACKING (OPTIMIZED & LEAN TO SAVE FIRESTORE SPACE)
+  // --------------------------------------------------------------------------
+
+  static getCartSessionId() {
+    try {
+      const user = auth.currentUser;
+      if (user && user.uid) return `user_${user.uid}`;
+      let guestId = localStorage.getItem('ak_cart_session_id');
+      if (!guestId) {
+        guestId = 'guest_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+        localStorage.setItem('ak_cart_session_id', guestId);
+      }
+      return guestId;
+    } catch (e) {
+      return 'cart_' + Date.now();
+    }
+  }
+
+  static syncCartToFirestore(cartItems = null, customerLead = null) {
+    if (this._cartDebounceTimer) {
+      clearTimeout(this._cartDebounceTimer);
+    }
+
+    this._cartDebounceTimer = setTimeout(async () => {
+      try {
+        let items = cartItems;
+        if (items === null) {
+          try {
+            items = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+          } catch (e) { items = []; }
+        }
+
+        const cartId = this.getCartSessionId();
+
+        // 1. SPACE OPTIMIZATION: If cart is empty, delete document from Firestore immediately!
+        if (!items || !items.length) {
+          await this.deleteCartFromFirestore(cartId);
+          return;
+        }
+
+        // 2. LEAD PERSISTENCE
+        let storedLead = {};
+        try {
+          storedLead = JSON.parse(localStorage.getItem('ak_cart_lead') || '{}');
+        } catch (e) {}
+
+        if (customerLead && typeof customerLead === 'object') {
+          storedLead = { ...storedLead, ...customerLead };
+          try {
+            localStorage.setItem('ak_cart_lead', JSON.stringify(storedLead));
+          } catch (e) {}
+        }
+
+        const user = auth.currentUser;
+
+        // 3. LEAN PAYLOAD: Strip bulky specs & long descriptions to minimize storage bytes
+        const leanItems = items.map(i => ({
+          id: String(i.id || ''),
+          name: String(i.productName || i.name || 'Product').slice(0, 70),
+          price: Number(i.sellingPrice || i.price || 0),
+          qty: Number(i.quantity || i.qty || 1),
+          photo: String(i.photoLink || i.photo || 'images/logo.webp')
+        }));
+
+        const totalValue = leanItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const itemCount = leanItems.reduce((sum, item) => sum + item.qty, 0);
+
+        const cartPayload = {
+          id: cartId,
+          userUid: user ? user.uid : null,
+          customerName: storedLead.name || (user ? (user.displayName || '') : '') || '',
+          customerEmail: storedLead.email || (user ? (user.email || '') : '') || '',
+          customerPhone: storedLead.phone || '',
+          customerCity: storedLead.city || storedLead.cityState || '',
+          customerPincode: storedLead.pincode || '',
+          itemCount: itemCount,
+          totalValue: totalValue,
+          items: leanItems,
+          updatedAt: new Date().toISOString(),
+          isLoggedIn: !!user
+        };
+
+        // Write or update in Firestore
+        await this._withTimeout(setDoc(doc(db, "carts", cartId), cartPayload, { merge: true }), 4000, null);
+      } catch (err) {
+        console.warn("Firestore cart sync error:", err);
+      }
+    }, 1200);
+  }
+
+  static async deleteCartFromFirestore(cartId) {
+    if (!cartId) return false;
+    try {
+      await this._withTimeout(deleteDoc(doc(db, "carts", cartId)), 4000, null);
+      return true;
+    } catch (err) {
+      console.warn("Failed to delete cart from Firestore:", err);
+      // Fallback to REST API delete
+      try {
+        await fetch(`https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/carts/${cartId}`, {
+          method: 'DELETE'
+        });
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+  }
+
+  static async deleteCartOnOrderPlaced() {
+    try {
+      const cartId = this.getCartSessionId();
+      await this.deleteCartFromFirestore(cartId);
+      localStorage.removeItem('ak_cart_session_id');
+      localStorage.removeItem('ak_cart_lead');
+    } catch (e) {
+      console.warn("deleteCartOnOrderPlaced error:", e);
+    }
+  }
+
+  static async getActiveCarts() {
+    let firestoreCarts = [];
+    let querySuccessful = false;
+
+    // 1. Try Firestore SDK
+    try {
+      const snapPromise = getDocs(collection(db, "carts"));
+      const snap = await this._withTimeout(snapPromise, 5000, null);
+      if (snap && snap.docs) {
+        firestoreCarts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        querySuccessful = true;
+      }
+    } catch (err) {
+      console.warn("Firestore SDK getActiveCarts failed:", err.message);
+    }
+
+    // 2. Fallback to Firestore REST API directly
+    if (!querySuccessful) {
+      try {
+        const res = await fetch("https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/carts");
+        if (res.ok) {
+          const json = await res.json();
+          if (json.documents && Array.isArray(json.documents)) {
+            firestoreCarts = json.documents.map(d => this._parseFirestoreRestDoc(d)).filter(Boolean);
+          } else {
+            firestoreCarts = [];
+          }
+          querySuccessful = true;
+        } else if (res.status === 404) {
+          firestoreCarts = [];
+          querySuccessful = true;
+        }
+      } catch (restErr) {
+        console.warn("Firestore REST getActiveCarts failed:", restErr);
+      }
+    }
+
+    firestoreCarts.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+    return firestoreCarts;
+  }
+
+  static async clearOldCarts(olderThanHours = 48) {
+    try {
+      const carts = await this.getActiveCarts();
+      const cutoffTime = Date.now() - (olderThanHours * 60 * 60 * 1000);
+      let deletedCount = 0;
+
+      for (const cart of carts) {
+        const cartTime = new Date(cart.updatedAt || 0).getTime();
+        if (cartTime < cutoffTime) {
+          await this.deleteCartFromFirestore(cart.id);
+          deletedCount++;
+        }
+      }
+      return deletedCount;
+    } catch (err) {
+      console.error("clearOldCarts error:", err);
+      throw err;
+    }
+  }
+
+  static async clearAllCarts() {
+    try {
+      const carts = await this.getActiveCarts();
+      let deletedCount = 0;
+      for (const cart of carts) {
+        if (cart.id) {
+          await this.deleteCartFromFirestore(cart.id);
+          deletedCount++;
+        }
+      }
+      return deletedCount;
+    } catch (err) {
+      console.error("clearAllCarts error:", err);
+      throw err;
+    }
+  }
+
   // DYNAMIC SEO INJECTION (Schema.org JSON-LD & Open Graph)
   static injectProductSEO(product) {
     if (!product) return;
@@ -1115,4 +1322,16 @@ export class DbService {
 
     jsonLd.textContent = JSON.stringify(schemaObj, null, 2);
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.DbService = DbService;
+  // Automatically sync cart to Firestore when cartUpdated event fires in storefront
+  window.addEventListener('cartUpdated', (e) => {
+    try {
+      DbService.syncCartToFirestore(e.detail);
+    } catch (err) {
+      console.warn('Cart sync listener error:', err);
+    }
+  });
 }

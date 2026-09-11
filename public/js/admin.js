@@ -137,6 +137,7 @@ async function loadAdminData() {
   try { await fetchAdminCategories(); } catch (e) { console.error("Error loading categories:", e); }
   try { await fetchAdminProducts(); } catch (e) { console.error("Error loading products:", e); }
   try { await fetchAdminOrders(); } catch (e) { console.error("Error loading orders:", e); }
+  try { await fetchAdminCarts(); } catch (e) { console.error("Error loading carts:", e); }
 }
 
 window.switchAdminTab = function (tabId, btn) {
@@ -155,6 +156,9 @@ window.switchAdminTab = function (tabId, btn) {
 
   if (tabId === 'ordersTab') {
     fetchAdminOrders();
+  }
+  if (tabId === 'cartsTab') {
+    fetchAdminCarts();
   }
   if (tabId === 'couponsTab') {
     renderCouponsList();
@@ -2927,5 +2931,341 @@ window.toggleProductFeatured = async function (productId, checkbox) {
     if (originalLabel) originalLabel.textContent = originalText;
   } finally {
     checkbox.disabled = false;
+  }
+};
+
+// ---------------------------------------------------------
+// LIVE & ABANDONED CARTS TRACKING & SPACE MANAGEMENT
+// ---------------------------------------------------------
+
+let adminCarts = [];
+let selectedCartFilter = 'ALL';
+
+async function fetchAdminCarts() {
+  const container = document.getElementById('adminCartsContainer');
+  const badge = document.getElementById('adminCartsCountBadge');
+  try {
+    if (container) {
+      container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted);">⏳ Fetching active & abandoned carts...</div>`;
+    }
+    adminCarts = await DbService.getActiveCarts();
+    if (badge) {
+      badge.textContent = adminCarts.length;
+      badge.style.display = adminCarts.length > 0 ? 'inline-block' : 'none';
+    }
+    renderCartsList();
+  } catch (err) {
+    console.error("fetchAdminCarts error:", err);
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:30px; color:#ef4444; font-weight:700;">
+          ❌ Failed to load carts: ${escapeHtml(err.message)}<br>
+          <button class="hero-btn" onclick="fetchAdminCartsNow()" style="margin-top:12px; padding:6px 16px;">🔄 Retry</button>
+        </div>`;
+    }
+  }
+}
+
+window.fetchAdminCartsNow = () => fetchAdminCarts();
+
+window.toggleCartItems = function (cartId) {
+  const content = document.getElementById(`cart-items-collapse-${cartId}`);
+  const arrow = document.getElementById(`cart-items-arrow-${cartId}`);
+  if (content && arrow) {
+    const isHidden = content.style.display === 'none';
+    content.style.display = isHidden ? 'block' : 'none';
+    arrow.textContent = isHidden ? '▲' : '▼';
+  }
+};
+
+window.filterCartsByTab = function (filter, btn) {
+  selectedCartFilter = filter;
+  document.querySelectorAll('#cartsTab .order-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderCartsList();
+};
+
+function renderCartsList() {
+  const container = document.getElementById('adminCartsContainer');
+
+  // Compute metrics
+  const now = Date.now();
+  let totalCount = adminCarts.length;
+  let leadsCount = 0;
+  let totalPipelineValue = 0;
+  let abandonedCount = 0;
+  let recentCount = 0;
+
+  for (const c of adminCarts) {
+    const cartVal = Number(c.totalValue || 0);
+    totalPipelineValue += cartVal;
+    if (c.customerPhone && c.customerPhone.trim().length >= 6) {
+      leadsCount++;
+    }
+    const ageMs = now - new Date(c.updatedAt || 0).getTime();
+    if (ageMs > 60 * 60 * 1000) {
+      abandonedCount++;
+    } else {
+      recentCount++;
+    }
+  }
+
+  // Update DOM Metric cards
+  const elTot = document.getElementById('cartMetricTotal');
+  const elLeads = document.getElementById('cartMetricLeads');
+  const elVal = document.getElementById('cartMetricValue');
+  const elAban = document.getElementById('cartMetricAbandoned');
+  if (elTot) elTot.textContent = totalCount;
+  if (elLeads) elLeads.textContent = leadsCount;
+  if (elVal) elVal.textContent = '₹' + totalPipelineValue.toLocaleString('en-IN');
+  if (elAban) elAban.textContent = abandonedCount;
+
+  // Update filter sub-tab counters
+  const cAll = document.getElementById('cart-count-all');
+  const cPhone = document.getElementById('cart-count-phone');
+  const cAban = document.getElementById('cart-count-abandoned');
+  const cRecent = document.getElementById('cart-count-recent');
+  if (cAll) cAll.textContent = totalCount;
+  if (cPhone) cPhone.textContent = leadsCount;
+  if (cAban) cAban.textContent = abandonedCount;
+  if (cRecent) cRecent.textContent = recentCount;
+
+  if (!adminCarts || !adminCarts.length) {
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:40px; color:var(--text-muted); background:#f8fafc; border-radius:12px; border:2px dashed var(--border-color);">
+          <div style="font-size:2.5rem; margin-bottom:10px;">🛒</div>
+          <strong style="font-size:1.1rem; color:var(--text-dark); display:block; margin-bottom:6px;">No Active or Abandoned Carts in Database</strong>
+          All customer carts have either been checked out or automatically cleaned up.<br>
+          <span style="font-size:0.8rem; color:#64748b;">(Empty carts and converted orders are automatically deleted to keep Firestore storage minimal and clean).</span>
+        </div>`;
+    }
+    return;
+  }
+
+  // Filter list based on selected tab
+  let visibleCarts = [...adminCarts];
+  if (selectedCartFilter === 'WITH_PHONE') {
+    visibleCarts = visibleCarts.filter(c => c.customerPhone && c.customerPhone.trim().length >= 6);
+  } else if (selectedCartFilter === 'ABANDONED') {
+    visibleCarts = visibleCarts.filter(c => (now - new Date(c.updatedAt || 0).getTime()) > 60 * 60 * 1000);
+  } else if (selectedCartFilter === 'RECENT') {
+    visibleCarts = visibleCarts.filter(c => (now - new Date(c.updatedAt || 0).getTime()) <= 60 * 60 * 1000);
+  }
+
+  if (!visibleCarts.length) {
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:30px; color:var(--text-muted); background:#f8fafc; border-radius:12px; border:2px dashed var(--border-color);">
+          No carts matching filter: <strong>${escapeHtml(selectedCartFilter)}</strong>
+        </div>`;
+    }
+    return;
+  }
+
+  const cardsHtml = visibleCarts.map(c => {
+    const cId = escapeHtml(String(c.id || 'cart'));
+    const isUser = !!c.isLoggedIn || !!c.userUid;
+    const custName = escapeHtml(c.customerName || (isUser ? 'Registered Customer' : 'Guest Shopper'));
+    const custPhone = c.customerPhone ? escapeHtml(c.customerPhone) : '';
+    const custEmail = c.customerEmail ? escapeHtml(c.customerEmail) : '';
+    const custCity = c.customerCity ? escapeHtml(c.customerCity) : '';
+    const custPincode = c.customerPincode ? escapeHtml(c.customerPincode) : '';
+    const totalVal = Number(c.totalValue || 0);
+    const itemCount = Number(c.itemCount || (c.items ? c.items.length : 0));
+
+    // Calculate age & status
+    const updatedTime = new Date(c.updatedAt || 0).getTime();
+    const diffSec = Math.floor((now - updatedTime) / 1000);
+    let timeAgoStr = 'just now';
+    let statusClass = 'status-delivered'; // green
+    let statusLabel = '🟢 Active Now';
+
+    if (diffSec > 86400) {
+      const days = Math.floor(diffSec / 86400);
+      timeAgoStr = `${days}d ago`;
+      statusClass = 'status-cancelled'; // grey
+      statusLabel = `🔴 Inactive (${days}d ago)`;
+    } else if (diffSec > 3600) {
+      const hours = Math.floor(diffSec / 3600);
+      timeAgoStr = `${hours}h ago`;
+      statusClass = 'status-processing'; // amber/red
+      statusLabel = `⏳ Abandoned (${hours}h ago)`;
+    } else if (diffSec > 60) {
+      const mins = Math.floor(diffSec / 60);
+      timeAgoStr = `${mins}m ago`;
+      statusClass = 'status-shipped'; // blue
+      statusLabel = `🟢 Active (${mins}m ago)`;
+    }
+
+    // Clean phone for wa.me link
+    const cleanPhone = (c.customerPhone || '').replace(/\D/g, '');
+    const phoneValid = cleanPhone.length >= 10;
+    const waPhone = cleanPhone.startsWith('91') && cleanPhone.length === 12 ? cleanPhone : (cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone);
+
+    // Build items summary for WhatsApp message
+    const itemNames = (c.items || []).map(i => `${i.name} (x${i.qty})`).slice(0, 3).join(', ');
+    const waMessage = `Hello ${custName !== 'Guest Shopper' ? custName : ''}! We noticed you left items in your cart at AK Infotech (${itemNames || 'Security Equipment'}, Total: ₹${totalVal.toLocaleString('en-IN')}). Would you like any assistance completing your order, or a special wholesale discount?`;
+
+    // Render Cart Items list
+    const itemsListHtml = (c.items && Array.isArray(c.items) && c.items.length > 0)
+      ? c.items.map(item => `
+        <div class="order-item-row" style="padding:6px 0;">
+          <img src="${escapeHtml(item.photo || 'images/logo.webp')}" class="order-item-img" onerror="this.src='images/logo.webp'" style="width:36px; height:36px;">
+          <div class="order-item-details">
+            <div class="order-item-name" style="font-size:0.82rem;">${escapeHtml(item.name || 'Product')}</div>
+            <div class="order-item-meta">Qty: <strong>${item.qty}</strong> × ₹${Number(item.price || 0).toLocaleString('en-IN')}</div>
+          </div>
+          <div class="order-item-total" style="font-size:0.85rem;">₹${(Number(item.price || 0) * Number(item.qty || 1)).toLocaleString('en-IN')}</div>
+        </div>
+      `).join('')
+      : `<div style="font-size:0.8rem; color:var(--text-muted); padding:6px 0;">No items detail available</div>`;
+
+    return `
+      <div class="order-card" style="border-left: 4px solid ${phoneValid ? 'var(--accent-green)' : 'var(--accent-cyan)'};">
+        <div class="order-card-header" style="background:#f8fafc; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-weight:800; font-size:0.92rem; color:var(--text-dark);">${isUser ? '👤' : '🚶'} ${cId}</span>
+            <span class="status-badge" style="background:${isUser ? '#e0f2fe' : '#f1f5f9'}; color:${isUser ? '#0369a1' : '#475569'}; font-size:0.72rem;">${isUser ? 'Registered User' : 'Guest Shopper'}</span>
+            <span class="order-status-badge ${statusClass}" style="font-size:0.72rem; padding:2px 8px;">${statusLabel}</span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">
+            🕒 Last Active: ${timeAgoStr}
+          </div>
+        </div>
+
+        <div class="order-card-body" style="padding:18px; display:grid; grid-template-columns: 1.1fr 1.3fr 0.9fr; gap:20px;">
+          <!-- Column 1: Customer Lead & 1-Click Follow Up -->
+          <div class="order-info-sec">
+            <h4>👤 Customer Contact & Follow-Up</h4>
+            <div class="order-info-item">
+              <span class="icon">👤</span>
+              <div><strong style="color:var(--text-dark); font-size:0.95rem;">${custName}</strong></div>
+            </div>
+            
+            <div class="order-info-item">
+              <span class="icon">📞</span>
+              <div>
+                ${phoneValid 
+                  ? `<a href="tel:${cleanPhone}" style="color:var(--accent-cyan); font-weight:800; text-decoration:none; font-size:0.95rem;">+${cleanPhone}</a>`
+                  : `<span style="color:#94a3b8; font-style:italic;">No phone entered yet</span>`
+                }
+              </div>
+            </div>
+
+            ${custEmail ? `
+            <div class="order-info-item">
+              <span class="icon">📧</span>
+              <div style="word-break:break-all; font-size:0.82rem; color:#475569;">
+                <a href="mailto:${custEmail}" style="color:inherit; text-decoration:none;">${custEmail}</a>
+              </div>
+            </div>` : ''}
+
+            ${(custCity || custPincode) ? `
+            <div class="order-info-item">
+              <span class="icon">📍</span>
+              <div style="font-size:0.82rem; color:#475569;">${custCity} ${custPincode ? `(${custPincode})` : ''}</div>
+            </div>` : ''}
+
+            <!-- 1-Click Follow-up Action Buttons -->
+            <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+              ${phoneValid ? `
+                <a href="https://wa.me/${waPhone}?text=${encodeURIComponent(waMessage)}" target="_blank" rel="noopener" class="hero-btn" style="background:#25D366; color:#fff; text-decoration:none; text-align:center; padding:8px 12px; font-size:0.85rem; font-weight:800; border-radius:var(--radius-sm); display:inline-flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(37,211,102,0.3);">
+                  <span>💬 WhatsApp Follow-Up</span>
+                </a>
+                <a href="tel:${cleanPhone}" class="hero-btn" style="background:#0284c7; color:#fff; text-decoration:none; text-align:center; padding:6px 12px; font-size:0.8rem; font-weight:700; border-radius:var(--radius-sm); display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                  <span>📞 Call Customer</span>
+                </a>
+              ` : `
+                <div style="font-size:0.75rem; color:#94a3b8; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px; padding:8px; text-align:center;">
+                  ⏳ Waiting for customer to enter contact details at checkout
+                </div>
+              `}
+            </div>
+          </div>
+
+          <!-- Column 2: Cart Items & Value -->
+          <div class="order-info-sec">
+            <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; background:#f1f5f9; padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border-color); font-weight:800; font-size:0.85rem;" onclick="toggleCartItems('${cId}')">
+              <span>🛒 Cart Contents (${itemCount} items)</span>
+              <span id="cart-items-arrow-${cId}" style="transition: transform 0.2s; font-size: 0.8rem; color: var(--text-muted);">▼</span>
+            </div>
+
+            <div id="cart-items-collapse-${cId}" style="margin-top:8px;">
+              <div class="order-items-list" style="border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:8px; background:#ffffff; max-height:180px; overflow-y:auto;">
+                ${itemsListHtml}
+              </div>
+            </div>
+
+            <div class="order-summary-box" style="margin-top:10px; background:#eff6ff; border-color:#bfdbfe;">
+              <div class="order-summary-row" style="font-weight: 800; font-size: 1rem; color:var(--text-dark);">
+                <span>Cart Total Value</span>
+                <span style="color:var(--accent-blue); font-size:1.15rem;">₹${totalVal.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Storage Space Optimization & Delete -->
+          <div class="order-info-sec" style="justify-content: space-between; border-left: 1px solid #f1f5f9; padding-left: 14px;">
+            <div>
+              <h4>💾 Space Management</h4>
+              <p style="font-size:0.78rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">
+                Delete this cart document from Firestore to free up cloud database space after following up.
+              </p>
+            </div>
+            
+            <button class="hero-btn" onclick="deleteAdminCart('${cId}')" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:9px 14px; font-size:0.82rem; border-radius:var(--radius-sm); font-weight:800; width:100%; display:inline-flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; transition:background 0.2s;">
+              <span>🗑️ Delete from Firestore</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = cardsHtml.join('');
+}
+
+window.deleteAdminCart = async function (cartId) {
+  if (!confirm(`Delete cart "${cartId}" from Firestore to free database storage?`)) {
+    return;
+  }
+  try {
+    await DbService.deleteCartFromFirestore(cartId);
+    adminCarts = adminCarts.filter(c => String(c.id) !== String(cartId));
+    const badge = document.getElementById('adminCartsCountBadge');
+    if (badge) {
+      badge.textContent = adminCarts.length;
+      badge.style.display = adminCarts.length > 0 ? 'inline-block' : 'none';
+    }
+    renderCartsList();
+  } catch (err) {
+    alert(`Failed to delete cart: ${err.message}`);
+  }
+};
+
+window.cleanOldCartsPrompt = async function () {
+  if (!confirm(`🧹 Clean Inactive Carts:\n\nDo you want to delete all abandoned carts older than 48 hours from Firestore to free up database storage?`)) {
+    return;
+  }
+  try {
+    const deletedCount = await DbService.clearOldCarts(48);
+    alert(`✅ Storage Cleaned! Successfully deleted ${deletedCount} old cart(s) from Firestore.`);
+    await fetchAdminCarts();
+  } catch (err) {
+    alert(`Error cleaning old carts: ${err.message}`);
+  }
+};
+
+window.clearAllCartsPrompt = async function () {
+  if (!confirm(`⚠️ PERMANENT DATABASE CLEANUP:\n\nAre you sure you want to permanently delete ALL active & abandoned cart records from Firestore?\n\nThis will free 100% of cart storage space immediately.`)) {
+    return;
+  }
+  try {
+    const deletedCount = await DbService.clearAllCarts();
+    alert(`✅ Full Storage Reset Complete! Deleted ${deletedCount} cart document(s) from Firestore.`);
+    await fetchAdminCarts();
+  } catch (err) {
+    alert(`Error clearing carts: ${err.message}`);
   }
 };
