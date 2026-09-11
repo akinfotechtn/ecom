@@ -1157,9 +1157,15 @@ window.closeAuthChoiceModal = function () {
     modal.classList.remove('open');
     modal.classList.remove('active');
   }
-};
-
 window.checkoutWithGoogle = async function () {
+  // If on dedicated checkout.html page
+  if (typeof window.checkoutWithGoogleOnPage === 'function') {
+    return window.checkoutWithGoogleOnPage();
+  }
+  if (document.getElementById('stepDelivery')) {
+    if (typeof window.showDeliveryStep === 'function') window.showDeliveryStep();
+    return;
+  }
   try {
     closeAuthChoiceModal();
     await DbService.loginWithGoogle();
@@ -1172,13 +1178,31 @@ window.checkoutWithGoogle = async function () {
 };
 
 window.checkoutAsGuest = function () {
+  // If on dedicated checkout.html page with stepDelivery
+  if (typeof window.showDeliveryStep === 'function') {
+    window.showDeliveryStep();
+    return;
+  }
+  const stepAuth = document.getElementById('stepAuth');
+  const stepDelivery = document.getElementById('stepDelivery');
+  if (stepDelivery) {
+    if (stepAuth) stepAuth.style.display = 'none';
+    stepDelivery.style.display = 'block';
+    return;
+  }
   closeAuthChoiceModal();
   openCheckoutModal();
 };
 
 async function openCheckoutModal() {
   closeCartDrawer();
-  document.getElementById('checkoutBackdrop').classList.add('active');
+  const backdrop = document.getElementById('checkoutBackdrop');
+  if (!backdrop) {
+    // If no modal exists on this page, redirect to checkout.html
+    window.location.href = 'checkout.html';
+    return;
+  }
+  backdrop.classList.add('active');
   selectPaymentMethod('ONLINE');
 
   const savedGroup = document.getElementById('savedAddressGroup');

@@ -373,12 +373,12 @@
             <div class="co-card-step">1</div>
             Sign In or Continue as Guest
           </div>
-          <button class="co-auth-btn co-auth-btn-google" onclick="checkoutWithGoogle()">
+          <button type="button" class="co-auth-btn co-auth-btn-google" id="coAuthBtnGoogle" onclick="checkoutWithGoogle()">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               style="width:20px; height:20px; background:white; border-radius:50%; padding:2px;">
             Sign In with Google
           </button>
-          <button class="co-auth-btn co-auth-btn-guest" onclick="checkoutAsGuest()">
+          <button type="button" class="co-auth-btn co-auth-btn-guest" id="coAuthBtnGuest" onclick="checkoutAsGuest()">
             Continue as Guest
           </button>
           <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:8px;">
@@ -666,6 +666,7 @@
           window.DbService.syncCartToFirestore(cart, leadData);
         }
       }
+      window.captureCheckoutLead = captureCheckoutLead;
 
       ['custName', 'custPhone', 'custEmail', 'custAddress', 'custCityState', 'custPincode'].forEach(function (id) {
         var el = document.getElementById(id);
@@ -676,6 +677,22 @@
         }
       });
 
+      // Attach direct click listeners to auth choice buttons
+      var guestBtn = document.getElementById('coAuthBtnGuest') || document.querySelector('.co-auth-btn-guest');
+      if (guestBtn) {
+        guestBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.checkoutAsGuest();
+        });
+      }
+      var googleBtn = document.getElementById('coAuthBtnGoogle') || document.querySelector('.co-auth-btn-google');
+      if (googleBtn) {
+        googleBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.checkoutWithGoogle();
+        });
+      }
+
       // Auto-trigger capture at intervals after load to capture browser autofill
       setTimeout(captureCheckoutLead, 400);
       setTimeout(captureCheckoutLead, 1200);
@@ -683,7 +700,27 @@
       setTimeout(captureCheckoutLead, 4000);
     });
 
-    window.checkoutWithGoogle = function () {
+    function showDeliveryStep() {
+      var stepAuth = document.getElementById('stepAuth');
+      var stepDelivery = document.getElementById('stepDelivery');
+      if (stepAuth) stepAuth.style.display = 'none';
+      if (stepDelivery) {
+        stepDelivery.style.display = 'block';
+        try {
+          stepDelivery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+      }
+      if (typeof window.captureCheckoutLead === 'function') {
+        setTimeout(window.captureCheckoutLead, 200);
+      }
+    }
+    window.showDeliveryStep = showDeliveryStep;
+
+    window.checkoutAsGuest = function () {
+      showDeliveryStep();
+    };
+
+    window.checkoutWithGoogleOnPage = function () {
       if (window.DbService && window.DbService.loginWithGoogle) {
         window.DbService.loginWithGoogle()
           .then(function () {
@@ -700,7 +737,9 @@
                 });
               }
             }
-            setTimeout(captureCheckoutLead, 200);
+            if (typeof window.captureCheckoutLead === 'function') {
+              setTimeout(window.captureCheckoutLead, 200);
+            }
           })
           .catch(function (err) {
             console.error('Google sign-in error:', err);
@@ -712,18 +751,7 @@
         showDeliveryStep();
       }
     };
-
-    window.checkoutAsGuest = function () {
-      showDeliveryStep();
-    };
-
-    function showDeliveryStep() {
-      var stepAuth = document.getElementById('stepAuth');
-      var stepDelivery = document.getElementById('stepDelivery');
-      if (stepAuth) stepAuth.style.display = 'none';
-      if (stepDelivery) stepDelivery.style.display = 'block';
-      setTimeout(captureCheckoutLead, 200);
-    }
+    window.checkoutWithGoogle = window.checkoutWithGoogleOnPage;
 
     window.selectPaymentMethod = function (method) {
       document.getElementById('optOnline').classList.toggle('selected', method === 'ONLINE');
