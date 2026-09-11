@@ -1157,6 +1157,8 @@ window.closeAuthChoiceModal = function () {
     modal.classList.remove('open');
     modal.classList.remove('active');
   }
+};
+
 window.checkoutWithGoogle = async function () {
   // If on dedicated checkout.html page
   if (typeof window.checkoutWithGoogleOnPage === 'function') {
