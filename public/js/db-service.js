@@ -1039,6 +1039,54 @@ export class DbService {
     }
   }
 
+  static _toFirestoreFields(obj) {
+    const fields = {};
+    for (const [key, val] of Object.entries(obj)) {
+      if (val === null || val === undefined) continue;
+      if (typeof val === 'string') {
+        fields[key] = { stringValue: val };
+      } else if (typeof val === 'number') {
+        if (Number.isInteger(val)) {
+          fields[key] = { integerValue: String(val) };
+        } else {
+          fields[key] = { doubleValue: val };
+        }
+      } else if (typeof val === 'boolean') {
+        fields[key] = { booleanValue: val };
+      } else if (Array.isArray(val)) {
+        fields[key] = {
+          arrayValue: {
+            values: val.map(item => {
+              if (item && typeof item === 'object') {
+                return { mapValue: { fields: DbService._toFirestoreFields(item) } };
+              }
+              return { stringValue: String(item) };
+            })
+          }
+        };
+      } else if (typeof val === 'object') {
+        fields[key] = { mapValue: { fields: DbService._toFirestoreFields(val) } };
+      }
+    }
+    return fields;
+  }
+
+  static async _writeFirestoreRestDoc(collectionName, docId, data) {
+    try {
+      const fields = this._toFirestoreFields(data);
+      const url = `https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/${collectionName}/${docId}`;
+      const res = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields })
+      });
+      return res.ok;
+    } catch (err) {
+      console.warn(`Firestore REST write error (${collectionName}/${docId}):`, err);
+      return false;
+    }
+  }
+
   static syncCartToFirestore(cartItems = null, customerLead = null) {
     if (this._cartDebounceTimer) {
       clearTimeout(this._cartDebounceTimer);
@@ -1094,6 +1142,7 @@ export class DbService {
           customerName: storedLead.name || (user ? (user.displayName || '') : '') || '',
           customerEmail: storedLead.email || (user ? (user.email || '') : '') || '',
           customerPhone: storedLead.phone || '',
+          customerAddress: storedLead.address || '',
           customerCity: storedLead.city || storedLead.cityState || '',
           customerPincode: storedLead.pincode || '',
           itemCount: itemCount,
@@ -1103,31 +1152,40 @@ export class DbService {
           isLoggedIn: !!user
         };
 
-        // Write or update in Firestore
-        await this._withTimeout(setDoc(doc(db, "carts", cartId), cartPayload, { merge: true }), 4000, null);
+        // Dual Write: Attempt SDK write, guaranteed REST write fallback
+        let writeSuccess = false;
+        try {
+          const res = await this._withTimeout(setDoc(doc(db, "carts", cartId), cartPayload, { merge: true }), 2500, null);
+          if (res !== null) writeSuccess = true;
+        } catch (sdkErr) {
+          console.warn("Firestore SDK cart write failed, trying REST API:", sdkErr);
+        }
+
+        if (!writeSuccess) {
+          await this._writeFirestoreRestDoc("carts", cartId, cartPayload);
+        }
       } catch (err) {
         console.warn("Firestore cart sync error:", err);
       }
-    }, 1200);
+    }, 500);
   }
 
   static async deleteCartFromFirestore(cartId) {
     if (!cartId) return false;
+    let deleted = false;
     try {
-      await this._withTimeout(deleteDoc(doc(db, "carts", cartId)), 4000, null);
-      return true;
+      await this._withTimeout(deleteDoc(doc(db, "carts", cartId)), 2500, null);
+      deleted = true;
     } catch (err) {
-      console.warn("Failed to delete cart from Firestore:", err);
-      // Fallback to REST API delete
-      try {
-        await fetch(`https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/carts/${cartId}`, {
-          method: 'DELETE'
-        });
-        return true;
-      } catch (e) {
-        return false;
-      }
+      console.warn("Failed to delete cart via SDK:", err);
     }
+    try {
+      await fetch(`https://firestore.googleapis.com/v1/projects/ecom-33627/databases/(default)/documents/carts/${cartId}`, {
+        method: 'DELETE'
+      });
+      deleted = true;
+    } catch (e) {}
+    return deleted;
   }
 
   static async deleteCartOnOrderPlaced() {
@@ -1334,4 +1392,14 @@ if (typeof window !== 'undefined') {
       console.warn('Cart sync listener error:', err);
     }
   });
+
+  // Automatically sync existing cart on page load
+  setTimeout(() => {
+    try {
+      const existing = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+      if (existing && existing.length > 0) {
+        DbService.syncCartToFirestore(existing);
+      }
+    } catch (e) {}
+  }, 400);
 }

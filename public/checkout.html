@@ -636,6 +636,7 @@
                           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
                           if (document.getElementById('chkSaveAddress')) document.getElementById('chkSaveAddress').checked = true;
                         }
+                        setTimeout(captureCheckoutLead, 80);
                       };
                     }
                   });
@@ -648,24 +649,38 @@
 
       // Real-time cart lead capture for Live & Abandoned Cart follow-up
       function captureCheckoutLead() {
+        var cart = [];
+        try { cart = JSON.parse(localStorage.getItem('ak_cart') || '[]'); } catch(e){}
+        if (!cart || !cart.length) return;
+
+        var leadData = {
+          name: document.getElementById('custName')?.value?.trim() || '',
+          phone: document.getElementById('custPhone')?.value?.trim() || '',
+          email: document.getElementById('custEmail')?.value?.trim() || '',
+          address: document.getElementById('custAddress')?.value?.trim() || '',
+          city: document.getElementById('custCityState')?.value?.trim() || '',
+          pincode: document.getElementById('custPincode')?.value?.trim() || ''
+        };
+
         if (window.DbService && window.DbService.syncCartToFirestore) {
-          window.DbService.syncCartToFirestore(null, {
-            name: document.getElementById('custName')?.value?.trim() || '',
-            phone: document.getElementById('custPhone')?.value?.trim() || '',
-            email: document.getElementById('custEmail')?.value?.trim() || '',
-            city: document.getElementById('custCityState')?.value?.trim() || '',
-            pincode: document.getElementById('custPincode')?.value?.trim() || ''
-          });
+          window.DbService.syncCartToFirestore(cart, leadData);
         }
       }
 
-      ['custName', 'custPhone', 'custEmail', 'custCityState', 'custPincode'].forEach(function (id) {
+      ['custName', 'custPhone', 'custEmail', 'custAddress', 'custCityState', 'custPincode'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) {
           el.addEventListener('input', captureCheckoutLead);
           el.addEventListener('change', captureCheckoutLead);
+          el.addEventListener('blur', captureCheckoutLead);
         }
       });
+
+      // Auto-trigger capture at intervals after load to capture browser autofill
+      setTimeout(captureCheckoutLead, 400);
+      setTimeout(captureCheckoutLead, 1200);
+      setTimeout(captureCheckoutLead, 2500);
+      setTimeout(captureCheckoutLead, 4000);
     });
 
     window.checkoutWithGoogle = function () {
@@ -685,6 +700,7 @@
                 });
               }
             }
+            setTimeout(captureCheckoutLead, 200);
           })
           .catch(function (err) {
             console.error('Google sign-in error:', err);
@@ -706,6 +722,7 @@
       var stepDelivery = document.getElementById('stepDelivery');
       if (stepAuth) stepAuth.style.display = 'none';
       if (stepDelivery) stepDelivery.style.display = 'block';
+      setTimeout(captureCheckoutLead, 200);
     }
 
     window.selectPaymentMethod = function (method) {

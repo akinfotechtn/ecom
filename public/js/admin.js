@@ -3167,6 +3167,12 @@ function renderCartsList() {
               <div style="font-size:0.82rem; color:#475569;">${custCity} ${custPincode ? `(${custPincode})` : ''}</div>
             </div>` : ''}
 
+            ${(c.customerAddress) ? `
+            <div class="order-info-item">
+              <span class="icon">🏠</span>
+              <div style="font-size:0.8rem; color:#475569; word-break:break-word;">${escapeHtml(c.customerAddress)}</div>
+            </div>` : ''}
+
             <!-- 1-Click Follow-up Action Buttons -->
             <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
               ${phoneValid ? `
