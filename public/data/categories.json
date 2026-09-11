@@ -1,5 +1,17 @@
 [
   {
+    "id": "cat-1789129930977",
+    "name": "ROUTERS",
+    "imageLink": "https://realtechvision.in/cat-icons/routers.png",
+    "description": ""
+  },
+  {
+    "id": "cat-1789129736050",
+    "name": "TELEPHONE",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9aKYYSAyZK4pBKeW--eK4PFP2DcQZgKimWKjK2tpY8Ech8j_yFFw09Hfd&s=10",
+    "description": ""
+  },
+  {
     "id": "cat-1786372112283",
     "name": "GPS",
     "imageLink": "images/categories/gps.webp",

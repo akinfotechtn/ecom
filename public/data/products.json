@@ -11943,8 +11943,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-bluetooth-54-nano-usb-adapter-ub500.webp",
-    "image": "images/products/tp-link-bluetooth-54-nano-usb-adapter-ub500.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-10-port-gigabit-easy-managed-12b3cb01",
@@ -11959,8 +11958,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-10-port-gigabit-easy-managed-switch-with-8-port-poe-es210gp.webp",
-    "image": "images/products/tp-link-10-port-gigabit-easy-managed-switch-with-8-port-poe-es210gp.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-8-port-gigabit-switch-es208g",
@@ -11975,8 +11973,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-8-port-gigabit-switch-es208g.webp",
-    "image": "images/products/tp-link-8-port-gigabit-switch-es208g.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-deco-ax1800-wifi-6-mesh-syst-943fea8b",
@@ -11991,8 +11988,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-deco-ax1800-wifi-6-mesh-system-3-pack-deco-x20.webp",
-    "image": "images/products/tp-link-deco-ax1800-wifi-6-mesh-system-3-pack-deco-x20.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-bluetooth-60-nano-usb-adapter-ub600",
@@ -12007,8 +12003,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-bluetooth-60-nano-usb-adapter-ub600.webp",
-    "image": "images/products/tp-link-bluetooth-60-nano-usb-adapter-ub600.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ax3000-wifi-6-router-archer-ax53",
@@ -12023,8 +12018,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ax3000-wifi-6-router-archer-ax53.webp",
-    "image": "images/products/tp-link-ax3000-wifi-6-router-archer-ax53.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-300mbps-wireless-n-mini-usb-073e4231",
@@ -12039,8 +12033,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-300mbps-wireless-n-mini-usb-adapter-tl-wn823n.webp",
-    "image": "images/products/tp-link-300mbps-wireless-n-mini-usb-adapter-tl-wn823n.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-5ghz-300mbps-13dbi-outdoor-cpe-cpe510",
@@ -12055,8 +12048,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-5ghz-300mbps-13dbi-outdoor-cpe-cpe510.webp",
-    "image": "images/products/tp-link-5ghz-300mbps-13dbi-outdoor-cpe-cpe510.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-150mbps-wireless-n-nano-usb-46bc511d",
@@ -12071,8 +12063,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-150mbps-wireless-n-nano-usb-adapter-tl-wn725n.webp",
-    "image": "images/products/tp-link-150mbps-wireless-n-nano-usb-adapter-tl-wn725n.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-24-port-gigabit-switch-es224g",
@@ -12087,8 +12078,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-24-port-gigabit-switch-es224g.webp",
-    "image": "images/products/tp-link-24-port-gigabit-switch-es224g.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac1350-indoor-ceiling-mount-f0449ef0",
@@ -12103,8 +12093,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac1350-indoor-ceiling-mount-access-point-eap225.webp",
-    "image": "images/products/tp-link-ac1350-indoor-ceiling-mount-access-point-eap225.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-deco-ax3000-wifi-6-mesh-syst-d51e132b",
@@ -12119,8 +12108,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-deco-ax3000-wifi-6-mesh-system-with-poe-3-pack-deco-x50-poe.webp",
-    "image": "images/products/tp-link-deco-ax3000-wifi-6-mesh-system-with-poe-3-pack-deco-x50-poe.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-deco-ac1200-whole-home-mesh-1ce3c3da",
@@ -12135,8 +12123,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-deco-ac1200-whole-home-mesh-wifi-system-3-pack-deco-m4.webp",
-    "image": "images/products/tp-link-deco-ac1200-whole-home-mesh-wifi-system-3-pack-deco-m4.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ax1800-wifi-6-router-archer-ax23",
@@ -12151,8 +12138,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ax1800-wifi-6-router-archer-ax23.webp",
-    "image": "images/products/tp-link-ax1800-wifi-6-router-archer-ax23.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-deco-ax1800-wifi-6-mesh-syst-b06c644a",
@@ -12167,8 +12153,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-deco-ax1800-wifi-6-mesh-system-2-pack-deco-x20.webp",
-    "image": "images/products/tp-link-deco-ax1800-wifi-6-mesh-system-2-pack-deco-x20.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-deco-ax1500-wifi-6-mesh-syst-dcd6748a",
@@ -12183,8 +12168,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-deco-ax1500-wifi-6-mesh-system-2-pack-deco-x10.webp",
-    "image": "images/products/tp-link-deco-ax1500-wifi-6-mesh-system-2-pack-deco-x10.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-300mbps-universal-wifi-range-7ac382f4",
@@ -12199,8 +12183,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-300mbps-universal-wifi-range-extender-tl-wa850re.webp",
-    "image": "images/products/tp-link-300mbps-universal-wifi-range-extender-tl-wa850re.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac750-dual-band-wifi-range-e-e7a19541",
@@ -12215,8 +12198,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac750-dual-band-wifi-range-extender-re205.webp",
-    "image": "images/products/tp-link-ac750-dual-band-wifi-range-extender-re205.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-5ghz-300mbps-23dbi-outdoor-c-33509e2f",
@@ -12231,8 +12213,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-5ghz-300mbps-23dbi-outdoor-cpe-long-range-cpe610.webp",
-    "image": "images/products/tp-link-5ghz-300mbps-23dbi-outdoor-cpe-long-range-cpe610.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ax1500-wifi-6-router-archer-ax12",
@@ -12247,8 +12228,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ax1500-wifi-6-router-archer-ax12.webp",
-    "image": "images/products/tp-link-ax1500-wifi-6-router-archer-ax12.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-16-port-gigabit-switch-es216g",
@@ -12263,8 +12243,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-16-port-gigabit-switch-es216g.webp",
-    "image": "images/products/tp-link-16-port-gigabit-switch-es216g.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-bluetooth-40-nano-usb-adapter-ub400",
@@ -12279,8 +12258,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-bluetooth-40-nano-usb-adapter-ub400.webp",
-    "image": "images/products/tp-link-bluetooth-40-nano-usb-adapter-ub400.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-5-port-gigabit-switch-sg1005d",
@@ -12295,8 +12273,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-5-port-gigabit-switch-sg1005d.webp",
-    "image": "images/products/tp-link-5-port-gigabit-switch-sg1005d.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac1200-wifi-range-extender-re305",
@@ -12311,8 +12288,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac1200-wifi-range-extender-re305.webp",
-    "image": "images/products/tp-link-ac1200-wifi-range-extender-re305.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-28-port-gigabit-easy-managed-922e29d1",
@@ -12327,8 +12303,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-28-port-gigabit-easy-managed-switch-with-24-port-poe-es228gp.webp",
-    "image": "images/products/tp-link-28-port-gigabit-easy-managed-switch-with-24-port-poe-es228gp.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac1800-indoor-ceiling-mount-30cba990",
@@ -12343,8 +12318,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac1800-indoor-ceiling-mount-access-point-eap610.webp",
-    "image": "images/products/tp-link-ac1800-indoor-ceiling-mount-access-point-eap610.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-300mbps-wireless-n-router-tl-wr850n",
@@ -12359,8 +12333,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-300mbps-wireless-n-router-tl-wr850n.webp",
-    "image": "images/products/tp-link-300mbps-wireless-n-router-tl-wr850n.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac750-wifi-range-extender-re200",
@@ -12375,8 +12348,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac750-wifi-range-extender-re200.webp",
-    "image": "images/products/tp-link-ac750-wifi-range-extender-re200.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac1200-wireless-mu-mimo-giga-892fe19f",
@@ -12391,8 +12363,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac1200-wireless-mu-mimo-gigabit-router-archer-c6.webp",
-    "image": "images/products/tp-link-ac1200-wireless-mu-mimo-gigabit-router-archer-c6.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-usb-c-to-gigabit-ethernet-ne-3bbb1bef",
@@ -12407,8 +12378,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-usb-c-to-gigabit-ethernet-network-adapter-ue300c.webp",
-    "image": "images/products/tp-link-usb-c-to-gigabit-ethernet-network-adapter-ue300c.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-20-port-gigabit-easy-managed-885b3a6d",
@@ -12423,8 +12393,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-20-port-gigabit-easy-managed-switch-with-16-port-poe-es220gmp.webp",
-    "image": "images/products/tp-link-20-port-gigabit-easy-managed-switch-with-16-port-poe-es220gmp.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac1750-indoor-ceiling-mount-7d794cf3",
@@ -12439,8 +12408,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac1750-indoor-ceiling-mount-access-point-eap245.webp",
-    "image": "images/products/tp-link-ac1750-indoor-ceiling-mount-access-point-eap245.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-ac600-nano-wireless-usb-adap-de7250be",
@@ -12455,8 +12423,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-ac600-nano-wireless-usb-adapter-archer-t600u-nano.webp",
-    "image": "images/products/tp-link-ac600-nano-wireless-usb-adapter-archer-t600u-nano.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-tp-link-usb-30-to-gigabit-ethernet-n-62e6377c",
@@ -12471,7 +12438,326 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/tp-link-usb-30-to-gigabit-ethernet-network-adapter-ue300.webp",
-    "image": "images/products/tp-link-usb-30-to-gigabit-ethernet-network-adapter-ue300.webp"
+    "isFeatured": false
+  },
+  {
+    "id": "prod-beetel-m88-corded-landline-phone",
+    "photoLink": "images/products/beetel-m88-corded-landline-phone.webp",
+    "productName": "BEETEL M88 CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 8673,
+    "sellingPrice": 4040,
+    "baseSellingPrice": 3675,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m88-corded-landline-phone.webp",
+    "image": "images/products/beetel-m88-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-b25-wall-mountable-basic-land-f66cff80",
+    "photoLink": "images/products/beetel-b25-wall-mountable-basic-landline-phone.webp",
+    "productName": "BEETEL B25 WALL MOUNTABLE BASIC LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1345,
+    "sellingPrice": 630,
+    "baseSellingPrice": 570,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-b25-wall-mountable-basic-landline-phone.webp",
+    "image": "images/products/beetel-b25-wall-mountable-basic-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m59-caller-id-speaker-landline-phone",
+    "photoLink": "images/products/beetel-m59-caller-id-speaker-landline-phone.webp",
+    "productName": "BEETEL M59 CALLER ID SPEAKER LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 2773,
+    "sellingPrice": 1290,
+    "baseSellingPrice": 1175,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m59-caller-id-speaker-landline-phone.webp",
+    "image": "images/products/beetel-m59-caller-id-speaker-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m64-caller-id-speaker-landline-phone",
+    "photoLink": "images/products/beetel-m64-caller-id-speaker-landline-phone.webp",
+    "productName": "BEETEL M64 CALLER ID SPEAKER LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 2773,
+    "sellingPrice": 1290,
+    "baseSellingPrice": 1175,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m64-caller-id-speaker-landline-phone.webp",
+    "image": "images/products/beetel-m64-caller-id-speaker-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-b17-basic-landline-phone",
+    "photoLink": "images/products/beetel-b17-basic-landline-phone.webp",
+    "productName": "BEETEL B17 BASIC LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1345,
+    "sellingPrice": 630,
+    "baseSellingPrice": 570,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-b17-basic-landline-phone.webp",
+    "image": "images/products/beetel-b17-basic-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-x90-cordless-landline-phone",
+    "photoLink": "images/products/beetel-x90-cordless-landline-phone.webp",
+    "productName": "BEETEL X90 CORDLESS LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 4248,
+    "sellingPrice": 1980,
+    "baseSellingPrice": 1800,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-x90-cordless-landline-phone.webp",
+    "image": "images/products/beetel-x90-cordless-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m25-caller-id-slim-corded-lan-849e4b5a",
+    "photoLink": "images/products/beetel-m25-caller-id-slim-corded-landline-phone.webp",
+    "productName": "BEETEL M25 CALLER ID SLIM CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1888,
+    "sellingPrice": 880,
+    "baseSellingPrice": 800,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m25-caller-id-slim-corded-landline-phone.webp",
+    "image": "images/products/beetel-m25-caller-id-slim-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m71-caller-id-corded-landline-phone",
+    "photoLink": "images/products/beetel-m71-caller-id-corded-landline-phone.webp",
+    "productName": "BEETEL M71 CALLER ID CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 3127,
+    "sellingPrice": 1460,
+    "baseSellingPrice": 1325,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m71-caller-id-corded-landline-phone.webp",
+    "image": "images/products/beetel-m71-caller-id-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m56-caller-id-speaker-landline-phone",
+    "photoLink": "images/products/beetel-m56-caller-id-speaker-landline-phone.webp",
+    "productName": "BEETEL M56 CALLER ID SPEAKER LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 2360,
+    "sellingPrice": 1100,
+    "baseSellingPrice": 1000,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m56-caller-id-speaker-landline-phone.webp",
+    "image": "images/products/beetel-m56-caller-id-speaker-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-b29-designer-slim-corded-land-75bf9cd0",
+    "photoLink": "images/products/beetel-b29-designer-slim-corded-landline-phone.webp",
+    "productName": "BEETEL B29 DESIGNER SLIM CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1676,
+    "sellingPrice": 780,
+    "baseSellingPrice": 710,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-b29-designer-slim-corded-landline-phone.webp",
+    "image": "images/products/beetel-b29-designer-slim-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m53-caller-id-speaker-landline-phone",
+    "photoLink": "images/products/beetel-m53-caller-id-speaker-landline-phone.webp",
+    "productName": "BEETEL M53 CALLER ID SPEAKER LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 2478,
+    "sellingPrice": 1160,
+    "baseSellingPrice": 1050,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m53-caller-id-speaker-landline-phone.webp",
+    "image": "images/products/beetel-m53-caller-id-speaker-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m500-caller-id-speaker-landline-phone",
+    "photoLink": "images/products/beetel-m500-caller-id-speaker-landline-phone.webp",
+    "productName": "BEETEL M500 CALLER ID SPEAKER LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 2360,
+    "sellingPrice": 1100,
+    "baseSellingPrice": 1000,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m500-caller-id-speaker-landline-phone.webp",
+    "image": "images/products/beetel-m500-caller-id-speaker-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-f14g-4g-fixed-wireless-phone",
+    "photoLink": "images/products/beetel-f14g-4g-fixed-wireless-phone.webp",
+    "productName": "BEETEL F14G 4G FIXED WIRELESS PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 7257,
+    "sellingPrice": 3380,
+    "baseSellingPrice": 3075,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-f14g-4g-fixed-wireless-phone.webp",
+    "image": "images/products/beetel-f14g-4g-fixed-wireless-phone.webp"
+  },
+  {
+    "id": "prod-beetel-f1k-gsm-fixed-wireless-phone",
+    "photoLink": "images/products/beetel-f1k-gsm-fixed-wireless-phone.webp",
+    "productName": "BEETEL F1K GSM FIXED WIRELESS PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 5133,
+    "sellingPrice": 2390,
+    "baseSellingPrice": 2175,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-f1k-gsm-fixed-wireless-phone.webp",
+    "image": "images/products/beetel-f1k-gsm-fixed-wireless-phone.webp"
+  },
+  {
+    "id": "prod-beetel-x73-cordless-landline-phone",
+    "photoLink": "images/products/beetel-x73-cordless-landline-phone.webp",
+    "productName": "BEETEL X73 CORDLESS LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 4661,
+    "sellingPrice": 2170,
+    "baseSellingPrice": 1975,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-x73-cordless-landline-phone.webp",
+    "image": "images/products/beetel-x73-cordless-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-x70-cordless-landline-phone",
+    "photoLink": "images/products/beetel-x70-cordless-landline-phone.webp",
+    "productName": "BEETEL X70 CORDLESS LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 5369,
+    "sellingPrice": 2500,
+    "baseSellingPrice": 2275,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-x70-cordless-landline-phone.webp",
+    "image": "images/products/beetel-x70-cordless-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-m51-caller-id-corded-landline-phone",
+    "photoLink": "images/products/beetel-m51-caller-id-corded-landline-phone.webp",
+    "productName": "BEETEL M51 CALLER ID CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1888,
+    "sellingPrice": 880,
+    "baseSellingPrice": 800,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-m51-caller-id-corded-landline-phone.webp",
+    "image": "images/products/beetel-m51-caller-id-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-b11-basic-corded-landline-phone",
+    "photoLink": "images/products/beetel-b11-basic-corded-landline-phone.webp",
+    "productName": "BEETEL B11 BASIC CORDED LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1227,
+    "sellingPrice": 570,
+    "baseSellingPrice": 520,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-b11-basic-corded-landline-phone.webp",
+    "image": "images/products/beetel-b11-basic-corded-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-b15-basic-landline-phone",
+    "photoLink": "images/products/beetel-b15-basic-landline-phone.webp",
+    "productName": "BEETEL B15 BASIC LANDLINE PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 1345,
+    "sellingPrice": 630,
+    "baseSellingPrice": 570,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-b15-basic-landline-phone.webp",
+    "image": "images/products/beetel-b15-basic-landline-phone.webp"
+  },
+  {
+    "id": "prod-beetel-f2k-gsm-fixed-wireless-phone",
+    "photoLink": "images/products/beetel-f2k-gsm-fixed-wireless-phone.webp",
+    "productName": "BEETEL F2K GSM FIXED WIRELESS PHONE",
+    "productSpec": "High quality product",
+    "brand": "Beetel",
+    "category": "TELEPHONE",
+    "price": 5546,
+    "sellingPrice": 2590,
+    "baseSellingPrice": 2350,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/beetel-f2k-gsm-fixed-wireless-phone.webp",
+    "image": "images/products/beetel-f2k-gsm-fixed-wireless-phone.webp"
   }
 ]
