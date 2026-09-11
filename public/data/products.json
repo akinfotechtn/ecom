@@ -12753,8 +12753,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-over-lan-extender-120mtr-with-power-srb-et120m.webp",
-    "image": "images/products/srb-hdmi-over-lan-extender-120mtr-with-power-srb-et120m.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-5dc1e172",
@@ -12769,8 +12768,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-5m-srb-hdmi-4k-05.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-5m-srb-hdmi-4k-05.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-5451202f",
@@ -12785,8 +12783,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-3m-srb-hdmi-4k-03.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-3m-srb-hdmi-4k-03.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-4-in-1-out-kvm-hdmi-quad-screen-be52ebf0",
@@ -12801,8 +12798,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-4-in-1-out-kvm-hdmi-quad-screen-real-time-multi-viewer-srb-4in1-hdmi-kvm.webp",
-    "image": "images/products/srb-4-in-1-out-kvm-hdmi-quad-screen-real-time-multi-viewer-srb-4in1-hdmi-kvm.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-splitter-with-extender-12-u-7907743f",
@@ -12817,8 +12813,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-splitter-with-extender-12-upto-60m-srb-se10260m.webp",
-    "image": "images/products/srb-hdmi-splitter-with-extender-12-upto-60m-srb-se10260m.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-splitter-with-extender-14-u-971821cd",
@@ -12833,8 +12828,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-splitter-with-extender-14-upto-60m-srb-se10460m.webp",
-    "image": "images/products/srb-hdmi-splitter-with-extender-14-upto-60m-srb-se10460m.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-wireless-extender-500mtr-srb-et500mw",
@@ -12849,8 +12843,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-wireless-extender-500mtr-srb-et500mw.webp",
-    "image": "images/products/srb-hdmi-wireless-extender-500mtr-srb-et500mw.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-splitter-14-c-type-powered-srb-hs104",
@@ -12865,8 +12858,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-splitter-14-c-type-powered-srb-hs104.webp",
-    "image": "images/products/srb-hdmi-splitter-14-c-type-powered-srb-hs104.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-over-lan-extender-60mtr-wit-3505d453",
@@ -12881,8 +12873,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-over-lan-extender-60mtr-with-power-srb-et60m.webp",
-    "image": "images/products/srb-hdmi-over-lan-extender-60mtr-with-power-srb-et60m.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-splitter-13-4k60hz20-with-r-093cc962",
@@ -12897,8 +12888,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-splitter-13-4k60hz20-with-remote-srb-301hs.webp",
-    "image": "images/products/srb-hdmi-splitter-13-4k60hz20-with-remote-srb-301hs.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-4x4-4k-hdmi14-matrix-seamless-sw-19abc601",
@@ -12913,8 +12903,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-4x4-4k-hdmi14-matrix-seamless-switching-srb-hdmi-4x4-matrix.webp",
-    "image": "images/products/srb-4x4-4k-hdmi14-matrix-seamless-switching-srb-hdmi-4x4-matrix.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-over-lan-kvm-extender-200-m-0c73aa10",
@@ -12929,8 +12918,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-over-lan-kvm-extender-200-mtr-srb-et200musb.webp",
-    "image": "images/products/srb-hdmi-over-lan-kvm-extender-200-mtr-srb-et200musb.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-279aef58",
@@ -12945,8 +12933,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-15m-srb-hdmi-4k-15.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-15m-srb-hdmi-4k-15.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-over-lan-kvm-extender-120mt-d22fb40e",
@@ -12961,8 +12948,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-over-lan-kvm-extender-120mtr-srbet120musb.webp",
-    "image": "images/products/srb-hdmi-over-lan-kvm-extender-120mtr-srbet120musb.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-20km-fiber-kvm-extender-srb-hdofc",
@@ -12977,8 +12963,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-20km-fiber-kvm-extender-srb-hdofc.webp",
-    "image": "images/products/srb-20km-fiber-kvm-extender-srb-hdofc.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-3x3-4k-hdmi14-dvi-video-wall-con-884a310a",
@@ -12993,8 +12978,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-3x3-4k-hdmi14-dvi-video-wall-controller-with-usb-srb-hdmi3x3-controller.webp",
-    "image": "images/products/srb-3x3-4k-hdmi14-dvi-video-wall-controller-with-usb-srb-hdmi3x3-controller.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-cd06b615",
@@ -13009,8 +12993,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-10m-srb-hdmi-4k-10.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-10m-srb-hdmi-4k-10.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-over-lan-kvm-extender-60-mt-a6948386",
@@ -13025,8 +13008,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-over-lan-kvm-extender-60-mtr-poc-srb-et60musb.webp",
-    "image": "images/products/srb-hdmi-over-lan-kvm-extender-60-mtr-poc-srb-et60musb.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-extra-receiver-srb-et200musbreceiver",
@@ -13041,8 +13023,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-extra-receiver-srb-et200musbreceiver.webp",
-    "image": "images/products/srb-extra-receiver-srb-et200musbreceiver.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-be338ad0",
@@ -13057,8 +13038,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-30m-srb-hdmi-4k-30.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-30m-srb-hdmi-4k-30.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-splitter-12-c-type-powered-srb-hs102",
@@ -13073,8 +13053,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-splitter-12-c-type-powered-srb-hs102.webp",
-    "image": "images/products/srb-hdmi-splitter-12-c-type-powered-srb-hs102.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-1-in-4-out-100m-hdmi-kvm-splitte-2e924013",
@@ -13089,8 +13068,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-1-in-4-out-100m-hdmi-kvm-splitter-extenders-srb-se104100mkvm.webp",
-    "image": "images/products/srb-1-in-4-out-100m-hdmi-kvm-splitter-extenders-srb-se104100mkvm.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-100m-wireless-hdmi-kvm-extenders-847c78a7",
@@ -13105,8 +13083,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-100m-wireless-hdmi-kvm-extenders-srb-et100mwkvm.webp",
-    "image": "images/products/srb-100m-wireless-hdmi-kvm-extenders-srb-et100mwkvm.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-331912fd",
@@ -13121,8 +13098,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-15m-srb-hdmi-4k-01.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-15m-srb-hdmi-4k-01.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-hdmi-cable-20-4k-60mhz-al-shell-de38a4ef",
@@ -13137,8 +13113,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-25m-srb-hdmi-4k-25.webp",
-    "image": "images/products/srb-hdmi-cable-20-4k-60mhz-al-shell-25m-srb-hdmi-4k-25.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-srb-kvm-switch-2-port-dual-monitor-s-387c1b40",
@@ -13153,14 +13128,13 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/srb-kvm-switch-2-port-dual-monitor-srb-dp-kvm8k2x2.webp",
-    "image": "images/products/srb-kvm-switch-2-port-dual-monitor-srb-dp-kvm8k2x2.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-panasonic-corded-speakerphone-kx-tsc62",
     "photoLink": "images/products/panasonic-corded-speakerphone-kx-tsc62.webp",
     "productName": "PANASONIC CORDED SPEAKERPHONE (KX-TSC62)",
-    "productSpec": "High quality product",
+    "productSpec": "Type & Display: An analog corded phone featuring a 2-line LCD display for clear visibility.Memory & Storage: Equipped with Caller ID that stores up to 30 numbers, alongside a 30-entry internal phonebook and a 5-number redial memory.Power Source: Operates entirely battery-free by drawing power directly from the connected telephone line.Key Features: Includes a built-in speakerphone for hands-free conversations, programmable flash time settings, and a wall-mountable design ideal for offices or homes",
     "brand": "Panasonic",
     "category": "TELEPHONE",
     "price": 3953,
@@ -13169,14 +13143,13 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/panasonic-corded-speakerphone-kx-tsc62.webp",
-    "image": "images/products/panasonic-corded-speakerphone-kx-tsc62.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-panasonic-corded-speakerphone-kx-ts880",
     "photoLink": "images/products/panasonic-corded-speakerphone-kx-ts880.webp",
     "productName": "PANASONIC CORDED SPEAKERPHONE (KX-TS880)",
-    "productSpec": "High quality product",
+    "productSpec": "Type & Display: A corded landline speakerphone featuring a 2-step tilt angle display, allowing you to adjust the screen for optimal viewing [cite: 1.2.1].\n\nMemory & Storage: Holds a 50-station phonebook, 20-number redial memory, and supports Call Waiting Caller ID [cite: 1.2.1].\n\nDialing Features: Offers highly accessible speed-dialing options with 20 one-touch keys and 10 speed dialer entries [cite: 1.2.1].\n\nAdditional Features: This battery-operated model includes a dedicated headset jack, a visual ringer indicator, and hands-free speakerphone capabilities [cite: 1.2.1].",
     "brand": "Panasonic",
     "category": "TELEPHONE",
     "price": 7316,
@@ -13185,14 +13158,13 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/panasonic-corded-speakerphone-kx-ts880.webp",
-    "image": "images/products/panasonic-corded-speakerphone-kx-ts880.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-panasonic-cordless-phone-kx-tg3611",
     "photoLink": "images/products/panasonic-cordless-phone-kx-tg3611.webp",
     "productName": "PANASONIC CORDLESS PHONE (KX-TG3611)",
-    "productSpec": "High quality product",
+    "productSpec": "Type & Display: A 2.4 GHz digital cordless phone with a compact 1.3-inch monochrome LCD screen and an amber backlight [cite: 1.3.1].Memory & Storage: Provides a 50-name and number phonebook, along with a 50-station Caller ID memory and 5-number redial list.Battery Life: Powered by rechargeable Ni-MH batteries, delivering up to 5 hours of continuous talk time and 11 days (264 hours) of standby time.Key Features: Includes a hands-free speakerphone, night mode, alarm/clock functions, and an \"any key answer\" feature for convenience.",
     "brand": "Panasonic",
     "category": "TELEPHONE",
     "price": 6608,
@@ -13201,14 +13173,13 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/panasonic-cordless-phone-kx-tg3611.webp",
-    "image": "images/products/panasonic-cordless-phone-kx-tg3611.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-panasonic-cordless-phone-kx-tg3711",
     "photoLink": "images/products/panasonic-cordless-phone-kx-tg3711.webp",
     "productName": "PANASONIC CORDLESS PHONE (KX-TG3711)",
-    "productSpec": "High quality product",
+    "productSpec": "Type & Display: A single-handset 2.4 GHz digital cordless phone featuring a large, easy-to-read 1.8-inch amber backlit LCD [cite: 1.4.1].\n\nMemory & Storage: Features an expanded 100-name and number phonebook, a 50-station Caller ID memory, and a 10-number redial list [cite: 1.4.1].\n\nPower Failure System: Equipped with a Power Failure Talk System, allowing users to make and receive calls during temporary power outages by utilizing the handset's stored battery power on the base unit [cite: 1.4.1].\n\nBattery Life & Features: Offers up to 10 hours of talk time and 6 days of standby time, with added features like incoming call barring to block unwanted numbers [cite: 1.4.1].",
     "brand": "Panasonic",
     "category": "TELEPHONE",
     "price": 7434,
@@ -13217,14 +13188,13 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/panasonic-cordless-phone-kx-tg3711.webp",
-    "image": "images/products/panasonic-cordless-phone-kx-tg3711.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-panasonic-dual-handset-cordless-phon-95ba7938",
     "photoLink": "images/products/panasonic-dual-handset-cordless-phone-kx-tg3712.webp",
     "productName": "PANASONIC DUAL HANDSET CORDLESS PHONE (KX-TG3712)",
-    "productSpec": "High quality product",
+    "productSpec": "Type & Handsets: A 2.4 GHz digital cordless phone system that includes two separate handsets, making it ideal for multi-room access.Display & Memory: Both handsets feature a large 1.8-inch amber backlit LCD, a 100-contact phonebook, and a 50-station Caller ID memory.Power Features: Delivers up to 10 hours of talk time on a full charge and includes the Power Failure Talk System to maintain communication during blackouts.Key Functionality: Supports intercom communication between the two handsets, 3-way conference calling, hands-free speakerphone, incoming call barring (call blocking), and a night mode.",
     "brand": "Panasonic",
     "category": "TELEPHONE",
     "price": 12272,
@@ -13233,8 +13203,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/panasonic-dual-handset-cordless-phone-kx-tg3712.webp",
-    "image": "images/products/panasonic-dual-handset-cordless-phone-kx-tg3712.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-visionpro412-soho-digital-pbx-3fa2a83e",
@@ -13249,8 +13218,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-visionpro412-soho-digital-pbx-4-co-12-slt.webp",
-    "image": "images/products/matrix-visionpro412-soho-digital-pbx-4-co-12-slt.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-eon510-digital-key-phone-ip-phone",
@@ -13265,8 +13233,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-eon510-digital-key-phone-ip-phone.webp",
-    "image": "images/products/matrix-eon510-digital-key-phone-ip-phone.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-eternity-nenx416-soho-ip-pbx-366a2c7f",
@@ -13281,8 +13248,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-eternity-nenx416-soho-ip-pbx-potsgsmvoip.webp",
-    "image": "images/products/matrix-eternity-nenx416-soho-ip-pbx-potsgsmvoip.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-eternity-nenx312-soho-ip-pbx-cccdd062",
@@ -13297,8 +13263,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-eternity-nenx312-soho-ip-pbx-potsgsmvoip.webp",
-    "image": "images/products/matrix-eternity-nenx312-soho-ip-pbx-potsgsmvoip.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-visionpro308-soho-digital-pbx-8fe82243",
@@ -13313,8 +13278,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-visionpro308-soho-digital-pbx-3-co-8-slt.webp",
-    "image": "images/products/matrix-visionpro308-soho-digital-pbx-3-co-8-slt.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-matrix-visionpro206-soho-digital-pbx-ac1e2d8e",
@@ -13329,8 +13293,7 @@
     "dealerMarginPercent": 5,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/matrix-visionpro206-soho-digital-pbx-2-co-6-slt.webp",
-    "image": "images/products/matrix-visionpro206-soho-digital-pbx-2-co-6-slt.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat3-utp-telephone-toolless-436c5e76",
@@ -13345,8 +13308,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat3-utp-telephone-toolless-keystone-jack-3u-gold-plated-white-tn04c3kj01qm.webp",
-    "image": "images/products/trionet-cat3-utp-telephone-toolless-keystone-jack-3u-gold-plated-white-tn04c3kj01qm.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-plastic-lock-for-network-cab-e984a994",
@@ -13361,8 +13323,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-plastic-lock-for-network-cabinet-tnpl001.webp",
-    "image": "images/products/trionet-plastic-lock-for-network-cabinet-tnpl001.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-1-mtr-le-90745682",
@@ -13377,8 +13338,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-blue-tnpccat6utp01b.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-blue-tnpccat6utp01b.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-port-cat6-utp-d43f17bc",
@@ -13393,8 +13353,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-port-cat6-utp-pcb-patch-panel-with-cable-manager-3u-gold-plated-tn03c6pcb02utp24.webp",
-    "image": "images/products/trionet-1u-19-inch-24-port-cat6-utp-pcb-patch-panel-with-cable-manager-3u-gold-plated-tn03c6pcb02utp24.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-network-key-stone-jack-cat6a-50700ba8",
@@ -13409,8 +13368,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-network-key-stone-jack-cat6a-stpftp-rj45-inline-coupler-tn04ilcstp6a02.webp",
-    "image": "images/products/trionet-network-key-stone-jack-cat6a-stpftp-rj45-inline-coupler-tn04ilcstp6a02.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-keystone-jack-180-m-ecb5df08",
@@ -13425,8 +13383,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-keystone-jack-180-mini-type-3u-gold-plated-redwhite-tn04c6jkutp180rw.webp",
-    "image": "images/products/trionet-cat6-utp-keystone-jack-180-mini-type-3u-gold-plated-redwhite-tn04c6jkutp180rw.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-05-mtr-l-486f1179",
@@ -13441,8 +13398,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-05-mtr-length-grey-tnpccat6utp05.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-05-mtr-length-grey-tnpccat6utp05.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6a-utp-keystone-jack-180-276c0f2c",
@@ -13457,8 +13413,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6a-utp-keystone-jack-180-mini-type-3u-gold-plated-white-tn04c6ajkutp180.webp",
-    "image": "images/products/trionet-cat6a-utp-keystone-jack-180-mini-type-3u-gold-plated-white-tn04c6ajkutp180.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-port-angled-ut-cf7d469e",
@@ -13473,8 +13428,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-port-angled-utp-blank-patch-panel-tn03bpp-utp24a.webp",
-    "image": "images/products/trionet-1u-19-inch-24-port-angled-utp-blank-patch-panel-tn03bpp-utp24a.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-03-mtr-l-4d2c5994",
@@ -13489,8 +13443,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-03-mtr-length-grey-tnpccat6utp03.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-03-mtr-length-grey-tnpccat6utp03.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-86-86mm-2-port-faceplate-abs-686084b5",
@@ -13505,8 +13458,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-86-86mm-2-port-faceplate-abs-tn05fp8602n.webp",
-    "image": "images/products/trionet-86-86mm-2-port-faceplate-abs-tn05fp8602n.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-12-ports-patch-pa-eb6320fb",
@@ -13521,8 +13473,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-12-ports-patch-panel-tnliu12lsc.webp",
-    "image": "images/products/trionet-1u-19-inch-12-ports-patch-panel-tnliu12lsc.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-1-mtr-le-ce31cedf",
@@ -13537,8 +13488,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-grey-tnpccat6utp01.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-grey-tnpccat6utp01.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-2-mtr-le-e8cd8fa0",
@@ -13553,8 +13503,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-2-mtr-length-grey-tnpccat6utp02.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-2-mtr-length-grey-tnpccat6utp02.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-patch-cord-1-mtr-le-fc7834e3",
@@ -13569,8 +13518,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-yellow-tnpccat6utp01y.webp",
-    "image": "images/products/trionet-cat6-utp-patch-cord-1-mtr-length-yellow-tnpccat6utp01y.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-keystone-jack-180-m-5d84837c",
@@ -13585,8 +13533,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-keystone-jack-180-mini-type-3u-gold-plated-bluewhite-tn04c6jkutp180bw.webp",
-    "image": "images/products/trionet-cat6-utp-keystone-jack-180-mini-type-3u-gold-plated-bluewhite-tn04c6jkutp180bw.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-ports-patch-pa-af221d06",
@@ -13601,8 +13548,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-ports-patch-panel-tnliu24lsc.webp",
-    "image": "images/products/trionet-1u-19-inch-24-ports-patch-panel-tnliu24lsc.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-86-86mm-1-port-faceplate-abs-86c2edf0",
@@ -13617,8 +13563,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-86-86mm-1-port-faceplate-abs-tn05fp8601n.webp",
-    "image": "images/products/trionet-86-86mm-1-port-faceplate-abs-tn05fp8601n.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-port-cat6a-utp-f6ecb737",
@@ -13633,8 +13578,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-port-cat6a-utp-pcb-patch-panel-with-rear-cable-management-tn03c6apcb02utp24.webp",
-    "image": "images/products/trionet-1u-19-inch-24-port-cat6a-utp-pcb-patch-panel-with-rear-cable-management-tn03c6apcb02utp24.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-port-blank-utp-12dba6d1",
@@ -13649,8 +13593,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-port-blank-utp-economy-patch-panel-with-rear-cable-management-tn03bpp02utp24.webp",
-    "image": "images/products/trionet-1u-19-inch-24-port-blank-utp-economy-patch-panel-with-rear-cable-management-tn03bpp02utp24.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-cat6-utp-tool-free-keystone-c33852b6",
@@ -13665,8 +13608,7 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-cat6-utp-tool-free-keystone-jack-up-down-crimping-3u-gold-plated-white-tn04c6jktl02utp180.webp",
-    "image": "images/products/trionet-cat6-utp-tool-free-keystone-jack-up-down-crimping-3u-gold-plated-white-tn04c6jktl02utp180.webp"
+    "isFeatured": false
   },
   {
     "id": "prod-trionet-1u-19-inch-24-port-blank-utp-6170665b",
@@ -13681,7 +13623,102 @@
     "dealerMarginPercent": 10,
     "inStock": true,
     "isCombo": false,
-    "imageUrl": "images/products/trionet-1u-19-inch-24-port-blank-utp-patch-panel-with-rear-cable-management-tn03bpp0324.webp",
-    "image": "images/products/trionet-1u-19-inch-24-port-blank-utp-patch-panel-with-rear-cable-management-tn03bpp0324.webp"
+    "isFeatured": false
+  },
+  {
+    "id": "prod-ezviz-smart-door-rim-lockdl03",
+    "photoLink": "images/products/ezviz-smart-door-rim-lockdl03.webp",
+    "productName": "EZVIZ SMART DOOR RIM LOCK(DL03)",
+    "productSpec": "* Connects to 2.4 GHz Wi-Fi (No connectivity hub needed)\r\n* Multiple unlock methods (Up to 50 passcodes, temporary visitor codes, and app unlocking)\r\n* Remote unlocking and management via the EZVIZ App\r\n* Real-time lock status checks, door open/close alerts, and unlocking history\r\n* Auto-lock function upon closing the door\r\n* Anti-tamper alarm and door-left-open alarm\r\n* Supports long, anti-peeping codes to prevent decoding\r\n* Smart integration with compatible EZVIZ cameras\r\n* Emergency power supply support via Type-C\r\n* Sturdy, safe design",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 10618,
+    "sellingPrice": 4950,
+    "baseSellingPrice": 4499,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-smart-door-rim-lockdl03.webp",
+    "image": "images/products/ezviz-smart-door-rim-lockdl03.webp"
+  },
+  {
+    "id": "prod-ezviz-smart-door-rim-lockdl03-pro",
+    "photoLink": "images/products/ezviz-smart-door-rim-lockdl03-pro.webp",
+    "productName": "EZVIZ SMART DOOR RIM LOCK(DL03 PRO)",
+    "productSpec": "**EZVIZ DL03 Pro Features:**\r\n* **Multiple Unlock Methods:** Fingerprints (up to 50), Proximity Cards (up to 50), Passcodes (up to 50 sets), Temporary Visitor Codes (up to 1 year), and EZVIZ App.\r\n* **Connectivity:** Built-in 2.4 GHz Wi-Fi (No Connectivity Hub Needed).\r\n* **App Control:** Remote unlocking, lock management, real-time status checks, and alerts via the EZVIZ App.\r\n* **Security Features:** Anti-tamper alarm, anti-peeping codes (supports entering random numbers before/after the real code), and auto-lock functionality.\r\n* **Smart Integration:** Can trigger compatible EZVIZ cameras for enhanced protection.\r\n* **Hardware:** Sturdy lock body with support for an emergency power supply.\r\n\r\n**Key Differences (DL03 vs DL03 PRO):**\r\n* **Fingerprint Recognition:** The DL03 Pro includes a built-in fingerprint scanner for biometric entry.\r\n* **Proximity Cards:** The DL03 Pro adds support for RFID tags/cards.",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 13214,
+    "sellingPrice": 6160,
+    "baseSellingPrice": 5599,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-smart-door-rim-lockdl03-pro.webp",
+    "image": "images/products/ezviz-smart-door-rim-lockdl03-pro.webp"
+  },
+  {
+    "id": "prod-ezviz-dl04-smart-deadbolt-lock-keyle-337a241a",
+    "photoLink": "images/products/ezviz-dl04-smart-deadbolt-lock-keyless-wi-fi-entry-door-lock-with-app-control.webp",
+    "productName": "EZVIZ DL04 Smart Deadbolt Lock | Keyless Wi-Fi Entry Door Lock with App Control",
+    "productSpec": "* Multiple Unlock Methods: Keypad Passcodes (up to 50 sets), EZVIZ App remote unlocking, and Mechanical Key (for emergencies).\r\n* Built-in Wi-Fi: Connects directly to 2.4 GHz Wi-Fi networks without requiring a bridging hub.\r\n* Temporary Visitor Access: Create temporary visitor codes valid for up to 1 year.\r\n* Advanced Security: Features an anti-tamper alarm siren and supports anti-peeping codes (random numbers before/after the real code).\r\n* Smart Monitoring: Real-time lock status checks, door left open alerts, and auto-locking functionality.\r\n* Smart Home Integration: Triggers connected EZVIZ cameras for comprehensive entrance security.\r\n* Durable Build: IP55 weatherproof design for reliable outdoor use.\r\n* Emergency Backup: Supports emergency charging via Type-C power bank if batteries run out.",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 14630,
+    "sellingPrice": 6820,
+    "baseSellingPrice": 6199,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-dl04-smart-deadbolt-lock-keyless-wi-fi-entry-door-lock-with-app-control.webp",
+    "image": "images/products/ezviz-dl04-smart-deadbolt-lock-keyless-wi-fi-entry-door-lock-with-app-control.webp"
+  },
+  {
+    "id": "prod-ezviz-dl04-pro-smart-deadbolt-lock-f-0ed1ef03",
+    "photoLink": "images/products/ezviz-dl04-pro-smart-deadbolt-lock-fingerprint-wi-fi-keyless-entry-with-app-control.webp",
+    "productName": "EZVIZ DL04 Pro Smart Deadbolt Lock | Fingerprint & Wi-Fi Keyless Entry with App Control",
+    "productSpec": "* 5-in-1 Keyless Entry: Fingerprint Scanner (up to 50), Proximity Cards (up to 50), Passcodes (up to 50 sets), EZVIZ App Remote Unlock, and Mechanical Key.\r\n* Connectivity: Built-in 2.4 GHz Wi-Fi (No extra bridge hub required).\r\n* App Management: Real-time lock status, temporary visitor codes (valid up to 1 year), user management, and remote unlocking.\r\n* Smart Home Integration: Connects with compatible EZVIZ cameras for interlinked video recording when the door opens.\r\n* Advanced Security: Anti-tamper alarm, anti-peeping virtual passcodes, privacy mode, and auto-lock after 5 failed attempts.\r\n* Durable Build: Sturdy aluminum and plastic construction with an IP55 weatherproof exterior panel.\r\n* Backup Power: Powered by 4 AA batteries with low-battery alerts and Type-C emergency charging support.\r\n* Additional Features: Built-in electric doorbell support and Bluetooth key support.",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 17462,
+    "sellingPrice": 8140,
+    "baseSellingPrice": 7399,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-dl04-pro-smart-deadbolt-lock-fingerprint-wi-fi-keyless-entry-with-app-control.webp",
+    "image": "images/products/ezviz-dl04-pro-smart-deadbolt-lock-fingerprint-wi-fi-keyless-entry-with-app-control.webp"
+  },
+  {
+    "id": "prod-ezviz-dl05-smart-fingerprint-lock",
+    "photoLink": "images/products/ezviz-dl05-smart-fingerprint-lock.webp",
+    "productName": "EZVIZ DL05 SMART FINGERPRINT LOCK",
+    "productSpec": "* Multiple Unlock Methods: Fingerprint (stores up to 50 locally), Passcode, Proximity Card, EZVIZ App (Remote/Bluetooth), and Mechanical Key.\r\n* Connectivity: Supports both Wi-Fi and Bluetooth modes.\r\n* Advanced Security: Anti-peeping codes, anti-tamper alarm, wrong-attempt protection (auto-disables after 5 failed attempts), child safety lock, and privacy mode.\r\n* Smart App Controls: Assign temporary passcodes, share Bluetooth keys, and receive real-time mobile alerts for door opening, forced entry, or low battery.\r\n* Smart Home Integration: Triggers auto-recording when linked with compatible EZVIZ indoor cameras (e.g., H6c, C6N, CP1, TY1, TY2).\r\n* Built-in Conveniences: Integrated doorbell.\r\n* Durability: IP65 weatherproof design on the exterior panel.\r\n* Battery Life: Up to 365 days of standby time (in Bluetooth mode) with Type-C emergency charging support.",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 21238,
+    "sellingPrice": 9900,
+    "baseSellingPrice": 8999,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-dl05-smart-fingerprint-lock.webp",
+    "image": "images/products/ezviz-dl05-smart-fingerprint-lock.webp"
+  },
+  {
+    "id": "prod-ezviz-lt70-smart-fingerprint-door-lock",
+    "photoLink": "images/products/ezviz-lt70-smart-fingerprint-door-lock.webp",
+    "productName": "EZVIZ LT70 Smart Fingerprint Door Lock",
+    "productSpec": "* Four Unlocking Modes: Fingerprint, Password, Touch Card (CPU card), and Mechanical Key.\r\n* Lock Body: Standard 6068 lock body.\r\n* Power Supply: Operates on 8 AA batteries and supports emergency power backup.\r\n* Smart Alerts: Real-time notifications for anti-tamper alarms, anti-check alarms, and low battery/replacement warnings.\r\n* App Controls: Real-time lock status checking, temporary access passwords, and user management.",
+    "brand": "EZVIZ",
+    "category": "SMART LOCK",
+    "price": 16518,
+    "sellingPrice": 7700,
+    "baseSellingPrice": 6999,
+    "dealerMarginPercent": 10,
+    "inStock": true,
+    "isCombo": false,
+    "imageUrl": "images/products/ezviz-lt70-smart-fingerprint-door-lock.webp",
+    "image": "images/products/ezviz-lt70-smart-fingerprint-door-lock.webp"
   }
 ]
