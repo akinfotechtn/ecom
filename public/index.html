@@ -117,7 +117,12 @@
 
   <!-- 1. CATEGORY SHOWCASE STRIP (SHOP BY CATEGORIES) -->
   <section class="filter-section">
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin-bottom: 16px;">Shop By Categories</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin: 0;">Shop By Categories</h2>
+      <button type="button" id="toggleCategoriesBtn" class="view-all-expand-btn" onclick="toggleCategoriesExpand()" aria-expanded="false" aria-controls="categoryScrollRow">
+        <span id="toggleCategoriesText">View All Categories</span> <span class="expand-arrow">▾</span>
+      </button>
+    </div>
     <div class="category-scroll-row" id="categoryScrollRow"></div>
   </section>
 
@@ -184,7 +189,12 @@
 
   <!-- 3. BRAND SHOWCASE STRIP (SHOP BY BRANDS) -->
   <section class="brand-showcase-section">
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin-bottom: 16px;">Shop By Brands</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin: 0;">Shop By Brands</h2>
+      <button type="button" id="toggleBrandsBtn" class="view-all-expand-btn" onclick="toggleBrandsExpand()" aria-expanded="false" aria-controls="brandLogosRow">
+        <span id="toggleBrandsText">View All Brands</span> <span class="expand-arrow">▾</span>
+      </button>
+    </div>
     <div class="brand-logos-row" id="brandLogosRow"></div>
   </section>
 

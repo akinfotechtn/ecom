@@ -1,5 +1,29 @@
 [
   {
+    "id": "brand-1789130920090",
+    "name": "Trionet",
+    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782995400/realconnect/brands/r82sgfzhwqzuctvechue.png",
+    "description": ""
+  },
+  {
+    "id": "brand-1789130650190",
+    "name": "Matrix",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzLWGB9e7rV7S18qwQ0TdS8f_r0JOMtZzTKRZiYyJ-XA&s=10",
+    "description": ""
+  },
+  {
+    "id": "brand-1789130632549",
+    "name": "Panasonic",
+    "imageLink": "https://1000logos.net/wp-content/uploads/2017/04/Panasonic-logo.jpg",
+    "description": ""
+  },
+  {
+    "id": "brand-1789130607040",
+    "name": "SRB",
+    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782991703/realconnect/brands/yn8p3o7dp2f4kwkpvc07.png",
+    "description": ""
+  },
+  {
     "id": "brand-1789129776067",
     "name": "Beetel",
     "imageLink": "https://mms.businesswire.com/media/20210201006054/en/856411/5/beetel_logo_only_final_05.jan.2021-02.jpg?download=1",

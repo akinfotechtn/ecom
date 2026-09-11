@@ -161,6 +161,34 @@ function renderCategoryScrollRow() {
   }).join('');
 }
 
+window.toggleCategoriesExpand = function () {
+  const row = document.getElementById('categoryScrollRow');
+  const btn = document.getElementById('toggleCategoriesBtn');
+  const text = document.getElementById('toggleCategoriesText');
+  if (!row || !btn) return;
+
+  const isExpanded = row.classList.toggle('expanded');
+  btn.classList.toggle('expanded', isExpanded);
+  btn.setAttribute('aria-expanded', String(isExpanded));
+  if (text) {
+    text.textContent = isExpanded ? 'Show Less' : 'View All Categories';
+  }
+};
+
+window.toggleBrandsExpand = function () {
+  const row = document.getElementById('brandLogosRow');
+  const btn = document.getElementById('toggleBrandsBtn');
+  const text = document.getElementById('toggleBrandsText');
+  if (!row || !btn) return;
+
+  const isExpanded = row.classList.toggle('expanded');
+  btn.classList.toggle('expanded', isExpanded);
+  btn.setAttribute('aria-expanded', String(isExpanded));
+  if (text) {
+    text.textContent = isExpanded ? 'Show Less' : 'View All Brands';
+  }
+};
+
 async function fetchProducts() {
   try {
     allProducts = await DbService.getProducts();
