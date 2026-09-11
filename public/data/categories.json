@@ -164,8 +164,9 @@
   {
     "id": "cat-1785926555533",
     "name": "ANDROID BOX",
-    "imageLink": "images/cctv-wholesale.webp",
-    "deliveryCharge": 150
+    "imageLink": "https://static.vecteezy.com/system/resources/previews/047/635/805/non_2x/simple-black-and-white-tv-box-with-remote-control-icon-vector.jpg",
+    "deliveryCharge": 150,
+    "description": ""
   },
   {
     "id": "cat-1785926555581",
