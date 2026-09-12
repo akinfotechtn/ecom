@@ -18,7 +18,39 @@
   <link rel="canonical" href="https://shop.akinfotechcctv.in/contact.html">
   <link rel="icon" type="image/webp" href="images/logo.webp">
   <link rel="stylesheet" href="css/style.css">
+  <!-- intl-tel-input for international country codes & flags -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css">
   <style>
+    /* Modern intl-tel-input full styling */
+    .iti {
+      width: 100% !important;
+      display: block !important;
+    }
+    .iti__country-container {
+      z-index: 10;
+    }
+    .iti__dropdown-content {
+      z-index: 99999 !important;
+      border-radius: 10px !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18) !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    .iti input[type="tel"] {
+      width: 100% !important;
+      padding: 10px 14px 10px 52px !important;
+      font-size: 0.95rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      background: #ffffff;
+      color: #0f172a;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .iti input[type="tel"]:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
     .contact-hero {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
@@ -475,26 +507,7 @@
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <div class="form-group">
               <label for="cPhone">Phone / WhatsApp *</label>
-              <div class="phone-input-group">
-                <select id="cCountryCode" class="country-code-select" onchange="handleContactCountryCodeChange()">
-                  <option value="+91" selected>🇮🇳 +91</option>
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+971">🇦🇪 +971</option>
-                  <option value="+65">🇸🇬 +65</option>
-                  <option value="+60">🇲🇾 +60</option>
-                  <option value="+966">🇸🇦 +966</option>
-                  <option value="+974">🇶🇦 +974</option>
-                  <option value="+968">🇴🇲 +968</option>
-                  <option value="+965">🇰🇼 +965</option>
-                  <option value="+973">🇧🇭 +973</option>
-                  <option value="+94">🇱🇰 +94</option>
-                  <option value="+880">🇧🇩 +880</option>
-                  <option value="+977">🇳🇵 +977</option>
-                  <option value="+61">🇦🇺 +61</option>
-                </select>
-                <input type="tel" id="cPhone" class="phone-number-input" placeholder="9876543210" maxlength="10" required>
-              </div>
+              <input type="tel" id="cPhone" class="form-control phone-number-input" placeholder="9876543210" required>
             </div>
             <div class="form-group">
               <label for="cEmail">Email Address</label>
@@ -668,8 +681,11 @@
     </a>
   </nav>
 
+  <!-- intl-tel-input JS & Unified Phone Helper -->
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js"></script>
+  <script src="js/phone-input-helper.js"></script>
   <script>
-    // Update badge count
+    // Update badge count & Initialize phone input
     document.addEventListener('DOMContentLoaded', () => {
       try {
         const cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
@@ -677,28 +693,32 @@
         const el = document.getElementById('cartCount');
         if (el) el.textContent = count;
       } catch (e) {}
-    });
 
-    function handleContactCountryCodeChange() {
-      const codeSelect = document.getElementById('cCountryCode');
-      const phoneInput = document.getElementById('cPhone');
-      if (!codeSelect || !phoneInput) return;
-      if (codeSelect.value === '+91') {
-        phoneInput.placeholder = '9876543210';
-        phoneInput.maxLength = 10;
-      } else {
-        phoneInput.placeholder = 'Mobile number';
-        phoneInput.maxLength = 15;
+      const cPhoneEl = document.getElementById('cPhone');
+      if (cPhoneEl && window.initIntlPhoneInput) {
+        window.initIntlPhoneInput(cPhoneEl);
       }
-    }
+    });
 
     function handleContactSubmit(e) {
       e.preventDefault();
       const name = document.getElementById('cName').value.trim();
-      const countryCode = document.getElementById('cCountryCode')?.value?.trim() || '+91';
-      const rawPhone = document.getElementById('cPhone').value.trim();
-      const cleanPhone = rawPhone.replace(/\D/g, '');
-      const fullPhone = countryCode + ' ' + cleanPhone;
+      const phoneEl = document.getElementById('cPhone');
+      const phoneData = (window.getIntlPhoneData && phoneEl)
+        ? window.getIntlPhoneData(phoneEl)
+        : { fullPhone: phoneEl?.value?.trim() || '', dialCode: '+91', cleanPhone: phoneEl?.value?.replace(/\D/g, '') || '', isValid: phoneEl?.value?.replace(/\D/g, '').length >= 10, countryIso: 'in' };
+
+      if (!phoneData.isValid) {
+        if (phoneData.countryIso === 'in') {
+          alert('Please enter a valid 10-digit Indian mobile number.');
+        } else {
+          alert('Please enter a valid phone number for ' + (phoneData.countryName || 'selected country') + ' (' + (phoneData.dialCode || '') + ').');
+        }
+        phoneEl.focus();
+        return;
+      }
+
+      const fullPhone = phoneData.fullPhone;
       const email = document.getElementById('cEmail').value.trim();
       const subject = document.getElementById('cSubject').value;
       const message = document.getElementById('cMessage').value.trim();

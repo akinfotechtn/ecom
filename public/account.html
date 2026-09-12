@@ -22,6 +22,7 @@
   <link rel="shortcut icon" href="images/logo.webp">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css">
   <style>
     .account-container {
       max-width: 1000px;
@@ -103,42 +104,53 @@
       cursor: pointer;
     }
 
-    /* Phone Input with Country Code Chooser */
-    .phone-input-group {
-      display: flex;
-      align-items: stretch;
-      border: 1.5px solid var(--border-color);
-      border-radius: var(--radius-sm, 6px);
-      overflow: hidden;
-      background: #ffffff;
+    /* intl-tel-input styling */
+    .iti {
+      width: 100% !important;
+      display: block !important;
+    }
+    .iti input[type="tel"] {
+      width: 100% !important;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      border: 1.5px solid var(--border-color) !important;
+      border-radius: var(--radius-sm, 6px) !important;
+      font-size: 0.92rem !important;
+      font-weight: 600 !important;
+      color: var(--text-dark) !important;
+      background: #ffffff !important;
+      box-sizing: border-box !important;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .phone-input-group:focus-within {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
-    }
-    .country-code-select {
-      background: #f8fafc;
-      border: none;
-      border-right: 1.5px solid var(--border-color);
-      padding: 0 8px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--text-dark);
-      outline: none;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .phone-number-input {
-      flex: 1;
-      border: none !important;
-      padding: 9px 12px !important;
-      font-size: 0.9rem !important;
+    .iti input[type="tel"]:focus {
+      border-color: var(--accent-cyan) !important;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.15) !important;
       outline: none !important;
-      background: transparent !important;
-      color: var(--text-dark) !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
+    }
+    .iti__selected-country {
+      background: #f8fafc !important;
+      border-right: 1.5px solid var(--border-color) !important;
+      border-top-left-radius: var(--radius-sm, 6px) !important;
+      border-bottom-left-radius: var(--radius-sm, 6px) !important;
+      font-weight: 700 !important;
+      font-size: 0.88rem !important;
+      padding: 0 10px 0 12px !important;
+    }
+    .iti__dropdown-content {
+      z-index: 99999 !important;
+      border-radius: 10px !important;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.18) !important;
+      border: 1.5px solid var(--border-color) !important;
+      max-height: 280px !important;
+    }
+    .iti__search-input {
+      padding: 10px 12px !important;
+      font-size: 0.88rem !important;
+      border-radius: 6px !important;
+      margin: 8px 10px !important;
+      width: calc(100% - 20px) !important;
+      box-sizing: border-box !important;
+      border: 1px solid var(--border-color) !important;
     }
   </style>
 </head>
@@ -230,26 +242,7 @@
           </div>
           <div style="margin-bottom: 16px;">
             <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Phone Number (WhatsApp) *</label>
-            <div class="phone-input-group">
-              <select id="guestCountryCode" class="country-code-select" onchange="handleAccountCountryCodeChange('guestCountryCode', 'guestPhone')">
-                <option value="+91" selected>🇮🇳 +91</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+971">🇦🇪 +971</option>
-                <option value="+65">🇸🇬 +65</option>
-                <option value="+60">🇲🇾 +60</option>
-                <option value="+966">🇸🇦 +966</option>
-                <option value="+974">🇶🇦 +974</option>
-                <option value="+968">🇴🇲 +968</option>
-                <option value="+965">🇰🇼 +965</option>
-                <option value="+973">🇧🇭 +973</option>
-                <option value="+94">🇱🇰 +94</option>
-                <option value="+880">🇧🇩 +880</option>
-                <option value="+977">🇳🇵 +977</option>
-                <option value="+61">🇦🇺 +61</option>
-              </select>
-              <input type="tel" id="guestPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
-            </div>
+            <input type="tel" id="guestPhone" class="phone-number-input" required placeholder="9500673207">
           </div>
           <button type="submit" class="btn-checkout" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important; color: #ffffff !important; border: none; width: 100%; padding: 10px 14px; border-radius: 6px; font-weight: 800; cursor: pointer; text-align: center;">
             Track Order Details →
@@ -323,26 +316,7 @@
 
         <div class="form-group">
           <label>Mobile Phone Number *</label>
-          <div class="phone-input-group">
-            <select id="addrCountryCode" class="country-code-select" onchange="handleAccountCountryCodeChange('addrCountryCode', 'addrPhone')">
-              <option value="+91" selected>🇮🇳 +91</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+971">🇦🇪 +971</option>
-              <option value="+65">🇸🇬 +65</option>
-              <option value="+60">🇲🇾 +60</option>
-              <option value="+966">🇸🇦 +966</option>
-              <option value="+974">🇶🇦 +974</option>
-              <option value="+968">🇴🇲 +968</option>
-              <option value="+965">🇰🇼 +965</option>
-              <option value="+973">🇧🇭 +973</option>
-              <option value="+94">🇱🇰 +94</option>
-              <option value="+880">🇧🇩 +880</option>
-              <option value="+977">🇳🇵 +977</option>
-              <option value="+61">🇦🇺 +61</option>
-            </select>
-            <input type="tel" id="addrPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
-          </div>
+          <input type="tel" id="addrPhone" class="phone-number-input" required placeholder="9500673207">
         </div>
 
         <div class="form-group">
@@ -432,22 +406,16 @@
     </a>
   </nav>
 
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js"></script>
+  <script src="js/phone-input-helper.js"></script>
   <script type="module" src="js/account.js"></script>
   <script>
-    function handleAccountCountryCodeChange(selectId, inputId) {
-      const select = document.getElementById(selectId);
-      const input = document.getElementById(inputId);
-      if (!select || !input) return;
-      const code = select.value;
-      if (code === '+91') {
-        input.placeholder = '9500673207';
-        input.maxLength = 10;
-      } else {
-        input.placeholder = 'Mobile number';
-        input.maxLength = 15;
+    document.addEventListener('DOMContentLoaded', function () {
+      const guestPhoneInput = document.getElementById('guestPhone');
+      if (guestPhoneInput && window.initIntlPhoneInput) {
+        window.initIntlPhoneInput(guestPhoneInput);
       }
-    }
-    window.handleAccountCountryCodeChange = handleAccountCountryCodeChange;
+    });
 
     function toggleDesktopNavMenu() {
       const menu = document.getElementById('desktopNavMenu');

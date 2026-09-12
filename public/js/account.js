@@ -206,11 +206,14 @@ window.openAddAddressModal = function() {
   document.getElementById('editAddressId').value = '';
   document.getElementById('addressModalTitle').textContent = 'Add Delivery Address';
   document.getElementById('addressForm').reset();
-  if (document.getElementById('addrCountryCode')) document.getElementById('addrCountryCode').value = '+91';
   if (document.getElementById('addrState')) document.getElementById('addrState').value = 'Tamil Nadu';
-  if (typeof window.handleAccountCountryCodeChange === 'function') {
-    window.handleAccountCountryCodeChange('addrCountryCode', 'addrPhone');
+  
+  const addrPhoneInput = document.getElementById('addrPhone');
+  if (addrPhoneInput) {
+    if (window.initIntlPhoneInput) window.initIntlPhoneInput(addrPhoneInput);
+    if (window.setIntlPhoneNumber) window.setIntlPhoneNumber(addrPhoneInput, '');
   }
+
   if (currentUser) {
     document.getElementById('addrFullName').value = currentUser.displayName || '';
   }
@@ -225,21 +228,13 @@ window.editAddress = function(id) {
   document.getElementById('addressModalTitle').textContent = 'Edit Delivery Address';
   document.getElementById('addrFullName').value = addr.fullName || addr.name || '';
   
-  // Phone and country code parsing
-  const rawPh = addr.phone || '';
-  const ccEl = document.getElementById('addrCountryCode');
-  const phEl = document.getElementById('addrPhone');
-  if (phEl) {
-    if (rawPh.startsWith('+')) {
-      const sp = rawPh.split(' ');
-      if (ccEl) ccEl.value = sp[0];
-      phEl.value = sp.slice(1).join('').replace(/\D/g, '');
+  const addrPhoneInput = document.getElementById('addrPhone');
+  if (addrPhoneInput) {
+    if (window.initIntlPhoneInput) window.initIntlPhoneInput(addrPhoneInput);
+    if (window.setIntlPhoneNumber) {
+      window.setIntlPhoneNumber(addrPhoneInput, addr.phone || '');
     } else {
-      if (ccEl) ccEl.value = '+91';
-      phEl.value = rawPh.replace(/\D/g, '');
-    }
-    if (typeof window.handleAccountCountryCodeChange === 'function') {
-      window.handleAccountCountryCodeChange('addrCountryCode', 'addrPhone');
+      addrPhoneInput.value = addr.phone || '';
     }
   }
 
@@ -265,25 +260,22 @@ async function handleAddressSubmit(e) {
 
   const id = document.getElementById('editAddressId').value;
   const fullName = document.getElementById('addrFullName').value.trim();
-  const countryCode = document.getElementById('addrCountryCode')?.value?.trim() || '+91';
-  const rawPhone = document.getElementById('addrPhone').value.trim();
-  const cleanPhone = rawPhone.replace(/\D/g, '');
+  const phoneEl = document.getElementById('addrPhone');
+  const phoneData = (window.getIntlPhoneData && phoneEl)
+    ? window.getIntlPhoneData(phoneEl)
+    : { fullPhone: phoneEl?.value?.trim() || '', dialCode: '+91', cleanPhone: (phoneEl?.value?.replace(/\D/g, '') || ''), isValid: phoneEl?.value?.replace(/\D/g, '').length >= 10, countryIso: 'in', countryName: 'India' };
 
-  if (countryCode === '+91') {
-    if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
-      alert('Please enter a valid 10-digit mobile phone number.');
-      document.getElementById('addrPhone')?.focus();
-      return;
+  if (!phoneData.isValid) {
+    if (phoneData.countryIso === 'in') {
+      alert('Please enter a valid 10-digit Indian mobile number.');
+    } else {
+      alert('Please enter a valid phone number for ' + (phoneData.countryName || 'selected country') + ' (' + (phoneData.dialCode || '') + ').');
     }
-  } else {
-    if (cleanPhone.length < 7 || cleanPhone.length > 15) {
-      alert('Please enter a valid phone number.');
-      document.getElementById('addrPhone')?.focus();
-      return;
-    }
+    phoneEl?.focus();
+    return;
   }
 
-  const fullPhone = countryCode + ' ' + cleanPhone;
+  const fullPhone = phoneData.fullPhone || phoneData.cleanPhone;
   const street = document.getElementById('addrStreet').value.trim();
   const city = document.getElementById('addrCity')?.value?.trim() || '';
   const state = document.getElementById('addrState')?.value?.trim() || 'Tamil Nadu';
@@ -704,8 +696,11 @@ function generateOrderTrackingHtml(order) {
 window.handleGuestTracking = async function(event) {
   if (event && event.preventDefault) event.preventDefault();
   const orderId = document.getElementById('guestOrderId').value.trim();
-  const rawPhone = document.getElementById('guestPhone').value.trim();
-  const cleanPhone = rawPhone.replace(/\D/g, '');
+  const guestPhoneEl = document.getElementById('guestPhone');
+  const phoneData = (window.getIntlPhoneData && guestPhoneEl)
+    ? window.getIntlPhoneData(guestPhoneEl)
+    : { cleanPhone: (guestPhoneEl?.value || '').replace(/\D/g, ''), fullPhone: guestPhoneEl?.value?.trim() || '' };
+  const cleanPhone = phoneData.cleanPhone;
   const container = document.getElementById('guestOrderDetailsContainer');
 
   if (!orderId || !cleanPhone) {

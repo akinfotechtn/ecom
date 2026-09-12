@@ -19,6 +19,7 @@
   <link rel="canonical" href="https://shop.akinfotechcctv.in/checkout.html">
   <link rel="icon" type="image/webp" href="images/logo.webp">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css">
   <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     /* ── Checkout Page Styles ───────────────────────────────── */
@@ -213,43 +214,53 @@
     .co-submit-btn:hover { background: #0284c7; transform: translateY(-1px); }
     .co-submit-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
 
-    /* Phone Input with Country Code Chooser */
-    .phone-input-group {
-      display: flex;
-      align-items: stretch;
-      border: 1.5px solid var(--border-color);
-      border-radius: 8px;
-      overflow: hidden;
-      background: #ffffff;
+    /* intl-tel-input styling */
+    .iti {
+      width: 100% !important;
+      display: block !important;
+    }
+    .iti input[type="tel"] {
+      width: 100% !important;
+      padding-top: 11px !important;
+      padding-bottom: 11px !important;
+      border: 1.5px solid var(--border-color) !important;
+      border-radius: 8px !important;
+      font-size: 0.95rem !important;
+      font-weight: 600 !important;
+      color: var(--text-dark) !important;
+      background: #ffffff !important;
+      box-sizing: border-box !important;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .phone-input-group:focus-within {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
-    }
-    .country-code-select {
-      background: #f8fafc;
-      border: none;
-      border-right: 1.5px solid var(--border-color);
-      padding: 0 8px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--text-dark);
-      outline: none;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .phone-number-input {
-      flex: 1;
-      border: none !important;
-      padding: 10px 12px !important;
-      font-size: 0.92rem !important;
+    .iti input[type="tel"]:focus {
+      border-color: var(--accent-cyan) !important;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.15) !important;
       outline: none !important;
-      background: transparent !important;
-      color: var(--text-dark) !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      width: 100%;
+    }
+    .iti__selected-country {
+      background: #f8fafc !important;
+      border-right: 1.5px solid var(--border-color) !important;
+      border-top-left-radius: 8px !important;
+      border-bottom-left-radius: 8px !important;
+      font-weight: 700 !important;
+      font-size: 0.9rem !important;
+      padding: 0 10px 0 12px !important;
+    }
+    .iti__dropdown-content {
+      z-index: 99999 !important;
+      border-radius: 10px !important;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.18) !important;
+      border: 1.5px solid var(--border-color) !important;
+      max-height: 280px !important;
+    }
+    .iti__search-input {
+      padding: 10px 12px !important;
+      font-size: 0.88rem !important;
+      border-radius: 6px !important;
+      margin: 8px 10px !important;
+      width: calc(100% - 20px) !important;
+      box-sizing: border-box !important;
+      border: 1px solid var(--border-color) !important;
     }
 
     /* Right – summary */
@@ -464,26 +475,7 @@
             <div class="co-form-row">
               <div class="co-form-group">
                 <label>Phone Number * (WhatsApp / Call)</label>
-                <div class="phone-input-group">
-                  <select id="custCountryCode" class="country-code-select" onchange="handleCountryCodeChange('custCountryCode', 'custPhone')">
-                    <option value="+91" selected>🇮🇳 +91</option>
-                    <option value="+1">🇺🇸 +1</option>
-                    <option value="+44">🇬🇧 +44</option>
-                    <option value="+971">🇦🇪 +971</option>
-                    <option value="+65">🇸🇬 +65</option>
-                    <option value="+60">🇲🇾 +60</option>
-                    <option value="+966">🇸🇦 +966</option>
-                    <option value="+974">🇶🇦 +974</option>
-                    <option value="+968">🇴🇲 +968</option>
-                    <option value="+965">🇰🇼 +965</option>
-                    <option value="+973">🇧🇭 +973</option>
-                    <option value="+94">🇱🇰 +94</option>
-                    <option value="+880">🇧🇩 +880</option>
-                    <option value="+977">🇳🇵 +977</option>
-                    <option value="+61">🇦🇺 +61</option>
-                  </select>
-                  <input type="tel" id="custPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
-                </div>
+                <input type="tel" id="custPhone" class="phone-number-input" required placeholder="9500673207">
               </div>
               <div class="co-form-group">
                 <label>Email Address *</label>
@@ -714,31 +706,26 @@
     </a>
   </nav>
 
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/js/intlTelInput.min.js"></script>
+  <script src="js/phone-input-helper.js"></script>
   <script type="module" src="js/app.js"></script>
   <script src="js/checkout.js"></script>
   <script>
     /* ── Checkout page specific logic ──────────────── */
 
-    function handleCountryCodeChange(selectId, inputId) {
-      var select = document.getElementById(selectId);
-      var input = document.getElementById(inputId);
-      if (!select || !input) return;
-      var code = select.value;
-      if (code === '+91') {
-        input.placeholder = '9500673207';
-        input.maxLength = 10;
-      } else {
-        input.placeholder = 'Mobile number';
-        input.maxLength = 15;
-      }
-      if (typeof window.captureCheckoutLead === 'function') {
-        window.captureCheckoutLead();
-      }
-    }
-    window.handleCountryCodeChange = handleCountryCodeChange;
-
     // Auto-detect auth state and populate addresses
     document.addEventListener('DOMContentLoaded', function () {
+      // Initialize intl-tel-input on phone input
+      var custPhoneInput = document.getElementById('custPhone');
+      if (custPhoneInput && window.initIntlPhoneInput) {
+        window.initIntlPhoneInput(custPhoneInput);
+        custPhoneInput.addEventListener('countrychange', function () {
+          if (typeof window.captureCheckoutLead === 'function') {
+            window.captureCheckoutLead();
+          }
+        });
+      }
+
       // Check auth state
       var checkAuthAttempts = 0;
       var authInterval = setInterval(function () {
@@ -774,20 +761,14 @@
                           var a = addresses[parseInt(val)];
                           if (document.getElementById('custName')) document.getElementById('custName').value = a.fullName || a.name || '';
                           
-                          // Phone and country code parsing
-                          var rawPh = a.phone || '';
-                          var ccEl = document.getElementById('custCountryCode');
+                          // Set phone with intl-tel-input helper
                           var phEl = document.getElementById('custPhone');
                           if (phEl) {
-                            if (rawPh.startsWith('+')) {
-                              var sp = rawPh.split(' ');
-                              if (ccEl) ccEl.value = sp[0];
-                              phEl.value = sp.slice(1).join('').replace(/\D/g, '');
+                            if (window.setIntlPhoneNumber) {
+                              window.setIntlPhoneNumber(phEl, a.phone || '');
                             } else {
-                              if (ccEl) ccEl.value = '+91';
-                              phEl.value = rawPh.replace(/\D/g, '');
+                              phEl.value = a.phone || '';
                             }
-                            handleCountryCodeChange('custCountryCode', 'custPhone');
                           }
 
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = a.pincode || '';
@@ -801,9 +782,14 @@
                         } else {
                           // Clear all address-related fields for fresh entry
                           if (document.getElementById('custName')) document.getElementById('custName').value = '';
-                          if (document.getElementById('custCountryCode')) document.getElementById('custCountryCode').value = '+91';
-                          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = '';
-                          handleCountryCodeChange('custCountryCode', 'custPhone');
+                          var phEl = document.getElementById('custPhone');
+                          if (phEl) {
+                            if (window.setIntlPhoneNumber) {
+                              window.setIntlPhoneNumber(phEl, '');
+                            } else {
+                              phEl.value = '';
+                            }
+                          }
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
                           if (document.getElementById('custCity')) document.getElementById('custCity').value = '';
@@ -828,10 +814,14 @@
         try { cart = JSON.parse(localStorage.getItem('ak_cart') || '[]'); } catch(e){}
         if (!cart || !cart.length) return;
 
-        var cc = document.getElementById('custCountryCode')?.value?.trim() || '+91';
-        var rawPhone = document.getElementById('custPhone')?.value?.trim() || '';
-        var cleanPhone = rawPhone.replace(/\D/g, '');
-        var fullPhone = cleanPhone ? (cc + ' ' + cleanPhone) : '';
+        var phoneInputEl = document.getElementById('custPhone');
+        var phoneData = (window.getIntlPhoneData && phoneInputEl)
+          ? window.getIntlPhoneData(phoneInputEl)
+          : { fullPhone: phoneInputEl?.value?.trim() || '', dialCode: '+91', cleanPhone: (phoneInputEl?.value?.replace(/\D/g, '') || '') };
+
+        var cc = phoneData.dialCode || '+91';
+        var cleanPhone = phoneData.cleanPhone;
+        var fullPhone = phoneData.fullPhone || (cleanPhone ? (cc + ' ' + cleanPhone) : '');
 
         var city = document.getElementById('custCity')?.value?.trim() || '';
         var state = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
@@ -858,7 +848,7 @@
       }
       window.captureCheckoutLead = captureCheckoutLead;
 
-      ['custName', 'custCountryCode', 'custPhone', 'custEmail', 'custAddress', 'custCity', 'custState', 'custCityState', 'custPincode'].forEach(function (id) {
+      ['custName', 'custPhone', 'custEmail', 'custAddress', 'custCity', 'custState', 'custCityState', 'custPincode'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) {
           el.addEventListener('input', captureCheckoutLead);
@@ -983,7 +973,6 @@
       }
 
       const nameEl = document.getElementById('custName');
-      const countryCodeEl = document.getElementById('custCountryCode');
       const phoneEl = document.getElementById('custPhone');
       const emailEl = document.getElementById('custEmail');
       const addrEl = document.getElementById('custAddress');
@@ -992,10 +981,14 @@
       const stateEl = document.getElementById('custState');
 
       const custName = nameEl?.value?.trim() || '';
-      const countryCode = countryCodeEl?.value?.trim() || '+91';
-      const rawPhone = phoneEl?.value?.trim() || '';
-      const cleanPhone = rawPhone.replace(/\D/g, '');
-      const fullPhone = countryCode + ' ' + cleanPhone;
+      const phoneData = (window.getIntlPhoneData && phoneEl)
+        ? window.getIntlPhoneData(phoneEl)
+        : { fullPhone: phoneEl?.value?.trim() || '', dialCode: '+91', cleanPhone: (phoneEl?.value?.replace(/\D/g, '') || ''), isValid: phoneEl?.value?.replace(/\D/g, '').length >= 10, countryIso: 'in', countryName: 'India' };
+
+      const countryCode = phoneData.dialCode || '+91';
+      const cleanPhone = phoneData.cleanPhone;
+      const fullPhone = phoneData.fullPhone || (cleanPhone ? (countryCode + ' ' + cleanPhone) : '');
+
       const custEmail = emailEl?.value?.trim() || '';
       const custAddress = addrEl?.value?.trim() || '';
       const custPincode = pinEl?.value?.trim() || '';
@@ -1010,18 +1003,14 @@
         nameEl?.focus();
         return;
       }
-      if (countryCode === '+91') {
-        if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
-          alert('Please enter a valid 10-digit mobile phone number (WhatsApp/Call).');
-          phoneEl?.focus();
-          return;
+      if (!phoneData.isValid) {
+        if (phoneData.countryIso === 'in') {
+          alert('Please enter a valid 10-digit Indian mobile phone number (WhatsApp/Call).');
+        } else {
+          alert('Please enter a valid phone number for ' + (phoneData.countryName || 'selected country') + ' (' + (phoneData.dialCode || '') + ').');
         }
-      } else {
-        if (cleanPhone.length < 7 || cleanPhone.length > 15) {
-          alert('Please enter a valid phone number for ' + countryCode + '.');
-          phoneEl?.focus();
-          return;
-        }
+        phoneEl?.focus();
+        return;
       }
       if (!custEmail || !custEmail.includes('@') || !custEmail.includes('.')) {
         alert('Please enter a valid email address.');
@@ -1153,10 +1142,10 @@
       btn.textContent = 'Opening Secure Gateway...';
 
       const custName = document.getElementById('custName').value.trim();
-      const countryCode = document.getElementById('custCountryCode')?.value?.trim() || '+91';
-      const rawPhone = document.getElementById('custPhone').value.trim();
-      const cleanPhone = rawPhone.replace(/\D/g, '');
-      const custPhone = countryCode + ' ' + cleanPhone;
+      const phoneData = (window.getIntlPhoneData && document.getElementById('custPhone'))
+        ? window.getIntlPhoneData(document.getElementById('custPhone'))
+        : { fullPhone: document.getElementById('custPhone')?.value?.trim() || '', cleanPhone: (document.getElementById('custPhone')?.value?.replace(/\D/g, '') || '') };
+      const custPhone = phoneData.fullPhone || phoneData.cleanPhone;
       const custEmail = document.getElementById('custEmail').value.trim();
       const custAddress = document.getElementById('custAddress').value.trim();
       const custPincode = document.getElementById('custPincode').value.trim();
