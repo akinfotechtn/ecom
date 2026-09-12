@@ -213,6 +213,45 @@
     .co-submit-btn:hover { background: #0284c7; transform: translateY(-1px); }
     .co-submit-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
 
+    /* Phone Input with Country Code Chooser */
+    .phone-input-group {
+      display: flex;
+      align-items: stretch;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .phone-input-group:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+    }
+    .country-code-select {
+      background: #f8fafc;
+      border: none;
+      border-right: 1.5px solid var(--border-color);
+      padding: 0 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .phone-number-input {
+      flex: 1;
+      border: none !important;
+      padding: 10px 12px !important;
+      font-size: 0.92rem !important;
+      outline: none !important;
+      background: transparent !important;
+      color: var(--text-dark) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      width: 100%;
+    }
+
     /* Right – summary */
     .co-summary-card {
       background: #fff;
@@ -425,7 +464,26 @@
             <div class="co-form-row">
               <div class="co-form-group">
                 <label>Phone Number * (WhatsApp / Call)</label>
-                <input type="tel" id="custPhone" required placeholder="e.g. 9500673207" maxlength="10">
+                <div class="phone-input-group">
+                  <select id="custCountryCode" class="country-code-select" onchange="handleCountryCodeChange('custCountryCode', 'custPhone')">
+                    <option value="+91" selected>🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+65">🇸🇬 +65</option>
+                    <option value="+60">🇲🇾 +60</option>
+                    <option value="+966">🇸🇦 +966</option>
+                    <option value="+974">🇶🇦 +974</option>
+                    <option value="+968">🇴🇲 +968</option>
+                    <option value="+965">🇰🇼 +965</option>
+                    <option value="+973">🇧🇭 +973</option>
+                    <option value="+94">🇱🇰 +94</option>
+                    <option value="+880">🇧🇩 +880</option>
+                    <option value="+977">🇳🇵 +977</option>
+                    <option value="+61">🇦🇺 +61</option>
+                  </select>
+                  <input type="tel" id="custPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
+                </div>
               </div>
               <div class="co-form-group">
                 <label>Email Address *</label>
@@ -438,14 +496,57 @@
             </div>
             <div class="co-form-row">
               <div class="co-form-group">
-                <label>Pincode *</label>
-                <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
+                <label>City / District *</label>
+                <input type="text" id="custCity" required placeholder="e.g. Chennai">
               </div>
               <div class="co-form-group">
-                <label>City &amp; State *</label>
-                <input type="text" id="custCityState" required placeholder="e.g. Chennai, Tamil Nadu">
+                <label>State *</label>
+                <select id="custState" required style="width:100%; padding:10px 12px; border:1.5px solid var(--border-color); border-radius:8px; font-size:0.9rem; font-weight:600; background:#fff; outline:none; height:44px;">
+                  <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Puducherry">Puducherry</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                  <option value="Ladakh">Ladakh</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
             </div>
+            <div class="co-form-group">
+              <label>Pincode *</label>
+              <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
+            </div>
+            <input type="hidden" id="custCityState">
             
             <div class="co-form-group" style="display:flex; align-items:center; gap:8px; margin-top:12px; margin-bottom:12px;">
               <input type="checkbox" id="chkSaveAddress" style="width:auto; margin:0;" checked>
@@ -618,6 +719,24 @@
   <script>
     /* ── Checkout page specific logic ──────────────── */
 
+    function handleCountryCodeChange(selectId, inputId) {
+      var select = document.getElementById(selectId);
+      var input = document.getElementById(inputId);
+      if (!select || !input) return;
+      var code = select.value;
+      if (code === '+91') {
+        input.placeholder = '9500673207';
+        input.maxLength = 10;
+      } else {
+        input.placeholder = 'Mobile number';
+        input.maxLength = 15;
+      }
+      if (typeof window.captureCheckoutLead === 'function') {
+        window.captureCheckoutLead();
+      }
+    }
+    window.handleCountryCodeChange = handleCountryCodeChange;
+
     // Auto-detect auth state and populate addresses
     document.addEventListener('DOMContentLoaded', function () {
       // Check auth state
@@ -654,16 +773,41 @@
                         if (val !== '') {
                           var a = addresses[parseInt(val)];
                           if (document.getElementById('custName')) document.getElementById('custName').value = a.fullName || a.name || '';
-                          if (document.getElementById('custPhone')) document.getElementById('custPhone').value = a.phone || '';
+                          
+                          // Phone and country code parsing
+                          var rawPh = a.phone || '';
+                          var ccEl = document.getElementById('custCountryCode');
+                          var phEl = document.getElementById('custPhone');
+                          if (phEl) {
+                            if (rawPh.startsWith('+')) {
+                              var sp = rawPh.split(' ');
+                              if (ccEl) ccEl.value = sp[0];
+                              phEl.value = sp.slice(1).join('').replace(/\D/g, '');
+                            } else {
+                              if (ccEl) ccEl.value = '+91';
+                              phEl.value = rawPh.replace(/\D/g, '');
+                            }
+                            handleCountryCodeChange('custCountryCode', 'custPhone');
+                          }
+
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = a.pincode || '';
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = a.street || a.address || '';
-                          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = a.cityState || '';
+                          
+                          var cCity = a.city || (a.cityState ? a.cityState.split(',')[0].trim() : '');
+                          var cState = a.state || (a.cityState ? a.cityState.split(',')[1]?.trim() : 'Tamil Nadu');
+                          if (document.getElementById('custCity')) document.getElementById('custCity').value = cCity;
+                          if (document.getElementById('custState')) document.getElementById('custState').value = cState || 'Tamil Nadu';
+                          if (document.getElementById('custCityState')) document.getElementById('custCityState').value = (cCity && cState) ? (cCity + ', ' + cState) : (cCity || cState || '');
                         } else {
                           // Clear all address-related fields for fresh entry
                           if (document.getElementById('custName')) document.getElementById('custName').value = '';
+                          if (document.getElementById('custCountryCode')) document.getElementById('custCountryCode').value = '+91';
                           if (document.getElementById('custPhone')) document.getElementById('custPhone').value = '';
+                          handleCountryCodeChange('custCountryCode', 'custPhone');
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
+                          if (document.getElementById('custCity')) document.getElementById('custCity').value = '';
+                          if (document.getElementById('custState')) document.getElementById('custState').value = 'Tamil Nadu';
                           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
                           if (document.getElementById('chkSaveAddress')) document.getElementById('chkSaveAddress').checked = true;
                         }
@@ -684,12 +828,27 @@
         try { cart = JSON.parse(localStorage.getItem('ak_cart') || '[]'); } catch(e){}
         if (!cart || !cart.length) return;
 
+        var cc = document.getElementById('custCountryCode')?.value?.trim() || '+91';
+        var rawPhone = document.getElementById('custPhone')?.value?.trim() || '';
+        var cleanPhone = rawPhone.replace(/\D/g, '');
+        var fullPhone = cleanPhone ? (cc + ' ' + cleanPhone) : '';
+
+        var city = document.getElementById('custCity')?.value?.trim() || '';
+        var state = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
+        var cityState = (city && state) ? (city + ', ' + state) : (city || state || '');
+        var cityStateEl = document.getElementById('custCityState');
+        if (cityStateEl) cityStateEl.value = cityState;
+
         var leadData = {
           name: document.getElementById('custName')?.value?.trim() || '',
-          phone: document.getElementById('custPhone')?.value?.trim() || '',
+          phone: fullPhone || cleanPhone,
+          customerPhone: fullPhone || cleanPhone,
+          countryCode: cc,
           email: document.getElementById('custEmail')?.value?.trim() || '',
           address: document.getElementById('custAddress')?.value?.trim() || '',
-          city: document.getElementById('custCityState')?.value?.trim() || '',
+          city: city,
+          state: state,
+          cityState: cityState,
           pincode: document.getElementById('custPincode')?.value?.trim() || ''
         };
 
@@ -699,7 +858,7 @@
       }
       window.captureCheckoutLead = captureCheckoutLead;
 
-      ['custName', 'custPhone', 'custEmail', 'custAddress', 'custCityState', 'custPincode'].forEach(function (id) {
+      ['custName', 'custCountryCode', 'custPhone', 'custEmail', 'custAddress', 'custCity', 'custState', 'custCityState', 'custPincode'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) {
           el.addEventListener('input', captureCheckoutLead);
@@ -824,29 +983,45 @@
       }
 
       const nameEl = document.getElementById('custName');
+      const countryCodeEl = document.getElementById('custCountryCode');
       const phoneEl = document.getElementById('custPhone');
       const emailEl = document.getElementById('custEmail');
       const addrEl = document.getElementById('custAddress');
       const pinEl = document.getElementById('custPincode');
-      const cityEl = document.getElementById('custCityState');
+      const cityEl = document.getElementById('custCity');
+      const stateEl = document.getElementById('custState');
 
       const custName = nameEl?.value?.trim() || '';
+      const countryCode = countryCodeEl?.value?.trim() || '+91';
       const rawPhone = phoneEl?.value?.trim() || '';
       const cleanPhone = rawPhone.replace(/\D/g, '');
+      const fullPhone = countryCode + ' ' + cleanPhone;
       const custEmail = emailEl?.value?.trim() || '';
       const custAddress = addrEl?.value?.trim() || '';
       const custPincode = pinEl?.value?.trim() || '';
-      const custCityState = cityEl?.value?.trim() || '';
+      const custCity = cityEl?.value?.trim() || '';
+      const custState = stateEl?.value?.trim() || 'Tamil Nadu';
+      const custCityState = (custCity && custState) ? (custCity + ', ' + custState) : (custCity || custState);
+      const hiddenCityState = document.getElementById('custCityState');
+      if (hiddenCityState) hiddenCityState.value = custCityState;
 
       if (!custName) {
         alert('Please enter your full name.');
         nameEl?.focus();
         return;
       }
-      if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
-        alert('Please enter a valid 10-digit mobile phone number (WhatsApp/Call).');
-        phoneEl?.focus();
-        return;
+      if (countryCode === '+91') {
+        if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
+          alert('Please enter a valid 10-digit mobile phone number (WhatsApp/Call).');
+          phoneEl?.focus();
+          return;
+        }
+      } else {
+        if (cleanPhone.length < 7 || cleanPhone.length > 15) {
+          alert('Please enter a valid phone number for ' + countryCode + '.');
+          phoneEl?.focus();
+          return;
+        }
       }
       if (!custEmail || !custEmail.includes('@') || !custEmail.includes('.')) {
         alert('Please enter a valid email address.');
@@ -858,14 +1033,19 @@
         addrEl?.focus();
         return;
       }
+      if (!custCity) {
+        alert('Please enter your City / District.');
+        cityEl?.focus();
+        return;
+      }
+      if (!custState) {
+        alert('Please select your State.');
+        stateEl?.focus();
+        return;
+      }
       if (!custPincode || custPincode.length !== 6 || !/^\d{6}$/.test(custPincode)) {
         alert('Please enter a valid 6-digit postal pincode.');
         pinEl?.focus();
-        return;
-      }
-      if (!custCityState) {
-        alert('Please enter your city and state.');
-        cityEl?.focus();
         return;
       }
 
@@ -878,10 +1058,14 @@
       // 1. Force instant lead capture to Firestore & local storage
       const leadData = {
         name: custName,
-        phone: cleanPhone,
+        phone: fullPhone,
+        customerPhone: fullPhone,
+        countryCode: countryCode,
         email: custEmail,
         address: custAddress,
-        city: custCityState,
+        city: custCity,
+        state: custState,
+        cityState: custCityState,
         pincode: custPincode,
         status: 'READY_FOR_PAYMENT'
       };
@@ -903,9 +1087,11 @@
         try {
           window.DbService.addUserAddress(window.currentUser.uid, {
             fullName: custName,
-            phone: cleanPhone,
+            phone: fullPhone,
             street: custAddress,
             pincode: custPincode,
+            city: custCity,
+            state: custState,
             cityState: custCityState
           });
         } catch (err) {}
@@ -918,8 +1104,8 @@
       const sumEmail = document.getElementById('sumDeliveryEmail');
 
       if (sumName) sumName.textContent = custName;
-      if (sumPhone) sumPhone.textContent = '📞 +91 ' + cleanPhone;
-      if (sumAddr) sumAddr.textContent = '🏠 ' + custAddress + ', ' + custCityState + ' - ' + custPincode;
+      if (sumPhone) sumPhone.textContent = '📞 ' + fullPhone;
+      if (sumAddr) sumAddr.textContent = '🏠 ' + custAddress + ', ' + custCity + ', ' + custState + ' - ' + custPincode;
       if (sumEmail) sumEmail.textContent = '✉️ ' + custEmail;
 
       const formFields = document.getElementById('deliveryFormFields');
@@ -967,12 +1153,16 @@
       btn.textContent = 'Opening Secure Gateway...';
 
       const custName = document.getElementById('custName').value.trim();
+      const countryCode = document.getElementById('custCountryCode')?.value?.trim() || '+91';
       const rawPhone = document.getElementById('custPhone').value.trim();
-      const custPhone = rawPhone.replace(/\D/g, '');
+      const cleanPhone = rawPhone.replace(/\D/g, '');
+      const custPhone = countryCode + ' ' + cleanPhone;
       const custEmail = document.getElementById('custEmail').value.trim();
       const custAddress = document.getElementById('custAddress').value.trim();
       const custPincode = document.getElementById('custPincode').value.trim();
-      const custCityState = document.getElementById('custCityState').value.trim();
+      const custCity = document.getElementById('custCity')?.value?.trim() || 'Chennai';
+      const custState = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
+      const custCityState = (custCity && custState) ? (custCity + ', ' + custState) : (custCity || custState);
 
       // Ensure fresh settings with LIVE Razorpay Key
       let settings = window.storeSettings;
@@ -1055,8 +1245,9 @@
               userUid: window.currentUser ? window.currentUser.uid : null,
               address: custAddress,
               pincode: custPincode,
-              city: custCityState.split(',')[0]?.trim() || 'Chennai',
-              state: custCityState.split(',')[1]?.trim() || 'Tamil Nadu',
+              city: custCity,
+              state: custState,
+              cityState: custCityState,
               items: cart,
               paymentMethod: paymentMethod,
               paymentStatus: paymentMethod === 'COD' 

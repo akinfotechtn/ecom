@@ -102,6 +102,44 @@
       background: #ffffff;
       cursor: pointer;
     }
+
+    /* Phone Input with Country Code Chooser */
+    .phone-input-group {
+      display: flex;
+      align-items: stretch;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm, 6px);
+      overflow: hidden;
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .phone-input-group:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+    }
+    .country-code-select {
+      background: #f8fafc;
+      border: none;
+      border-right: 1.5px solid var(--border-color);
+      padding: 0 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .phone-number-input {
+      flex: 1;
+      border: none !important;
+      padding: 9px 12px !important;
+      font-size: 0.9rem !important;
+      outline: none !important;
+      background: transparent !important;
+      color: var(--text-dark) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
   </style>
 </head>
 <body>
@@ -192,7 +230,26 @@
           </div>
           <div style="margin-bottom: 16px;">
             <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Phone Number (WhatsApp) *</label>
-            <input type="tel" id="guestPhone" required placeholder="e.g. 9500673207" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.88rem;">
+            <div class="phone-input-group">
+              <select id="guestCountryCode" class="country-code-select" onchange="handleAccountCountryCodeChange('guestCountryCode', 'guestPhone')">
+                <option value="+91" selected>🇮🇳 +91</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+65">🇸🇬 +65</option>
+                <option value="+60">🇲🇾 +60</option>
+                <option value="+966">🇸🇦 +966</option>
+                <option value="+974">🇶🇦 +974</option>
+                <option value="+968">🇴🇲 +968</option>
+                <option value="+965">🇰🇼 +965</option>
+                <option value="+973">🇧🇭 +973</option>
+                <option value="+94">🇱🇰 +94</option>
+                <option value="+880">🇧🇩 +880</option>
+                <option value="+977">🇳🇵 +977</option>
+                <option value="+61">🇦🇺 +61</option>
+              </select>
+              <input type="tel" id="guestPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
+            </div>
           </div>
           <button type="submit" class="btn-checkout" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important; color: #ffffff !important; border: none; width: 100%; padding: 10px 14px; border-radius: 6px; font-weight: 800; cursor: pointer; text-align: center;">
             Track Order Details →
@@ -266,7 +323,26 @@
 
         <div class="form-group">
           <label>Mobile Phone Number *</label>
-          <input type="tel" id="addrPhone" required placeholder="9500673207" pattern="[0-9]{10}">
+          <div class="phone-input-group">
+            <select id="addrCountryCode" class="country-code-select" onchange="handleAccountCountryCodeChange('addrCountryCode', 'addrPhone')">
+              <option value="+91" selected>🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+60">🇲🇾 +60</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+974">🇶🇦 +974</option>
+              <option value="+968">🇴🇲 +968</option>
+              <option value="+965">🇰🇼 +965</option>
+              <option value="+973">🇧🇭 +973</option>
+              <option value="+94">🇱🇰 +94</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+977">🇳🇵 +977</option>
+              <option value="+61">🇦🇺 +61</option>
+            </select>
+            <input type="tel" id="addrPhone" class="phone-number-input" required placeholder="9500673207" maxlength="10">
+          </div>
         </div>
 
         <div class="form-group">
@@ -276,14 +352,58 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>Pincode *</label>
-            <input type="text" id="addrPincode" required placeholder="600100">
+            <label>City / District *</label>
+            <input type="text" id="addrCity" required placeholder="e.g. Chennai">
           </div>
           <div class="form-group">
-            <label>City & State *</label>
-            <input type="text" id="addrCityState" required placeholder="Chennai, Tamil Nadu">
+            <label>State *</label>
+            <select id="addrState" required style="width:100%; padding:9px 12px; border:1.5px solid var(--border-color); border-radius:var(--radius-sm, 6px); font-size:0.88rem; font-weight:600; background:#fff; outline:none; height:42px;">
+              <option value="Tamil Nadu" selected>Tamil Nadu</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Puducherry">Puducherry</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Assam">Assam</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Goa">Goa</option>
+              <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+              <option value="Chandigarh">Chandigarh</option>
+              <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+              <option value="Ladakh">Ladakh</option>
+              <option value="Lakshadweep">Lakshadweep</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
         </div>
+
+        <div class="form-group">
+          <label>Pincode *</label>
+          <input type="text" id="addrPincode" required placeholder="600100" maxlength="6">
+        </div>
+        <input type="hidden" id="addrCityState">
 
         <button type="submit" class="btn-checkout" style="width: 100%; margin-top: 14px;">
           Save Address
@@ -314,6 +434,21 @@
 
   <script type="module" src="js/account.js"></script>
   <script>
+    function handleAccountCountryCodeChange(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      if (!select || !input) return;
+      const code = select.value;
+      if (code === '+91') {
+        input.placeholder = '9500673207';
+        input.maxLength = 10;
+      } else {
+        input.placeholder = 'Mobile number';
+        input.maxLength = 15;
+      }
+    }
+    window.handleAccountCountryCodeChange = handleAccountCountryCodeChange;
+
     function toggleDesktopNavMenu() {
       const menu = document.getElementById('desktopNavMenu');
       if (menu) {

@@ -176,6 +176,46 @@
       box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
     }
 
+    /* Phone Input with Country Code Chooser */
+    .phone-input-group {
+      display: flex;
+      align-items: stretch;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .phone-input-group:focus-within {
+      border-color: var(--accent-cyan);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+    }
+    .country-code-select {
+      background: #f1f5f9;
+      border: none;
+      border-right: 1.5px solid var(--border-color);
+      padding: 0 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .phone-number-input {
+      flex: 1;
+      border: none !important;
+      padding: 12px 14px !important;
+      font-size: 0.92rem !important;
+      outline: none !important;
+      background: transparent !important;
+      color: var(--text-dark) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
     .btn-send-inquiry {
       width: 100%;
       background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
@@ -435,7 +475,26 @@
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <div class="form-group">
               <label for="cPhone">Phone / WhatsApp *</label>
-              <input type="tel" id="cPhone" class="form-control" placeholder="+91 9876543210" required>
+              <div class="phone-input-group">
+                <select id="cCountryCode" class="country-code-select" onchange="handleContactCountryCodeChange()">
+                  <option value="+91" selected>🇮🇳 +91</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+60">🇲🇾 +60</option>
+                  <option value="+966">🇸🇦 +966</option>
+                  <option value="+974">🇶🇦 +974</option>
+                  <option value="+968">🇴🇲 +968</option>
+                  <option value="+965">🇰🇼 +965</option>
+                  <option value="+973">🇧🇭 +973</option>
+                  <option value="+94">🇱🇰 +94</option>
+                  <option value="+880">🇧🇩 +880</option>
+                  <option value="+977">🇳🇵 +977</option>
+                  <option value="+61">🇦🇺 +61</option>
+                </select>
+                <input type="tel" id="cPhone" class="phone-number-input" placeholder="9876543210" maxlength="10" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="cEmail">Email Address</label>
@@ -620,15 +679,31 @@
       } catch (e) {}
     });
 
+    function handleContactCountryCodeChange() {
+      const codeSelect = document.getElementById('cCountryCode');
+      const phoneInput = document.getElementById('cPhone');
+      if (!codeSelect || !phoneInput) return;
+      if (codeSelect.value === '+91') {
+        phoneInput.placeholder = '9876543210';
+        phoneInput.maxLength = 10;
+      } else {
+        phoneInput.placeholder = 'Mobile number';
+        phoneInput.maxLength = 15;
+      }
+    }
+
     function handleContactSubmit(e) {
       e.preventDefault();
       const name = document.getElementById('cName').value.trim();
-      const phone = document.getElementById('cPhone').value.trim();
+      const countryCode = document.getElementById('cCountryCode')?.value?.trim() || '+91';
+      const rawPhone = document.getElementById('cPhone').value.trim();
+      const cleanPhone = rawPhone.replace(/\D/g, '');
+      const fullPhone = countryCode + ' ' + cleanPhone;
       const email = document.getElementById('cEmail').value.trim();
       const subject = document.getElementById('cSubject').value;
       const message = document.getElementById('cMessage').value.trim();
 
-      const text = `*New Store Inquiry - AK Infotech*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n✉️ *Email:* ${email || 'N/A'}\n📋 *Purpose:* ${subject}\n💬 *Message:* ${message}`;
+      const text = `*New Store Inquiry - AK Infotech*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${fullPhone}\n✉️ *Email:* ${email || 'N/A'}\n📋 *Purpose:* ${subject}\n💬 *Message:* ${message}`;
       const waUrl = `https://wa.me/919500673207?text=${encodeURIComponent(text)}`;
       
       alert(`Thank you, ${name}! Redirecting your inquiry to our WhatsApp team for immediate assistance.`);

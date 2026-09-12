@@ -177,7 +177,9 @@ async function loadUserAddresses(uid) {
     return;
   }
 
-  container.innerHTML = userAddresses.map((addr, idx) => `
+  container.innerHTML = userAddresses.map((addr, idx) => {
+    const displayLocation = addr.cityState || ((addr.city ? addr.city + (addr.state ? ', ' + addr.state : '') : (addr.state || '')));
+    return `
     <div class="address-card ${idx === 0 ? 'default' : ''}">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
         <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-dark);">
@@ -188,7 +190,7 @@ async function loadUserAddresses(uid) {
 
       <div style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 10px; line-height: 1.4;">
         ${escapeHtml(addr.street)}<br>
-        ${escapeHtml(addr.cityState)} - <strong>${escapeHtml(addr.pincode)}</strong>
+        ${escapeHtml(displayLocation)} - <strong>${escapeHtml(addr.pincode)}</strong>
       </div>
 
       <div style="display: flex; gap: 8px;">
@@ -196,13 +198,19 @@ async function loadUserAddresses(uid) {
         <button class="btn-action-sm" style="color: #ef4444;" onclick="deleteAddress('${addr.id}')">🗑️ Delete</button>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 window.openAddAddressModal = function() {
   document.getElementById('editAddressId').value = '';
   document.getElementById('addressModalTitle').textContent = 'Add Delivery Address';
   document.getElementById('addressForm').reset();
+  if (document.getElementById('addrCountryCode')) document.getElementById('addrCountryCode').value = '+91';
+  if (document.getElementById('addrState')) document.getElementById('addrState').value = 'Tamil Nadu';
+  if (typeof window.handleAccountCountryCodeChange === 'function') {
+    window.handleAccountCountryCodeChange('addrCountryCode', 'addrPhone');
+  }
   if (currentUser) {
     document.getElementById('addrFullName').value = currentUser.displayName || '';
   }
@@ -215,11 +223,34 @@ window.editAddress = function(id) {
 
   document.getElementById('editAddressId').value = addr.id;
   document.getElementById('addressModalTitle').textContent = 'Edit Delivery Address';
-  document.getElementById('addrFullName').value = addr.fullName;
-  document.getElementById('addrPhone').value = addr.phone;
-  document.getElementById('addrStreet').value = addr.street;
-  document.getElementById('addrPincode').value = addr.pincode;
-  document.getElementById('addrCityState').value = addr.cityState;
+  document.getElementById('addrFullName').value = addr.fullName || addr.name || '';
+  
+  // Phone and country code parsing
+  const rawPh = addr.phone || '';
+  const ccEl = document.getElementById('addrCountryCode');
+  const phEl = document.getElementById('addrPhone');
+  if (phEl) {
+    if (rawPh.startsWith('+')) {
+      const sp = rawPh.split(' ');
+      if (ccEl) ccEl.value = sp[0];
+      phEl.value = sp.slice(1).join('').replace(/\D/g, '');
+    } else {
+      if (ccEl) ccEl.value = '+91';
+      phEl.value = rawPh.replace(/\D/g, '');
+    }
+    if (typeof window.handleAccountCountryCodeChange === 'function') {
+      window.handleAccountCountryCodeChange('addrCountryCode', 'addrPhone');
+    }
+  }
+
+  document.getElementById('addrStreet').value = addr.street || addr.address || '';
+  document.getElementById('addrPincode').value = addr.pincode || '';
+
+  const city = addr.city || (addr.cityState ? addr.cityState.split(',')[0].trim() : '');
+  const state = addr.state || (addr.cityState ? addr.cityState.split(',')[1]?.trim() : 'Tamil Nadu');
+  if (document.getElementById('addrCity')) document.getElementById('addrCity').value = city;
+  if (document.getElementById('addrState')) document.getElementById('addrState').value = state || 'Tamil Nadu';
+  if (document.getElementById('addrCityState')) document.getElementById('addrCityState').value = (city && state) ? (city + ', ' + state) : (city || state || '');
 
   document.getElementById('addressModalBackdrop').classList.add('active');
 };
@@ -233,12 +264,40 @@ async function handleAddressSubmit(e) {
   if (!currentUser) return;
 
   const id = document.getElementById('editAddressId').value;
+  const fullName = document.getElementById('addrFullName').value.trim();
+  const countryCode = document.getElementById('addrCountryCode')?.value?.trim() || '+91';
+  const rawPhone = document.getElementById('addrPhone').value.trim();
+  const cleanPhone = rawPhone.replace(/\D/g, '');
+
+  if (countryCode === '+91') {
+    if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
+      alert('Please enter a valid 10-digit mobile phone number.');
+      document.getElementById('addrPhone')?.focus();
+      return;
+    }
+  } else {
+    if (cleanPhone.length < 7 || cleanPhone.length > 15) {
+      alert('Please enter a valid phone number.');
+      document.getElementById('addrPhone')?.focus();
+      return;
+    }
+  }
+
+  const fullPhone = countryCode + ' ' + cleanPhone;
+  const street = document.getElementById('addrStreet').value.trim();
+  const city = document.getElementById('addrCity')?.value?.trim() || '';
+  const state = document.getElementById('addrState')?.value?.trim() || 'Tamil Nadu';
+  const pincode = document.getElementById('addrPincode').value.trim();
+  const cityState = (city && state) ? (city + ', ' + state) : (city || state || '');
+
   const payload = {
-    fullName: document.getElementById('addrFullName').value.trim(),
-    phone: document.getElementById('addrPhone').value.trim(),
-    street: document.getElementById('addrStreet').value.trim(),
-    pincode: document.getElementById('addrPincode').value.trim(),
-    cityState: document.getElementById('addrCityState').value.trim()
+    fullName,
+    phone: fullPhone,
+    street,
+    city,
+    state,
+    cityState,
+    pincode
   };
 
   try {
@@ -645,10 +704,11 @@ function generateOrderTrackingHtml(order) {
 window.handleGuestTracking = async function(event) {
   if (event && event.preventDefault) event.preventDefault();
   const orderId = document.getElementById('guestOrderId').value.trim();
-  const phone = document.getElementById('guestPhone').value.trim();
+  const rawPhone = document.getElementById('guestPhone').value.trim();
+  const cleanPhone = rawPhone.replace(/\D/g, '');
   const container = document.getElementById('guestOrderDetailsContainer');
 
-  if (!orderId || !phone) {
+  if (!orderId || !cleanPhone) {
     alert("Please fill in both the Order ID and Phone Number.");
     return;
   }
@@ -657,7 +717,7 @@ window.handleGuestTracking = async function(event) {
   container.innerHTML = `<div style="text-align:center; padding:16px;">🔍 Searching database for guest order...</div>`;
 
   try {
-    const order = await DbService.getGuestOrder(orderId, phone);
+    const order = await DbService.getGuestOrder(orderId, cleanPhone);
     if (order) {
       container.innerHTML = `
         <h3 style="font-size: 1.05rem; font-weight: 800; color: #0284c7; margin-bottom: 14px; border-bottom: 1.5px solid #bae6fd; padding-bottom: 6px;">📦 Guest Order Status</h3>
