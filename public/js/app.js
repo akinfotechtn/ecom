@@ -920,8 +920,7 @@ async function handleCheckoutSubmit(e) {
   submitBtn.textContent = 'Processing Payment...';
 
   try {
-    const rzpKeyId = storeSettings.razorpay?.keyId || 'rzp_test_sampleKey123';
-    const isTestMode = rzpKeyId.includes('sampleKey') || rzpKeyId.includes('test');
+    const rzpKeyId = storeSettings.razorpay?.keyId || 'rzp_live_TLycAwQfP4DTc3';
 
     const options = {
       key: rzpKeyId,
@@ -931,6 +930,12 @@ async function handleCheckoutSubmit(e) {
       description: selectedPaymentMethod === 'COD'
         ? (remainingBalance === 0 ? `Full ₹${codAdvanceFee} Payment (100% Upfront)` : `₹${codAdvanceFee} Mandatory COD Advance Payment`)
         : 'Full Order Payment',
+      modal: {
+        ondismiss: function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Pay & Place Order →';
+        }
+      },
       handler: async function (response) {
         const orderIdGenerated = 'AK-' + Date.now().toString().slice(-8);
         const orderPayload = {
@@ -948,7 +953,7 @@ async function handleCheckoutSubmit(e) {
           paymentStatus: selectedPaymentMethod === 'COD' 
             ? (remainingBalance === 0 ? 'PAID_ONLINE' : `ADVANCE_PAID_₹${codAdvanceFee}`) 
             : 'PAID_ONLINE',
-          paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
+          paymentId: response.razorpay_payment_id || `pay_live_${Date.now()}`,
           razorpayOrderId: response.razorpay_order_id || '',
           subtotal: subtotal,
           deliveryFee: 0,
@@ -980,8 +985,27 @@ async function handleCheckoutSubmit(e) {
           console.warn("Email notify trigger error:", e);
         }
 
-        cart = [];
-        saveCart();
+        // Google Ads / Analytics Purchase Event Tracking
+        if (typeof window.gtag === 'function') {
+          try {
+            window.gtag('event', 'purchase', {
+              transaction_id: savedOrder.id || orderIdGenerated,
+              value: Number(savedOrder.totalAmount || amountToPayNow),
+              currency: 'INR',
+              items: (savedOrder.items || []).map(i => ({
+                item_id: i.id || i.productName,
+                item_name: i.productName,
+                price: Number(i.sellingPrice || i.price || 0),
+                quantity: Number(i.quantity || i.qty || 1)
+              }))
+            });
+          } catch (gtagErr) {
+            console.warn('gtag purchase tracking warning:', gtagErr);
+          }
+        }
+
+        localStorage.removeItem('ak_cart');
+        localStorage.removeItem('ak_applied_coupon');
         try { localStorage.setItem('ak_last_order', JSON.stringify(savedOrder)); } catch(e) {}
         window.location.href = 'order-success.html?order=' + encodeURIComponent(savedOrder.id || orderIdGenerated);
       },
@@ -993,22 +1017,19 @@ async function handleCheckoutSubmit(e) {
       theme: { color: '#06b6d4' }
     };
 
-    if (isTestMode) {
-      if (confirm(`[TEST SIMULATION MODE]\nClick OK to simulate successful Razorpay Payment of ₹${amountToPayNow} (${selectedPaymentMethod === 'COD' ? (remainingBalance === 0 ? `₹${codAdvanceFee} Full Payment` : `₹${codAdvanceFee} COD Advance`) : 'Full Online Payment'}).`)) {
-        options.handler({ razorpay_payment_id: `pay_sim_${Date.now()}` });
-      } else {
+    if (typeof window.Razorpay !== 'undefined') {
+      const rzpInstance = new window.Razorpay(options);
+      rzpInstance.on('payment.failed', function (resp) {
+        console.warn('Payment failed response:', resp.error);
+        alert('Payment was not completed: ' + (resp.error.description || resp.error.reason || 'Payment cancelled.'));
         submitBtn.disabled = false;
         submitBtn.textContent = 'Pay & Place Order →';
-      }
+      });
+      rzpInstance.open();
     } else {
-      if (typeof window.Razorpay !== 'undefined') {
-        const rzpInstance = new window.Razorpay(options);
-        rzpInstance.open();
-      } else {
-        alert('Payment gateway failed to initialize. Please check your internet connection.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Pay & Place Order →';
-      }
+      alert('Payment gateway failed to initialize. Please check your internet connection.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Pay & Place Order →';
     }
   } catch (err) {
     console.error('Payment error:', err);

@@ -291,6 +291,10 @@ function renderSummary() {
             msg.style.display = 'none';
         }
     }
+
+    if (typeof window.updatePayButtonAmount === 'function') {
+        window.updatePayButtonAmount();
+    }
 }
 
 // ─── ADVANCE PAYMENT RULES ───────────────────────────────────────────────────

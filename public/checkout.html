@@ -393,20 +393,39 @@
             Delivery Details
           </div>
 
-          <div class="saved-addr-box" id="savedAddressGroup" style="display:none;">
-            <label>📍 Select Saved Address</label>
-            <select id="savedAddressSelect"></select>
+          <!-- Confirmed Delivery Summary Card (shown once user clicks Continue to Payment) -->
+          <div id="deliverySummaryCard" style="display:none; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:14px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+              <div>
+                <div style="font-size:0.75rem; font-weight:800; color:#15803d; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+                  ✓ Delivering To:
+                </div>
+                <div style="font-weight:800; font-size:1rem; color:#14532d;" id="sumDeliveryName"></div>
+                <div style="font-size:0.86rem; color:#166534; margin-top:2px;" id="sumDeliveryPhone"></div>
+                <div style="font-size:0.84rem; color:#374151; margin-top:4px;" id="sumDeliveryAddress"></div>
+                <div style="font-size:0.8rem; color:#6b7280;" id="sumDeliveryEmail"></div>
+              </div>
+              <button type="button" onclick="editDeliveryStep()" style="background:#fff; border:1.5px solid #10b981; color:#047857; font-weight:800; font-size:0.82rem; padding:6px 14px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                ✏️ Change
+              </button>
+            </div>
           </div>
 
-          <form id="mainCheckoutForm">
+          <!-- Delivery Form Container -->
+          <div id="deliveryFormFields">
+            <div class="saved-addr-box" id="savedAddressGroup" style="display:none;">
+              <label>📍 Select Saved Address</label>
+              <select id="savedAddressSelect"></select>
+            </div>
+
             <div class="co-form-group">
               <label>Full Name *</label>
               <input type="text" id="custName" required placeholder="e.g. Rajan Kumar">
             </div>
             <div class="co-form-row">
               <div class="co-form-group">
-                <label>Phone *</label>
-                <input type="tel" id="custPhone" required placeholder="9500673207" maxlength="10">
+                <label>Phone Number * (WhatsApp / Call)</label>
+                <input type="tel" id="custPhone" required placeholder="e.g. 9500673207" maxlength="10">
               </div>
               <div class="co-form-group">
                 <label>Email Address *</label>
@@ -423,7 +442,7 @@
                 <input type="text" id="custPincode" required placeholder="600001" maxlength="6">
               </div>
               <div class="co-form-group">
-                <label>City & State *</label>
+                <label>City &amp; State *</label>
                 <input type="text" id="custCityState" required placeholder="e.g. Chennai, Tamil Nadu">
               </div>
             </div>
@@ -433,16 +452,28 @@
               <label for="chkSaveAddress" style="margin:0; font-size:0.85rem; font-weight:700; cursor:pointer;">Save address to my account</label>
             </div>
 
-            <div class="co-card-title" style="margin-top: 24px;">
-              <div class="co-card-step">3</div>
-              Payment Method
-            </div>
+            <button type="button" class="co-submit-btn" id="btnContinueToPayment" onclick="proceedToPaymentStep()" style="margin-top: 10px; background: linear-gradient(135deg, #0284c7, #06b6d4); color:#fff; font-weight:800; font-size:1rem; box-shadow: 0 4px 14px rgba(2,132,199,0.35);">
+              Save &amp; Continue to Payment Method →
+            </button>
+            <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:8px;">
+              🔒 We save your delivery address and unlock payment options.
+            </p>
+          </div>
+        </div>
 
+        <!-- STEP 3: Payment Method -->
+        <div class="co-card" id="stepPayment" style="display:none; margin-top:20px;">
+          <div class="co-card-title">
+            <div class="co-card-step">3</div>
+            Payment Method
+          </div>
+
+          <form id="mainCheckoutForm">
             <div class="co-pay-grid">
               <div class="co-pay-card selected" id="optOnline" onclick="selectPaymentMethod('ONLINE')">
                 <div class="co-pay-icon">💳</div>
                 <div class="co-pay-name">Pay Online</div>
-                <div class="co-pay-sub">UPI, Cards, NetBanking</div>
+                <div class="co-pay-sub">UPI, QR, Cards, NetBanking</div>
               </div>
               <div class="co-pay-card" id="optCOD" onclick="selectPaymentMethod('COD')">
                 <div class="co-pay-icon">🚚</div>
@@ -462,7 +493,7 @@
             </button>
 
             <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:12px;">
-              🔒 Your information is 100% secure &amp; encrypted
+              🔒 100% Secure &amp; Encrypted Live Razorpay Gateway
             </p>
           </form>
         </div>
@@ -753,16 +784,173 @@
     };
     window.checkoutWithGoogle = window.checkoutWithGoogleOnPage;
 
+    window.updatePayButtonAmount = function () {
+      const btn = document.getElementById('payOrderSubmitBtn');
+      if (!btn) return;
+      const totalStr = (document.getElementById('summTotal')?.textContent || '0').replace(/[^\d]/g, '');
+      const total = parseInt(totalStr) || 0;
+      const isCod = document.getElementById('optCOD')?.classList.contains('selected');
+      
+      if (isCod) {
+        const codDetails = typeof window.getCodAdvanceDetails === 'function'
+          ? window.getCodAdvanceDetails(total)
+          : { advance: (total < 1000 ? total : (total <= 3000 ? 500 : 1000)) };
+        const adv = codDetails.advance;
+        btn.textContent = `Pay ₹${adv.toLocaleString('en-IN')} COD Advance & Place Order →`;
+      } else {
+        btn.textContent = `Pay ₹${total.toLocaleString('en-IN')} & Place Order →`;
+      }
+    };
+
     window.selectPaymentMethod = function (method) {
-      document.getElementById('optOnline').classList.toggle('selected', method === 'ONLINE');
-      document.getElementById('optCOD').classList.toggle('selected', method === 'COD');
+      document.getElementById('optOnline')?.classList.toggle('selected', method === 'ONLINE');
+      document.getElementById('optCOD')?.classList.toggle('selected', method === 'COD');
       const codBanner = document.getElementById('codAdvanceBanner');
-      codBanner.style.display = method === 'COD' ? 'block' : 'none';
+      if (codBanner) codBanner.style.display = method === 'COD' ? 'block' : 'none';
 
       const total = parseInt((document.getElementById('summTotal')?.textContent || '0').replace(/[₹,]/g, '')) || 0;
       if (typeof window.updateCodDisplay === 'function') {
         window.updateCodDisplay(total);
       }
+      window.updatePayButtonAmount();
+    };
+
+    window.proceedToPaymentStep = async function () {
+      const cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+      if (!cart.length) {
+        alert('Your cart is empty! Please add items before proceeding.');
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      const nameEl = document.getElementById('custName');
+      const phoneEl = document.getElementById('custPhone');
+      const emailEl = document.getElementById('custEmail');
+      const addrEl = document.getElementById('custAddress');
+      const pinEl = document.getElementById('custPincode');
+      const cityEl = document.getElementById('custCityState');
+
+      const custName = nameEl?.value?.trim() || '';
+      const rawPhone = phoneEl?.value?.trim() || '';
+      const cleanPhone = rawPhone.replace(/\D/g, '');
+      const custEmail = emailEl?.value?.trim() || '';
+      const custAddress = addrEl?.value?.trim() || '';
+      const custPincode = pinEl?.value?.trim() || '';
+      const custCityState = cityEl?.value?.trim() || '';
+
+      if (!custName) {
+        alert('Please enter your full name.');
+        nameEl?.focus();
+        return;
+      }
+      if (cleanPhone.length !== 10 || !/^[6-9]/.test(cleanPhone)) {
+        alert('Please enter a valid 10-digit mobile phone number (WhatsApp/Call).');
+        phoneEl?.focus();
+        return;
+      }
+      if (!custEmail || !custEmail.includes('@') || !custEmail.includes('.')) {
+        alert('Please enter a valid email address.');
+        emailEl?.focus();
+        return;
+      }
+      if (!custAddress || custAddress.length < 5) {
+        alert('Please enter your complete delivery address.');
+        addrEl?.focus();
+        return;
+      }
+      if (!custPincode || custPincode.length !== 6 || !/^\d{6}$/.test(custPincode)) {
+        alert('Please enter a valid 6-digit postal pincode.');
+        pinEl?.focus();
+        return;
+      }
+      if (!custCityState) {
+        alert('Please enter your city and state.');
+        cityEl?.focus();
+        return;
+      }
+
+      const proceedBtn = document.getElementById('btnContinueToPayment');
+      if (proceedBtn) {
+        proceedBtn.disabled = true;
+        proceedBtn.textContent = 'Saving Address...';
+      }
+
+      // 1. Force instant lead capture to Firestore & local storage
+      const leadData = {
+        name: custName,
+        phone: cleanPhone,
+        email: custEmail,
+        address: custAddress,
+        city: custCityState,
+        pincode: custPincode,
+        status: 'READY_FOR_PAYMENT'
+      };
+      try {
+        localStorage.setItem('ak_cart_lead', JSON.stringify(leadData));
+      } catch (e) {}
+
+      if (window.DbService && window.DbService.syncCartToFirestore) {
+        try {
+          await window.DbService.syncCartToFirestore(cart, leadData);
+        } catch (e) {
+          console.warn('Sync lead warning:', e);
+        }
+      }
+
+      // Save address if logged in and checkbox checked
+      const shouldSaveAddress = document.getElementById('chkSaveAddress')?.checked ?? false;
+      if (window.currentUser && shouldSaveAddress && window.DbService && window.DbService.addUserAddress) {
+        try {
+          window.DbService.addUserAddress(window.currentUser.uid, {
+            fullName: custName,
+            phone: cleanPhone,
+            street: custAddress,
+            pincode: custPincode,
+            cityState: custCityState
+          });
+        } catch (err) {}
+      }
+
+      // 2. Populate and display Confirmed Delivery Summary Card
+      const sumName = document.getElementById('sumDeliveryName');
+      const sumPhone = document.getElementById('sumDeliveryPhone');
+      const sumAddr = document.getElementById('sumDeliveryAddress');
+      const sumEmail = document.getElementById('sumDeliveryEmail');
+
+      if (sumName) sumName.textContent = custName;
+      if (sumPhone) sumPhone.textContent = '📞 +91 ' + cleanPhone;
+      if (sumAddr) sumAddr.textContent = '🏠 ' + custAddress + ', ' + custCityState + ' - ' + custPincode;
+      if (sumEmail) sumEmail.textContent = '✉️ ' + custEmail;
+
+      const formFields = document.getElementById('deliveryFormFields');
+      const summaryCard = document.getElementById('deliverySummaryCard');
+      if (formFields) formFields.style.display = 'none';
+      if (summaryCard) summaryCard.style.display = 'block';
+
+      // 3. Unlock and display Step 3: Payment Method
+      const stepPay = document.getElementById('stepPayment');
+      if (stepPay) {
+        stepPay.style.display = 'block';
+        window.updatePayButtonAmount();
+        try {
+          stepPay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+      }
+
+      if (proceedBtn) {
+        proceedBtn.disabled = false;
+        proceedBtn.textContent = 'Save & Continue to Payment Method →';
+      }
+    };
+
+    window.editDeliveryStep = function () {
+      const formFields = document.getElementById('deliveryFormFields');
+      const summaryCard = document.getElementById('deliverySummaryCard');
+      const stepPay = document.getElementById('stepPayment');
+      if (formFields) formFields.style.display = 'block';
+      if (summaryCard) summaryCard.style.display = 'none';
+      if (stepPay) stepPay.style.display = 'none';
+      document.getElementById('custName')?.focus();
     };
 
     document.getElementById('mainCheckoutForm')?.addEventListener('submit', async function (e) {
@@ -776,19 +964,30 @@
 
       const btn = document.getElementById('payOrderSubmitBtn');
       btn.disabled = true;
-      btn.textContent = 'Processing Payment...';
+      btn.textContent = 'Opening Secure Gateway...';
 
       const custName = document.getElementById('custName').value.trim();
-      const custPhone = document.getElementById('custPhone').value.trim();
+      const rawPhone = document.getElementById('custPhone').value.trim();
+      const custPhone = rawPhone.replace(/\D/g, '');
       const custEmail = document.getElementById('custEmail').value.trim();
       const custAddress = document.getElementById('custAddress').value.trim();
       const custPincode = document.getElementById('custPincode').value.trim();
       const custCityState = document.getElementById('custCityState').value.trim();
-      const shouldSaveAddress = document.getElementById('chkSaveAddress')?.checked ?? false;
 
-      // Expose to window or get from settings
-      const settings = window.storeSettings || { deliveryCharge: 150, freeShippingMinOrder: 3000, codAdvanceAmount: 1000 };
-      const categories = window.storeCategories || [];
+      // Ensure fresh settings with LIVE Razorpay Key
+      let settings = window.storeSettings;
+      if (!settings || !settings.razorpay?.keyId || settings.razorpay.keyId.includes('sampleKey')) {
+        try {
+          if (window.DbService && window.DbService.getSettings) {
+            settings = await window.DbService.getSettings();
+            window.storeSettings = settings;
+          }
+        } catch (e) {}
+      }
+      if (!settings) {
+        settings = { deliveryCharge: 150, freeShippingMinOrder: 3000, codAdvanceAmount: 1000, razorpay: { keyId: 'rzp_live_TLycAwQfP4DTc3' } };
+      }
+
       const appliedCoupon = window.appliedCoupon || JSON.parse(localStorage.getItem('ak_applied_coupon') || 'null');
 
       // 1. Calculate final values matching Order Summary logic
@@ -829,24 +1028,8 @@
       const paymentMethod = document.getElementById('optOnline').classList.contains('selected') ? 'ONLINE' : 'COD';
       const amountToPayNow = paymentMethod === 'COD' ? codAdvanceFee : finalTotal;
 
-      // Save address if logged in and checkbox checked
-      if (window.currentUser && shouldSaveAddress && window.DbService && window.DbService.addUserAddress) {
-        try {
-          await window.DbService.addUserAddress(window.currentUser.uid, {
-            fullName: custName,
-            phone: custPhone,
-            street: custAddress,
-            pincode: custPincode,
-            cityState: custCityState
-          });
-        } catch (err) {
-          console.warn("Address save warning:", err);
-        }
-      }
-
       try {
-        const rzpKeyId = settings.razorpay?.keyId || 'rzp_test_sampleKey123';
-        const isTestMode = rzpKeyId.includes('sampleKey') || rzpKeyId.includes('test');
+        const rzpKeyId = settings.razorpay?.keyId || 'rzp_live_TLycAwQfP4DTc3';
 
         const options = {
           key: rzpKeyId,
@@ -856,6 +1039,12 @@
           description: paymentMethod === 'COD'
             ? (remainingBalance === 0 ? `Full ₹${codAdvanceFee} Payment (100% Upfront)` : `₹${codAdvanceFee} Mandatory COD Advance Payment`)
             : 'Full Order Payment',
+          modal: {
+            ondismiss: function () {
+              btn.disabled = false;
+              window.updatePayButtonAmount();
+            }
+          },
           handler: async function (response) {
             const orderIdGenerated = 'AK-' + Date.now().toString().slice(-8);
             const orderPayload = {
@@ -873,7 +1062,7 @@
               paymentStatus: paymentMethod === 'COD' 
                 ? (remainingBalance === 0 ? 'PAID_ONLINE' : `ADVANCE_PAID_₹${codAdvanceFee}`) 
                 : 'PAID_ONLINE',
-              paymentId: response.razorpay_payment_id || `pay_sim_${Date.now()}`,
+              paymentId: response.razorpay_payment_id || `pay_live_${Date.now()}`,
               razorpayOrderId: response.razorpay_order_id || '',
               subtotal: subtotal,
               deliveryFee: 0,
@@ -943,28 +1132,25 @@
           theme: { color: '#06b6d4' }
         };
 
-        if (isTestMode) {
-          if (confirm(`[TEST SIMULATION MODE]\nClick OK to simulate successful Razorpay Payment of ₹${amountToPayNow} (${paymentMethod === 'COD' ? (remainingBalance === 0 ? `₹${codAdvanceFee} Full Payment` : `₹${codAdvanceFee} COD Advance`) : 'Full Online Payment'}).`)) {
-            options.handler({ razorpay_payment_id: `pay_sim_${Date.now()}` });
-          } else {
+        if (typeof window.Razorpay !== 'undefined') {
+          const rzpInstance = new window.Razorpay(options);
+          rzpInstance.on('payment.failed', function (resp) {
+            console.warn('Payment failed response:', resp.error);
+            alert('Payment was not completed: ' + (resp.error.description || resp.error.reason || 'Payment cancelled.'));
             btn.disabled = false;
-            btn.textContent = 'Pay & Place Order →';
-          }
+            window.updatePayButtonAmount();
+          });
+          rzpInstance.open();
         } else {
-          if (typeof window.Razorpay !== 'undefined') {
-            const rzpInstance = new window.Razorpay(options);
-            rzpInstance.open();
-          } else {
-            alert('Razorpay Payment Gateway is loading, please try again in a few seconds.');
-            btn.disabled = false;
-            btn.textContent = 'Pay & Place Order →';
-          }
+          alert('Razorpay Payment Gateway is loading, please try again in a few seconds.');
+          btn.disabled = false;
+          window.updatePayButtonAmount();
         }
       } catch (err) {
         console.error('Payment initialization error:', err);
         alert('Checkout error: ' + err.message);
         btn.disabled = false;
-        btn.textContent = 'Pay & Place Order →';
+        window.updatePayButtonAmount();
       }
     });
 
