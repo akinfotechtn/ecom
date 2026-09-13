@@ -1158,16 +1158,32 @@ export class DbService {
           } catch (e) {}
         }
 
-        // 3. LEAN PAYLOAD: Strip bulky specs & long descriptions to minimize storage bytes
-        const leanItems = items.map(i => ({
-          id: String(i.id || ''),
-          name: String(i.productName || i.name || 'Product').slice(0, 70),
-          price: Number(i.sellingPrice || i.price || 0),
-          qty: Number(i.quantity || i.qty || 1),
-          photo: String(i.photoLink || i.photo || 'images/logo.webp')
-        }));
+        const defaultGst = (typeof storeSettings !== 'undefined' && storeSettings.defaultGstPercent !== undefined)
+          ? Number(storeSettings.defaultGstPercent)
+          : (typeof window !== 'undefined' && window.storeSettings?.defaultGstPercent !== undefined
+            ? Number(window.storeSettings.defaultGstPercent)
+            : 18);
 
-        const totalValue = leanItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        // 3. LEAN PAYLOAD: Strip bulky specs & long descriptions to minimize storage bytes
+        const leanItems = items.map(i => {
+          const basePrice = Number(i.sellingPrice || i.price || 0);
+          const gstPercent = (i.gstPercent !== undefined && i.gstPercent !== null && i.gstPercent !== '')
+            ? Number(i.gstPercent)
+            : defaultGst;
+          const gstAmount = Math.round((basePrice * gstPercent) / 100);
+          const priceWithGst = basePrice + gstAmount;
+          return {
+            id: String(i.id || ''),
+            name: String(i.productName || i.name || 'Product').slice(0, 70),
+            price: basePrice,
+            priceWithGst: priceWithGst,
+            gstPercent: gstPercent,
+            qty: Number(i.quantity || i.qty || 1),
+            photo: String(i.photoLink || i.photo || 'images/logo.webp')
+          };
+        });
+
+        const totalValue = leanItems.reduce((sum, item) => sum + (item.priceWithGst * item.qty), 0);
         const itemCount = leanItems.reduce((sum, item) => sum + item.qty, 0);
 
         const cartPayload = {

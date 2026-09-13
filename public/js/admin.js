@@ -3104,8 +3104,26 @@ function renderCartsList() {
   let abandonedCount = 0;
   let recentCount = 0;
 
+  const defaultStoreGst = (typeof adminSettings !== 'undefined' && adminSettings.defaultGstPercent !== undefined) ? Number(adminSettings.defaultGstPercent) : 18;
+
   for (const c of adminCarts) {
-    const cartVal = Number(c.totalValue || 0);
+    let cartVal = 0;
+    if (c.items && Array.isArray(c.items) && c.items.length > 0) {
+      cartVal = c.items.reduce((sum, item) => {
+        const basePrice = Number(item.price || item.sellingPrice || 0);
+        const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
+          ? Number(item.gstPercent)
+          : defaultStoreGst;
+        const itemPriceWithGst = (item.priceWithGst !== undefined && item.priceWithGst !== null && !isNaN(item.priceWithGst))
+          ? Number(item.priceWithGst)
+          : (basePrice + Math.round((basePrice * gstPercent) / 100));
+        const qty = Number(item.qty || item.quantity || 1);
+        return sum + (itemPriceWithGst * qty);
+      }, 0);
+    } else {
+      cartVal = Number(c.totalValue || 0);
+    }
+    c.computedTotalWithGst = cartVal;
     totalPipelineValue += cartVal;
     if (c.allPhones && c.allPhones.length > 0) {
       leadsCount++;
@@ -3178,7 +3196,7 @@ function renderCartsList() {
     const custEmail = c.customerEmail ? escapeHtml(c.customerEmail) : '';
     const custCity = c.customerCity ? escapeHtml(c.customerCity) : '';
     const custPincode = c.customerPincode ? escapeHtml(c.customerPincode) : '';
-    const totalVal = Number(c.totalValue || 0);
+    const totalVal = c.computedTotalWithGst !== undefined ? c.computedTotalWithGst : Number(c.totalValue || 0);
     const itemCount = Number(c.itemCount || (c.items ? c.items.length : 0));
     const hasPhones = c.allPhones && c.allPhones.length > 0;
 
@@ -3207,21 +3225,33 @@ function renderCartsList() {
     }
 
     // Build items summary for WhatsApp message
-    const itemNames = (c.items || []).map(i => `${i.name} (x${i.qty})`).slice(0, 3).join(', ');
+    const itemNames = (c.items || []).map(i => `${i.name || i.productName || 'Product'} (x${i.qty || i.quantity || 1})`).slice(0, 3).join(', ');
     const waMessage = `Hello ${custName !== 'Guest Shopper' ? custName : ''}! We noticed you left items in your cart at AK Infotech (${itemNames || 'Security Equipment'}, Total: ₹${totalVal.toLocaleString('en-IN')}). Would you like any assistance completing your order, or a special wholesale discount?`;
 
     // Render Cart Items list
     const itemsListHtml = (c.items && Array.isArray(c.items) && c.items.length > 0)
-      ? c.items.map(item => `
+      ? c.items.map(item => {
+        const basePrice = Number(item.price || item.sellingPrice || 0);
+        const gstPercent = (item.gstPercent !== undefined && item.gstPercent !== null && item.gstPercent !== '')
+          ? Number(item.gstPercent)
+          : defaultStoreGst;
+        const itemPriceWithGst = (item.priceWithGst !== undefined && item.priceWithGst !== null && !isNaN(item.priceWithGst))
+          ? Number(item.priceWithGst)
+          : (basePrice + Math.round((basePrice * gstPercent) / 100));
+        const qty = Number(item.qty || item.quantity || 1);
+        const itemTotalWithGst = itemPriceWithGst * qty;
+
+        return `
         <div class="order-item-row" style="padding:6px 0;">
-          <img src="${escapeHtml(item.photo || 'images/logo.webp')}" class="order-item-img" onerror="this.src='images/logo.webp'" style="width:36px; height:36px;">
+          <img src="${escapeHtml(item.photo || item.photoLink || 'images/logo.webp')}" class="order-item-img" onerror="this.src='images/logo.webp'" style="width:36px; height:36px;">
           <div class="order-item-details">
-            <div class="order-item-name" style="font-size:0.82rem;">${escapeHtml(item.name || 'Product')}</div>
-            <div class="order-item-meta">Qty: <strong>${item.qty}</strong> × ₹${Number(item.price || 0).toLocaleString('en-IN')}</div>
+            <div class="order-item-name" style="font-size:0.82rem;" title="${escapeHtml(item.name || item.productName || 'Product')}">${escapeHtml(item.name || item.productName || 'Product')}</div>
+            <div class="order-item-meta">Qty: <strong>${qty}</strong> × ₹${itemPriceWithGst.toLocaleString('en-IN')} <span style="font-size:0.7rem; color:var(--text-muted);">(incl. ${gstPercent}% GST)</span></div>
           </div>
-          <div class="order-item-total" style="font-size:0.85rem;">₹${(Number(item.price || 0) * Number(item.qty || 1)).toLocaleString('en-IN')}</div>
+          <div class="order-item-total" style="font-size:0.85rem;">₹${itemTotalWithGst.toLocaleString('en-IN')}</div>
         </div>
-      `).join('')
+      `;
+      }).join('')
       : `<div style="font-size:0.8rem; color:var(--text-muted); padding:6px 0;">No items detail available</div>`;
 
     return `
@@ -3317,7 +3347,7 @@ function renderCartsList() {
 
             <div class="order-summary-box" style="margin-top:10px; background:#eff6ff; border-color:#bfdbfe;">
               <div class="order-summary-row" style="font-weight: 800; font-size: 1rem; color:var(--text-dark);">
-                <span>Cart Total Value</span>
+                <span>Cart Total Value <span style="font-size:0.75rem; font-weight:600; color:var(--text-muted);">(Incl. GST)</span></span>
                 <span style="color:var(--accent-blue); font-size:1.15rem;">₹${totalVal.toLocaleString('en-IN')}</span>
               </div>
             </div>
