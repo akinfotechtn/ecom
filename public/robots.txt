@@ -2,4 +2,31 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /local-sync.html
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /order-success.html
+Disallow: /account.html
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+Disallow: /local-sync.html
+Disallow: /cart.html
+Disallow: /checkout.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+Disallow: /local-sync.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+Disallow: /local-sync.html
+
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://shop.akinfotechcctv.in/sitemap.xml
+# Generative Engine Optimization Knowledge Base:
+# https://shop.akinfotechcctv.in/llms.txt

@@ -271,6 +271,42 @@ function generateStaticPages() {
               "https://schema.org/Cash",
               "https://schema.org/CreditCard"
             ],
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "IN",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 3,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn",
+              "returnPolicySeasonalOverride": "Return accepted within 3 days only if product is damaged in transit or different from ordered item."
+            },
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "0.00",
+                "currency": "INR"
+              },
+              "shippingDestination": [{
+                "@type": "DefinedRegion",
+                "addressCountry": "IN"
+              }],
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 0,
+                  "maxValue": 1,
+                  "unitCode": "DAY"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": 3,
+                  "maxValue": 7,
+                  "unitCode": "DAY"
+                }
+              }
+            },
             "seller": {
               "@type": "Organization",
               "name": "AK Infotech"
@@ -281,6 +317,31 @@ function generateStaticPages() {
             "ratingValue": "4.8",
             "reviewCount": String(15 + (slug.length % 25))
           }
+        };
+
+        const breadcrumbsObj = {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": `${siteUrl}/`
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": categoryName,
+              "item": `${siteUrl}/categories/${slugify(categoryName)}.html`
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": p.productName,
+              "item": prodCanonical
+            }
+          ]
         };
 
         const injectScript = `<script>window.staticProductData = ${JSON.stringify(p)};</script>`;
@@ -314,8 +375,13 @@ function generateStaticPages() {
         html = html.replace(/<meta name="twitter:image" id="twitterImage" content=".*?"\s*\/?>/, `<meta name="twitter:image" id="twitterImage" content="${escapeHtml(absolutePhotoUrl)}">`);
         html = html.replace(/<meta name="twitter:image:alt" id="twitterImageAlt" content=".*?"\s*\/?>/, `<meta name="twitter:image:alt" id="twitterImageAlt" content="${escapeHtml(p.productName)}">`);
 
-        // Structured Data (JSON-LD)
+        // Structured Data (JSON-LD): Product + Breadcrumbs
         html = html.replace(/<script type="application\/ld\+json" id="jsonLdProductSchema">[\s\S]*?<\/script>/, `<script type="application/ld+json" id="jsonLdProductSchema">\n${JSON.stringify(schemaObj, null, 2)}\n  </script>`);
+        if (html.includes('id="jsonLdBreadcrumbs"')) {
+          html = html.replace(/<script type="application\/ld\+json" id="jsonLdBreadcrumbs">[\s\S]*?<\/script>/, `<script type="application/ld+json" id="jsonLdBreadcrumbs">\n${JSON.stringify(breadcrumbsObj, null, 2)}\n  </script>`);
+        } else {
+          html = html.replace('</head>', `<script type="application/ld+json" id="jsonLdBreadcrumbs">\n${JSON.stringify(breadcrumbsObj, null, 2)}\n  </script>\n</head>`);
+        }
 
         // Pre-render Crawler SSR Fallback elements inside detail-grid
         html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
@@ -473,15 +539,9 @@ function generateSitemapAndRobots(products, brands, categories) {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-    // 1. Root / Core pages (Note: product.html template excluded; real products in /product/*.html)
+    // 1. Root / Core pages (Excluded: cart, checkout, account, order-success, product.html for crawl budget efficiency)
     const corePages = [
       '', // Root Homepage https://shop.akinfotechcctv.in/
-      'brand.html',
-      'category.html',
-      'account.html',
-      'cart.html',
-      'checkout.html',
-      'order-success.html',
       'contact.html',
       'privacy.html',
       'terms.html',
@@ -546,7 +606,20 @@ function generateSitemapAndRobots(products, brands, categories) {
     robots += `Allow: /\n`;
     robots += `Disallow: /admin.html\n`;
     robots += `Disallow: /local-sync.html\n`;
+    robots += `Disallow: /cart.html\n`;
+    robots += `Disallow: /checkout.html\n`;
+    robots += `Disallow: /order-success.html\n`;
+    robots += `Disallow: /account.html\n\n`;
+
+    // AI & Search Crawlers (Generative Engine Optimization - GEO)
+    robots += `User-agent: GPTBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /cart.html\nDisallow: /checkout.html\n\n`;
+    robots += `User-agent: PerplexityBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
+    robots += `User-agent: ClaudeBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
+    robots += `User-agent: Google-Extended\nAllow: /\n\n`;
+
     robots += `Sitemap: ${siteUrl}/sitemap.xml\n`;
+    robots += `# Generative Engine Optimization Knowledge Base:\n`;
+    robots += `# ${siteUrl}/llms.txt\n`;
 
     writeIfChanged(path.join(__dirname, '../public/robots.txt'), robots);
 

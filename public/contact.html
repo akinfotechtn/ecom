@@ -20,6 +20,103 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- intl-tel-input for international country codes & flags -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.0/build/css/intlTelInput.css">
+
+  <!-- Structured Data: SecuritySystemStore & FAQPage (JSON-LD for SEO, GEO & AEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SecuritySystemStore",
+        "@id": "https://shop.akinfotechcctv.in/contact.html#store",
+        "name": "AK Infotech",
+        "alternateName": "AK Infotech CCTV Chennai Showroom",
+        "url": "https://shop.akinfotechcctv.in/contact.html",
+        "logo": "https://shop.akinfotechcctv.in/images/logo.webp",
+        "image": "https://shop.akinfotechcctv.in/images/logo.webp",
+        "description": "Authorized wholesale and retail showroom & warehouse for CCTV cameras, DVRs, NVRs, biometric machines, and security equipment in Mount Road, Chennai.",
+        "telephone": "+919500673207",
+        "email": "admin@akinfotechcctv.in",
+        "priceRange": "₹₹",
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, Credit Card, UPI, Net Banking",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "No.19, Shop No: F22 & F23, 1st Floor, Uno Arcade A/C Complex, Meeran Sahib Street, Mount Road",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "postalCode": "600002",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 13.0674,
+          "longitude": 80.2687
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "19:30"
+          }
+        ],
+        "hasMap": "https://maps.google.com/?q=Uno+Arcade+Meeran+Sahib+Street+Mount+Road+Chennai",
+        "sameAs": [
+          "https://www.facebook.com/p/AK-Infotech-61551839859994/",
+          "https://www.instagram.com/akinfotech/",
+          "https://wa.me/919500673207"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://shop.akinfotechcctv.in/contact.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How fast are orders dispatched from AK Infotech?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Orders placed before 4:00 PM are dispatched on the same business day via Shiprocket Express Courier or local parcel services across India, with delivery taking 3 to 7 business days."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Cash on Delivery (COD) available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! You can pay a small advance online during checkout, and pay the remaining balance comfortably at your doorstep when the parcel arrives."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the return and replacement policy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We offer a 3-day replacement window from delivery date strictly if the product arrives damaged in transit or if a different product from what was ordered is received."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are all products covered under official warranty?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, 100% of our products from CP Plus, Hikvision, Dahua, Trueview, ESSL, and D-Link are 100% genuine with official manufacturer replacement warranty."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I get a GST input invoice for business purchases?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Simply provide your company name and GSTIN (GSTIN: 33CPAPA9563H1Z1) during checkout or in your inquiry to receive a complete tax invoice eligible for 18% ITC claim."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <style>
     /* Modern intl-tel-input full styling */
     .iti {
@@ -589,6 +686,10 @@
         <div class="faq-item">
           <div class="faq-q">🛡️ Are all products covered under official warranty?</div>
           <p class="faq-a">Yes, 100% of our products from CP Plus, Hikvision, Dahua, Trueview, ESSL, and D-Link are 100% genuine with official manufacturer replacement warranty.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">🔄 What is the return and replacement policy?</div>
+          <p class="faq-a">We offer a <strong>3-Day Replacement Window</strong> from the date of delivery strictly if the product arrives damaged in transit or if a different product from what was ordered is delivered.</p>
         </div>
         <div class="faq-item">
           <div class="faq-q">📜 Can I get a GST input invoice for business purchases?</div>

@@ -278,6 +278,42 @@ export function verifyOrInjectProductSchema(product, effectivePrice) {
         "https://schema.org/Cash",
         "https://schema.org/CreditCard"
       ],
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "IN",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 3,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn",
+        "returnPolicySeasonalOverride": "Return accepted within 3 days only if product is damaged or different from ordered item."
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0.00",
+          "currency": "INR"
+        },
+        "shippingDestination": [{
+          "@type": "DefinedRegion",
+          "addressCountry": "IN"
+        }],
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 0,
+            "maxValue": 1,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
+      },
       "seller": {
         "@type": "Organization",
         "name": "AK Infotech"
