@@ -10206,19 +10206,20 @@
     "isFeatured": false
   },
   {
-    "id": "prod-cat-6-plastic-boot-npboot",
-    "photoLink": "images/products/cat-6-plastic-boot-npboot.webp",
-    "productName": "CAT-6 PLASTIC BOOT (NPBOOT)",
+    "id": "prod-cat-6-rj45-jack-plastic-boot-npboot-3b4602f9",
+    "photoLink": "images/products/cat-6-rj45-jack-plastic-boot-npboot-pack-of-100.webp",
+    "productName": "CAT-6 RJ45 Jack PLASTIC BOOT (NPBOOT) | PACK OF 100",
     "productSpec": "High quality product",
     "brand": "IMPORTED",
     "category": "ACCESSORIES",
-    "price": 4,
-    "sellingPrice": 1,
-    "baseSellingPrice": 1,
+    "price": 400,
+    "sellingPrice": 170,
+    "baseSellingPrice": 130,
     "dealerMarginPercent": 30,
     "inStock": true,
     "isCombo": false,
-    "isFeatured": false
+    "imageUrl": "images/products/cat-6-rj45-jack-plastic-boot-npboot-pack-of-100.webp",
+    "image": "images/products/cat-6-rj45-jack-plastic-boot-npboot-pack-of-100.webp"
   },
   {
     "id": "prod-hdmi-kvm-extender-60-meter-ohek60",
