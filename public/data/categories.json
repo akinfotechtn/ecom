@@ -1,310 +1,361 @@
 [
   {
-    "id": "cat-1789139381522",
-    "name": "SMART LOCK",
-    "imageLink": "https://cdn-icons-png.flaticon.com/512/2564/2564565.png",
-    "description": ""
-  },
-  {
-    "id": "cat-1789133432599",
-    "name": "EPABX",
-    "imageLink": "https://5.imimg.com/data5/SELLER/Default/2025/11/560881603/WB/VI/QL/249295394/1d0d5306-a902-479d-9306-3ca26eb03d51-1.png",
-    "description": ""
-  },
-  {
-    "id": "cat-1789129930977",
-    "name": "ROUTERS",
-    "imageLink": "https://realtechvision.in/cat-icons/routers.png",
-    "description": ""
-  },
-  {
-    "id": "cat-1789129736050",
-    "name": "TELEPHONE",
-    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9aKYYSAyZK4pBKeW--eK4PFP2DcQZgKimWKjK2tpY8Ech8j_yFFw09Hfd&s=10",
-    "description": ""
-  },
-  {
-    "id": "cat-1786372112283",
-    "name": "GPS",
-    "imageLink": "images/categories/gps.webp",
-    "description": ""
-  },
-  {
-    "id": "cat-1786283448512",
-    "name": "MONITORS",
-    "imageLink": "images/categories/monitors.webp",
-    "description": ""
-  },
-  {
     "id": "cat-1785898434225",
     "deliveryCharge": 100,
     "imageLink": "images/categories/wifi-cctv.webp",
-    "name": "WIFI CCTV"
+    "name": "WIFI CCTV",
+    "sortOrder": 1
   },
   {
-    "id": "cat-1785898518841",
-    "deliveryCharge": 100,
-    "imageLink": "images/categories/smart-plug.webp",
-    "name": "SMART PLUG"
-  },
-  {
-    "id": "cat-1785898559490",
-    "name": "VIDEO DOOR BELL",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/video-door-bell.webp"
+    "id": "cat-1789139381522",
+    "name": "SMART LOCK",
+    "imageLink": "https://cdn-icons-png.flaticon.com/512/2564/2564565.png",
+    "description": "",
+    "sortOrder": 2
   },
   {
     "id": "cat-1785924952911",
     "name": "4G CCTV",
     "imageLink": "images/categories/4g-cctv.webp",
-    "deliveryCharge": null
-  },
-  {
-    "id": "cat-1785925065278",
-    "name": "ELECTRIC DOOR LOCK",
-    "imageLink": "images/categories/electric-door-lock.webp",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785925082552",
-    "imageLink": "images/categories/poe-extender.webp",
-    "deliveryCharge": 150,
-    "name": "POE EXTENDER"
-  },
-  {
-    "id": "cat-1785925100936",
-    "imageLink": "images/categories/networking.webp",
-    "deliveryCharge": 150,
-    "name": "NETWORKING"
-  },
-  {
-    "id": "cat-1785926554486",
-    "imageLink": "images/categories/electric-door-lock-cat-1785926554486.webp",
-    "name": "ELECTRIC DOOR LOCK",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926554640",
-    "name": "POE EXTENDER",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/poe-extender-cat-1785926554640.webp"
-  },
-  {
-    "id": "cat-1785926554717",
-    "name": "NETWORKING",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/networking-cat-1785926554717.webp"
-  },
-  {
-    "id": "cat-1785926554795",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/poe-switch.webp",
-    "name": "POE SWITCH"
-  },
-  {
-    "id": "cat-1785926554874",
-    "name": "HDMI CABLE",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/hdmi-cable.webp"
-  },
-  {
-    "id": "cat-1785926554939",
-    "name": "DESKTOP SWITCH",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/desktop-switch.webp"
-  },
-  {
-    "id": "cat-1785926555000",
-    "imageLink": "images/categories/power-manager.webp",
-    "deliveryCharge": 150,
-    "name": "POWER MANAGER"
-  },
-  {
-    "id": "cat-1785926555080",
-    "deliveryCharge": 150,
-    "name": "JUNCTION BOX",
-    "imageLink": "images/categories/junction-box.webp"
-  },
-  {
-    "id": "cat-1785926555142",
-    "name": "HD DVR",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/hd-dvr.webp"
-  },
-  {
-    "id": "cat-1785926555205",
-    "imageLink": "images/categories/cat-6-cables.webp",
-    "name": "CAT 6 CABLES",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926555283",
-    "name": "WIFI CAMERA",
-    "imageLink": "images/categories/wifi-camera.webp",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926555346",
-    "name": "LED TV",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/led-tv.webp"
-  },
-  {
-    "id": "cat-1785926555409",
-    "imageLink": "images/categories/memory-card.webp",
-    "name": "MEMORY CARD",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926555487",
-    "name": "CABLE",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/cable.webp"
-  },
-  {
-    "id": "cat-1785926555533",
-    "name": "ANDROID BOX",
-    "imageLink": "https://static.vecteezy.com/system/resources/previews/047/635/805/non_2x/simple-black-and-white-tv-box-with-remote-control-icon-vector.jpg",
-    "deliveryCharge": 150,
-    "description": ""
-  },
-  {
-    "id": "cat-1785926555581",
-    "imageLink": "images/categories/hd-camera.webp",
-    "deliveryCharge": 150,
-    "name": "HD CAMERA"
-  },
-  {
-    "id": "cat-1785926555643",
-    "deliveryCharge": 150,
-    "name": "POWER SUPPLY",
-    "imageLink": "images/categories/power-supply.webp"
-  },
-  {
-    "id": "cat-1785926555705",
-    "deliveryCharge": 150,
-    "name": "CCTV RACK",
-    "imageLink": "images/categories/cctv-rack.webp"
-  },
-  {
-    "id": "cat-1785926555783",
-    "imageLink": "images/categories/ups.webp",
-    "deliveryCharge": 150,
-    "name": "UPS"
-  },
-  {
-    "id": "cat-1785926555845",
-    "name": "ADAPTORS",
-    "imageLink": "images/categories/adaptors.webp",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926555908",
-    "name": "CCTV CABLES",
-    "imageLink": "images/categories/cctv-cables.webp",
-    "deliveryCharge": 150
-  },
-  {
-    "id": "cat-1785926555968",
-    "deliveryCharge": 150,
-    "name": "FAN",
-    "imageLink": "images/categories/fan.webp"
-  },
-  {
-    "id": "cat-1785926556029",
-    "deliveryCharge": 150,
-    "name": "MEDIA CONVERTOR",
-    "imageLink": "images/categories/media-convertor.webp"
-  },
-  {
-    "id": "cat-1785926556094",
-    "deliveryCharge": 150,
-    "imageLink": "images/categories/cctv-accessories.webp",
-    "name": "CCTV ACCESSORIES"
-  },
-  {
-    "id": "cat-1785931927509",
     "deliveryCharge": null,
-    "name": "HD CCTV",
-    "imageLink": "images/categories/hd-cctv.webp"
-  },
-  {
-    "id": "cat-1785931936065",
-    "deliveryCharge": null,
-    "name": "IP CCTV",
-    "imageLink": "images/categories/ip-cctv.webp"
-  },
-  {
-    "id": "cat-1785932315109",
-    "imageLink": "images/categories/wifi-nvr.webp",
-    "name": "WIFI NVR",
-    "deliveryCharge": null
-  },
-  {
-    "id": "cat-1785933137264",
-    "name": "HARD DISK",
-    "deliveryCharge": null,
-    "imageLink": "images/categories/hard-disk.webp"
-  },
-  {
-    "id": "cat-1785937226100",
-    "name": "BIOMETRIC",
-    "imageLink": "images/categories/biometric.webp",
-    "deliveryCharge": null
+    "sortOrder": 3
   },
   {
     "id": "cat-1785938901688",
     "deliveryCharge": null,
     "name": "CASH COUNTING MACHINES",
     "imageLink": "https://static.vecteezy.com/system/resources/previews/006/610/584/non_2x/a-cash-counting-machine-isometric-icon-design-vector.jpg",
-    "description": ""
+    "description": "",
+    "sortOrder": 4
+  },
+  {
+    "id": "cat-1789133432599",
+    "name": "EPABX",
+    "imageLink": "https://5.imimg.com/data5/SELLER/Default/2025/11/560881603/WB/VI/QL/249295394/1d0d5306-a902-479d-9306-3ca26eb03d51-1.png",
+    "description": "",
+    "sortOrder": 5
+  },
+  {
+    "id": "cat-1789129930977",
+    "name": "ROUTERS",
+    "imageLink": "https://realtechvision.in/cat-icons/routers.png",
+    "description": "",
+    "sortOrder": 6
+  },
+  {
+    "id": "cat-1789129736050",
+    "name": "TELEPHONE",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9aKYYSAyZK4pBKeW--eK4PFP2DcQZgKimWKjK2tpY8Ech8j_yFFw09Hfd&s=10",
+    "description": "",
+    "sortOrder": 7
+  },
+  {
+    "id": "cat-1785898518841",
+    "deliveryCharge": 100,
+    "imageLink": "images/categories/smart-plug.webp",
+    "name": "SMART PLUG",
+    "sortOrder": 8
+  },
+  {
+    "id": "cat-1786372112283",
+    "name": "GPS",
+    "imageLink": "images/categories/gps.webp",
+    "description": "",
+    "sortOrder": 9
+  },
+  {
+    "id": "cat-1786283448512",
+    "name": "MONITORS",
+    "imageLink": "images/categories/monitors.webp",
+    "description": "",
+    "sortOrder": 10
+  },
+  {
+    "id": "cat-1785898559490",
+    "name": "VIDEO DOOR BELL",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/video-door-bell.webp",
+    "sortOrder": 11
+  },
+  {
+    "id": "cat-1785925065278",
+    "name": "ELECTRIC DOOR LOCK",
+    "imageLink": "images/categories/electric-door-lock.webp",
+    "deliveryCharge": 150,
+    "sortOrder": 12
+  },
+  {
+    "id": "cat-1785925082552",
+    "imageLink": "images/categories/poe-extender.webp",
+    "deliveryCharge": 150,
+    "name": "POE EXTENDER",
+    "sortOrder": 13
+  },
+  {
+    "id": "cat-1785925100936",
+    "imageLink": "images/categories/networking.webp",
+    "deliveryCharge": 150,
+    "name": "NETWORKING",
+    "sortOrder": 14
+  },
+  {
+    "id": "cat-1785926554486",
+    "imageLink": "images/categories/electric-door-lock-cat-1785926554486.webp",
+    "name": "ELECTRIC DOOR LOCK",
+    "deliveryCharge": 150,
+    "sortOrder": 15
+  },
+  {
+    "id": "cat-1785926554640",
+    "name": "POE EXTENDER",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/poe-extender-cat-1785926554640.webp",
+    "sortOrder": 16
+  },
+  {
+    "id": "cat-1785926554717",
+    "name": "NETWORKING",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/networking-cat-1785926554717.webp",
+    "sortOrder": 17
+  },
+  {
+    "id": "cat-1785926554795",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/poe-switch.webp",
+    "name": "POE SWITCH",
+    "sortOrder": 18
+  },
+  {
+    "id": "cat-1785926554874",
+    "name": "HDMI CABLE",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/hdmi-cable.webp",
+    "sortOrder": 19
+  },
+  {
+    "id": "cat-1785926554939",
+    "name": "DESKTOP SWITCH",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/desktop-switch.webp",
+    "sortOrder": 20
+  },
+  {
+    "id": "cat-1785926555000",
+    "imageLink": "images/categories/power-manager.webp",
+    "deliveryCharge": 150,
+    "name": "POWER MANAGER",
+    "sortOrder": 21
+  },
+  {
+    "id": "cat-1785926555080",
+    "deliveryCharge": 150,
+    "name": "JUNCTION BOX",
+    "imageLink": "images/categories/junction-box.webp",
+    "sortOrder": 22
+  },
+  {
+    "id": "cat-1785926555142",
+    "name": "HD DVR",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/hd-dvr.webp",
+    "sortOrder": 23
+  },
+  {
+    "id": "cat-1785926555205",
+    "imageLink": "images/categories/cat-6-cables.webp",
+    "name": "CAT 6 CABLES",
+    "deliveryCharge": 150,
+    "sortOrder": 24
+  },
+  {
+    "id": "cat-1785926555283",
+    "name": "WIFI CAMERA",
+    "imageLink": "images/categories/wifi-camera.webp",
+    "deliveryCharge": 150,
+    "sortOrder": 25
+  },
+  {
+    "id": "cat-1785926555346",
+    "name": "LED TV",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/led-tv.webp",
+    "sortOrder": 26
+  },
+  {
+    "id": "cat-1785926555409",
+    "imageLink": "images/categories/memory-card.webp",
+    "name": "MEMORY CARD",
+    "deliveryCharge": 150,
+    "sortOrder": 27
+  },
+  {
+    "id": "cat-1785926555487",
+    "name": "CABLE",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/cable.webp",
+    "sortOrder": 28
+  },
+  {
+    "id": "cat-1785926555533",
+    "name": "ANDROID BOX",
+    "imageLink": "https://static.vecteezy.com/system/resources/previews/047/635/805/non_2x/simple-black-and-white-tv-box-with-remote-control-icon-vector.jpg",
+    "deliveryCharge": 150,
+    "description": "",
+    "sortOrder": 29
+  },
+  {
+    "id": "cat-1785926555581",
+    "imageLink": "images/categories/hd-camera.webp",
+    "deliveryCharge": 150,
+    "name": "HD CAMERA",
+    "sortOrder": 30
+  },
+  {
+    "id": "cat-1785926555643",
+    "deliveryCharge": 150,
+    "name": "POWER SUPPLY",
+    "imageLink": "images/categories/power-supply.webp",
+    "sortOrder": 31
+  },
+  {
+    "id": "cat-1785926555705",
+    "deliveryCharge": 150,
+    "name": "CCTV RACK",
+    "imageLink": "images/categories/cctv-rack.webp",
+    "sortOrder": 32
+  },
+  {
+    "id": "cat-1785926555783",
+    "imageLink": "images/categories/ups.webp",
+    "deliveryCharge": 150,
+    "name": "UPS",
+    "sortOrder": 33
+  },
+  {
+    "id": "cat-1785926555845",
+    "name": "ADAPTORS",
+    "imageLink": "images/categories/adaptors.webp",
+    "deliveryCharge": 150,
+    "sortOrder": 34
+  },
+  {
+    "id": "cat-1785926555908",
+    "name": "CCTV CABLES",
+    "imageLink": "images/categories/cctv-cables.webp",
+    "deliveryCharge": 150,
+    "sortOrder": 35
+  },
+  {
+    "id": "cat-1785926555968",
+    "deliveryCharge": 150,
+    "name": "FAN",
+    "imageLink": "images/categories/fan.webp",
+    "sortOrder": 36
+  },
+  {
+    "id": "cat-1785926556029",
+    "deliveryCharge": 150,
+    "name": "MEDIA CONVERTOR",
+    "imageLink": "images/categories/media-convertor.webp",
+    "sortOrder": 37
+  },
+  {
+    "id": "cat-1785926556094",
+    "deliveryCharge": 150,
+    "imageLink": "images/categories/cctv-accessories.webp",
+    "name": "CCTV ACCESSORIES",
+    "sortOrder": 38
+  },
+  {
+    "id": "cat-1785931927509",
+    "deliveryCharge": null,
+    "name": "HD CCTV",
+    "imageLink": "images/categories/hd-cctv.webp",
+    "sortOrder": 39
+  },
+  {
+    "id": "cat-1785931936065",
+    "deliveryCharge": null,
+    "name": "IP CCTV",
+    "imageLink": "images/categories/ip-cctv.webp",
+    "sortOrder": 40
+  },
+  {
+    "id": "cat-1785932315109",
+    "imageLink": "images/categories/wifi-nvr.webp",
+    "name": "WIFI NVR",
+    "deliveryCharge": null,
+    "sortOrder": 41
+  },
+  {
+    "id": "cat-1785933137264",
+    "name": "HARD DISK",
+    "deliveryCharge": null,
+    "imageLink": "images/categories/hard-disk.webp",
+    "sortOrder": 42
+  },
+  {
+    "id": "cat-1785937226100",
+    "name": "BIOMETRIC",
+    "imageLink": "images/categories/biometric.webp",
+    "deliveryCharge": null,
+    "sortOrder": 43
   },
   {
     "id": "cat-1785953218112",
     "deliveryCharge": null,
     "name": "PC UPS",
-    "imageLink": "images/categories/pc-ups.webp"
+    "imageLink": "images/categories/pc-ups.webp",
+    "sortOrder": 44
   },
   {
     "id": "cat-1785955000391",
     "imageLink": "images/categories/combo-packs.webp",
     "deliveryCharge": null,
-    "name": "Combo Packs"
+    "name": "Combo Packs",
+    "sortOrder": 45
   },
   {
     "id": "cat-2",
     "name": "PRINTERS",
     "deliveryCharge": 350,
-    "imageLink": "images/categories/printers.webp"
+    "imageLink": "images/categories/printers.webp",
+    "sortOrder": 46
   },
   {
     "id": "cat-5",
     "deliveryCharge": null,
     "imageLink": "images/categories/accessories.webp",
-    "name": "ACCESSORIES"
+    "name": "ACCESSORIES",
+    "sortOrder": 47
   },
   {
     "id": "cat-switch",
     "name": "SWITCH",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/poe-switch.webp"
+    "imageLink": "images/categories/poe-switch.webp",
+    "sortOrder": 48
   },
   {
     "id": "cat-nvr",
     "name": "NVR",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/wifi-nvr.webp"
+    "imageLink": "images/categories/wifi-nvr.webp",
+    "sortOrder": 49
   },
   {
     "id": "cat-harddisk",
     "name": "HARDDISK",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/hard-disk.webp"
+    "imageLink": "images/categories/hard-disk.webp",
+    "sortOrder": 50
   },
   {
     "id": "cat-general",
     "name": "General",
     "deliveryCharge": 150,
-    "imageLink": "images/categories/accessories.webp"
+    "imageLink": "images/categories/accessories.webp",
+    "sortOrder": 51
   }
 ]

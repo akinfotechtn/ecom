@@ -577,6 +577,27 @@ async function uploadImageBase64(file, statusElId) {
   });
 }
 
+let draggedBrandIdx = null;
+let draggedCatIdx = null;
+
+function getBrandProductCount(bName) {
+  if (!bName || !localProducts.length) return 0;
+  const norm = bName.trim().toLowerCase();
+  return localProducts.filter(p => p.brand && p.brand.trim().toLowerCase() === norm).length;
+}
+
+function getCategoryProductCount(cName) {
+  if (!cName || !localProducts.length) return 0;
+  const norm = cName.trim().toLowerCase();
+  if (norm.includes('combo')) {
+    return localProducts.filter(p => p.isCombo || (p.category || '').toLowerCase().includes('combo') || (p.productName || '').toLowerCase().includes('combo')).length;
+  }
+  return localProducts.filter(p => {
+    const pCat = (p.category || '').trim().toLowerCase();
+    return pCat === norm || pCat.includes(norm);
+  }).length;
+}
+
 // Load brands & categories from local API
 async function loadLocalBrandsAndCategories() {
   try {
@@ -591,6 +612,25 @@ async function loadLocalBrandsAndCategories() {
       const data = await catRes.json();
       localCategories = data.categories || data || [];
     }
+
+    // Ensure sortOrder is initialized and array is sorted by custom sortOrder
+    localBrands.sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      return orderA - orderB;
+    });
+    localBrands.forEach((b, idx) => {
+      b.sortOrder = idx + 1;
+    });
+
+    localCategories.sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      return orderA - orderB;
+    });
+    localCategories.forEach((c, idx) => {
+      c.sortOrder = idx + 1;
+    });
     
     renderBrandsList();
     renderCategoriesList();
@@ -599,71 +639,305 @@ async function loadLocalBrandsAndCategories() {
   }
 }
 
-
-// Render Brands Table
+// Render Brands Table with Drag-and-Drop & Reordering
 window.renderBrandsList = function() {
-  const query = document.getElementById('brandSearch').value.toLowerCase();
+  const query = (document.getElementById('brandSearch')?.value || '').toLowerCase().trim();
   const tbody = document.getElementById('localBrandsTableBody');
   const countSpan = document.getElementById('localBrandsCount');
+  if (!tbody) return;
   
-  const filtered = localBrands.filter(b => 
+  const filtered = localBrands.map((b, originalIdx) => ({ ...b, originalIdx })).filter(b => 
     b.name?.toLowerCase().includes(query) || 
     b.description?.toLowerCase().includes(query)
   );
   
-  countSpan.textContent = filtered.length;
+  if (countSpan) countSpan.textContent = filtered.length;
   
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No brands match search</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 24px; color:var(--text-dim);">No brands match search</td></tr>`;
     return;
   }
   
-  tbody.innerHTML = filtered.map(b => `
-    <tr>
-      <td>
-        <img src="${b.imageLink || 'images/brands/generic.png'}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${b.name}">
+  tbody.innerHTML = filtered.map(b => {
+    const idx = b.originalIdx;
+    const count = getBrandProductCount(b.name);
+    return `
+    <tr class="order-row" draggable="true" data-index="${idx}"
+        ondragstart="onBrandDragStart(event, ${idx})"
+        ondragover="onBrandDragOver(event)"
+        ondragenter="onBrandDragEnter(event)"
+        ondragleave="onBrandDragLeave(event)"
+        ondrop="onBrandDrop(event, ${idx})"
+        ondragend="onBrandDragEnd(event)">
+      <td style="text-align: center; white-space: nowrap;">
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <input type="number" min="1" max="${localBrands.length}" class="order-input" value="${idx + 1}" onchange="changeBrandPosition(${idx}, parseInt(this.value, 10))" title="Direct order position">
+        <button type="button" class="move-btn" onclick="moveBrand(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Move Up">▲</button>
+        <button type="button" class="move-btn" onclick="moveBrand(${idx}, 1)" ${idx === localBrands.length - 1 ? 'disabled' : ''} title="Move Down">▼</button>
       </td>
-      <td style="font-weight: 700; color:#fff;">${escapeHtml(b.name)}</td>
-      <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(b.description || '')}</td>
-      <td style="text-align: right;">
-        <button class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 4px 8px; font-size: 0.78rem; margin-right: 4px;" onclick="startEditBrand('${b.id}')">✏️ Edit</button>
-        <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteBrandBtn('${b.id}')">✕ Delete</button>
+      <td>
+        <img src="${b.imageLink || 'images/brands/generic.png'}" style="width: 36px; height: 36px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${escapeHtml(b.name)}" onerror="this.src='images/brands/generic.png'">
+      </td>
+      <td>
+        <strong style="color:#fff; font-size:0.88rem;">${escapeHtml(b.name)}</strong>
+        ${b.description ? `<div style="color: var(--text-dim); font-size: 0.75rem; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(b.description)}</div>` : ''}
+      </td>
+      <td>
+        <span style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 2px 8px; border-radius: 10px; font-weight: 800; font-size: 0.78rem;">📦 ${count}</span>
+      </td>
+      <td style="text-align: right; white-space: nowrap;">
+        <button type="button" class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 3px 8px; font-size: 0.74rem; margin-right: 4px;" onclick="startEditBrand('${b.id}')">✏️</button>
+        <button type="button" class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 3px 8px; font-size: 0.74rem;" onclick="deleteBrandBtn('${b.id}')">✕</button>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 };
 
-// Render Categories Table
+// Render Categories Table with Drag-and-Drop & Reordering
 window.renderCategoriesList = function() {
-  const query = document.getElementById('catSearch').value.toLowerCase();
+  const query = (document.getElementById('catSearch')?.value || '').toLowerCase().trim();
   const tbody = document.getElementById('localCategoriesTableBody');
   const countSpan = document.getElementById('localCategoriesCount');
+  if (!tbody) return;
   
-  const filtered = localCategories.filter(c => 
+  const filtered = localCategories.map((c, originalIdx) => ({ ...c, originalIdx })).filter(c => 
     c.name?.toLowerCase().includes(query) || 
     c.description?.toLowerCase().includes(query)
   );
   
-  countSpan.textContent = filtered.length;
+  if (countSpan) countSpan.textContent = filtered.length;
   
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No categories match search</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 24px; color:var(--text-dim);">No categories match search</td></tr>`;
     return;
   }
   
-  tbody.innerHTML = filtered.map(c => `
-    <tr>
-      <td>
-        <img src="${c.imageLink || 'images/categories/generic.png'}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${c.name}">
+  tbody.innerHTML = filtered.map(c => {
+    const idx = c.originalIdx;
+    const count = getCategoryProductCount(c.name);
+    return `
+    <tr class="order-row" draggable="true" data-index="${idx}"
+        ondragstart="onCatDragStart(event, ${idx})"
+        ondragover="onCatDragOver(event)"
+        ondragenter="onCatDragEnter(event)"
+        ondragleave="onCatDragLeave(event)"
+        ondrop="onCatDrop(event, ${idx})"
+        ondragend="onCatDragEnd(event)">
+      <td style="text-align: center; white-space: nowrap;">
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <input type="number" min="1" max="${localCategories.length}" class="order-input" value="${idx + 1}" onchange="changeCategoryPosition(${idx}, parseInt(this.value, 10))" title="Direct order position">
+        <button type="button" class="move-btn" onclick="moveCategory(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Move Up">▲</button>
+        <button type="button" class="move-btn" onclick="moveCategory(${idx}, 1)" ${idx === localCategories.length - 1 ? 'disabled' : ''} title="Move Down">▼</button>
       </td>
-      <td style="font-weight: 700; color:#fff;">${escapeHtml(c.name)}</td>
-      <td style="color: var(--text-dim); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(c.description || '')}</td>
-      <td style="text-align: right;">
-        <button class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 4px 8px; font-size: 0.78rem; margin-right: 4px;" onclick="startEditCategory('${c.id}')">✏️ Edit</button>
-        <button class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 4px 8px; font-size: 0.78rem;" onclick="deleteCategoryBtn('${c.id}')">✕ Delete</button>
+      <td>
+        <img src="${c.imageLink || 'images/categories/generic.png'}" style="width: 36px; height: 36px; border-radius: 4px; object-fit: contain; background: #fff; padding: 2px;" alt="${escapeHtml(c.name)}" onerror="this.src='images/categories/generic.png'">
+      </td>
+      <td>
+        <strong style="color:#fff; font-size:0.88rem;">${escapeHtml(c.name)}</strong>
+        ${c.description ? `<div style="color: var(--text-dim); font-size: 0.75rem; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(c.description)}</div>` : ''}
+      </td>
+      <td>
+        <span style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 2px 8px; border-radius: 10px; font-weight: 800; font-size: 0.78rem;">📦 ${count}</span>
+      </td>
+      <td style="text-align: right; white-space: nowrap;">
+        <button type="button" class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); padding: 3px 8px; font-size: 0.74rem; margin-right: 4px;" onclick="startEditCategory('${c.id}')">✏️</button>
+        <button type="button" class="btn-secondary" style="border-color: #ef4444; color:#ef4444; padding: 3px 8px; font-size: 0.74rem;" onclick="deleteCategoryBtn('${c.id}')">✕</button>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
+};
+
+// -------------------------------------------------------------
+// REORDERING & DRAG-AND-DROP HANDLERS
+// -------------------------------------------------------------
+
+// Brand Reordering
+window.moveBrand = function(idx, direction) {
+  const targetIdx = idx + direction;
+  if (targetIdx < 0 || targetIdx >= localBrands.length) return;
+  const item = localBrands.splice(idx, 1)[0];
+  localBrands.splice(targetIdx, 0, item);
+  localBrands.forEach((b, i) => { b.sortOrder = i + 1; });
+  renderBrandsList();
+};
+
+window.changeBrandPosition = function(idx, newPos) {
+  if (isNaN(newPos)) return;
+  const targetIdx = Math.max(0, Math.min(localBrands.length - 1, newPos - 1));
+  if (targetIdx === idx) return;
+  const item = localBrands.splice(idx, 1)[0];
+  localBrands.splice(targetIdx, 0, item);
+  localBrands.forEach((b, i) => { b.sortOrder = i + 1; });
+  renderBrandsList();
+};
+
+window.onBrandDragStart = function(e, idx) {
+  draggedBrandIdx = idx;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+};
+
+window.onBrandDragOver = function(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+};
+
+window.onBrandDragEnter = function(e) {
+  e.currentTarget.classList.add('drag-over');
+};
+
+window.onBrandDragLeave = function(e) {
+  e.currentTarget.classList.remove('drag-over');
+};
+
+window.onBrandDrop = function(e, targetIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (draggedBrandIdx === null || draggedBrandIdx === targetIdx) return;
+  const item = localBrands.splice(draggedBrandIdx, 1)[0];
+  localBrands.splice(targetIdx, 0, item);
+  localBrands.forEach((b, i) => { b.sortOrder = i + 1; });
+  renderBrandsList();
+};
+
+window.onBrandDragEnd = function(e) {
+  draggedBrandIdx = null;
+  document.querySelectorAll('#localBrandsTableBody tr').forEach(r => {
+    r.classList.remove('dragging');
+    r.classList.remove('drag-over');
+  });
+};
+
+// Category Reordering
+window.moveCategory = function(idx, direction) {
+  const targetIdx = idx + direction;
+  if (targetIdx < 0 || targetIdx >= localCategories.length) return;
+  const item = localCategories.splice(idx, 1)[0];
+  localCategories.splice(targetIdx, 0, item);
+  localCategories.forEach((c, i) => { c.sortOrder = i + 1; });
+  renderCategoriesList();
+};
+
+window.changeCategoryPosition = function(idx, newPos) {
+  if (isNaN(newPos)) return;
+  const targetIdx = Math.max(0, Math.min(localCategories.length - 1, newPos - 1));
+  if (targetIdx === idx) return;
+  const item = localCategories.splice(idx, 1)[0];
+  localCategories.splice(targetIdx, 0, item);
+  localCategories.forEach((c, i) => { c.sortOrder = i + 1; });
+  renderCategoriesList();
+};
+
+window.onCatDragStart = function(e, idx) {
+  draggedCatIdx = idx;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+};
+
+window.onCatDragOver = function(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+};
+
+window.onCatDragEnter = function(e) {
+  e.currentTarget.classList.add('drag-over');
+};
+
+window.onCatDragLeave = function(e) {
+  e.currentTarget.classList.remove('drag-over');
+};
+
+window.onCatDrop = function(e, targetIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (draggedCatIdx === null || draggedCatIdx === targetIdx) return;
+  const item = localCategories.splice(draggedCatIdx, 1)[0];
+  localCategories.splice(targetIdx, 0, item);
+  localCategories.forEach((c, i) => { c.sortOrder = i + 1; });
+  renderCategoriesList();
+};
+
+window.onCatDragEnd = function(e) {
+  draggedCatIdx = null;
+  document.querySelectorAll('#localCategoriesTableBody tr').forEach(r => {
+    r.classList.remove('dragging');
+    r.classList.remove('drag-over');
+  });
+};
+
+// Quick Sort Presets
+window.sortBrandsQuick = function(type) {
+  if (type === 'alpha') {
+    localBrands.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  } else if (type === 'count') {
+    localBrands.sort((a, b) => getBrandProductCount(b.name) - getBrandProductCount(a.name) || (a.name || '').localeCompare(b.name || ''));
+  } else {
+    // default: by id or created timestamp
+    localBrands.sort((a, b) => (a.id || '').localeCompare(b.id || ''));
+  }
+  localBrands.forEach((b, i) => { b.sortOrder = i + 1; });
+  renderBrandsList();
+};
+
+window.sortCategoriesQuick = function(type) {
+  if (type === 'alpha') {
+    localCategories.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  } else if (type === 'count') {
+    localCategories.sort((a, b) => getCategoryProductCount(b.name) - getCategoryProductCount(a.name) || (a.name || '').localeCompare(b.name || ''));
+  } else {
+    localCategories.sort((a, b) => (a.id || '').localeCompare(b.id || ''));
+  }
+  localCategories.forEach((c, i) => { c.sortOrder = i + 1; });
+  renderCategoriesList();
+};
+
+// Save Display Order
+window.saveBrandOrder = async function() {
+  localBrands.forEach((b, i) => { b.sortOrder = i + 1; });
+  const statusEl = document.getElementById('brandOrderSaveStatus');
+  try {
+    const res = await fetch('/api/brands/bulk-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brands: localBrands })
+    });
+    if (res.ok) {
+      if (statusEl) {
+        statusEl.textContent = '✅ Brand Order Saved!';
+        statusEl.style.display = 'inline';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 3500);
+      }
+    } else {
+      alert('Error saving brand order.');
+    }
+  } catch (err) {
+    alert('Failed to save brand order: ' + err.message);
+  }
+};
+
+window.saveCategoryOrder = async function() {
+  localCategories.forEach((c, i) => { c.sortOrder = i + 1; });
+  const statusEl = document.getElementById('catOrderSaveStatus');
+  try {
+    const res = await fetch('/api/categories/bulk-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ categories: localCategories })
+    });
+    if (res.ok) {
+      if (statusEl) {
+        statusEl.textContent = '✅ Category Order Saved!';
+        statusEl.style.display = 'inline';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 3500);
+      }
+    } else {
+      alert('Error saving category order.');
+    }
+  } catch (err) {
+    alert('Failed to save category order: ' + err.message);
+  }
 };
 
 // Edit & Cancel Brand functions

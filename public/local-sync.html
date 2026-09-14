@@ -226,6 +226,62 @@
     .tab-btn:hover {
       color: #fff;
     }
+    .drag-handle {
+      cursor: grab;
+      user-select: none;
+      color: var(--text-dim);
+      font-size: 1.15rem;
+      padding: 0 4px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+    .order-input {
+      width: 44px;
+      padding: 3px 4px;
+      background: #0f172a;
+      border: 1px solid var(--border-dark);
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 0.82rem;
+      border-radius: 4px;
+      text-align: center;
+      outline: none;
+    }
+    .order-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 6px rgba(6, 182, 212, 0.4);
+    }
+    .move-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-dark);
+      color: var(--text-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      line-height: 1.2;
+      transition: all 0.15s;
+    }
+    .move-btn:hover:not(:disabled) {
+      background: rgba(6, 182, 212, 0.25);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
+    }
+    .move-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    tr.order-row.dragging {
+      opacity: 0.35;
+      background: rgba(6, 182, 212, 0.2) !important;
+    }
+    tr.order-row.drag-over {
+      border-top: 2px solid var(--accent-cyan) !important;
+      background: rgba(6, 182, 212, 0.08) !important;
+    }
   </style>
 </head>
 <body>
@@ -564,7 +620,22 @@
   <!-- TABS CONTENT: BRANDS & CATEGORIES -->
   <div id="brands-cats-tab" class="tab-content" style="display: none;">
       
-
+      <!-- DISPLAY ORDER NOTICE & PREVIEWS -->
+      <div style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="font-weight: 800; font-size: 1rem; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+            <span>🎯</span> Display Order & Sorting Manager Active
+          </div>
+          <div style="font-size: 0.84rem; color: var(--text-dim); margin-top: 4px;">
+            Order brands and categories as per your wish! You can drag <strong style="color:#fff;">⠿</strong> handles, click <strong style="color:#fff;">▲ / ▼</strong> buttons, or type <strong style="color:#fff;"># Order</strong> numbers. Once saved, this sequence is automatically shown on the Homepage, Brands page, and Categories page.
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="index.html" target="_blank" class="btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;">🏠 Preview Homepage</a>
+          <a href="brand.html" target="_blank" class="btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;">🏷️ Preview Brands</a>
+          <a href="category.html" target="_blank" class="btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;">📁 Preview Categories</a>
+        </div>
+      </div>
 
       <!-- MAIN BRANDS / CATS LAYOUT -->
       <div class="grid-2col">
@@ -654,50 +725,86 @@
 
         </div>
 
-        <!-- COLUMN 2: LIST VIEWS -->
+        <!-- COLUMN 2: LIST VIEWS & REORDERING CONTROLS -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
           
-          <!-- BRANDS LIST -->
-          <div class="local-card" style="display: flex; flex-direction: column; max-height: 480px; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3 style="margin:0;">🏷️ Brands List (<span id="localBrandsCount" style="color:var(--accent-cyan);">0</span>)</h3>
-              <input type="text" id="brandSearch" placeholder="🔍 Search brands..." oninput="renderBrandsList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:6px 10px; border-radius:15px; font-size:0.8rem; width:150px; outline:none;">
+          <!-- BRANDS LIST WITH SORTING -->
+          <div class="local-card" style="display: flex; flex-direction: column; max-height: 560px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <h3 style="margin:0;">🏷️ Brands Order (<span id="localBrandsCount" style="color:var(--accent-cyan);">0</span>)</h3>
+              <input type="text" id="brandSearch" placeholder="🔍 Filter brands..." oninput="renderBrandsList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:5px 10px; border-radius:15px; font-size:0.8rem; width:130px; outline:none;">
             </div>
+
+            <!-- QUICK SORT PRESETS & SAVE BUTTON -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-dark); margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-dim);">PRESETS:</span>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortBrandsQuick('alpha')" title="Sort alphabetically from A to Z">🔤 A–Z</button>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortBrandsQuick('count')" title="Sort with highest product counts first">📦 By Count</button>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortBrandsQuick('default')" title="Reset to default original order">🔄 Reset</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span id="brandOrderSaveStatus" style="font-size: 0.78rem; font-weight: 700; color: var(--accent-green); display: none;">✅ Saved!</span>
+                <button type="button" class="btn-action btn-green" style="padding: 6px 14px; font-size: 0.8rem;" onclick="saveBrandOrder()">
+                  💾 Save Brand Order
+                </button>
+              </div>
+            </div>
+
             <div style="overflow-y: auto; flex: 1;" class="table-container">
               <table class="local-table" style="margin-top:0;">
                 <thead>
                   <tr>
-                    <th style="width: 50px;">Logo</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th style="text-align: right; width: 60px;">Delete</th>
+                    <th style="width: 105px; text-align: center;">Order</th>
+                    <th style="width: 45px;">Logo</th>
+                    <th>Brand Name</th>
+                    <th style="width: 75px;">Items</th>
+                    <th style="text-align: right; width: 110px;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="localBrandsTableBody">
-                  <tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No brands loaded</td></tr>
+                  <tr><td colspan="5" style="text-align:center; color:var(--text-dim);">No brands loaded</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- CATEGORIES LIST -->
-          <div class="local-card" style="display: flex; flex-direction: column; max-height: 480px; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3 style="margin:0;">📁 Categories List (<span id="localCategoriesCount" style="color:var(--accent-cyan);">0</span>)</h3>
-              <input type="text" id="catSearch" placeholder="🔍 Search categories..." oninput="renderCategoriesList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:6px 10px; border-radius:15px; font-size:0.8rem; width:150px; outline:none;">
+          <!-- CATEGORIES LIST WITH SORTING -->
+          <div class="local-card" style="display: flex; flex-direction: column; max-height: 560px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <h3 style="margin:0;">📁 Categories Order (<span id="localCategoriesCount" style="color:var(--accent-cyan);">0</span>)</h3>
+              <input type="text" id="catSearch" placeholder="🔍 Filter categories..." oninput="renderCategoriesList()" style="background:#0f172a; border:1px solid var(--border-dark); color:#fff; padding:5px 10px; border-radius:15px; font-size:0.8rem; width:130px; outline:none;">
             </div>
+
+            <!-- QUICK SORT PRESETS & SAVE BUTTON -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-dark); margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-dim);">PRESETS:</span>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortCategoriesQuick('alpha')" title="Sort alphabetically from A to Z">🔤 A–Z</button>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortCategoriesQuick('count')" title="Sort with highest product counts first">📦 By Count</button>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 0.74rem;" onclick="sortCategoriesQuick('default')" title="Reset to default original order">🔄 Reset</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span id="catOrderSaveStatus" style="font-size: 0.78rem; font-weight: 700; color: var(--accent-green); display: none;">✅ Saved!</span>
+                <button type="button" class="btn-action btn-green" style="padding: 6px 14px; font-size: 0.8rem;" onclick="saveCategoryOrder()">
+                  💾 Save Category Order
+                </button>
+              </div>
+            </div>
+
             <div style="overflow-y: auto; flex: 1;" class="table-container">
               <table class="local-table" style="margin-top:0;">
                 <thead>
                   <tr>
-                    <th style="width: 50px;">Icon</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th style="text-align: right; width: 60px;">Delete</th>
+                    <th style="width: 105px; text-align: center;">Order</th>
+                    <th style="width: 45px;">Icon</th>
+                    <th>Category Name</th>
+                    <th style="width: 75px;">Items</th>
+                    <th style="text-align: right; width: 110px;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="localCategoriesTableBody">
-                  <tr><td colspan="4" style="text-align:center; color:var(--text-dim);">No categories loaded</td></tr>
+                  <tr><td colspan="5" style="text-align:center; color:var(--text-dim);">No categories loaded</td></tr>
                 </tbody>
               </table>
             </div>

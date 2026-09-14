@@ -101,7 +101,7 @@
       font-weight: 600;
     }
   </style>
-<script>window.staticBrandData = {"id":"brand-6","imageLink":"images/brands/ezviz.webp","name":"EZVIZ"};</script>
+<script>window.staticBrandData = {"id":"brand-6","imageLink":"images/brands/ezviz.webp","name":"EZVIZ","sortOrder":28};</script>
 </head>
 <body>
 
@@ -187,13 +187,24 @@
 
   <!-- BRAND DIRECTORY / PRODUCTS CATALOG -->
   <main class="catalog-section">
-    <div class="section-title-row" style="margin-bottom: 16px;">
-      <h2 class="section-title">
+    <div class="section-title-row" style="margin-bottom: 16px; flex-wrap: wrap; gap: 12px; align-items: center;">
+      <h2 class="section-title" style="margin: 0;">
         <span class="title-badge">🏷️</span> <span id="brandCatalogTitle">Browse by Brand</span>
       </h2>
-      <a href="../index.html" class="pill-btn">
-        ← Store Catalog
-      </a>
+      <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+        <div id="brandSortWrap" style="display: flex; align-items: center; gap: 6px;">
+          <label for="brandSortSelect" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Sort:</label>
+          <select id="brandSortSelect" style="background: #ffffff; border: 1px solid var(--border-color); color: var(--text-dark); padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; outline: none; cursor: pointer;">
+            <option value="custom">✨ Featured Order</option>
+            <option value="count">📦 Most Products</option>
+            <option value="alpha_asc">🔤 Name (A to Z)</option>
+            <option value="alpha_desc">🔤 Name (Z to A)</option>
+          </select>
+        </div>
+        <a href="../index.html" class="pill-btn">
+          ← Store Catalog
+        </a>
+      </div>
     </div>
 
     <div class="product-grid" id="brandProductGrid">

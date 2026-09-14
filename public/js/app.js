@@ -105,9 +105,26 @@ window.signInWithGoogle = function () {
 };
 
 async function loadBrandsAndCategories() {
-  storeBrands = await DbService.getBrands();
-  storeCategories = await DbService.getCategories();
+  const [brands, categories] = await Promise.all([
+    DbService.getBrands(),
+    DbService.getCategories()
+  ]);
+
+  // Sort by user's custom sortOrder from Local Manager
+  storeBrands = [...(brands || [])].sort((a, b) => {
+    const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+    const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+    return orderA - orderB;
+  });
+
+  storeCategories = [...(categories || [])].sort((a, b) => {
+    const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+    const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+    return orderA - orderB;
+  });
+
   window.storeCategories = storeCategories;
+  window.storeBrands = storeBrands;
   renderBrandLogosStrip();
   renderCategoryScrollRow();
 }

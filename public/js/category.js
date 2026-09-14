@@ -65,10 +65,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       DbService.getSettings()
     ]);
 
-    allCategories = categories || [];
+    allCategories = (categories || []).sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      return orderA - orderB;
+    });
     allBrands = brands || [];
     storeSettings = settings || {};
     allStoreProducts = prods || [];
+
+    const sortWrap = document.getElementById('categorySortWrap');
+    if (sortWrap) sortWrap.style.display = isAllCategoriesView ? 'flex' : 'none';
 
     // Ensure Combo Packs category is present
     if (!allCategories.some(c => c.name && c.name.toLowerCase().includes('combo'))) {
@@ -154,6 +161,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         currentPage = 1;
         renderCategoryCatalog();
+      }
+    });
+  }
+
+  const categorySortSelect = document.getElementById('categorySortSelect');
+  if (categorySortSelect) {
+    categorySortSelect.addEventListener('change', () => {
+      if (isAllCategoriesView) {
+        const q = document.getElementById('categorySearchInput')?.value.trim().toLowerCase();
+        if (!q) {
+          renderAllCategoriesDirectory(allCategories, allStoreProducts);
+        } else {
+          const filtered = allCategories.filter(c => (c.name || '').toLowerCase().includes(q));
+          renderAllCategoriesDirectory(filtered, allStoreProducts);
+        }
       }
     });
   }
@@ -264,8 +286,23 @@ function renderAllCategoriesDirectory(categoriesToRender, productsList) {
     return { ...c, count };
   });
 
-  // Sort categories by product count descending, then alphabetically
-  categoriesWithCount.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  // Sort categories according to selected or custom featured order
+  const sortMode = document.getElementById('categorySortSelect')?.value || 'custom';
+  if (sortMode === 'count') {
+    categoriesWithCount.sort((a, b) => (b.count || 0) - (a.count || 0) || a.name.localeCompare(b.name));
+  } else if (sortMode === 'alpha_asc') {
+    categoriesWithCount.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortMode === 'alpha_desc') {
+    categoriesWithCount.sort((a, b) => b.name.localeCompare(a.name));
+  } else {
+    // 'custom' / Featured Order: respects sortOrder if present, else original position
+    categoriesWithCount.sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      if (orderA !== orderB) return orderA - orderB;
+      return (b.count || 0) - (a.count || 0);
+    });
+  }
 
   grid.innerHTML = categoriesWithCount.map(c => {
     let imgUrl = c.imageLink || 'images/cctv-wholesale.webp';

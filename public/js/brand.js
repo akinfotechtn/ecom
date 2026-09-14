@@ -91,7 +91,11 @@ async function loadBrandData() {
       DbService.getBrands(),
       DbService.getProducts()
     ]);
-    allStoreBrands = brands || [];
+    allStoreBrands = (brands || []).sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      return orderA - orderB;
+    });
     allStoreProducts = allProds || [];
 
     if (window.staticBrandData) {
@@ -101,6 +105,9 @@ async function loadBrandData() {
     } else if (!isAllBrandsView) {
       brandInfo = allStoreBrands.find(b => b.name?.toLowerCase().trim() === currentBrandName.toLowerCase().trim());
     }
+
+    const sortWrap = document.getElementById('brandSortWrap');
+    if (sortWrap) sortWrap.style.display = isAllBrandsView ? 'flex' : 'none';
 
     if (isAllBrandsView) {
       brandProducts = allStoreProducts;
@@ -208,14 +215,29 @@ function renderAllBrandsDirectory(brandsToRender, productsList) {
     return;
   }
 
-  // Sort brands with product count descending, then alphabetically
+  // Sort brands according to selected or custom featured order
   const brandsWithCount = unique.map(b => {
     const bNorm = b.name.trim().toLowerCase();
     const count = prods.filter(p => p.brand && p.brand.trim().toLowerCase() === bNorm).length;
     return { ...b, count };
   });
 
-  brandsWithCount.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  const sortMode = document.getElementById('brandSortSelect')?.value || 'custom';
+  if (sortMode === 'count') {
+    brandsWithCount.sort((a, b) => (b.count || 0) - (a.count || 0) || a.name.localeCompare(b.name));
+  } else if (sortMode === 'alpha_asc') {
+    brandsWithCount.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortMode === 'alpha_desc') {
+    brandsWithCount.sort((a, b) => b.name.localeCompare(a.name));
+  } else {
+    // 'custom' / Featured Order: respects sortOrder if present, else original position
+    brandsWithCount.sort((a, b) => {
+      const orderA = a.sortOrder !== undefined ? a.sortOrder : 999999;
+      const orderB = b.sortOrder !== undefined ? b.sortOrder : 999999;
+      if (orderA !== orderB) return orderA - orderB;
+      return (b.count || 0) - (a.count || 0);
+    });
+  }
 
   grid.innerHTML = brandsWithCount.map(b => {
     let logoUrl = b.imageLink || 'images/logo.webp';
@@ -848,6 +870,20 @@ function setupEventListeners() {
     });
   }
 
+  const brandSortSelect = document.getElementById('brandSortSelect');
+  if (brandSortSelect) {
+    brandSortSelect.addEventListener('change', () => {
+      if (isAllBrandsView) {
+        const q = document.getElementById('brandSearchInput')?.value.toLowerCase().trim();
+        if (!q) {
+          renderAllBrandsDirectory(allStoreBrands, allStoreProducts);
+        } else {
+          const filtered = allStoreBrands.filter(b => (b.name || '').toLowerCase().includes(q));
+          renderAllBrandsDirectory(filtered, allStoreProducts);
+        }
+      }
+    });
+  }
 }
 
 function escapeHtml(str) {
