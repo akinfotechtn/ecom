@@ -7,17 +7,17 @@
     "sortOrder": 1
   },
   {
-    "id": "cat-1789139381522",
-    "name": "SMART LOCK",
-    "imageLink": "https://cdn-icons-png.flaticon.com/512/2564/2564565.png",
-    "description": "",
-    "sortOrder": 2
-  },
-  {
     "id": "cat-1785924952911",
     "name": "4G CCTV",
     "imageLink": "images/categories/4g-cctv.webp",
     "deliveryCharge": null,
+    "sortOrder": 2
+  },
+  {
+    "id": "cat-1789139381522",
+    "name": "SMART LOCK",
+    "imageLink": "https://cdn-icons-png.flaticon.com/512/2564/2564565.png",
+    "description": "",
     "sortOrder": 3
   },
   {
@@ -29,31 +29,31 @@
     "sortOrder": 4
   },
   {
+    "id": "cat-1785898518841",
+    "deliveryCharge": 100,
+    "imageLink": "images/categories/smart-plug.webp",
+    "name": "SMART PLUG",
+    "sortOrder": 5
+  },
+  {
     "id": "cat-1789133432599",
     "name": "EPABX",
     "imageLink": "https://5.imimg.com/data5/SELLER/Default/2025/11/560881603/WB/VI/QL/249295394/1d0d5306-a902-479d-9306-3ca26eb03d51-1.png",
     "description": "",
-    "sortOrder": 5
+    "sortOrder": 6
   },
   {
     "id": "cat-1789129930977",
     "name": "ROUTERS",
     "imageLink": "https://realtechvision.in/cat-icons/routers.png",
     "description": "",
-    "sortOrder": 6
+    "sortOrder": 7
   },
   {
     "id": "cat-1789129736050",
     "name": "TELEPHONE",
     "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9aKYYSAyZK4pBKeW--eK4PFP2DcQZgKimWKjK2tpY8Ech8j_yFFw09Hfd&s=10",
     "description": "",
-    "sortOrder": 7
-  },
-  {
-    "id": "cat-1785898518841",
-    "deliveryCharge": 100,
-    "imageLink": "images/categories/smart-plug.webp",
-    "name": "SMART PLUG",
     "sortOrder": 8
   },
   {

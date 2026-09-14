@@ -1,33 +1,33 @@
 [
   {
-    "id": "brand-1789126907681",
-    "name": "TP-Link",
-    "imageLink": "https://upload.wikimedia.org/wikipedia/commons/e/e7/TPLINK_New_Logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
-    "description": "",
-    "sortOrder": 1
-  },
-  {
     "id": "brand-1785896484651",
     "imageLink": "images/brands/trueview.webp",
     "name": "Trueview",
-    "sortOrder": 2
+    "sortOrder": 1
   },
   {
     "id": "brand-1785896603430",
     "name": "Qubo",
     "imageLink": "images/brands/qubo.webp",
-    "sortOrder": 3
+    "sortOrder": 2
   },
   {
     "id": "brand-1785896647411",
     "name": "Folla",
     "imageLink": "images/brands/folla.webp",
-    "sortOrder": 4
+    "sortOrder": 3
   },
   {
     "id": "brand-1789129776067",
     "name": "Beetel",
     "imageLink": "https://mms.businesswire.com/media/20210201006054/en/856411/5/beetel_logo_only_final_05.jan.2021-02.jpg?download=1",
+    "description": "",
+    "sortOrder": 4
+  },
+  {
+    "id": "brand-1789130632549",
+    "name": "Panasonic",
+    "imageLink": "https://1000logos.net/wp-content/uploads/2017/04/Panasonic-logo.jpg",
     "description": "",
     "sortOrder": 5
   },
@@ -39,30 +39,30 @@
     "sortOrder": 6
   },
   {
+    "id": "brand-1789126907681",
+    "name": "TP-Link",
+    "imageLink": "https://upload.wikimedia.org/wikipedia/commons/e/e7/TPLINK_New_Logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "description": "",
+    "sortOrder": 7
+  },
+  {
     "id": "brand-1789370924571",
     "name": "Elco",
     "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782996195/realconnect/brands/b4ymqzp3ka0hk1xxfzzy.png",
     "description": "",
-    "sortOrder": 7
+    "sortOrder": 8
   },
   {
     "id": "brand-1789130920090",
     "name": "Trionet",
     "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782995400/realconnect/brands/r82sgfzhwqzuctvechue.png",
     "description": "",
-    "sortOrder": 8
+    "sortOrder": 9
   },
   {
     "id": "brand-1789130650190",
     "name": "Matrix",
     "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzLWGB9e7rV7S18qwQ0TdS8f_r0JOMtZzTKRZiYyJ-XA&s=10",
-    "description": "",
-    "sortOrder": 9
-  },
-  {
-    "id": "brand-1789130632549",
-    "name": "Panasonic",
-    "imageLink": "https://1000logos.net/wp-content/uploads/2017/04/Panasonic-logo.jpg",
     "description": "",
     "sortOrder": 10
   },
