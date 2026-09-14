@@ -1,5 +1,17 @@
 [
   {
+    "id": "brand-1789371000465",
+    "name": "Imported",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGlOpRhE-xFHUOy1bHw8Vac4MkYe6lx-6XZPt2Is1w68hHfMz0L9zJscw&s=10",
+    "description": ""
+  },
+  {
+    "id": "brand-1789370924571",
+    "name": "Elco",
+    "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782996195/realconnect/brands/b4ymqzp3ka0hk1xxfzzy.png",
+    "description": ""
+  },
+  {
     "id": "brand-1789130920090",
     "name": "Trionet",
     "imageLink": "https://res.cloudinary.com/dympxxkx2/image/upload/v1782995400/realconnect/brands/r82sgfzhwqzuctvechue.png",
