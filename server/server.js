@@ -1653,31 +1653,33 @@ const { execSync } = require('child_process');
 app.post('/api/deploy', (req, res) => {
   try {
     const repoRoot = path.join(__dirname, '..');
+    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-    // Read token from local .deploy.env file (gitignored)
-    let token = process.env.GITHUB_TOKEN || '';
+    // Read optional token from local .deploy.env file (gitignored) or environment variable
+    let token = (process.env.GITHUB_TOKEN || '').trim();
     const deployEnvPath = path.join(__dirname, '.deploy.env');
     if (!token && fs.existsSync(deployEnvPath)) {
       const lines = fs.readFileSync(deployEnvPath, 'utf8').split('\n');
       for (const line of lines) {
         const [key, val] = line.trim().split('=');
-        if (key === 'GITHUB_TOKEN' && val) { token = val.trim(); break; }
+        if (key === 'GITHUB_TOKEN' && val) {
+          token = val.trim();
+          break;
+        }
       }
     }
 
-    if (!token) {
-      return res.status(400).json({ success: false, message: 'No GITHUB_TOKEN found. Add it to server/.deploy.env' });
-    }
-
-    const authUrl = `https://${token}@github.com/akinfotechtn/ecom.git`;
-    const safeUrl = `https://github.com/akinfotechtn/ecom.git`;
-    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-
-    // Update ecom remote with authenticated URL (stored in local .git/config only, never committed)
+    // Ensure remote URLs are configured
+    const userRepoUrl = 'https://akinfotechtn@github.com/akinfotechtn/ecom.git';
     try {
-      execSync(`git remote set-url ecom ${authUrl}`, { cwd: repoRoot, stdio: 'pipe' });
-    } catch (e) {
-      execSync(`git remote add ecom ${authUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+      execSync(`git remote set-url origin ${userRepoUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+    } catch (_) {
+      try { execSync(`git remote add origin ${userRepoUrl}`, { cwd: repoRoot, stdio: 'pipe' }); } catch (_) {}
+    }
+    try {
+      execSync(`git remote set-url ecom ${userRepoUrl}`, { cwd: repoRoot, stdio: 'pipe' });
+    } catch (_) {
+      try { execSync(`git remote add ecom ${userRepoUrl}`, { cwd: repoRoot, stdio: 'pipe' }); } catch (_) {}
     }
 
     // Stage all changes
@@ -1690,13 +1692,49 @@ app.post('/api/deploy', (req, res) => {
       committed = false; // nothing new to commit
     }
 
-    // Push via ecom remote so VS Code tracking ref updates
-    execSync('git push ecom main', { cwd: repoRoot, stdio: 'pipe' });
+    let pushSuccess = false;
+    let lastError = null;
 
-    // Reset ecom remote to safe URL (without token)
-    try {
-      execSync(`git remote set-url ecom ${safeUrl}`, { cwd: repoRoot, stdio: 'pipe' });
-    } catch (e) {}
+    // 1. If a valid token is provided, push with token (bypassing interactive prompts)
+    if (token) {
+      try {
+        const tokenAuthUrl = `https://x-access-token:${token}@github.com/akinfotechtn/ecom.git`;
+        execSync(`git -c credential.helper= push ${tokenAuthUrl} main`, {
+          cwd: repoRoot,
+          stdio: 'pipe',
+          env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never' }
+        });
+        pushSuccess = true;
+      } catch (tokenErr) {
+        console.warn('[deploy] Token push failed, falling back to saved credentials:', tokenErr.message);
+        lastError = tokenErr;
+      }
+    }
+
+    // 2. Primary / Fallback: push using the saved Windows Credential Manager authentication (akinfotechtn)
+    if (!pushSuccess) {
+      try {
+        execSync('git push origin main', {
+          cwd: repoRoot,
+          stdio: 'pipe',
+          env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never' }
+        });
+        pushSuccess = true;
+      } catch (originErr) {
+        // Retry with ecom remote
+        try {
+          execSync('git push ecom main', {
+            cwd: repoRoot,
+            stdio: 'pipe',
+            env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never' }
+          });
+          pushSuccess = true;
+        } catch (ecomErr) {
+          const detail = (ecomErr.stderr ? ecomErr.stderr.toString() : ecomErr.message) || (originErr.stderr ? originErr.stderr.toString() : originErr.message);
+          throw new Error(`Git push failed: ${detail}`);
+        }
+      }
+    }
 
     const msg = committed
       ? `✅ Committed & pushed to GitHub at ${timestamp}`
@@ -1705,10 +1743,6 @@ app.post('/api/deploy', (req, res) => {
     return res.json({ success: true, message: msg });
   } catch (err) {
     console.error('[deploy] Error:', err.message);
-    // Reset ecom remote to safe URL on error too
-    try {
-      execSync(`git remote set-url ecom https://github.com/akinfotechtn/ecom.git`, { cwd: path.join(__dirname, '..'), stdio: 'pipe' });
-    } catch (_) { }
     return res.status(500).json({ success: false, message: err.message });
   }
 });
