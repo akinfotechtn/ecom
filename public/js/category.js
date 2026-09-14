@@ -5,9 +5,11 @@ let categoryProducts = [];
 let filteredProducts = [];
 let allCategories = [];
 let allBrands = [];
+let allStoreProducts = [];
 let storeSettings = {};
 let appliedCoupon = null;
 let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
+let isAllCategoriesView = false;
 
 const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
@@ -21,9 +23,17 @@ function normalizeStr(str) {
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.staticCategoryData) {
     currentCategoryName = window.staticCategoryData.name;
+    isAllCategoriesView = false;
   } else {
     const urlParams = new URLSearchParams(window.location.search);
-    currentCategoryName = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category') || '';
+    const catParam = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category') || '';
+    if (!catParam || catParam.toLowerCase().trim() === 'all categories') {
+      currentCategoryName = 'All Categories';
+      isAllCategoriesView = true;
+    } else {
+      currentCategoryName = catParam;
+      isAllCategoriesView = false;
+    }
   }
 
   DbService.listenAuthState((user) => {
@@ -58,8 +68,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     allCategories = categories || [];
     allBrands = brands || [];
     storeSettings = settings || {};
+    allStoreProducts = prods || [];
 
-    if (currentCategoryName) {
+    // Ensure Combo Packs category is present
+    if (!allCategories.some(c => c.name && c.name.toLowerCase().includes('combo'))) {
+      allCategories.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/combo-packs.webp' });
+    }
+
+    if (isAllCategoriesView) {
+      categoryProducts = allStoreProducts;
+      filteredProducts = [];
+      renderAllCategoriesHero();
+      renderAllCategoriesDirectory(allCategories, allStoreProducts);
+    } else {
       const targetLower = currentCategoryName.toLowerCase().trim();
       const targetNorm = normalizeStr(currentCategoryName);
 
@@ -92,22 +113,21 @@ document.addEventListener('DOMContentLoaded', async () => {
           return rawTokens.every(token => text.includes(token));
         });
       }
-    } else {
-      categoryProducts = [...prods];
+
+      filteredProducts = [...categoryProducts];
+
+      renderCategoryHero();
+      renderCategoryBrandsSection();
+      renderCategoryCatalog();
     }
 
-    filteredProducts = [...categoryProducts];
-
-    renderCategoryHero();
-    renderCategoryBrandsSection();
-    renderCategoryCatalog();
     renderCart();
 
   } catch (err) {
     console.error('Error initializing Category page:', err);
     const grid = document.getElementById('categoryProductGrid');
     if (grid) {
-      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #ef4444;">Failed to load category products. Please try refreshing.</div>`;
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #ef4444;">Failed to load categories. Please try refreshing.</div>`;
     }
   }
 
@@ -115,20 +135,151 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.trim().toLowerCase();
-      if (!q) {
-        filteredProducts = [...categoryProducts];
+      if (isAllCategoriesView) {
+        if (!q) {
+          renderAllCategoriesDirectory(allCategories, allStoreProducts);
+        } else {
+          const filtered = allCategories.filter(c => (c.name || '').toLowerCase().includes(q));
+          renderAllCategoriesDirectory(filtered, allStoreProducts);
+        }
       } else {
-        filteredProducts = categoryProducts.filter(p => {
-          return (p.productName || '').toLowerCase().includes(q) ||
-            (p.brand || '').toLowerCase().includes(q) ||
-            (p.productSpec || '').toLowerCase().includes(q);
-        });
+        if (!q) {
+          filteredProducts = [...categoryProducts];
+        } else {
+          filteredProducts = categoryProducts.filter(p => {
+            return (p.productName || '').toLowerCase().includes(q) ||
+              (p.brand || '').toLowerCase().includes(q) ||
+              (p.productSpec || '').toLowerCase().includes(q);
+          });
+        }
+        currentPage = 1;
+        renderCategoryCatalog();
       }
-      currentPage = 1;
-      renderCategoryCatalog();
     });
   }
 });
+
+function getUniqueCategories(catList) {
+  const unique = [];
+  const seen = new Set();
+  for (const c of (catList || [])) {
+    if (!c || !c.name) continue;
+    const norm = c.name.trim().toLowerCase();
+    if (!seen.has(norm)) {
+      seen.add(norm);
+      unique.push(c);
+    }
+  }
+  return unique;
+}
+
+function renderAllCategoriesHero() {
+  const titleEl = document.getElementById('categoryPageTitle');
+  const breadcrumbEl = document.getElementById('breadcrumbCategoryName');
+  const heroLogo = document.getElementById('categoryHeroLogo');
+  const heroName = document.getElementById('categoryHeroName');
+  const heroSub = document.getElementById('categoryHeroSub');
+  const badgeEl = document.getElementById('categoryItemCountBadge');
+  const catalogTitle = document.getElementById('categoryCatalogTitle');
+  const backBtn = document.querySelector('.catalog-section .pill-btn');
+
+  if (titleEl) titleEl.textContent = `All Categories | AK Infotech Security Store`;
+  if (breadcrumbEl) breadcrumbEl.textContent = `All Categories`;
+  if (heroName) heroName.textContent = `Product Categories`;
+  if (heroSub) heroSub.textContent = `Explore Complete Range of CCTV Cameras, Recorders, Networking & Security Solutions`;
+  if (catalogTitle) catalogTitle.textContent = `Browse by Category`;
+  if (backBtn) {
+    backBtn.textContent = `← Store Catalog`;
+    backBtn.href = `${DbService.getLinkPrefix()}index.html`;
+  }
+
+  const unique = getUniqueCategories(allCategories);
+  if (badgeEl) {
+    badgeEl.textContent = `📂 ${unique.length} Categories Available`;
+  }
+
+  if (heroLogo) {
+    heroLogo.src = `${DbService.getLinkPrefix()}images/cctv-wholesale.webp`;
+    heroLogo.alt = `AK Infotech Categories`;
+  }
+
+  const brandsSection = document.getElementById('categoryBrandsSection');
+  if (brandsSection) brandsSection.style.display = 'none';
+
+  const paginationBar = document.getElementById('categoryPaginationBar');
+  if (paginationBar) paginationBar.style.display = 'none';
+
+  const searchInput = document.getElementById('categorySearchInput');
+  if (searchInput) {
+    searchInput.placeholder = `Search categories (e.g. WIFI CCTV, HD DVR, Smart Lock)...`;
+    searchInput.value = '';
+  }
+}
+
+function renderAllCategoriesDirectory(categoriesToRender, productsList) {
+  const grid = document.getElementById('categoryProductGrid');
+  const paginationBar = document.getElementById('categoryPaginationBar');
+  if (paginationBar) paginationBar.style.display = 'none';
+  if (!grid) return;
+
+  const unique = getUniqueCategories(categoriesToRender);
+  const prods = productsList || allStoreProducts;
+
+  if (!unique.length) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a;">No matching categories found</h3>
+        <p style="color: var(--text-muted); margin: 6px 0 16px;">Try searching with another category keyword or view all.</p>
+        <button onclick="resetCategorySearch()" class="pill-btn" style="cursor: pointer; background: var(--accent-cyan); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 700;">Show All Categories</button>
+      </div>`;
+    return;
+  }
+
+  // Calculate product count per category
+  const categoriesWithCount = unique.map(c => {
+    const cNorm = c.name.trim().toLowerCase();
+    let count = 0;
+    if (cNorm.includes('combo')) {
+      count = prods.filter(p => p.isCombo || (p.category || '').toLowerCase().includes('combo') || (p.productName || '').toLowerCase().includes('combo')).length;
+    } else {
+      count = prods.filter(p => {
+        if (!p.category) return false;
+        const pCat = p.category.toLowerCase().trim();
+        return pCat === cNorm || pCat.includes(cNorm);
+      }).length;
+    }
+    return { ...c, count };
+  });
+
+  // Sort categories by product count descending, then alphabetically
+  categoriesWithCount.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  grid.innerHTML = categoriesWithCount.map(c => {
+    let imgUrl = c.imageLink || 'images/cctv-wholesale.webp';
+    if (imgUrl && !imgUrl.startsWith('http') && !imgUrl.startsWith('data:')) {
+      imgUrl = DbService.getLinkPrefix() + imgUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
+    }
+    const slug = DbService.slugify(c.name);
+    const catPageUrl = `${DbService.getLinkPrefix()}categories/${slug}.html`;
+
+    return `
+      <a href="${catPageUrl}" class="directory-card" title="Explore ${escapeHtml(c.name)} Products">
+        <div class="directory-card-img-wrap">
+          <img src="${imgUrl}" alt="${escapeHtml(c.name)}" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/cctv-wholesale.webp'">
+        </div>
+        <h3 class="directory-card-title">${escapeHtml(c.name)}</h3>
+        <span class="directory-card-badge">📦 ${c.count} Products</span>
+        <span class="directory-card-cta">Explore Category →</span>
+      </a>
+    `;
+  }).join('');
+}
+
+window.resetCategorySearch = function () {
+  const searchInput = document.getElementById('categorySearchInput');
+  if (searchInput) searchInput.value = '';
+  renderAllCategoriesDirectory(allCategories, allStoreProducts);
+};
 
 function renderCategoryHero() {
   const titleEl = document.getElementById('categoryPageTitle');

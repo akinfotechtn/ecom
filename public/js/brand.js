@@ -5,13 +5,15 @@ let currentBrandName = '';
 let brandInfo = null;
 let brandProducts = [];
 let filteredProducts = [];
+let allStoreBrands = [];
+let allStoreProducts = [];
 let currentUser = null;
 let userAddresses = [];
 let cart = JSON.parse(localStorage.getItem('ak_cart') || '[]');
 let appliedCoupon = null;
 let selectedPaymentMethod = 'ONLINE';
-
 let allCategories = [];
+let isAllBrandsView = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderCart(); // Render cart instantly from localStorage
@@ -69,42 +71,165 @@ function parseBrandUrl() {
   if (window.staticBrandData) {
     brandInfo = window.staticBrandData;
     currentBrandName = brandInfo.name;
+    isAllBrandsView = false;
   } else {
     const params = new URLSearchParams(window.location.search);
-    currentBrandName = params.get('name') || params.get('brand') || '';
-    if (!currentBrandName) {
+    const name = params.get('name') || params.get('brand') || '';
+    if (!name || name.toLowerCase().trim() === 'all brands') {
       currentBrandName = 'All Brands';
+      isAllBrandsView = true;
+    } else {
+      currentBrandName = name;
+      isAllBrandsView = false;
     }
   }
 }
 
 async function loadBrandData() {
   try {
+    const [brands, allProds] = await Promise.all([
+      DbService.getBrands(),
+      DbService.getProducts()
+    ]);
+    allStoreBrands = brands || [];
+    allStoreProducts = allProds || [];
+
     if (window.staticBrandData) {
       brandInfo = window.staticBrandData;
       currentBrandName = brandInfo.name;
-    } else {
-      const brands = await DbService.getBrands();
-      brandInfo = brands.find(b => b.name?.toLowerCase() === currentBrandName.toLowerCase());
+      isAllBrandsView = false;
+    } else if (!isAllBrandsView) {
+      brandInfo = allStoreBrands.find(b => b.name?.toLowerCase().trim() === currentBrandName.toLowerCase().trim());
     }
 
-    const allProds = await DbService.getProducts();
-
-    if (currentBrandName.toLowerCase() === 'all brands' || !currentBrandName) {
-      brandProducts = allProds;
+    if (isAllBrandsView) {
+      brandProducts = allStoreProducts;
+      filteredProducts = [];
+      renderAllBrandsHero();
+      renderAllBrandsDirectory(allStoreBrands, allStoreProducts);
     } else {
-      brandProducts = allProds.filter(p => p.brand?.toLowerCase() === currentBrandName.toLowerCase());
+      brandProducts = allStoreProducts.filter(p => p.brand?.toLowerCase().trim() === currentBrandName.toLowerCase().trim());
+      filteredProducts = [...brandProducts];
+      renderBrandHero();
+      await renderBrandCategories();
+      renderBrandCatalog();
     }
-
-    filteredProducts = [...brandProducts];
-
-    renderBrandHero();
-    await renderBrandCategories();
-    renderBrandCatalog();
   } catch (err) {
     console.error('Error loading brand page:', err);
   }
 }
+
+function getUniqueBrands(brandsList) {
+  const unique = [];
+  const seen = new Set();
+  for (const b of (brandsList || [])) {
+    if (!b || !b.name) continue;
+    const norm = b.name.trim().toLowerCase();
+    if (!seen.has(norm)) {
+      seen.add(norm);
+      unique.push(b);
+    }
+  }
+  return unique;
+}
+
+function renderAllBrandsHero() {
+  const titleEl = document.getElementById('brandPageTitle');
+  const breadcrumbEl = document.getElementById('breadcrumbBrandName');
+  const heroLogo = document.getElementById('brandHeroLogo');
+  const heroName = document.getElementById('brandHeroName');
+  const heroSub = document.getElementById('brandHeroSub');
+  const badgeEl = document.getElementById('brandItemCountBadge');
+  const catalogTitle = document.getElementById('brandCatalogTitle');
+  const backBtn = document.querySelector('.catalog-section .pill-btn');
+
+  if (titleEl) titleEl.textContent = `All Brands | AK Infotech Security Store`;
+  if (breadcrumbEl) breadcrumbEl.textContent = `All Brands`;
+  if (heroName) heroName.textContent = `Official Brands`;
+  if (heroSub) heroSub.textContent = `Authorized Wholesale & Retail Partner for Top Security, CCTV & IT Brands`;
+  if (catalogTitle) catalogTitle.textContent = `Browse by Brand`;
+  if (backBtn) {
+    backBtn.textContent = `← Store Catalog`;
+    backBtn.href = `${DbService.getLinkPrefix()}index.html`;
+  }
+
+  const uniqueBrands = getUniqueBrands(allStoreBrands);
+  if (badgeEl) {
+    badgeEl.textContent = `🏷️ ${uniqueBrands.length} Brands Available`;
+  }
+
+  if (heroLogo) {
+    heroLogo.src = `${DbService.getLinkPrefix()}images/logo.webp`;
+    heroLogo.alt = `AK Infotech Brands`;
+  }
+
+  const catSection = document.getElementById('brandCategoriesSection');
+  if (catSection) catSection.style.display = 'none';
+
+  const paginationBar = document.getElementById('brandPaginationBar');
+  if (paginationBar) paginationBar.style.display = 'none';
+
+  const searchInput = document.getElementById('brandSearchInput');
+  if (searchInput) {
+    searchInput.placeholder = `Search brands (e.g. CP Plus, Hikvision, Dahua)...`;
+    searchInput.value = '';
+  }
+}
+
+function renderAllBrandsDirectory(brandsToRender, productsList) {
+  const grid = document.getElementById('brandProductGrid');
+  const paginationBar = document.getElementById('brandPaginationBar');
+  if (paginationBar) paginationBar.style.display = 'none';
+  if (!grid) return;
+
+  const unique = getUniqueBrands(brandsToRender);
+  const prods = productsList || allStoreProducts;
+
+  if (!unique.length) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a;">No matching brands found</h3>
+        <p style="color: var(--text-muted); margin: 6px 0 16px;">Try searching with another brand name or view all brands.</p>
+        <button onclick="resetBrandSearch()" class="pill-btn" style="cursor: pointer; background: var(--accent-cyan); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 700;">Show All Brands</button>
+      </div>`;
+    return;
+  }
+
+  // Sort brands with product count descending, then alphabetically
+  const brandsWithCount = unique.map(b => {
+    const bNorm = b.name.trim().toLowerCase();
+    const count = prods.filter(p => p.brand && p.brand.trim().toLowerCase() === bNorm).length;
+    return { ...b, count };
+  });
+
+  brandsWithCount.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  grid.innerHTML = brandsWithCount.map(b => {
+    let logoUrl = b.imageLink || 'images/logo.webp';
+    if (logoUrl && !logoUrl.startsWith('http') && !logoUrl.startsWith('data:')) {
+      logoUrl = DbService.getLinkPrefix() + logoUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');
+    }
+    const slug = DbService.slugify(b.name);
+    const brandPageUrl = `${DbService.getLinkPrefix()}brands/${slug}.html`;
+
+    return `
+      <a href="${brandPageUrl}" class="directory-card" title="Browse ${escapeHtml(b.name)} Products">
+        <div class="directory-card-img-wrap">
+          <img src="${logoUrl}" alt="${escapeHtml(b.name)} Logo" loading="lazy" onerror="this.src='${DbService.getLinkPrefix()}images/logo.webp'">
+        </div>
+        <h3 class="directory-card-title">${escapeHtml(b.name)}</h3>
+        <span class="directory-card-badge">📦 ${b.count} Products</span>
+        <span class="directory-card-cta">Explore Brand →</span>
+      </a>
+    `;
+  }).join('');
+}
+
+window.resetBrandSearch = function () {
+  const searchInput = document.getElementById('brandSearchInput');
+  if (searchInput) searchInput.value = '';
+  renderAllBrandsDirectory(allStoreBrands, allStoreProducts);
+};
 
 async function renderBrandCategories() {
   const section = document.getElementById('brandCategoriesSection');
@@ -687,16 +812,26 @@ function setupEventListeners() {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase().trim();
-      if (!q) {
-        filteredProducts = [...brandProducts];
+      if (isAllBrandsView) {
+        if (!q) {
+          renderAllBrandsDirectory(allStoreBrands, allStoreProducts);
+        } else {
+          const filtered = allStoreBrands.filter(b => (b.name || '').toLowerCase().includes(q));
+          renderAllBrandsDirectory(filtered, allStoreProducts);
+        }
       } else {
-        const tokens = q.split(/\s+/);
-        filteredProducts = brandProducts.filter(p => {
-          const text = `${p.productName} ${p.productSpec} ${p.category} ${p.price}`.toLowerCase();
-          return tokens.every(t => text.includes(t));
-        });
+        if (!q) {
+          filteredProducts = [...brandProducts];
+        } else {
+          const tokens = q.split(/\s+/);
+          filteredProducts = brandProducts.filter(p => {
+            const text = `${p.productName} ${p.productSpec} ${p.category} ${p.price}`.toLowerCase();
+            return tokens.every(t => text.includes(t));
+          });
+        }
+        currentPage = 1;
+        renderBrandCatalog();
       }
-      renderBrandCatalog();
     });
   }
 

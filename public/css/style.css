@@ -2176,3 +2176,91 @@ footer {
     margin-right: auto !important;
   }
 }
+
+/* ==========================================================================
+   BRAND & CATEGORY DIRECTORY GRID STYLING
+   ========================================================================== */
+.directory-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: var(--radius-md, 14px);
+  padding: 20px 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.directory-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -6px rgba(14, 165, 233, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--accent-cyan, #0ea5e9);
+}
+
+.directory-card-img-wrap {
+  width: 100%;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #f1f5f9;
+}
+
+.directory-card-img-wrap img {
+  max-width: 90%;
+  max-height: 76px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.directory-card:hover .directory-card-img-wrap img {
+  transform: scale(1.08);
+}
+
+.directory-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-dark, #0f172a);
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+
+.directory-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(14, 165, 233, 0.08);
+  color: var(--accent-cyan, #0284c7);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  margin-bottom: 10px;
+}
+
+.directory-card-cta {
+  margin-top: auto;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent-cyan, #0ea5e9);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.directory-card:hover .directory-card-cta {
+  color: #0284c7;
+  gap: 8px;
+}
+

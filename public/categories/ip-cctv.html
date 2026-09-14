@@ -20,6 +20,9 @@
       const name = urlParams.get('name') || urlParams.get('cat') || urlParams.get('category');
       const isDynamicPage = window.location.pathname.endsWith('category.html') || window.location.pathname.endsWith('category');
       if (name && isDynamicPage) {
+        if (name.toLowerCase().trim() === 'all categories') {
+          return;
+        }
         const slug = name.toString().toLowerCase().trim()
           .replace(/\s+/g, '-')
           .replace(/[^\w\-]+/g, '')
@@ -171,7 +174,7 @@
       <!-- SEARCH BOX -->
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="categorySearchInput" placeholder="Search within this category...">
+        <input type="text" id="categorySearchInput" placeholder="Search categories (e.g. WIFI CCTV, HD DVR, Smart Lock)...">
       </div>
 
       <!-- NAV ACTIONS -->
@@ -218,8 +221,8 @@
 
   <!-- BREADCRUMB -->
   <div class="breadcrumb-wrap">
-    <a href="../index.html">Home</a> &gt; <span>Categories</span> &gt; <strong id="breadcrumbCategoryName"
-      style="color: var(--text-dark);">Category</strong>
+    <a href="../index.html">Home</a> &gt; <strong id="breadcrumbCategoryName"
+      style="color: var(--text-dark);">All Categories</strong>
   </div>
 
   <!-- DYNAMIC CATEGORY HERO BANNER -->
@@ -233,7 +236,7 @@
       </div>
     </div>
     <div class="category-badge-pill" id="categoryItemCountBadge">
-      📦 0 Products Available
+      📂 Loading Categories...
     </div>
   </section>
 
@@ -253,17 +256,17 @@
   <main class="catalog-section">
     <div class="section-title-row" style="margin-bottom: 16px;">
       <h2 class="section-title">
-        <span class="title-badge">📂</span> <span id="categoryCatalogTitle">Category Catalog</span>
+        <span class="title-badge">📂</span> <span id="categoryCatalogTitle">Browse by Category</span>
       </h2>
       <a href="../index.html" class="pill-btn">
-        ← View All Categories
+        ← Store Catalog
       </a>
     </div>
 
     <!-- PRODUCTS GRID -->
     <div class="product-grid" id="categoryProductGrid">
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-        <span style="font-size: 1.5rem;">⏳</span> Loading category products...
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+        <span style="font-size: 1.5rem;">⏳</span> Loading categories directory...
       </div>
     </div>
 
