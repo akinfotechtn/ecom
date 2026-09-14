@@ -411,7 +411,22 @@ function generateStaticPages() {
       const brandDir = path.join(__dirname, '../public/brands');
       if (!fs.existsSync(brandDir)) fs.mkdirSync(brandDir, { recursive: true });
 
-      for (const b of brands) {
+      const allBrands = [...brands];
+      const seenBrandNames = new Set(brands.map(b => (b.name || '').toLowerCase().trim()));
+      for (const p of products) {
+        if (!p.brand) continue;
+        const bNorm = p.brand.toLowerCase().trim();
+        if (!seenBrandNames.has(bNorm)) {
+          seenBrandNames.add(bNorm);
+          allBrands.push({
+            id: `brand-${slugify(p.brand)}`,
+            name: p.brand.trim(),
+            imageLink: 'images/logo.webp'
+          });
+        }
+      }
+
+      for (const b of allBrands) {
         if (!b.name) continue;
         const slug = slugify(b.name);
         validBrandSlugs.add(slug);
@@ -466,8 +481,21 @@ function generateStaticPages() {
       if (!fs.existsSync(catDir)) fs.mkdirSync(catDir, { recursive: true });
 
       const allCats = [...categories];
-      if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
+      if (!allCats.some(c => c.name && c.name.toLowerCase().includes('combo'))) {
         allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/combo-packs.webp' });
+      }
+      const seenCatNames = new Set(allCats.map(c => (c.name || '').toLowerCase().trim()));
+      for (const p of products) {
+        if (!p.category) continue;
+        const cNorm = p.category.toLowerCase().trim();
+        if (!seenCatNames.has(cNorm)) {
+          seenCatNames.add(cNorm);
+          allCats.push({
+            id: `cat-${slugify(p.category)}`,
+            name: p.category.trim(),
+            imageLink: 'images/categories/cctv-wholesale.webp'
+          });
+        }
       }
 
       for (const c of allCats) {

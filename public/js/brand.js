@@ -119,7 +119,7 @@ async function loadBrandData() {
   }
 }
 
-function getUniqueBrands(brandsList) {
+function getUniqueBrands(brandsList, productsList = allStoreProducts) {
   const unique = [];
   const seen = new Set();
   for (const b of (brandsList || [])) {
@@ -128,6 +128,19 @@ function getUniqueBrands(brandsList) {
     if (!seen.has(norm)) {
       seen.add(norm);
       unique.push(b);
+    }
+  }
+  // Auto-discover any new brands from products that are not yet in brandsList
+  for (const p of (productsList || [])) {
+    if (!p || !p.brand) continue;
+    const norm = p.brand.trim().toLowerCase();
+    if (!seen.has(norm)) {
+      seen.add(norm);
+      unique.push({
+        id: 'brand-' + DbService.slugify(p.brand),
+        name: p.brand.trim(),
+        imageLink: 'images/logo.webp'
+      });
     }
   }
   return unique;

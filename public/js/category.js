@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-function getUniqueCategories(catList) {
+function getUniqueCategories(catList, productsList = allStoreProducts) {
   const unique = [];
   const seen = new Set();
   for (const c of (catList || [])) {
@@ -168,6 +168,19 @@ function getUniqueCategories(catList) {
     if (!seen.has(norm)) {
       seen.add(norm);
       unique.push(c);
+    }
+  }
+  // Auto-discover any new categories from products that are not yet in catList
+  for (const p of (productsList || [])) {
+    if (!p || !p.category) continue;
+    const norm = p.category.trim().toLowerCase();
+    if (!seen.has(norm)) {
+      seen.add(norm);
+      unique.push({
+        id: 'cat-' + DbService.slugify(p.category),
+        name: p.category.trim(),
+        imageLink: 'images/cctv-wholesale.webp'
+      });
     }
   }
   return unique;
