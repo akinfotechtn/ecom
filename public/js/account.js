@@ -206,7 +206,7 @@ window.openAddAddressModal = function() {
   document.getElementById('editAddressId').value = '';
   document.getElementById('addressModalTitle').textContent = 'Add Delivery Address';
   document.getElementById('addressForm').reset();
-  if (document.getElementById('addrState')) document.getElementById('addrState').value = 'Tamil Nadu';
+  if (document.getElementById('addrState')) document.getElementById('addrState').value = '';
   
   const addrPhoneInput = document.getElementById('addrPhone');
   if (addrPhoneInput) {
@@ -242,9 +242,9 @@ window.editAddress = function(id) {
   document.getElementById('addrPincode').value = addr.pincode || '';
 
   const city = addr.city || (addr.cityState ? addr.cityState.split(',')[0].trim() : '');
-  const state = addr.state || (addr.cityState ? addr.cityState.split(',')[1]?.trim() : 'Tamil Nadu');
+  const state = addr.state || (addr.cityState ? addr.cityState.split(',')[1]?.trim() : '');
   if (document.getElementById('addrCity')) document.getElementById('addrCity').value = city;
-  if (document.getElementById('addrState')) document.getElementById('addrState').value = state || 'Tamil Nadu';
+  if (document.getElementById('addrState')) document.getElementById('addrState').value = state || '';
   if (document.getElementById('addrCityState')) document.getElementById('addrCityState').value = (city && state) ? (city + ', ' + state) : (city || state || '');
 
   document.getElementById('addressModalBackdrop').classList.add('active');
@@ -278,7 +278,12 @@ async function handleAddressSubmit(e) {
   const fullPhone = phoneData.fullPhone || phoneData.cleanPhone;
   const street = document.getElementById('addrStreet').value.trim();
   const city = document.getElementById('addrCity')?.value?.trim() || '';
-  const state = document.getElementById('addrState')?.value?.trim() || 'Tamil Nadu';
+  const state = document.getElementById('addrState')?.value?.trim() || '';
+  if (!state) {
+    alert('Please select your State.');
+    document.getElementById('addrState')?.focus();
+    return;
+  }
   const pincode = document.getElementById('addrPincode').value.trim();
   const cityState = (city && state) ? (city + ', ' + state) : (city || state || '');
 

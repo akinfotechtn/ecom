@@ -902,7 +902,7 @@ async function handleCheckoutSubmit(e) {
   const custAddress = document.getElementById('custAddress')?.value?.trim() || '';
   const custPincode = document.getElementById('custPincode')?.value?.trim() || '';
   const custCity = document.getElementById('custCity')?.value?.trim() || '';
-  const custState = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
+  const custState = document.getElementById('custState')?.value?.trim() || '';
   const custCityState = (custCity && custState) ? (custCity + ', ' + custState) : (document.getElementById('custCityState')?.value?.trim() || '');
   const shouldSaveAddress = (document.getElementById('saveAddressToAccount') || document.getElementById('chkSaveAddress'))?.checked ?? false;
 
@@ -970,8 +970,8 @@ async function handleCheckoutSubmit(e) {
           userUid: currentUser ? currentUser.uid : null,
           address: custAddress,
           pincode: custPincode,
-          city: custCity || custCityState.split(',')[0]?.trim() || 'Chennai',
-          state: custState || custCityState.split(',')[1]?.trim() || 'Tamil Nadu',
+          city: custCity || (custCityState.includes(',') ? custCityState.split(',')[0]?.trim() : '') || '',
+          state: custState || (custCityState.includes(',') ? custCityState.split(',')[1]?.trim() : '') || '',
           cityState: custCityState,
           items: cart,
           paymentMethod: selectedPaymentMethod,
@@ -1296,9 +1296,9 @@ async function openCheckoutModal() {
           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = found.pincode || '';
           
           const cCity = found.city || (found.cityState ? found.cityState.split(',')[0].trim() : '');
-          const cState = found.state || (found.cityState ? found.cityState.split(',')[1]?.trim() : 'Tamil Nadu');
+          const cState = found.state || (found.cityState ? found.cityState.split(',')[1]?.trim() : '');
           if (document.getElementById('custCity')) document.getElementById('custCity').value = cCity;
-          if (document.getElementById('custState')) document.getElementById('custState').value = cState || 'Tamil Nadu';
+          if (document.getElementById('custState')) document.getElementById('custState').value = cState || '';
           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = (cCity && cState) ? (cCity + ', ' + cState) : (cCity || cState || '');
         } else {
           if (document.getElementById('custName')) document.getElementById('custName').value = '';
@@ -1310,7 +1310,7 @@ async function openCheckoutModal() {
           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
           if (document.getElementById('custCity')) document.getElementById('custCity').value = '';
-          if (document.getElementById('custState')) document.getElementById('custState').value = 'Tamil Nadu';
+          if (document.getElementById('custState')) document.getElementById('custState').value = '';
           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
         }
       };

@@ -495,7 +495,8 @@
               <div class="co-form-group">
                 <label>State *</label>
                 <select id="custState" required style="width:100%; padding:10px 12px; border:1.5px solid var(--border-color); border-radius:8px; font-size:0.9rem; font-weight:600; background:#fff; outline:none; height:44px;">
-                  <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                  <option value="" disabled selected>-- Select State --</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
                   <option value="Andhra Pradesh">Andhra Pradesh</option>
                   <option value="Karnataka">Karnataka</option>
                   <option value="Kerala">Kerala</option>
@@ -776,9 +777,9 @@
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = a.street || a.address || '';
                           
                           var cCity = a.city || (a.cityState ? a.cityState.split(',')[0].trim() : '');
-                          var cState = a.state || (a.cityState ? a.cityState.split(',')[1]?.trim() : 'Tamil Nadu');
+                          var cState = a.state || (a.cityState ? a.cityState.split(',')[1]?.trim() : '');
                           if (document.getElementById('custCity')) document.getElementById('custCity').value = cCity;
-                          if (document.getElementById('custState')) document.getElementById('custState').value = cState || 'Tamil Nadu';
+                          if (document.getElementById('custState')) document.getElementById('custState').value = cState || '';
                           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = (cCity && cState) ? (cCity + ', ' + cState) : (cCity || cState || '');
                         } else {
                           // Clear all address-related fields for fresh entry
@@ -794,7 +795,7 @@
                           if (document.getElementById('custAddress')) document.getElementById('custAddress').value = '';
                           if (document.getElementById('custPincode')) document.getElementById('custPincode').value = '';
                           if (document.getElementById('custCity')) document.getElementById('custCity').value = '';
-                          if (document.getElementById('custState')) document.getElementById('custState').value = 'Tamil Nadu';
+                          if (document.getElementById('custState')) document.getElementById('custState').value = '';
                           if (document.getElementById('custCityState')) document.getElementById('custCityState').value = '';
                           if (document.getElementById('chkSaveAddress')) document.getElementById('chkSaveAddress').checked = true;
                         }
@@ -825,7 +826,7 @@
         var fullPhone = phoneData.fullPhone || (cleanPhone ? (cc + ' ' + cleanPhone) : '');
 
         var city = document.getElementById('custCity')?.value?.trim() || '';
-        var state = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
+        var state = document.getElementById('custState')?.value?.trim() || '';
         var cityState = (city && state) ? (city + ', ' + state) : (city || state || '');
         var cityStateEl = document.getElementById('custCityState');
         if (cityStateEl) cityStateEl.value = cityState;
@@ -994,7 +995,7 @@
       const custAddress = addrEl?.value?.trim() || '';
       const custPincode = pinEl?.value?.trim() || '';
       const custCity = cityEl?.value?.trim() || '';
-      const custState = stateEl?.value?.trim() || 'Tamil Nadu';
+      const custState = stateEl?.value?.trim() || '';
       const custCityState = (custCity && custState) ? (custCity + ', ' + custState) : (custCity || custState);
       const hiddenCityState = document.getElementById('custCityState');
       if (hiddenCityState) hiddenCityState.value = custCityState;
@@ -1150,8 +1151,8 @@
       const custEmail = document.getElementById('custEmail').value.trim();
       const custAddress = document.getElementById('custAddress').value.trim();
       const custPincode = document.getElementById('custPincode').value.trim();
-      const custCity = document.getElementById('custCity')?.value?.trim() || 'Chennai';
-      const custState = document.getElementById('custState')?.value?.trim() || 'Tamil Nadu';
+      const custCity = document.getElementById('custCity')?.value?.trim() || '';
+      const custState = document.getElementById('custState')?.value?.trim() || '';
       const custCityState = (custCity && custState) ? (custCity + ', ' + custState) : (custCity || custState);
 
       // Ensure fresh settings with LIVE Razorpay Key
