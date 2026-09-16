@@ -145,7 +145,7 @@ async function loadUserOrders(uid) {
         <div style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
           <div style="font-size: 2.5rem; margin-bottom: 8px;">📦</div>
           No orders placed yet.<br>
-          <a href="index.html" class="hero-btn" style="margin-top: 14px; display: inline-block;">Browse Catalog</a>
+          <a href="/" class="hero-btn" style="margin-top: 14px; display: inline-block;">Browse Catalog</a>
         </div>`;
       return;
     }

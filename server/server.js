@@ -124,7 +124,10 @@ function adjustPaths(html) {
     .replace(/src="images\//g, 'src="../images/')
     .replace(/href="images\//g, 'href="../images/')
     .replace(/this\.src='images\//g, "this.src='../images/")
-    .replace(/href="index\.html/g, 'href="../index.html')
+    .replace(/href="index\.html"/g, 'href="/"')
+    .replace(/href="index\.html\b/g, 'href="/"')
+    .replace(/href="\.\.\/index\.html"/g, 'href="/"')
+    .replace(/href="sitemap\.html"/g, 'href="../sitemap.html"')
     .replace(/href="account\.html/g, 'href="../account.html')
     .replace(/href="admin\.html/g, 'href="../admin.html')
     .replace(/href="checkout\.html/g, 'href="../checkout.html')
@@ -386,12 +389,42 @@ function generateStaticPages() {
         // Pre-render Crawler SSR Fallback elements inside detail-grid
         html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
         html = html.replace(/id="fallbackProductTitle"[\s\S]*?<\/h1>/, `id="fallbackProductTitle" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(p.productName)}</h1>`);
-        html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge">${escapeHtml(brandName)}</span>`);
-        html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;">${escapeHtml(categoryName)}</span>`);
+        html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge"><a href="../brands/${slugify(brandName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(brandName)}</a></span>`);
+        html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(categoryName)}</a></span>`);
         html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice" style="font-size: 1.8rem;">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
         html = html.replace(/id="fallbackProductSpec".*?>[\s\S]*?<\/div>/, `id="fallbackProductSpec" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(p.productSpec || prodDesc)}</div>`);
-        html = html.replace(/id="bcCategory">.*?<\/span>/, `id="bcCategory">${escapeHtml(categoryName)}</span>`);
+        html = html.replace(/id="bcCategory">.*?<\/span>/, `id="bcCategory"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:underline;">${escapeHtml(categoryName)}</a></span>`);
         html = html.replace(/id="bcName">.*?<\/span>/, `id="bcName">${escapeHtml(p.productName)}</span>`);
+
+        // Pre-render 4-6 related products from same category or brand
+        const related = products.filter(item => item.productName !== p.productName && (
+          (item.category && item.category.toLowerCase().trim() === categoryName.toLowerCase().trim()) ||
+          (item.brand && item.brand.toLowerCase().trim() === brandName.toLowerCase().trim())
+        )).slice(0, 6);
+
+        if (related.length > 0) {
+          const relatedCards = related.map(rp => {
+            const rSlug = slugify(rp.productName);
+            const rImg = rp.photoLink && (rp.photoLink.startsWith('http') || rp.photoLink.startsWith('data:'))
+              ? rp.photoLink
+              : `../${(rp.photoLink || 'images/cctv-wholesale.webp').replace(/^\/+/, '').replace(/^\.\.\//, '')}`;
+            const rBasePrice = Number(rp.sellingPrice || 0);
+            const rGst = (rp.gstPercent !== undefined && rp.gstPercent !== null && rp.gstPercent !== '') ? Number(rp.gstPercent) : 18;
+            const rPrice = rBasePrice + Math.round((rBasePrice * rGst) / 100);
+            return `
+              <div class="product-card">
+                <a href="../product/${rSlug}.html" class="product-image-wrap">
+                  <img src="${escapeHtml(rImg)}" alt="${escapeHtml(rp.productName)}" loading="lazy" onerror="this.src='../images/cctv-wholesale.webp'">
+                  <span class="brand-badge">${escapeHtml(rp.brand || 'AK Infotech')}</span>
+                </a>
+                <div class="product-info" style="padding: 12px;">
+                  <h3 class="product-name" style="font-size: 0.9rem;"><a href="../product/${rSlug}.html" style="color: var(--text-dark); text-decoration: none;">${escapeHtml(rp.productName)}</a></h3>
+                  <div class="product-price" style="font-weight: 800; color: var(--accent-cyan); margin-top: 6px;">₹${rPrice.toLocaleString('en-IN')}</div>
+                </div>
+              </div>`;
+          }).join('\n');
+          html = html.replace(/<div class="product-grid" id="relatedProductsGrid"><\/div>/, `<div class="product-grid" id="relatedProductsGrid">${relatedCards}</div>`);
+        }
 
         html = adjustPaths(html);
 
@@ -458,8 +491,36 @@ function generateStaticPages() {
         html = html.replace(/<p class="brand-hero-sub" id="brandHeroSub">.*?<\/p>/, `<p class="brand-hero-sub" id="brandHeroSub">Authorized Wholesale & Retail ${escapeHtml(b.name)} Security Equipment</p>`);
         html = html.replace(/<strong id="breadcrumbBrandName".*?>.*?<\/strong>/, `<strong id="breadcrumbBrandName" style="color: var(--text-dark);">${escapeHtml(b.name)}</strong>`);
         if (b.imageLink) {
-          const imgClean = b.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '');
-          html = html.replace(/<img id="brandHeroLogo" src=".*?" alt=".*?"/g, `<img id="brandHeroLogo" src="../${imgClean}" alt="${escapeHtml(b.name)} Logo"`);
+          const isExt = /^https?:\/\//i.test(b.imageLink) || b.imageLink.startsWith('//') || b.imageLink.startsWith('data:');
+          const imgClean = isExt ? b.imageLink : `../${b.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '')}`;
+          html = html.replace(/<img id="brandHeroLogo" src=".*?" alt=".*?"/g, `<img id="brandHeroLogo" src="${escapeHtml(imgClean)}" alt="${escapeHtml(b.name)} Logo"`);
+        }
+
+        // Pre-render static crawlable product cards for this brand
+        const bNameLower = (b.name || '').toLowerCase().trim();
+        const bProducts = products.filter(p => (p.brand || '').toLowerCase().trim() === bNameLower);
+        if (bProducts.length > 0) {
+          const bCards = bProducts.map(p => {
+            const pSlug = slugify(p.productName);
+            const pImg = p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:'))
+              ? p.photoLink
+              : `../${(p.photoLink || 'images/cctv-wholesale.webp').replace(/^\/+/, '').replace(/^\.\.\//, '')}`;
+            const basePrice = Number(p.sellingPrice || 0);
+            const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
+            const pPrice = basePrice + Math.round((basePrice * gstRate) / 100);
+            return `
+              <div class="product-card">
+                <a href="../product/${pSlug}.html" class="product-image-wrap">
+                  <img src="${escapeHtml(pImg)}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='../images/cctv-wholesale.webp'">
+                  <span class="brand-badge">${escapeHtml(p.brand || b.name)}</span>
+                </a>
+                <div class="product-info" style="padding: 12px;">
+                  <h3 class="product-name" style="font-size: 0.9rem;"><a href="../product/${pSlug}.html" style="color: var(--text-dark); text-decoration: none;">${escapeHtml(p.productName)}</a></h3>
+                  <div class="product-price" style="font-weight: 800; color: var(--accent-cyan); margin-top: 6px;">₹${pPrice.toLocaleString('en-IN')}</div>
+                </div>
+              </div>`;
+          }).join('\n');
+          html = html.replace(/<div class="product-grid" id="brandProductGrid">[\s\S]*?<\/div>\s*<\/div>/, `<div class="product-grid" id="brandProductGrid">${bCards}</div>`);
         }
 
         html = adjustPaths(html);
@@ -530,8 +591,45 @@ function generateStaticPages() {
         html = html.replace(/<p class="category-hero-sub" id="categoryHeroSub">.*?<\/p>/, `<p class="category-hero-sub" id="categoryHeroSub">Explore top wholesale & retail ${escapeHtml(c.name)} security equipment</p>`);
         html = html.replace(/<strong id="breadcrumbCategoryName".*?>.*?<\/strong>/, `<strong id="breadcrumbCategoryName" style="color: var(--text-dark);">${escapeHtml(c.name)}</strong>`);
         if (c.imageLink) {
-          const imgClean = c.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '');
-          html = html.replace(/<img id="categoryHeroLogo" src=".*?" alt=".*?"/g, `<img id="categoryHeroLogo" src="../${imgClean}" alt="${escapeHtml(c.name)} Icon"`);
+          const isExt = /^https?:\/\//i.test(c.imageLink) || c.imageLink.startsWith('//') || c.imageLink.startsWith('data:');
+          const imgClean = isExt ? c.imageLink : `../${c.imageLink.replace(/^\/+/, '').replace(/^\.\.\//, '')}`;
+          html = html.replace(/<img id="categoryHeroLogo" src=".*?" alt=".*?"/g, `<img id="categoryHeroLogo" src="${escapeHtml(imgClean)}" alt="${escapeHtml(c.name)} Icon"`);
+        }
+
+        // Pre-render static crawlable product cards for this category
+        const cNameLower = (c.name || '').toLowerCase().trim();
+        const isCombo = cNameLower.includes('combo');
+        const cProducts = isCombo
+          ? products.filter(p => p.isCombo || (p.category || '').toLowerCase().includes('combo') || (p.productName || '').toLowerCase().includes('combo'))
+          : products.filter(p => {
+              if (!p.category) return false;
+              const pCat = p.category.toLowerCase().trim();
+              return pCat === cNameLower || pCat.includes(cNameLower) || cNameLower.includes(pCat);
+            });
+
+        if (cProducts.length > 0) {
+          const cCards = cProducts.map(p => {
+            const pSlug = slugify(p.productName);
+            const pImg = p.photoLink && (p.photoLink.startsWith('http') || p.photoLink.startsWith('data:'))
+              ? p.photoLink
+              : `../${(p.photoLink || 'images/cctv-wholesale.webp').replace(/^\/+/, '').replace(/^\.\.\//, '')}`;
+            const basePrice = Number(p.sellingPrice || 0);
+            const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
+            const pPrice = basePrice + Math.round((basePrice * gstRate) / 100);
+            return `
+              <div class="product-card">
+                <a href="../product/${pSlug}.html" class="product-image-wrap">
+                  <img src="${escapeHtml(pImg)}" alt="${escapeHtml(p.productName)}" loading="lazy" onerror="this.src='../images/cctv-wholesale.webp'">
+                  <span class="brand-badge">${escapeHtml(p.brand || 'AK Infotech')}</span>
+                  ${p.isCombo ? `<span class="combo-badge">🔥 COMBO</span>` : ''}
+                </a>
+                <div class="product-info" style="padding: 12px;">
+                  <h3 class="product-name" style="font-size: 0.9rem;"><a href="../product/${pSlug}.html" style="color: var(--text-dark); text-decoration: none;">${escapeHtml(p.productName)}</a></h3>
+                  <div class="product-price" style="font-weight: 800; color: var(--accent-cyan); margin-top: 6px;">₹${pPrice.toLocaleString('en-IN')}</div>
+                </div>
+              </div>`;
+          }).join('\n');
+          html = html.replace(/<div class="product-grid" id="categoryProductGrid">[\s\S]*?<\/div>\s*<\/div>/, `<div class="product-grid" id="categoryProductGrid">${cCards}</div>`);
         }
 
         html = adjustPaths(html);
@@ -547,12 +645,189 @@ function generateStaticPages() {
     // 4. Clean only deleted/orphaned files
     const deletedCount = cleanOrphanedStaticPages(validProductSlugs, validBrandSlugs, validCatSlugs);
 
-    // 5. Generate sitemap.xml and robots.txt incrementally
+    // 5. Generate complete HTML Sitemap & Directory
+    generateHtmlSitemap(products, brands, categories);
+
+    // 6. Generate sitemap.xml and robots.txt incrementally
     generateSitemapAndRobots(products, brands, categories);
 
     console.log(`[SSG-Delta] Static Pages -> Products: ${writtenProducts} modified, ${skippedProducts} unchanged | Brands: ${writtenBrands} modified | Categories: ${writtenCats} modified | Deleted: ${deletedCount}`);
   } catch (err) {
     console.error('[SSG] Generation error:', err.message);
+  }
+}
+
+function generateHtmlSitemap(products, brands, categories) {
+  try {
+    const settings = readJson(SETTINGS_FILE, {});
+    const siteUrl = (settings.baseUrl || 'https://shop.akinfotechcctv.in').replace(/\/$/, '');
+    const sitemapPath = path.join(__dirname, '../public/sitemap.html');
+
+    // Group products by category
+    const catMap = new Map();
+    for (const c of categories) {
+      if (c.name) catMap.set(c.name.trim(), []);
+    }
+    if (!catMap.has('Combo Packs')) {
+      catMap.set('Combo Packs', []);
+    }
+
+    const unassigned = [];
+    for (const p of products) {
+      if (!p.productName) continue;
+      if (p.isCombo || (p.category && p.category.toLowerCase().includes('combo'))) {
+        if (!catMap.has('Combo Packs')) catMap.set('Combo Packs', []);
+        catMap.get('Combo Packs').push(p);
+      } else if (p.category && catMap.has(p.category.trim())) {
+        catMap.get(p.category.trim()).push(p);
+      } else if (p.category) {
+        let found = false;
+        for (const [key, list] of catMap.entries()) {
+          if (key.toLowerCase() === p.category.toLowerCase().trim()) {
+            list.push(p);
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          catMap.set(p.category.trim(), [p]);
+        }
+      } else {
+        unassigned.push(p);
+      }
+    }
+    if (unassigned.length > 0) {
+      catMap.set('General Security Products', unassigned);
+    }
+
+    let catNavHtml = '';
+    for (const [catName, prodList] of catMap.entries()) {
+      const slug = slugify(catName);
+      catNavHtml += `<li><a href="categories/${slug}.html"><strong>${escapeHtml(catName)}</strong> <span style="color:#64748b;">(${prodList.length})</span></a></li>\n`;
+    }
+
+    let brandNavHtml = '';
+    for (const b of brands) {
+      if (!b.name) continue;
+      const bSlug = slugify(b.name);
+      const bCount = products.filter(p => (p.brand || '').toLowerCase().trim() === b.name.toLowerCase().trim()).length;
+      brandNavHtml += `<li><a href="brands/${bSlug}.html"><strong>${escapeHtml(b.name)}</strong> <span style="color:#64748b;">(${bCount})</span></a></li>\n`;
+    }
+
+    let prodSectionsHtml = '';
+    for (const [catName, prodList] of catMap.entries()) {
+      if (prodList.length === 0) continue;
+      const slug = slugify(catName);
+      prodSectionsHtml += `
+      <section style="margin-bottom: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 16px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span>📂 <a href="categories/${slug}.html" style="color: #0f172a; text-decoration: none;">${escapeHtml(catName)}</a></span>
+          <a href="categories/${slug}.html" style="font-size: 0.82rem; color: #0284c7; text-decoration: none; font-weight: 700;">View Category Page →</a>
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; list-style: none; padding: 0; margin: 0;">
+          ${prodList.map(p => {
+            const pSlug = slugify(p.productName);
+            const basePrice = Number(p.sellingPrice || 0);
+            const gstRate = (p.gstPercent !== undefined && p.gstPercent !== null && p.gstPercent !== '') ? Number(p.gstPercent) : 18;
+            const price = basePrice + Math.round((basePrice * gstRate) / 100);
+            return `<li style="padding: 6px 0; border-bottom: 1px solid #f8fafc; font-size: 0.88rem; line-height: 1.4;">
+              <a href="product/${pSlug}.html" style="color: #1e293b; text-decoration: none; font-weight: 600;">${escapeHtml(p.productName)}</a>
+              <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">${escapeHtml(p.brand || 'AK Infotech')} · <strong style="color: #059669;">₹${price.toLocaleString('en-IN')}</strong></div>
+            </li>`;
+          }).join('\n')}
+        </ul>
+      </section>`;
+    }
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete CCTV & Security Products Catalog Directory | AK Infotech</title>
+  <meta name="description" content="Complete directory and HTML sitemap of all 915+ CCTV cameras, DVR/NVR recorders, biometric devices, PoE switches, and cables available at AK Infotech Chennai.">
+  <link rel="canonical" href="${siteUrl}/sitemap.html">
+  <link rel="icon" type="image/webp" href="images/logo.webp">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sitemap-container { max-width: 1200px; margin: 20px auto 60px; padding: 0 20px; }
+    .sitemap-grid-nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; list-style: none; padding: 0; margin: 0; }
+    .sitemap-grid-nav li a { display: block; padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; color: #1e293b; text-decoration: none; font-size: 0.85rem; transition: all 0.2s; }
+    .sitemap-grid-nav li a:hover { background: #e0f2fe; border-color: #0284c7; color: #0284c7; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="images/logo.webp" alt="AK Infotech" class="logo-img">
+        <div class="logo-text">
+          <span class="logo-title">AK INFOTECH</span>
+          <span class="logo-sub">Wholesale CCTV & IT Hub</span>
+        </div>
+      </a>
+      <div class="header-actions">
+        <a href="/" class="nav-btn" style="text-decoration: none; font-weight: 700;">🏠 Store Home</a>
+        <a href="contact.html" class="nav-btn" style="text-decoration: none;">📞 Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN SITEMAP CONTENT -->
+  <main class="sitemap-container">
+    <nav class="breadcrumb" style="margin-bottom: 20px;">
+      <a href="/">Home</a> &gt; <span>HTML Sitemap & Complete Catalog</span>
+    </nav>
+
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 32px 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+      <h1 style="font-size: 2rem; font-weight: 900; margin: 0 0 10px 0; color: #ffffff;">Complete Security Equipment Catalog & Sitemap</h1>
+      <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin: 0; max-width: 800px;">
+        Browse our complete inventory of ${products.length}+ CCTV surveillance cameras, DVRs, NVRs, biometric attendance machines, smart door locks, cables, and accessories. Fast dispatch across India via Shiprocket with Cash on Delivery (COD).
+      </p>
+    </div>
+
+    <!-- 1. CATEGORIES DIRECTORY -->
+    <section style="margin-bottom: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px;">
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 16px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+        📂 Browse by Category (${catMap.size} Categories)
+      </h2>
+      <ul class="sitemap-grid-nav">
+        ${catNavHtml}
+      </ul>
+    </section>
+
+    <!-- 2. BRANDS DIRECTORY -->
+    <section style="margin-bottom: 32px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px;">
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0 0 16px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+        🏷️ Browse by Brand (${brands.length} Brands)
+      </h2>
+      <ul class="sitemap-grid-nav">
+        ${brandNavHtml}
+      </ul>
+    </section>
+
+    <!-- 3. ALL PRODUCTS BY CATEGORY -->
+    <div style="margin-top: 40px;">
+      <h2 style="font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-bottom: 20px;">📦 Complete Products Directory (${products.length} Products)</h2>
+      ${prodSectionsHtml}
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" style="background: #0f172a; color: #94a3b8; padding: 40px 20px 80px; margin-top: 50px; border-top: 1px solid #1e293b;">
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+      <p style="margin-bottom: 12px;"><a href="/" style="color: #38bdf8; text-decoration: none; font-weight: 700;">🏠 Home</a> · <a href="contact.html" style="color: #cbd5e1; text-decoration: none;">Contact</a> · <a href="privacy.html" style="color: #cbd5e1; text-decoration: none;">Privacy Policy</a> · <a href="terms.html" style="color: #cbd5e1; text-decoration: none;">Terms of Service</a> · <a href="refund.html" style="color: #cbd5e1; text-decoration: none;">Refund Policy</a></p>
+      <p style="font-size: 0.82rem; color: #64748b;">&copy; 2026 AK Infotech. Authorized Wholesale Security Equipment Hub, Mount Road, Chennai - 600002.</p>
+    </div>
+  </footer>
+</body>
+</html>`;
+
+    writeIfChanged(sitemapPath, html);
+    console.log('[SSG] HTML Sitemap generated at public/sitemap.html');
+  } catch (err) {
+    console.error('[SSG] HTML Sitemap generation error:', err.message);
   }
 }
 
@@ -570,6 +845,7 @@ function generateSitemapAndRobots(products, brands, categories) {
     // 1. Root / Core pages (Excluded: cart, checkout, account, order-success, product.html for crawl budget efficiency)
     const corePages = [
       '', // Root Homepage https://shop.akinfotechcctv.in/
+      'sitemap.html',
       'contact.html',
       'privacy.html',
       'terms.html',
@@ -637,12 +913,13 @@ function generateSitemapAndRobots(products, brands, categories) {
     robots += `Disallow: /cart.html\n`;
     robots += `Disallow: /checkout.html\n`;
     robots += `Disallow: /order-success.html\n`;
-    robots += `Disallow: /account.html\n\n`;
+    robots += `Disallow: /account.html\n`;
+    robots += `Disallow: /product.html\n\n`;
 
     // AI & Search Crawlers (Generative Engine Optimization - GEO)
-    robots += `User-agent: GPTBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /cart.html\nDisallow: /checkout.html\n\n`;
-    robots += `User-agent: PerplexityBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
-    robots += `User-agent: ClaudeBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
+    robots += `User-agent: GPTBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /cart.html\nDisallow: /checkout.html\nDisallow: /product.html\n\n`;
+    robots += `User-agent: PerplexityBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /product.html\n\n`;
+    robots += `User-agent: ClaudeBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /product.html\n\n`;
     robots += `User-agent: Google-Extended\nAllow: /\n\n`;
 
     robots += `Sitemap: ${siteUrl}/sitemap.xml\n`;

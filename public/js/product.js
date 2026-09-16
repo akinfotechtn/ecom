@@ -61,7 +61,7 @@ async function loadProductDetail(idOrProduct) {
       <div style="text-align:center; padding: 60px 20px;">
         <h2>Product Not Found</h2>
         <p style="color:var(--text-muted); margin-top:8px;">The requested security product could not be located.</p>
-        <a href="index.html" class="hero-btn" style="margin-top:16px; display:inline-block;">Return to Catalog</a>
+        <a href="/" class="hero-btn" style="margin-top:16px; display:inline-block;">Return to Catalog</a>
       </div>`;
     return;
   }

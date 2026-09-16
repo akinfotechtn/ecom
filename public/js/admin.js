@@ -1396,7 +1396,8 @@ async function generateDynamicSitemap() {
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
     // Static pages
-    xml += `  <url><loc>${baseUrl}/index.html</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
+    xml += `  <url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
+    xml += `  <url><loc>${baseUrl}/sitemap.html</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>\n`;
     xml += `  <url><loc>${baseUrl}/account.html</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
 
     // Dynamic brand pages
@@ -1767,10 +1768,18 @@ window.exportDynamicSitemap = async function () {
 
     // Homepage
     xmlLines.push('  <url>');
-    xmlLines.push(`    <loc>${baseUrl}/index.html</loc>`);
+    xmlLines.push(`    <loc>${baseUrl}/</loc>`);
     xmlLines.push(`    <lastmod>${today}</lastmod>`);
     xmlLines.push('    <changefreq>daily</changefreq>');
     xmlLines.push('    <priority>1.0</priority>');
+    xmlLines.push('  </url>');
+
+    // HTML Sitemap
+    xmlLines.push('  <url>');
+    xmlLines.push(`    <loc>${baseUrl}/sitemap.html</loc>`);
+    xmlLines.push(`    <lastmod>${today}</lastmod>`);
+    xmlLines.push('    <changefreq>daily</changefreq>');
+    xmlLines.push('    <priority>0.8</priority>');
     xmlLines.push('  </url>');
 
     // Account Page

@@ -94,7 +94,7 @@ function renderCartItems(containerId, editable) {
             '<div style="font-size: 4rem; margin-bottom: 16px; opacity:0.4;">🛒</div>' +
             '<div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Your cart is empty</div>' +
             '<div style="font-size: 0.9rem; margin-bottom: 24px;">Looks like you haven\'t added anything yet!</div>' +
-            '<a href="index.html" style="display:inline-block; background:var(--accent-cyan); color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.95rem;">Browse Products</a>' +
+            '<a href="/" style="display:inline-block; background:var(--accent-cyan); color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.95rem;">Browse Products</a>' +
             '</div>';
         renderSummary();
         return;

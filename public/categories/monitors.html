@@ -166,7 +166,7 @@
   <!-- MAIN HEADER / NAVBAR -->
   <nav class="navbar">
     <div class="navbar-container">
-      <a href="../index.html" class="logo">
+      <a href="/" class="logo">
         <img src="../images/logo.webp" alt="AK Infotech Logo" class="logo-img">
         <span>AK INFOTECH</span>
       </a>
@@ -187,10 +187,13 @@
           </button>
           <div id="desktopNavMenu"
             style="display: none; position: absolute; right: 0; top: 46px; background: #ffffff; min-width: 200px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); border-radius: var(--radius-md); z-index: 10000; overflow: hidden; text-align: left;">
-            <a href="../index.html"
+            <a href="/"
               style="display: block; padding: 12px 16px; color: var(--text-dark); text-decoration: none; font-weight: 700; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
               onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">🏠 Home /
               Catalog</a>
+            <a href="../sitemap.html"
+              style="display: block; padding: 10px 16px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
+              onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">🗺️ HTML Sitemap</a>
             <a href="../account.html"
               style="display: block; padding: 12px 16px; color: var(--text-dark); text-decoration: none; font-weight: 700; border-bottom: 1px solid var(--border-color); transition: background 0.2s;"
               onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">👤 My Account /
@@ -221,7 +224,7 @@
 
   <!-- BREADCRUMB -->
   <div class="breadcrumb-wrap">
-    <a href="../index.html">Home</a> &gt; <strong id="breadcrumbCategoryName"
+    <a href="/">Home</a> &gt; <strong id="breadcrumbCategoryName"
       style="color: var(--text-dark);">All Categories</strong>
   </div>
 
@@ -268,7 +271,7 @@
             <option value="alpha_desc">🔤 Name (Z to A)</option>
           </select>
         </div>
-        <a href="../index.html" class="pill-btn">
+        <a href="/" class="pill-btn">
           ← Store Catalog
         </a>
       </div>
@@ -276,10 +279,29 @@
 
     <!-- PRODUCTS GRID -->
     <div class="product-grid" id="categoryProductGrid">
-      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
-        <span style="font-size: 1.5rem;">⏳</span> Loading categories directory...
-      </div>
-    </div>
+              <div class="product-card">
+                <a href="../product/hikvision-215-fhd-monitor-ds-d5022qe-f.html" class="product-image-wrap">
+                  <img src="../images/products/hikvision-215-fhd-monitor-ds-d5022qe-f.webp" alt="Hikvision 21.5\&quot; FHD Monitor DS-D5022QE-F" loading="lazy" onerror="this.src='../images/cctv-wholesale.webp'">
+                  <span class="brand-badge">Hikvision</span>
+                  
+                </a>
+                <div class="product-info" style="padding: 12px;">
+                  <h3 class="product-name" style="font-size: 0.9rem;"><a href="../product/hikvision-215-fhd-monitor-ds-d5022qe-f.html" style="color: var(--text-dark); text-decoration: none;">Hikvision 21.5\&quot; FHD Monitor DS-D5022QE-F</a></h3>
+                  <div class="product-price" style="font-weight: 800; color: var(--accent-cyan); margin-top: 6px;">₹5,676</div>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <a href="../product/krystaa-20-inch-led-monitor-kst-2010.html" class="product-image-wrap">
+                  <img src="../images/products/krystaa-20-inch-led-monitor-kst-2010.webp" alt="Krystaa 20 Inch Led Monitor (KST-2010)" loading="lazy" onerror="this.src='../images/cctv-wholesale.webp'">
+                  <span class="brand-badge">Krystaa</span>
+                  
+                </a>
+                <div class="product-info" style="padding: 12px;">
+                  <h3 class="product-name" style="font-size: 0.9rem;"><a href="../product/krystaa-20-inch-led-monitor-kst-2010.html" style="color: var(--text-dark); text-decoration: none;">Krystaa 20 Inch Led Monitor (KST-2010)</a></h3>
+                  <div class="product-price" style="font-weight: 800; color: var(--accent-cyan); margin-top: 6px;">₹2,478</div>
+                </div>
+              </div></div>
 
     <!-- PAGINATION BAR -->
     <div class="pagination-bar" id="categoryPaginationBar" style="display: none;"></div>
@@ -331,7 +353,8 @@
           style="font-size: 1rem; font-weight: 800; color: #ffffff; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
           📜 Customer Policies</h4>
         <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 2; color: #cbd5e1;">
-          <li><a href="../contact.html" style="color: #38bdf8; text-decoration: none; font-weight:700;">📞 Contact Us</a></li>
+          <li><a href="../sitemap.html" style="color: #38bdf8; text-decoration: none; font-weight:700;">🗺️ Full Catalog & Sitemap</a></li>
+          <li><a href="../contact.html" style="color: #cbd5e1; text-decoration: none;">📞 Contact Us</a></li>
           <li><a href="../terms.html" style="color: #cbd5e1; text-decoration: none;">📜 Terms & Conditions</a></li>
           <li><a href="../privacy.html" style="color: #cbd5e1; text-decoration: none;">🔒 Privacy Policy</a></li>
           <li><a href="../refund.html" style="color: #cbd5e1; text-decoration: none;">↩️ Return & Refund Policy</a></li>
@@ -354,7 +377,7 @@
 
   <!-- MOBILE / BOTTOM NAVIGATION BAR -->
   <nav class="mobile-bottom-nav">
-    <a href="../index.html" class="mobile-nav-item">
+    <a href="/" class="mobile-nav-item">
       <div class="mobile-nav-icon">🏠</div>
       <span>Home</span>
     </a>

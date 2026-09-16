@@ -170,7 +170,7 @@ function renderAllBrandsHero() {
   if (catalogTitle) catalogTitle.textContent = `Browse by Brand`;
   if (backBtn) {
     backBtn.textContent = `← Store Catalog`;
-    backBtn.href = `${DbService.getLinkPrefix()}index.html`;
+    backBtn.href = `/`;
   }
 
   const uniqueBrands = getUniqueBrands(allStoreBrands);
@@ -391,7 +391,7 @@ function renderBrandCatalog() {
       <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
         <h3>No products found for ${escapeHtml(currentBrandName)}</h3>
         <p style="color: var(--text-muted); margin-top: 6px;">Try searching for other items or browse all brands.</p>
-        <a href="index.html" class="hero-btn" style="margin-top: 14px; padding: 8px 20px; display: inline-block; text-decoration: none;">← View All Brands</a>
+        <a href="brand.html?name=All%20Brands" class="hero-btn" style="margin-top: 14px; padding: 8px 20px; display: inline-block; text-decoration: none;">← View All Brands</a>
       </div>`;
     if (paginationBar) paginationBar.style.display = 'none';
     return;
