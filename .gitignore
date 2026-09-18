@@ -15,3 +15,6 @@ yarn-error.log*
 # Local deploy credentials (never commit)
 server/.deploy.env
 .deploy.env
+
+# Temporary scratch and test files
+scratch/

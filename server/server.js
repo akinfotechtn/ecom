@@ -355,6 +355,14 @@ function generateStaticPages() {
         html = html.replace(/<meta name="description" id="metaDescription" content=".*?"\s*\/?>/, `<meta name="description" id="metaDescription" content="${escapeHtml(prodDesc)}">`);
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(prodDesc)}">`);
         
+        // Robots tag - ensure 100% indexable for all search engines
+        const indexRobotsTag = '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">';
+        if (html.includes('<meta name="robots"')) {
+          html = html.replace(/<meta name="robots"[^>]*>/i, indexRobotsTag);
+        } else {
+          html = html.replace('</head>', `  ${indexRobotsTag}\n</head>`);
+        }
+        
         // Canonical tag
         if (html.includes('<link rel="canonical"')) {
           html = html.replace(/<link rel="canonical"( id="canonicalLink")? href=".*?"\s*\/?>/, `<link rel="canonical" id="canonicalLink" href="${prodCanonical}">`);
@@ -479,6 +487,14 @@ function generateStaticPages() {
         html = html.replace(/<meta name="description" id="brandPageMeta" content=".*?"\s*\/?>/, `<meta name="description" id="brandPageMeta" content="${escapeHtml(brandDesc)}">`);
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(brandDesc)}">`);
         
+        // Robots tag - ensure 100% indexable for all search engines
+        const brandRobotsTag = '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">';
+        if (html.includes('<meta name="robots"')) {
+          html = html.replace(/<meta name="robots"[^>]*>/i, brandRobotsTag);
+        } else {
+          html = html.replace('</head>', `  ${brandRobotsTag}\n</head>`);
+        }
+        
         // Canonical tag
         if (html.includes('<link rel="canonical"')) {
           html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${brandCanonical}">`);
@@ -578,6 +594,14 @@ function generateStaticPages() {
         html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(catTitle)}</title>`);
         html = html.replace(/<meta name="description" id="categoryPageMeta" content=".*?"\s*\/?>/, `<meta name="description" id="categoryPageMeta" content="${escapeHtml(catDesc)}">`);
         html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${escapeHtml(catDesc)}">`);
+        
+        // Robots tag - ensure 100% indexable for all search engines
+        const catRobotsTag = '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">';
+        if (html.includes('<meta name="robots"')) {
+          html = html.replace(/<meta name="robots"[^>]*>/i, catRobotsTag);
+        } else {
+          html = html.replace('</head>', `  ${catRobotsTag}\n</head>`);
+        }
         
         // Canonical tag
         if (html.includes('<link rel="canonical"')) {
@@ -913,13 +937,12 @@ function generateSitemapAndRobots(products, brands, categories) {
     robots += `Disallow: /cart.html\n`;
     robots += `Disallow: /checkout.html\n`;
     robots += `Disallow: /order-success.html\n`;
-    robots += `Disallow: /account.html\n`;
-    robots += `Disallow: /product.html\n\n`;
+    robots += `Disallow: /account.html\n\n`;
 
     // AI & Search Crawlers (Generative Engine Optimization - GEO)
-    robots += `User-agent: GPTBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /cart.html\nDisallow: /checkout.html\nDisallow: /product.html\n\n`;
-    robots += `User-agent: PerplexityBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /product.html\n\n`;
-    robots += `User-agent: ClaudeBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /product.html\n\n`;
+    robots += `User-agent: GPTBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\nDisallow: /cart.html\nDisallow: /checkout.html\n\n`;
+    robots += `User-agent: PerplexityBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
+    robots += `User-agent: ClaudeBot\nAllow: /\nDisallow: /admin.html\nDisallow: /local-sync.html\n\n`;
     robots += `User-agent: Google-Extended\nAllow: /\n\n`;
 
     robots += `Sitemap: ${siteUrl}/sitemap.xml\n`;
