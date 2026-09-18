@@ -6,6 +6,7 @@ Disallow: /cart.html
 Disallow: /checkout.html
 Disallow: /order-success.html
 Disallow: /account.html
+Disallow: /product.html
 
 User-agent: GPTBot
 Allow: /
@@ -13,16 +14,19 @@ Disallow: /admin.html
 Disallow: /local-sync.html
 Disallow: /cart.html
 Disallow: /checkout.html
+Disallow: /product.html
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin.html
 Disallow: /local-sync.html
+Disallow: /product.html
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin.html
 Disallow: /local-sync.html
+Disallow: /product.html
 
 User-agent: Google-Extended
 Allow: /
