@@ -231,7 +231,9 @@ function generateStaticPages() {
         const filePath = path.join(prodDir, fileName);
 
         const prodTitle = `${p.productName} | AK Infotech Security Store`;
-        const prodDesc = (p.productSpec || `Buy ${p.productName} at wholesale price ₹${p.sellingPrice || ''} from AK Infotech Chennai. Fast delivery & COD available.`).slice(0, 160);
+        const hasValidSpec = p.productSpec && p.productSpec.trim() && p.productSpec.trim().toLowerCase() !== 'high quality product';
+        const rawDesc = hasValidSpec ? p.productSpec : (p.productName || '');
+        const prodDesc = rawDesc.replace(/\s+/g, ' ').trim().slice(0, 160);
         const prodCanonical = `${siteUrl}/product/${slug}.html`;
         
         let photoUrl = p.photoLink || 'images/cctv-wholesale.webp';
@@ -255,7 +257,7 @@ function generateStaticPages() {
           "@type": "Product",
           "name": p.productName,
           "image": [absolutePhotoUrl],
-          "description": (p.productSpec || `Buy ${p.productName} online with Cash on Delivery (COD) & manufacturer warranty from AK Infotech.`).slice(0, 300),
+          "description": (hasValidSpec ? p.productSpec : (p.productName || '')).replace(/\s+/g, ' ').trim().slice(0, 300),
           "sku": String(p.id || 'PROD-' + slug.slice(0, 12)),
           "mpn": String(p.id || 'MPN-' + slug.slice(0, 12)),
           "brand": {
@@ -400,7 +402,8 @@ function generateStaticPages() {
         html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge"><a href="../brands/${slugify(brandName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(brandName)}</a></span>`);
         html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(categoryName)}</a></span>`);
         html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice" style="font-size: 1.8rem;">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
-        html = html.replace(/id="fallbackProductSpec".*?>[\s\S]*?<\/div>/, `id="fallbackProductSpec" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(p.productSpec || prodDesc)}</div>`);
+        const specToDisplay = hasValidSpec ? p.productSpec : (p.productName || 'No detailed specifications listed.');
+        html = html.replace(/id="fallbackProductSpec".*?>[\s\S]*?<\/div>/, `id="fallbackProductSpec" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(specToDisplay)}</div>`);
         html = html.replace(/id="bcCategory">.*?<\/span>/, `id="bcCategory"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:underline;">${escapeHtml(categoryName)}</a></span>`);
         html = html.replace(/id="bcName">.*?<\/span>/, `id="bcName">${escapeHtml(p.productName)}</span>`);
 
@@ -559,12 +562,13 @@ function generateStaticPages() {
 
       const allCats = [...categories];
       if (!allCats.some(c => c.name && c.name.toLowerCase().includes('combo'))) {
-        allCats.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/combo-packs.webp' });
+        allCats.push({ id: 'cat-combo', name: 'CCTV Combo', imageLink: 'images/categories/combo-packs.webp' });
       }
       const seenCatNames = new Set(allCats.map(c => (c.name || '').toLowerCase().trim()));
       for (const p of products) {
         if (!p.category) continue;
         const cNorm = p.category.toLowerCase().trim();
+        if (cNorm === 'combo packs') continue;
         if (!seenCatNames.has(cNorm)) {
           seenCatNames.add(cNorm);
           allCats.push({
@@ -664,6 +668,35 @@ function generateStaticPages() {
           skippedCats++;
         }
       }
+
+      // Legacy category URL redirects (aliases)
+      const catAliases = [
+        { from: 'combo-packs', to: 'cctv-combo', name: 'CCTV Combo' }
+      ];
+      for (const alias of catAliases) {
+        validCatSlugs.add(alias.from);
+        const aliasPath = path.join(catDir, `${alias.from}.html`);
+        const aliasHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=${alias.to}.html">
+  <link rel="canonical" href="${siteUrl}/categories/${alias.to}.html">
+  <title>${escapeHtml(alias.name)} Security Systems | AK Infotech</title>
+  <meta name="robots" content="noindex, follow">
+  <script>
+    window.location.replace('${alias.to}.html');
+  </script>
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0f172a; color: #fff;">
+  <div style="text-align: center;">
+    <h2>Redirecting to ${escapeHtml(alias.name)}...</h2>
+    <p>If you are not redirected automatically, <a href="${alias.to}.html" style="color: #38bdf8;">click here</a>.</p>
+  </div>
+</body>
+</html>`;
+        writeIfChanged(aliasPath, aliasHtml);
+      }
     }
 
     // 4. Clean only deleted/orphaned files
@@ -692,16 +725,16 @@ function generateHtmlSitemap(products, brands, categories) {
     for (const c of categories) {
       if (c.name) catMap.set(c.name.trim(), []);
     }
-    if (!catMap.has('Combo Packs')) {
-      catMap.set('Combo Packs', []);
+    const comboCatKey = Array.from(catMap.keys()).find(k => k.toLowerCase().includes('combo')) || 'CCTV Combo';
+    if (!catMap.has(comboCatKey)) {
+      catMap.set(comboCatKey, []);
     }
 
     const unassigned = [];
     for (const p of products) {
       if (!p.productName) continue;
       if (p.isCombo || (p.category && p.category.toLowerCase().includes('combo'))) {
-        if (!catMap.has('Combo Packs')) catMap.set('Combo Packs', []);
-        catMap.get('Combo Packs').push(p);
+        catMap.get(comboCatKey).push(p);
       } else if (p.category && catMap.has(p.category.trim())) {
         catMap.get(p.category.trim()).push(p);
       } else if (p.category) {
@@ -912,7 +945,7 @@ function generateSitemapAndRobots(products, brands, categories) {
     // 4. Category pages
     const allCats = [...categories];
     if (!allCats.some(c => c.name.toLowerCase().includes('combo'))) {
-      allCats.push({ id: 'cat-combo', name: 'Combo Packs' });
+      allCats.push({ id: 'cat-combo', name: 'CCTV Combo' });
     }
     for (const c of allCats) {
       if (!c.name) continue;

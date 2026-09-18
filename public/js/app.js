@@ -160,11 +160,14 @@ function renderCategoryScrollRow() {
       <div style="font-size: 1.2rem;">🏠</div>
       <span>All Categories</span>
     </div>
-    <a href="${DbService.getLinkPrefix()}categories/combo-packs.html" class="category-scroll-card" style="text-decoration:none;">
+    <a href="${DbService.getLinkPrefix()}categories/cctv-combo.html" class="category-scroll-card" style="text-decoration:none;">
       <div style="font-size: 1.3rem;">🔥</div>
-      <span style="color: var(--accent-orange); font-weight: 800;">Combo Packs</span>
+      <span style="color: var(--accent-orange); font-weight: 800;">CCTV Combo</span>
     </a>
-  ` + storeCategories.map(c => {
+  ` + storeCategories.filter(c => {
+    const n = (c.name || '').toLowerCase().trim();
+    return n !== 'combo packs' && n !== 'cctv combo';
+  }).map(c => {
     let catUrl = c.imageLink || 'images/cctv-wholesale.webp';
     if (catUrl && !catUrl.startsWith('http') && !catUrl.startsWith('data:')) {
       catUrl = DbService.getLinkPrefix() + catUrl.replace(/^\.\.\//, '').replace(/^\/+/, '');

@@ -131,7 +131,7 @@ async function loadProductDetail(idOrProduct) {
 
       <div style="background:#f8fafc; border:1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;">
         <h2 style="font-size:0.8rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">📋 Product Overview & Specifications:</h2>
-        <div class="product-text-formatted" itemprop="description" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${(currentProduct.productSpec || currentProduct.description || 'No detailed specifications listed.').split('\n').map(line => {
+        <div class="product-text-formatted" itemprop="description" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${((currentProduct.productSpec && currentProduct.productSpec.trim().toLowerCase() !== 'high quality product' ? currentProduct.productSpec : '') || currentProduct.productName || 'No detailed specifications listed.').split('\n').map(line => {
           if (line.trim().startsWith('*')) {
             return '<span style="color: #ef4444; font-weight: 700;">' + escapeHtml(line) + '</span>';
           }
@@ -259,7 +259,7 @@ export function verifyOrInjectProductSchema(product, effectivePrice) {
     "@type": "Product",
     "name": product.productName,
     "image": [absoluteImageUrl],
-    "description": (product.productSpec || product.description || `Buy ${product.productName} online from AK Infotech with Cash on Delivery (COD) and manufacturer warranty.`).slice(0, 300),
+    "description": ((product.productSpec && product.productSpec.trim().toLowerCase() !== 'high quality product' ? product.productSpec : '') || product.productName || '').replace(/\s+/g, ' ').trim().slice(0, 300),
     "sku": String(product.id || 'PROD-' + (product.productName || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)),
     "mpn": String(product.id || 'MPN-' + (product.productName || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)),
     "brand": {
@@ -345,7 +345,9 @@ export function updateProductSEOTags(product, effectivePrice) {
 
   const siteName = "AK Infotech Security Store";
   const title = `${product.productName} | ${siteName}`;
-  const description = (product.productSpec || product.description || `Buy ${product.productName} at wholesale price ₹${product.sellingPrice} from AK Infotech.`).slice(0, 160);
+  const hasValidSpec = product.productSpec && product.productSpec.trim() && product.productSpec.trim().toLowerCase() !== 'high quality product';
+  const rawDesc = hasValidSpec ? product.productSpec : (product.productName || '');
+  const description = rawDesc.replace(/\s+/g, ' ').trim().slice(0, 160);
   const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
   const canonicalUrl = `${origin}${window.location.pathname}${window.location.search || ''}`;
   const absoluteImageUrl = toAbsoluteUrl(product.photoLink);

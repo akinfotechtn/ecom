@@ -137,7 +137,7 @@ async function parseProductsFromCsv(csvTextOrUrl) {
 
     let photoLink = findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || 'images/cctv-wholesale.webp';
     const productName = trimmedName;
-    const productSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || 'High quality product';
+    const productSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || '';
     const brand = findValue(['Brand', 'Manufacturer', 'Make']) || 'Generic';
     const category = findValue(['Category', 'Type', 'Department']) || 'General';
 

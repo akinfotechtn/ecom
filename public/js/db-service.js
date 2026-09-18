@@ -1333,7 +1333,9 @@ export class DbService {
 
     const siteName = "AK Infotech Security Store";
     const title = `${product.productName} | ${siteName}`;
-    const description = (product.productSpec || product.description || `Buy ${product.productName} at wholesale price ₹${product.sellingPrice} from AK Infotech.`).slice(0, 160);
+    const hasValidSpec = product.productSpec && product.productSpec.trim() && product.productSpec.trim().toLowerCase() !== 'high quality product';
+    const rawDesc = hasValidSpec ? product.productSpec : (product.productName || '');
+    const description = rawDesc.replace(/\s+/g, ' ').trim().slice(0, 160);
     const origin = typeof window !== 'undefined' && window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'https://shop.akinfotechcctv.in';
     const canonicalUrl = typeof window !== 'undefined' ? `${origin}${window.location.pathname}` : 'https://shop.akinfotechcctv.in/product.html';
     

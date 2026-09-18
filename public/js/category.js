@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sortWrap = document.getElementById('categorySortWrap');
     if (sortWrap) sortWrap.style.display = isAllCategoriesView ? 'flex' : 'none';
 
-    // Ensure Combo Packs category is present
+    // Ensure CCTV Combo category is present
     if (!allCategories.some(c => c.name && c.name.toLowerCase().includes('combo'))) {
-      allCategories.push({ id: 'cat-combo', name: 'Combo Packs', imageLink: 'images/categories/combo-packs.webp' });
+      allCategories.push({ id: 'cat-combo', name: 'CCTV Combo', imageLink: 'images/categories/combo-packs.webp' });
     }
 
     if (isAllCategoriesView) {
