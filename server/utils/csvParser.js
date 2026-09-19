@@ -135,21 +135,31 @@ async function parseProductsFromCsv(csvTextOrUrl) {
       return null;
     }
 
-    let photoLink = findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || 'images/cctv-wholesale.webp';
+    const rawPhotoLink = (findValue(['Product Photo/link', 'Product Photo', 'Photo', 'Image Link', 'Image', 'Photo Link']) || '').trim();
     const productName = trimmedName;
-    const productSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || '';
+    const rawSpec = findValue(['Product Spec', 'Spec', 'Specification', 'Description', 'Details']) || '';
+    const productSpec = (rawSpec.trim().toLowerCase() === 'high quality product') ? '' : rawSpec.trim();
     const brand = findValue(['Brand', 'Manufacturer', 'Make']) || 'Generic';
     const category = findValue(['Category', 'Type', 'Department']) || 'General';
 
-    // Smart Local Image Preservation: If local image already exists for this product, prioritize it
-    const slug = slugify(productName);
-    const possibleExts = ['.webp', '.png', '.jpg', '.jpeg', '.avif', '.svg'];
-    for (const ext of possibleExts) {
-      const localRelPath = `images/products/${slug}${ext}`;
-      const localFullPath = path.join(__dirname, '../../public', localRelPath);
-      if (fs.existsSync(localFullPath)) {
-        photoLink = localRelPath;
-        break;
+    let photoLink = rawPhotoLink;
+
+    // Fallback: If spreadsheet has no photo link or default placeholder, check if local image already exists
+    if (!photoLink || photoLink === 'images/cctv-wholesale.webp') {
+      const slug = slugify(productName);
+      const possibleExts = ['.webp', '.png', '.jpg', '.jpeg', '.avif', '.svg'];
+      let foundLocal = false;
+      for (const ext of possibleExts) {
+        const localRelPath = `images/products/${slug}${ext}`;
+        const localFullPath = path.join(__dirname, '../../public', localRelPath);
+        if (fs.existsSync(localFullPath)) {
+          photoLink = localRelPath;
+          foundLocal = true;
+          break;
+        }
+      }
+      if (!foundLocal) {
+        photoLink = 'images/cctv-wholesale.webp';
       }
     }
 

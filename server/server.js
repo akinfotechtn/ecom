@@ -1378,11 +1378,12 @@ app.post('/api/sync-google-sheet', async (req, res) => {
         (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
       );
       if (match) {
+        const isSheetPhotoExplicit = p.photoLink && p.photoLink !== 'images/cctv-wholesale.webp';
         return {
           ...p,
           id: match.id || p.id,
           isFeatured: match.isFeatured === true,
-          photoLink: (match.photoLink && !match.photoLink.includes('cctv-wholesale.webp')) ? match.photoLink : p.photoLink
+          photoLink: isSheetPhotoExplicit ? p.photoLink : (match.photoLink || p.photoLink)
         };
       }
       return p;
@@ -1430,11 +1431,12 @@ app.post('/api/upload-csv', async (req, res) => {
         (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
       );
       if (match) {
+        const isSheetPhotoExplicit = p.photoLink && p.photoLink !== 'images/cctv-wholesale.webp';
         return {
           ...p,
           id: match.id || p.id,
           isFeatured: match.isFeatured === true,
-          photoLink: (match.photoLink && !match.photoLink.includes('cctv-wholesale.webp')) ? match.photoLink : p.photoLink
+          photoLink: isSheetPhotoExplicit ? p.photoLink : (match.photoLink || p.photoLink)
         };
       }
       return p;

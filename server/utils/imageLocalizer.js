@@ -47,16 +47,56 @@ function getExtensionFromMime(mimeType, fallbackUrl = '') {
 
 const sharp = require('sharp');
 
-async function downloadSingleImage(url, destWebpPath, retries = 2) {
+function normalizeImageUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== 'string') return '';
+  let url = rawUrl.trim();
+
+  // Handle Next.js image proxy URLs e.g. https://domain.com/_next/image?url=%2Fpath...
+  if (url.includes('/_next/image') && url.includes('url=')) {
+    try {
+      const parsed = new URL(url);
+      const innerUrl = parsed.searchParams.get('url');
+      if (innerUrl) {
+        const decoded = decodeURIComponent(innerUrl);
+        if (decoded.startsWith('http://') || decoded.startsWith('https://')) {
+          url = decoded;
+        } else {
+          url = parsed.origin + (decoded.startsWith('/') ? '' : '/') + decoded;
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Handle Google Drive view links -> direct download links
+  const driveMatch = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/);
+  if (driveMatch && driveMatch[1]) {
+    url = `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+  }
+
+  // Handle Dropbox links
+  if (url.includes('dropbox.com') && url.includes('dl=0')) {
+    url = url.replace('dl=0', 'raw=1');
+  }
+
+  return url;
+}
+
+async function downloadSingleImage(rawUrl, destWebpPath, retries = 2) {
+  const url = normalizeImageUrl(rawUrl);
+  let referer = url;
+  try {
+    referer = new URL(url).origin + '/';
+  } catch (e) {}
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const response = await axios.get(url, {
         responseType: 'arraybuffer',
-        timeout: 12000,
+        timeout: 15000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
           'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-          'Referer': url
+          'Referer': referer
         }
       });
 
@@ -109,25 +149,22 @@ async function autoLocalizeProductImages(products) {
       let filename = `${slug}.webp`;
       let destPath = path.join(IMAGES_DIR, filename);
 
-      // If file already exists with valid size, reuse it
-      if (fs.existsSync(destPath) && fs.statSync(destPath).size > 500) {
-        product.photoLink = `images/products/${filename}`;
-        product.imageUrl = `images/products/${filename}`;
-        product.image = `images/products/${filename}`;
-        return;
-      }
-
       const res = await downloadSingleImage(url, destPath);
       if (res.success) {
-        product.photoLink = `images/products/${filename}`;
-        product.imageUrl = `images/products/${filename}`;
-        product.image = `images/products/${filename}`;
-        console.log(`[Auto-Localizer] ✅ Downloaded & WebP Converted: ${product.productName} -> images/products/${filename}`);
+        const localRel = `images/products/${filename}`;
+        product.photoLink = localRel;
+        product.imageUrl = localRel;
+        product.image = localRel;
+        console.log(`[Auto-Localizer] ✅ Downloaded & WebP Converted: ${product.productName} -> ${localRel}`);
       } else {
         console.warn(`[Auto-Localizer] ⚠️ Failed to download for ${product.productName}: ${res.error}`);
-        product.photoLink = 'images/cctv-wholesale.webp';
-        product.imageUrl = 'images/cctv-wholesale.webp';
-        product.image = 'images/cctv-wholesale.webp';
+        // If file already exists locally, keep it as fallback instead of overwriting with placeholder
+        if (fs.existsSync(destPath) && fs.statSync(destPath).size > 500) {
+          product.photoLink = `images/products/${filename}`;
+        } else {
+          // Keep the external URL so browser can at least attempt to load it
+          product.photoLink = url;
+        }
       }
     }));
   }
