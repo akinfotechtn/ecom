@@ -1,5 +1,32 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/categories/cctv-camera(.html)?",
+      "destination": "/categories/hd-cctv.html",
+      "permanent": true
+    },
+    {
+      "source": "/categories/dvr(.html)?",
+      "destination": "/categories/hd-dvr.html",
+      "permanent": true
+    },
+    {
+      "source": "/categories/combo-packs(.html)?",
+      "destination": "/categories/cctv-combo.html",
+      "permanent": true
+    },
+    {
+      "source": "/brands/cp-plus(.html)?",
+      "destination": "/brands/cpplus.html",
+      "permanent": true
+    },
+    {
+      "source": "/brands/western-digital(.html)?",
+      "destination": "/brands/wd.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/send-order-email",

@@ -22,6 +22,24 @@ app.use(compression({
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Permanent 301 Redirects for Legacy Category & Brand URLs
+const legacyUrlRedirects = {
+  '/categories/cctv-camera': '/categories/hd-cctv.html',
+  '/categories/cctv-camera.html': '/categories/hd-cctv.html',
+  '/categories/dvr': '/categories/hd-dvr.html',
+  '/categories/dvr.html': '/categories/hd-dvr.html',
+  '/categories/combo-packs': '/categories/cctv-combo.html',
+  '/categories/combo-packs.html': '/categories/cctv-combo.html',
+  '/brands/cp-plus': '/brands/cpplus.html',
+  '/brands/cp-plus.html': '/brands/cpplus.html',
+  '/brands/western-digital': '/brands/wd.html',
+  '/brands/western-digital.html': '/brands/wd.html'
+};
+for (const [fromUrl, toUrl] of Object.entries(legacyUrlRedirects)) {
+  app.get(fromUrl, (req, res) => res.redirect(301, toUrl));
+}
+
 app.use(express.static(path.join(__dirname, '../public'), {
   maxAge: '1h',
   etag: true
@@ -550,6 +568,36 @@ function generateStaticPages() {
           skippedBrands++;
         }
       }
+
+      // Legacy brand URL redirects (aliases)
+      const brandAliases = [
+        { from: 'cp-plus', to: 'cpplus', name: 'CP Plus' },
+        { from: 'western-digital', to: 'wd', name: 'Western Digital' }
+      ];
+      for (const alias of brandAliases) {
+        validBrandSlugs.add(alias.from);
+        const aliasPath = path.join(brandDir, `${alias.from}.html`);
+        const aliasHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=${alias.to}.html">
+  <link rel="canonical" href="${siteUrl}/brands/${alias.to}.html">
+  <title>${escapeHtml(alias.name)} Security Systems | AK Infotech</title>
+  <meta name="robots" content="noindex, follow">
+  <script>
+    window.location.replace('${alias.to}.html');
+  </script>
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #0f172a; color: #fff;">
+  <div style="text-align: center;">
+    <h2>Redirecting to ${escapeHtml(alias.name)}...</h2>
+    <p>If you are not redirected automatically, <a href="${alias.to}.html" style="color: #38bdf8;">click here</a>.</p>
+  </div>
+</body>
+</html>`;
+        writeIfChanged(aliasPath, aliasHtml);
+      }
     }
 
     // 3. Incremental Category pages
@@ -671,7 +719,9 @@ function generateStaticPages() {
 
       // Legacy category URL redirects (aliases)
       const catAliases = [
-        { from: 'combo-packs', to: 'cctv-combo', name: 'CCTV Combo' }
+        { from: 'combo-packs', to: 'cctv-combo', name: 'CCTV Combo' },
+        { from: 'cctv-camera', to: 'hd-cctv', name: 'HD CCTV' },
+        { from: 'dvr', to: 'hd-dvr', name: 'HD DVR' }
       ];
       for (const alias of catAliases) {
         validCatSlugs.add(alias.from);

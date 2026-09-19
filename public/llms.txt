@@ -19,21 +19,22 @@
 
 ## Product Categories
 - [WIFI CCTV Cameras](https://shop.akinfotechcctv.in/categories/wifi-cctv.html): Smart PTZ, indoor robo cameras, outdoor 4G/Wi-Fi cameras with 2-way audio.
-- [HD Analog Cameras](https://shop.akinfotechcctv.in/categories/hd-analog-cameras.html): 2MP, 3MP, 5MP, and 4K bullet and dome cameras.
-- [IP Cameras](https://shop.akinfotechcctv.in/categories/ip-cameras.html): High-resolution PoE network security cameras with AI motion detection.
-- [DVR & NVR Recorders](https://shop.akinfotechcctv.in/categories/dvr-nvr.html): 4-channel, 8-channel, 16-channel, and 32-channel network recorders.
-- [CCTV Combo Packs](https://shop.akinfotechcctv.in/categories/combo-packs.html): Complete all-in-one DIY security camera setups with DVR, cables, SMPS, and hard drive.
-- [PoE Switches & Networking](https://shop.akinfotechcctv.in/categories/poe-switches.html): 4-port, 8-port, 16-port, 24-port Gigabit PoE switches and accessories.
-- [Surveillance Hard Disks](https://shop.akinfotechcctv.in/categories/hard-disks.html): 1TB to 12TB surveillance-rated drives from Western Digital Purple and Seagate SkyHawk.
+- [HD Analog Cameras](https://shop.akinfotechcctv.in/categories/hd-cctv.html): 2MP, 3MP, 5MP, and 4K bullet and dome cameras.
+- [IP Cameras](https://shop.akinfotechcctv.in/categories/ip-cctv.html): High-resolution PoE network security cameras with AI motion detection.
+- [HD DVR Recorders](https://shop.akinfotechcctv.in/categories/hd-dvr.html): 4-channel, 8-channel, 16-channel, and 32-channel network recorders.
+- [NVR Recorders](https://shop.akinfotechcctv.in/categories/nvr.html): IP network video recorders with 4K output.
+- [CCTV Combo Packs](https://shop.akinfotechcctv.in/categories/cctv-combo.html): Complete all-in-one DIY security camera setups with DVR, cables, SMPS, and hard drive.
+- [PoE Switches & Networking](https://shop.akinfotechcctv.in/categories/poe-switch.html): 4-port, 8-port, 16-port, 24-port Gigabit PoE switches and accessories.
+- [Surveillance Hard Disks](https://shop.akinfotechcctv.in/categories/hard-disk.html): 1TB to 12TB surveillance-rated drives from Western Digital Purple and Seagate SkyHawk.
 
 ## Authorized Brands
-- [CP Plus](https://shop.akinfotechcctv.in/brands/cp-plus.html)
+- [CP Plus](https://shop.akinfotechcctv.in/brands/cpplus.html)
 - [Hikvision](https://shop.akinfotechcctv.in/brands/hikvision.html)
 - [Dahua](https://shop.akinfotechcctv.in/brands/dahua.html)
 - [Qubo](https://shop.akinfotechcctv.in/brands/qubo.html)
 - [TP-Link](https://shop.akinfotechcctv.in/brands/tp-link.html)
 - [Trueview](https://shop.akinfotechcctv.in/brands/trueview.html)
-- [Western Digital](https://shop.akinfotechcctv.in/brands/western-digital.html)
+- [Western Digital](https://shop.akinfotechcctv.in/brands/wd.html)
 - [Seagate](https://shop.akinfotechcctv.in/brands/seagate.html)
 
 ## Useful Links
