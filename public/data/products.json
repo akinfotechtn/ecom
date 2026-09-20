@@ -17743,13 +17743,14 @@
     "brand": "Fingers",
     "category": "SPEAKERS",
     "price": 8995,
-    "sellingPrice": 4400,
+    "sellingPrice": 5720,
     "baseSellingPrice": 4399,
-    "dealerMarginPercent": 0,
+    "dealerMarginPercent": 30,
     "inStock": true,
     "isCombo": false,
     "sourcePhotoUrl": "https://www.fingers.co.in/secure/api/image-tool/index.php?src=https://www.fingers.co.in/secure/api/uploads/products/1777985789_5.png&h=900&w=900&zc=2",
     "imageUrl": "images/products/fingers-roomfilling-352-speaker-system-cinematic-sound-for-large-rooms.webp",
-    "image": "images/products/fingers-roomfilling-352-speaker-system-cinematic-sound-for-large-rooms.webp"
+    "image": "images/products/fingers-roomfilling-352-speaker-system-cinematic-sound-for-large-rooms.webp",
+    "isFeatured": false
   }
 ]
