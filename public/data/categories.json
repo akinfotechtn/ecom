@@ -1,5 +1,11 @@
 [
   {
+    "id": "cat-1789911502684",
+    "name": "INK & TONERS",
+    "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcBTDSOCxDDvgx_61pj5HtwQ_VHAnpsomyeTgYqED_DA&s=10",
+    "description": ""
+  },
+  {
     "id": "cat-1785898434225",
     "deliveryCharge": 100,
     "imageLink": "images/categories/wifi-cctv.webp",
