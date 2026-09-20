@@ -273,7 +273,11 @@ window.syncGoogleSheetLocal = async function() {
 
     const data = await res.json();
     if (res.ok && data.success) {
-      statusEl.innerHTML = `<span style="color: #34d399; font-weight: 800;">✅ Successfully synced ${data.totalSynced} products to local products.json!</span>`;
+      if (data.added === 0 && data.modified === 0) {
+        statusEl.innerHTML = `<span style="color: #34d399; font-weight: 800;">⚡ All ${data.totalSynced} products are already up to date! (0 changes detected)</span>`;
+      } else {
+        statusEl.innerHTML = `<span style="color: #34d399; font-weight: 800;">✅ Sync complete: ${data.added || 0} new added, ${data.modified || 0} modified, ${data.unchanged || 0} unchanged (${data.totalSynced} total)!</span>`;
+      }
       await loadLocalProducts();
     } else {
       throw new Error(data.message || 'Sync failed.');
@@ -305,7 +309,11 @@ window.uploadRawCsvLocal = async function() {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      alert(`✅ Successfully imported ${data.totalSynced} products into products.json!`);
+      if (data.added === 0 && data.modified === 0) {
+        alert(`⚡ All ${data.totalSynced} products are up to date! (0 changes detected)`);
+      } else {
+        alert(`✅ Import complete: ${data.added || 0} new added, ${data.modified || 0} modified, ${data.unchanged || 0} unchanged (${data.totalSynced} total)!`);
+      }
       document.getElementById('localRawCsvText').value = '';
       toggleLocalCsvBox();
       await loadLocalProducts();

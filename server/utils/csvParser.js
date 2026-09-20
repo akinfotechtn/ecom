@@ -33,21 +33,24 @@ function normalizeGoogleSheetUrl(url) {
   if (!url) return '';
   let cleanUrl = url.trim();
 
-  if (cleanUrl.includes('output=csv') || cleanUrl.includes('format=csv')) {
+  // If already a direct published CSV link, return it
+  if (cleanUrl.includes('/pub?output=csv') || cleanUrl.includes('/pub?format=csv')) {
     return cleanUrl;
   }
+  if (cleanUrl.includes('/pubhtml')) {
+    return cleanUrl.replace(/\/pubhtml.*$/, '/pub?output=csv');
+  }
 
-  if (cleanUrl.includes('/edit')) {
-    cleanUrl = cleanUrl.replace(/\/edit.*$/, '/export?format=csv');
-  } else if (cleanUrl.includes('/pubhtml')) {
-    cleanUrl = cleanUrl.replace(/\/pubhtml.*$/, '/pub?output=csv');
-  } else if (cleanUrl.match(/\/d\/([a-zA-Z0-9-_]+)/)) {
-    cleanUrl = cleanUrl.replace(/\/+$/, '');
-    if (!cleanUrl.endsWith('/export') && !cleanUrl.endsWith('/pub')) {
-      cleanUrl += '/export?format=csv';
-    } else {
-      cleanUrl += '?format=csv';
-    }
+  // Extract the spreadsheet ID from Google Sheet links
+  const idMatch = cleanUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if (idMatch && idMatch[1]) {
+    const sheetId = idMatch[1];
+    // Google Visualization API CSV endpoint is blazing fast (under 1 second), never redirects to googleusercontent.com, and never times out!
+    return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+  }
+
+  if (cleanUrl.includes('output=csv') || cleanUrl.includes('format=csv')) {
+    return cleanUrl;
   }
 
   return cleanUrl;
@@ -86,7 +89,7 @@ async function parseProductsFromCsv(csvTextOrUrl) {
   if (csvTextOrUrl.startsWith('http://') || csvTextOrUrl.startsWith('https://')) {
     const formattedUrl = normalizeGoogleSheetUrl(csvTextOrUrl);
     const response = await axios.get(formattedUrl, {
-      timeout: 10000,
+      timeout: 30000,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AkInfoEcom/1.0'
       }

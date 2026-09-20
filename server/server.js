@@ -86,7 +86,7 @@ function readJson(filePath, defaultData = []) {
 }
 
 // Utility to write JSON to primary products file
-function writeJson(filePath, data) {
+function writeJson(filePath, data, changedSlugs = null) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
 
@@ -97,7 +97,7 @@ function writeJson(filePath, data) {
 
     // Automatically trigger Static Site Generation (SSG) if writing database files
     if (filePath === PRODUCTS_FILE || filePath === BRANDS_FILE || filePath === CATEGORIES_FILE) {
-      generateStaticPages();
+      generateStaticPages(changedSlugs);
     }
     return true;
   } catch (err) {
@@ -216,7 +216,7 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-function generateStaticPages() {
+function generateStaticPages(changedSlugs = null) {
   try {
     const products = readJson(PRODUCTS_FILE, []);
     const brands = readJson(BRANDS_FILE, []);
@@ -241,12 +241,20 @@ function generateStaticPages() {
       const prodDir = path.join(__dirname, '../public/product');
       if (!fs.existsSync(prodDir)) fs.mkdirSync(prodDir, { recursive: true });
 
+      const hasFilter = changedSlugs instanceof Set && changedSlugs.size > 0;
+
       for (const p of products) {
         if (!p.productName) continue;
         const slug = slugify(p.productName);
         validProductSlugs.add(slug);
         const fileName = `${slug}.html`;
         const filePath = path.join(prodDir, fileName);
+
+        // Fast skip: If filter is active, skip products not in changedSlugs whose static file exists
+        if (hasFilter && !changedSlugs.has(slug) && fs.existsSync(filePath)) {
+          skippedProducts++;
+          continue;
+        }
 
         const prodTitle = `${p.productName} | AK Infotech Security Store`;
         const hasValidSpec = p.productSpec && p.productSpec.trim() && p.productSpec.trim().toLowerCase() !== 'high quality product';
@@ -1407,8 +1415,142 @@ app.post('/api/upload', (req, res) => {
 });
 
 // ---------------------------------------------------------
-// GOOGLE SHEETS & CSV SYNC API
+// GOOGLE SHEETS & CSV SYNC API (Smart Delta Sync)
 // ---------------------------------------------------------
+async function syncProductsFromParsedList(parsedProducts, existingProducts) {
+  const existingById = new Map();
+  const existingByName = new Map();
+
+  for (const ep of existingProducts) {
+    if (ep.id) existingById.set(String(ep.id).trim().toLowerCase(), ep);
+    if (ep.productName) existingByName.set(String(ep.productName).trim().toLowerCase(), ep);
+  }
+
+  const mergedProducts = [];
+  const changedSlugs = new Set();
+  const productsNeedingDownload = [];
+
+  let addedCount = 0;
+  let modifiedCount = 0;
+  let unchangedCount = 0;
+
+  for (const p of parsedProducts) {
+    const pId = p.id ? String(p.id).trim().toLowerCase() : '';
+    const pName = p.productName ? String(p.productName).trim().toLowerCase() : '';
+    const match = (pId && existingById.get(pId)) || (pName && existingByName.get(pName));
+
+    const sheetPhoto = (p.photoLink || '').trim();
+    const isSheetPhotoExternal = sheetPhoto.startsWith('http://') || sheetPhoto.startsWith('https://');
+
+    if (!match) {
+      // 1. Completely New Product
+      addedCount++;
+      const newSlug = slugify(p.productName);
+      changedSlugs.add(newSlug);
+
+      p.sourcePhotoUrl = isSheetPhotoExternal ? sheetPhoto : '';
+      if (isSheetPhotoExternal) {
+        productsNeedingDownload.push(p);
+      } else {
+        p.photoLink = p.photoLink || 'images/cctv-wholesale.webp';
+      }
+      p.imageUrl = p.photoLink;
+      p.image = p.photoLink;
+      mergedProducts.push(p);
+    } else {
+      // 2. Existing Product - Check if anything changed
+      let photoChanged = false;
+
+      if (isSheetPhotoExternal) {
+        const localRel = match.photoLink ? match.photoLink.replace(/^\.?\/?/, '') : '';
+        const localFileExists = localRel && !localRel.startsWith('http') &&
+          fs.existsSync(path.join(__dirname, '../public', localRel)) &&
+          fs.statSync(path.join(__dirname, '../public', localRel)).size > 500;
+
+        if (match.sourcePhotoUrl) {
+          if (match.sourcePhotoUrl !== sheetPhoto) {
+            photoChanged = true;
+          }
+        } else {
+          match.sourcePhotoUrl = sheetPhoto;
+          if (!localFileExists) {
+            photoChanged = true;
+          }
+        }
+      }
+
+      const isNameChanged = (match.productName || '').trim() !== (p.productName || '').trim();
+      const isSpecChanged = (match.productSpec || '').trim() !== (p.productSpec || '').trim();
+      const isBrandChanged = (match.brand || '').trim().toLowerCase() !== (p.brand || '').trim().toLowerCase();
+      const isCatChanged = (match.category || '').trim().toLowerCase() !== (p.category || '').trim().toLowerCase();
+      const isPriceChanged = Number(match.price || 0) !== Number(p.price || 0);
+      const isSellingPriceChanged = Number(match.sellingPrice || 0) !== Number(p.sellingPrice || 0);
+      const isBaseSellingPriceChanged = Number(match.baseSellingPrice || 0) !== Number(p.baseSellingPrice || 0);
+      const isMarginChanged = Number(match.dealerMarginPercent || 0) !== Number(p.dealerMarginPercent || 0);
+      const isStockChanged = Boolean(match.inStock) !== Boolean(p.inStock);
+      const isComboChanged = Boolean(match.isCombo) !== Boolean(p.isCombo);
+      const isDeliveryChanged = (match.deliveryCharge ?? null) !== (p.deliveryCharge ?? null);
+
+      const hasDataChanged = isNameChanged || isSpecChanged || isBrandChanged || isCatChanged ||
+        isPriceChanged || isSellingPriceChanged || isBaseSellingPriceChanged || isMarginChanged ||
+        isStockChanged || isComboChanged || isDeliveryChanged;
+
+      if (!hasDataChanged && !photoChanged) {
+        // 3. Product is 100% UNCHANGED
+        unchangedCount++;
+        if (isSheetPhotoExternal && !match.sourcePhotoUrl) {
+          match.sourcePhotoUrl = sheetPhoto;
+        }
+        mergedProducts.push(match);
+      } else {
+        // 4. Product is MODIFIED - Update only changed fields
+        modifiedCount++;
+        const currentSlug = slugify(p.productName);
+        changedSlugs.add(currentSlug);
+        if (isNameChanged && match.productName) {
+          changedSlugs.add(slugify(match.productName));
+        }
+
+        const updated = {
+          ...match,
+          ...p,
+          id: match.id || p.id,
+          isFeatured: match.isFeatured === true
+        };
+
+        if (photoChanged) {
+          updated.photoLink = sheetPhoto;
+          updated.sourcePhotoUrl = sheetPhoto;
+          productsNeedingDownload.push(updated);
+        } else {
+          updated.photoLink = match.photoLink || 'images/cctv-wholesale.webp';
+          updated.sourcePhotoUrl = match.sourcePhotoUrl || (isSheetPhotoExternal ? sheetPhoto : '');
+          updated.imageUrl = updated.photoLink;
+          updated.image = updated.photoLink;
+        }
+
+        mergedProducts.push(updated);
+      }
+    }
+  }
+
+  // 5. Download ONLY the specific images that are new or changed
+  if (productsNeedingDownload.length > 0) {
+    console.log(`[Sync] Downloading ${productsNeedingDownload.length} new/changed product image(s)...`);
+    await autoLocalizeProductImages(productsNeedingDownload);
+  } else {
+    console.log('[Sync] 0 images need downloading. All product images are already localized.');
+  }
+
+  return {
+    mergedProducts,
+    addedCount,
+    modifiedCount,
+    unchangedCount,
+    changedSlugs
+  };
+}
+
 app.post('/api/sync-google-sheet', async (req, res) => {
   try {
     const settings = readJson(SETTINGS_FILE, {});
@@ -1419,43 +1561,48 @@ app.post('/api/sync-google-sheet', async (req, res) => {
     }
 
     const parsedProducts = await parseProductsFromCsv(sheetUrl);
-
-    // Merge existing features (like isFeatured, custom images, exact IDs) to imported products
     const existingProducts = readJson(PRODUCTS_FILE, []);
-    let mergedProducts = parsedProducts.map(p => {
-      const match = existingProducts.find(ep => 
-        (ep.id && p.id && String(ep.id).trim().toLowerCase() === String(p.id).trim().toLowerCase()) || 
-        (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
-      );
-      if (match) {
-        const isSheetPhotoExplicit = p.photoLink && p.photoLink !== 'images/cctv-wholesale.webp';
-        return {
-          ...p,
-          id: match.id || p.id,
-          isFeatured: match.isFeatured === true,
-          photoLink: isSheetPhotoExplicit ? p.photoLink : (match.photoLink || p.photoLink)
-        };
-      }
-      return p;
-    });
 
-    // Automatically download any new external images locally and map them
-    mergedProducts = await autoLocalizeProductImages(mergedProducts);
-
-    // Save imported products to store (auto-triggers SSG and CSV export)
-    writeJson(PRODUCTS_FILE, mergedProducts);
+    const {
+      mergedProducts,
+      addedCount,
+      modifiedCount,
+      unchangedCount,
+      changedSlugs
+    } = await syncProductsFromParsedList(parsedProducts, existingProducts);
 
     // Update settings with current URL & sync timestamp
     settings.googleSheetUrl = sheetUrl;
     settings.lastSyncedAt = new Date().toISOString();
     writeJson(SETTINGS_FILE, settings);
 
+    if (addedCount === 0 && modifiedCount === 0 && mergedProducts.length === existingProducts.length) {
+      console.log(`[Sync] No changes detected. All ${mergedProducts.length} products already up to date.`);
+      return res.json({
+        success: true,
+        message: `All ${mergedProducts.length} products are already up to date (0 changes detected).`,
+        totalSynced: mergedProducts.length,
+        added: 0,
+        modified: 0,
+        unchanged: unchangedCount,
+        lastSyncedAt: settings.lastSyncedAt
+      });
+    }
+
+    // Save imported products to store (delta SSG writes only changed pages)
+    writeJson(PRODUCTS_FILE, mergedProducts, changedSlugs);
+
+    console.log(`[Sync] Completed: ${addedCount} added, ${modifiedCount} modified, ${unchangedCount} unchanged.`);
+
     res.json({
       success: true,
-      message: `Successfully synced ${parsedProducts.length} products from Google Sheet!`,
-      totalSynced: parsedProducts.length,
+      message: `Sync complete: ${addedCount} new added, ${modifiedCount} modified, ${unchangedCount} unchanged (${mergedProducts.length} total).`,
+      totalSynced: mergedProducts.length,
+      added: addedCount,
+      modified: modifiedCount,
+      unchanged: unchangedCount,
       lastSyncedAt: settings.lastSyncedAt,
-      sampleProduct: parsedProducts[0]
+      sampleProduct: mergedProducts[0]
     });
   } catch (err) {
     console.error('Google Sheet Sync Error:', err.message);
@@ -1475,32 +1622,26 @@ app.post('/api/upload-csv', async (req, res) => {
 
     const parsedProducts = await parseProductsFromCsv(csvText);
     const existingProducts = readJson(PRODUCTS_FILE, []);
-    let mergedProducts = parsedProducts.map(p => {
-      const match = existingProducts.find(ep => 
-        (ep.id && p.id && String(ep.id).trim().toLowerCase() === String(p.id).trim().toLowerCase()) || 
-        (ep.productName && p.productName && String(ep.productName).trim().toLowerCase() === String(p.productName).trim().toLowerCase())
-      );
-      if (match) {
-        const isSheetPhotoExplicit = p.photoLink && p.photoLink !== 'images/cctv-wholesale.webp';
-        return {
-          ...p,
-          id: match.id || p.id,
-          isFeatured: match.isFeatured === true,
-          photoLink: isSheetPhotoExplicit ? p.photoLink : (match.photoLink || p.photoLink)
-        };
-      }
-      return p;
-    });
 
-    // Automatically download any new external images locally and map them
-    mergedProducts = await autoLocalizeProductImages(mergedProducts);
+    const {
+      mergedProducts,
+      addedCount,
+      modifiedCount,
+      unchangedCount,
+      changedSlugs
+    } = await syncProductsFromParsedList(parsedProducts, existingProducts);
 
-    writeJson(PRODUCTS_FILE, mergedProducts);
+    if (addedCount > 0 || modifiedCount > 0 || mergedProducts.length !== existingProducts.length) {
+      writeJson(PRODUCTS_FILE, mergedProducts, changedSlugs);
+    }
 
     res.json({
       success: true,
-      message: `Successfully imported ${parsedProducts.length} products from CSV string!`,
-      totalSynced: parsedProducts.length
+      message: `Import complete: ${addedCount} new added, ${modifiedCount} modified, ${unchangedCount} unchanged (${mergedProducts.length} total).`,
+      totalSynced: mergedProducts.length,
+      added: addedCount,
+      modified: modifiedCount,
+      unchanged: unchangedCount
     });
   } catch (err) {
     res.status(500).json({ success: false, message: `CSV Parsing Failed: ${err.message}` });
