@@ -423,15 +423,41 @@ function generateStaticPages(changedSlugs = null) {
         }
 
         // Pre-render Crawler SSR Fallback elements inside detail-grid
-        html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
-        html = html.replace(/id="fallbackProductTitle"[\s\S]*?<\/h1>/, `id="fallbackProductTitle" style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px; line-height: 1.25;">${escapeHtml(p.productName)}</h1>`);
-        html = html.replace(/id="fallbackBrandBadge".*?>.*?<\/span>/, `id="fallbackBrandBadge"><a href="../brands/${slugify(brandName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(brandName)}</a></span>`);
-        html = html.replace(/id="fallbackCategoryBadge".*?>.*?<\/span>/, `id="fallbackCategoryBadge" style="background:#f0f9ff; color:var(--accent-cyan); border-color:#bae6fd;"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:none;">${escapeHtml(categoryName)}</a></span>`);
-        html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice" style="font-size: 1.8rem;">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
+        const relativePhotoUrl = (photoUrl.startsWith('http://') || photoUrl.startsWith('https://'))
+          ? photoUrl
+          : `../${photoUrl.replace(/^\.?\/?/, '')}`;
+
+        html = html.replace(/id="mainProductImage"\s+src=".*?"\s+alt=".*?"/, `id="mainProductImage" src="${escapeHtml(relativePhotoUrl)}" alt="${escapeHtml(p.productName)} - AK Infotech"`);
+        html = html.replace(/id="fallbackProductTitle">[\s\S]*?<\/h1>/, `id="fallbackProductTitle">${escapeHtml(p.productName)}</h1>`);
+        html = html.replace(/id="fallbackSellingPrice".*?>.*?<\/span>/, `id="fallbackSellingPrice">₹${Number(sellingPrice).toLocaleString('en-IN')}</span>`);
+        if (mrpPrice > sellingPrice) {
+          html = html.replace(/id="fallbackMrpPrice".*?>.*?<\/span>/, `id="fallbackMrpPrice" style="display:inline;">₹${Number(mrpPrice).toLocaleString('en-IN')}</span>`);
+          const discountPct = Math.round(((mrpPrice - sellingPrice) / mrpPrice) * 100);
+          if (discountPct > 0) {
+            html = html.replace(/id="fallbackDiscountPill".*?>.*?<\/span>/, `id="fallbackDiscountPill" style="display:inline-block;">${discountPct}% OFF</span>`);
+          }
+        }
         const specToDisplay = hasValidSpec ? p.productSpec : (p.productName || 'No detailed specifications listed.');
         html = html.replace(/id="fallbackProductSpec".*?>[\s\S]*?<\/div>/, `id="fallbackProductSpec" style="font-size:0.93rem; line-height:1.7; color:#334155; white-space:pre-line; word-break:break-word;">${escapeHtml(specToDisplay)}</div>`);
         html = html.replace(/id="bcCategory">.*?<\/span>/, `id="bcCategory"><a href="../categories/${slugify(categoryName)}.html" style="color:inherit; text-decoration:underline;">${escapeHtml(categoryName)}</a></span>`);
         html = html.replace(/id="bcName">.*?<\/span>/, `id="bcName">${escapeHtml(p.productName)}</span>`);
+        html = html.replace(/id="trustWarrantyTitle">.*?<\/span>/, `id="trustWarrantyTitle">${escapeHtml(brandName)} Warranty</span>`);
+        html = html.replace(/id="officialStoreBadge">.*?<\/div>/, `id="officialStoreBadge">AUTHORIZED PARTNER</div>`);
+        html = html.replace(/OFFICIAL BRAND STORE/g, 'AUTHORIZED PARTNER');
+
+        // Only render thumbnails if there are multiple unique images
+        const rawImages = (Array.isArray(p.images) && p.images.length > 0)
+          ? p.images
+          : (Array.isArray(p.gallery) && p.gallery.length > 0)
+            ? p.gallery
+            : [];
+        const uniqueImages = [...new Set([relativePhotoUrl, ...rawImages].filter(Boolean))];
+        if (uniqueImages.length > 1) {
+          const thumbsHtml = `<div class="gallery-thumbnails" id="galleryThumbnails">${uniqueImages.map((img, idx) => `<div class="thumb-item ${idx === 0 ? 'active' : ''}"><img src="${escapeHtml(img)}" alt="Thumbnail ${idx + 1}"></div>`).join('')}</div>`;
+          html = html.replace(/<div class="gallery-thumbnails" id="galleryThumbnails"[\s\S]*?<\/div>/, thumbsHtml);
+        } else {
+          html = html.replace(/<div class="gallery-thumbnails" id="galleryThumbnails"[\s\S]*?<\/div>/, `<div class="gallery-thumbnails" id="galleryThumbnails" style="display:none;"></div>`);
+        }
 
         // Pre-render 4-6 related products from same category or brand
         const related = products.filter(item => item.productName !== p.productName && (
@@ -2269,6 +2295,44 @@ app.post('/api/deploy', (req, res) => {
     return res.json({ success: true, message: msg });
   } catch (err) {
     console.error('[deploy] Error:', err.message);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Shiprocket Pincode Serviceability & Order Management Endpoint
+app.post('/api/shiprocket', async (req, res) => {
+  try {
+    const { action, email, password, token, payload, shipment_id, courier_id, pickup_postcode, delivery_postcode, weight, cod } = req.body || {};
+    const settings = readJson(SETTINGS_FILE, {});
+    const srEmail = email || settings.shiprocketEmail || process.env.SHIPROCKET_EMAIL || '';
+    const srPass = password || settings.shiprocketPassword || process.env.SHIPROCKET_PASSWORD || '';
+    const helper = new ShiprocketHelper(srEmail, srPass);
+
+    if (action === 'get_couriers' || action === 'check_pincode') {
+      const result = await helper.checkPincode(delivery_postcode || '600001', weight || 0.5);
+      return res.json({
+        status: 200,
+        success: true,
+        ...result,
+        data: {
+          available_courier_companies: result.couriers || []
+        }
+      });
+    }
+
+    if (action === 'login') {
+      const authToken = await helper.authenticate();
+      return res.json({ status: authToken ? 200 : 400, token: authToken });
+    }
+
+    if (action === 'create_order') {
+      const result = await helper.createShiprocketOrder(payload, settings);
+      return res.json(result);
+    }
+
+    return res.status(400).json({ success: false, message: `Unknown Shiprocket action: ${action}` });
+  } catch (err) {
+    console.error('Shiprocket local server error:', err);
     return res.status(500).json({ success: false, message: err.message });
   }
 });
