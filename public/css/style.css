@@ -2553,27 +2553,39 @@ footer {
   display: none;
   align-items: center;
   gap: 8px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .pincode-input-bar.active {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pincode-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .pincode-input-field {
-  padding: 8px 12px;
+  padding: 6px 12px;
   border: 1.5px solid #cbd5e1;
   border-radius: 8px;
-  font-size: 0.9rem;
-  width: 160px;
+  font-size: 0.88rem;
+  width: 170px;
   outline: none;
   font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .pincode-input-field:focus {
   border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
 }
 
 .btn-check-pincode {
@@ -2581,16 +2593,22 @@ footer {
   color: #ffffff;
   font-weight: 700;
   font-size: 0.85rem;
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   min-height: auto;
+  transition: background 0.2s;
+}
+
+.btn-check-pincode:hover {
+  background: #0369a1;
 }
 
 .pincode-feedback-msg {
   font-size: 0.82rem;
   margin-top: 4px;
+  width: 100%;
 }
 
 /* ACTION BUTTONS (ADD TO CART & BUY NOW) */

@@ -352,16 +352,19 @@
         <!-- STOCK & SHIPROCKET PINCODE CHECKER -->
         <div class="stock-delivery-row">
           <span class="in-stock-badge" id="fallbackStockBadge">● IN STOCK</span>
-          <div class="delivery-pincode-wrap" id="deliveryPincodeWrap">
-            <span>🚚 Delivery to <strong id="deliveryPincodeDisplay">600001</strong> by <strong class="delivery-day-highlight" id="deliveryDayDisplay">Tuesday, 22 Sep</strong></span>
+          
+          <!-- CONFIRMED PINCODE DELIVERY DISPLAY (Shown when pincode is saved) -->
+          <div class="delivery-pincode-wrap" id="deliveryPincodeWrap" style="display:none;">
+            <span>🚚 Delivery to <strong id="deliveryPincodeDisplay"></strong> by <strong class="delivery-day-highlight" id="deliveryDayDisplay"></strong></span>
             <button type="button" class="btn-change-pincode" id="btnChangePincode" onclick="togglePincodeInput()">Change</button>
           </div>
-        </div>
 
-        <!-- EXPANDABLE PINCODE CHECKER INPUT -->
-        <div class="pincode-input-bar" id="pincodeInputBar">
-          <input type="text" id="pincodeInputField" class="pincode-input-field" maxlength="6" placeholder="Enter 6-digit Pincode" pattern="[0-9]{6}">
-          <button type="button" class="btn-check-pincode" id="btnCheckPincode" onclick="checkPincodeDelivery()">Check</button>
+          <!-- DEFAULT PINCODE INPUT PROMPT (Shown by default when no pincode is saved) -->
+          <div class="pincode-input-bar active" id="pincodeInputBar">
+            <span class="pincode-label">🚚 Check Delivery:</span>
+            <input type="text" id="pincodeInputField" class="pincode-input-field" maxlength="6" placeholder="Enter 6-digit Pincode" pattern="[0-9]{6}" onkeydown="if(event.key==='Enter') checkPincodeDelivery()">
+            <button type="button" class="btn-check-pincode" id="btnCheckPincode" onclick="checkPincodeDelivery()">Check</button>
+          </div>
         </div>
         <div class="pincode-feedback-msg" id="pincodeFeedbackMsg"></div>
 

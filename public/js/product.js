@@ -129,11 +129,19 @@ window.selectGalleryThumb = function(thumbEl, imgSrc) {
 
 window.togglePincodeInput = function() {
   const bar = document.getElementById('pincodeInputBar');
+  const wrap = document.getElementById('deliveryPincodeWrap');
   const input = document.getElementById('pincodeInputField');
   if (bar) {
     bar.classList.toggle('active');
-    if (bar.classList.contains('active') && input) {
-      input.focus();
+    if (bar.classList.contains('active')) {
+      if (wrap) wrap.style.display = 'none';
+      if (input) {
+        input.focus();
+        input.select();
+      }
+    } else {
+      const saved = localStorage.getItem('ak_pincode');
+      if (saved && wrap) wrap.style.display = 'inline-flex';
     }
   }
 };
@@ -143,6 +151,9 @@ window.checkPincodeDelivery = async function() {
   const msgEl = document.getElementById('pincodeFeedbackMsg');
   const displayPin = document.getElementById('deliveryPincodeDisplay');
   const displayDay = document.getElementById('deliveryDayDisplay');
+  const wrap = document.getElementById('deliveryPincodeWrap');
+  const bar = document.getElementById('pincodeInputBar');
+  const whatsappBtn = document.getElementById('whatsappOrderBtn') || document.getElementById('fallbackWhatsappBtn');
   
   const val = input ? input.value.trim() : '';
   if (!/^\d{6}$/.test(val)) {
@@ -196,23 +207,32 @@ window.checkPincodeDelivery = async function() {
     if (displayPin) displayPin.textContent = val;
     if (displayDay) displayDay.textContent = est.formatted;
     
+    if (wrap) wrap.style.display = 'inline-flex';
+    if (bar) bar.classList.remove('active');
+
+    // Update WhatsApp button link with new pincode
+    if (whatsappBtn && currentProduct) {
+      const basePrice = currentProduct.sellingPrice || 0;
+      const gstRate = (currentProduct.gstPercent !== undefined && currentProduct.gstPercent !== null && currentProduct.gstPercent !== '') ? Number(currentProduct.gstPercent) : 18;
+      const priceWithGst = basePrice + Math.round((basePrice * gstRate) / 100);
+      whatsappBtn.href = `https://wa.me/919500673207?text=${encodeURIComponent(`Hi AK Infotech, I want to order: ${currentProduct.productName} (Price: ₹${priceWithGst}, Delivery to Pincode: ${val})`)}`;
+    }
+    
     if (msgEl) {
       msgEl.style.color = '#15803d';
       const transitText = est.daysCount === 1 ? 'Next-Day Delivery' : `${est.daysCount} Days Delivery`;
       msgEl.textContent = `✓ Deliverable to ${val}! Estimated delivery by ${est.formatted} (${transitText} via ${courierName}. Cash on Delivery Available).`;
     }
-    
-    // Auto-close input after 2s
-    setTimeout(() => {
-      const bar = document.getElementById('pincodeInputBar');
-      if (bar) bar.classList.remove('active');
-    }, 2000);
   } catch (err) {
     console.error('Pincode check error:', err);
     if (msgEl) {
       msgEl.style.color = '#15803d';
       const est = getEstimatedDeliveryDate(getDeliveryDaysForPincode(val));
-      msgEl.textContent = `✓ Delivery by ${est.formatted} (Express shipping available).`;
+      if (displayPin) displayPin.textContent = val;
+      if (displayDay) displayDay.textContent = est.formatted;
+      if (wrap) wrap.style.display = 'inline-flex';
+      if (bar) bar.classList.remove('active');
+      msgEl.textContent = `✓ Delivery to ${val} by ${est.formatted} (Express shipping available).`;
     }
   }
 };
@@ -282,9 +302,12 @@ async function loadProductDetail(idOrProduct) {
   const uniqueImages = [...new Set([primaryImgSrc, ...rawImages].filter(Boolean))];
   const showThumbnails = uniqueImages.length > 1;
 
-  const defaultPincode = localStorage.getItem('ak_pincode') || '600001';
-  const initialDays = getDeliveryDaysForPincode(defaultPincode);
-  const initialEtd = getEstimatedDeliveryDate(initialDays);
+  const savedPincode = localStorage.getItem('ak_pincode') || '';
+  let initialEtd = null;
+  if (savedPincode) {
+    const initialDays = getDeliveryDaysForPincode(savedPincode);
+    initialEtd = getEstimatedDeliveryDate(initialDays);
+  }
 
   detailGrid.innerHTML = `
     <!-- LEFT COLUMN: GALLERY & THUMBNAILS -->
@@ -348,16 +371,19 @@ async function loadProductDetail(idOrProduct) {
         ` : `
           <span class="in-stock-badge" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5;">🚫 OUT OF STOCK</span>
         `}
-        <div class="delivery-pincode-wrap">
-          <span>🚚 Delivery to <strong id="deliveryPincodeDisplay">${defaultPincode}</strong> by <strong class="delivery-day-highlight" id="deliveryDayDisplay">${initialEtd.formatted}</strong></span>
-          <button type="button" class="btn-change-pincode" onclick="togglePincodeInput()">Change</button>
+        
+        <!-- CONFIRMED PINCODE DELIVERY DISPLAY (Shown when pincode is saved) -->
+        <div class="delivery-pincode-wrap" id="deliveryPincodeWrap" style="${savedPincode ? 'display:inline-flex;' : 'display:none;'}">
+          <span>🚚 Delivery to <strong id="deliveryPincodeDisplay">${savedPincode}</strong> by <strong class="delivery-day-highlight" id="deliveryDayDisplay">${initialEtd ? initialEtd.formatted : ''}</strong></span>
+          <button type="button" class="btn-change-pincode" id="btnChangePincode" onclick="togglePincodeInput()">Change</button>
         </div>
-      </div>
 
-      <!-- EXPANDABLE PINCODE CHECKER INPUT -->
-      <div class="pincode-input-bar" id="pincodeInputBar">
-        <input type="text" id="pincodeInputField" class="pincode-input-field" maxlength="6" placeholder="Enter 6-digit Pincode" pattern="[0-9]{6}" value="${defaultPincode}">
-        <button type="button" class="btn-check-pincode" onclick="checkPincodeDelivery()">Check</button>
+        <!-- DEFAULT PINCODE INPUT PROMPT (Shown by default when no pincode is saved) -->
+        <div class="pincode-input-bar ${savedPincode ? '' : 'active'}" id="pincodeInputBar">
+          <span class="pincode-label">🚚 Check Delivery:</span>
+          <input type="text" id="pincodeInputField" class="pincode-input-field" maxlength="6" placeholder="Enter 6-digit Pincode" pattern="[0-9]{6}" value="${savedPincode}" onkeydown="if(event.key==='Enter') checkPincodeDelivery()">
+          <button type="button" class="btn-check-pincode" id="btnCheckPincode" onclick="checkPincodeDelivery()">Check</button>
+        </div>
       </div>
       <div class="pincode-feedback-msg" id="pincodeFeedbackMsg"></div>
 
@@ -421,7 +447,7 @@ async function loadProductDetail(idOrProduct) {
 
       <!-- INSTANT WHATSAPP ORDER BUTTON -->
       <div style="margin-bottom: 20px;">
-        <a href="https://wa.me/919500673207?text=${encodeURIComponent(`Hi AK Infotech, I want to order: ${currentProduct.productName} (Price: ₹${priceWithGst}, Delivery to Pincode: ${defaultPincode})`)}" target="_blank" class="btn-whatsapp-instant">
+        <a id="whatsappOrderBtn" href="https://wa.me/919500673207?text=${encodeURIComponent(`Hi AK Infotech, I want to order: ${currentProduct.productName} (Price: ₹${priceWithGst}${savedPincode ? `, Delivery to Pincode: ${savedPincode}` : ''})`)}" target="_blank" class="btn-whatsapp-instant">
           💬 Instant Order via WhatsApp (+91 9500673207)
         </a>
       </div>
