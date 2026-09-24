@@ -445,6 +445,28 @@ function generateStaticPages(changedSlugs = null) {
         html = html.replace(/id="officialStoreBadge">.*?<\/div>/, `id="officialStoreBadge">AUTHORIZED PARTNER</div>`);
         html = html.replace(/OFFICIAL BRAND STORE/g, 'AUTHORIZED PARTNER');
 
+        const isEsslProduct = brandName.toUpperCase() === 'ESSL' || (p.productName && p.productName.toUpperCase().includes('ESSL'));
+        if (isEsslProduct) {
+          const esslNoticeHtml = `
+        <!-- ESSL SOFTWARE LICENSE KEY NOTICE -->
+        <div id="esslLicenseNotice" class="essl-license-notice-card">
+          <div class="essl-license-notice-inner">
+            <span class="essl-license-icon">🔑</span>
+            <div class="essl-license-text">
+              Get <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="essl-license-link">eSSL eTimeTrackLite License Key</a> Free with our Invoice
+            </div>
+          </div>
+          <div>
+            <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="btn-essl-license-cta">
+              Get Key →
+            </a>
+          </div>
+        </div>`;
+          html = html.replace(/<div id="esslLicenseNotice"><\/div>/, esslNoticeHtml);
+        } else {
+          html = html.replace(/<div id="esslLicenseNotice"><\/div>/, '');
+        }
+
         // Only render thumbnails if there are multiple unique images
         const rawImages = (Array.isArray(p.images) && p.images.length > 0)
           ? p.images

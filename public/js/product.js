@@ -302,6 +302,8 @@ async function loadProductDetail(idOrProduct) {
   const uniqueImages = [...new Set([primaryImgSrc, ...rawImages].filter(Boolean))];
   const showThumbnails = uniqueImages.length > 1;
 
+  const isEsslProduct = (currentProduct.brand && currentProduct.brand.toUpperCase() === 'ESSL') || (currentProduct.productName && currentProduct.productName.toUpperCase().includes('ESSL'));
+
   const savedPincode = localStorage.getItem('ak_pincode') || '';
   let initialEtd = null;
   if (savedPincode) {
@@ -462,6 +464,23 @@ async function loadProductDetail(idOrProduct) {
           return escapeHtml(line);
         }).join('\n')}</div>
       </section>
+
+      ${isEsslProduct ? `
+        <!-- ESSL SOFTWARE LICENSE KEY NOTICE -->
+        <div id="esslLicenseNotice" class="essl-license-notice-card">
+          <div class="essl-license-notice-inner">
+            <span class="essl-license-icon">🔑</span>
+            <div class="essl-license-text">
+              Get <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="essl-license-link">eSSL eTimeTrackLite License Key</a> Free with our Invoice
+            </div>
+          </div>
+          <div>
+            <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="btn-essl-license-cta">
+              Get Key →
+            </a>
+          </div>
+        </div>
+      ` : ''}
     </div>
   `;
 

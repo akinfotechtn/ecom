@@ -2760,4 +2760,74 @@ footer {
   background: #16a34a;
 }
 
+/* ESSL SOFTWARE LICENSE KEY CARD */
+.essl-license-notice-card {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: #f0f9ff;
+  border: 1.5px solid #bae6fd;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.essl-license-notice-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.essl-license-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.essl-license-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #0f172a;
+  margin: 0;
+}
+
+.essl-license-link {
+  color: #0284c7;
+  font-weight: 800;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.essl-license-link:hover {
+  color: #0369a1;
+}
+
+.btn-essl-license-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0284c7;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+}
+
+.btn-essl-license-cta:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
+}
+
+
 
