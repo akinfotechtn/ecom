@@ -471,7 +471,7 @@ async function loadProductDetail(idOrProduct) {
           <div class="essl-license-notice-inner">
             <span class="essl-license-icon">🔑</span>
             <div class="essl-license-text">
-              Get <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="essl-license-link">eSSL eTimeTrackLite License Key</a> Free with our Invoice
+              Get <a href="https://www.eyetechsecurities.in/essl-etime-track-lite-license-key.html" target="_blank" rel="noopener" class="essl-license-link">eSSL eTimeTrackLite License Key</a> Free with our Invoice (Only Desktop Basic Version)
             </div>
           </div>
           <div>
