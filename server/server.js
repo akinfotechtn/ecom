@@ -2071,8 +2071,14 @@ app.post('/api/send-order-email', async (req, res) => {
             <td style="padding: 6px 0; text-align: right;">₹${computedSubtotalWithGst.toLocaleString('en-IN')}</td>
           </tr>
           <tr>
-            <td style="padding: 6px 0; color: #64748b;">Delivery Charges:</td>
-            <td style="padding: 6px 0; text-align: right;">${order.deliveryFee === 0 ? '<span style="color:#16a34a; font-weight:bold;">FREE</span>' : `₹${(order.deliveryFee || 0).toLocaleString('en-IN')}`}</td>
+            <td style="padding: 6px 0; color: #64748b; vertical-align: top;">Delivery Charges:</td>
+            <td style="padding: 6px 0; text-align: right; vertical-align: top;">
+              ${(order.deliveryFee && Number(order.deliveryFee) > 0)
+                ? `₹${(order.deliveryFee || 0).toLocaleString('en-IN')}`
+                : ((order.isFreeDelivery === true || order.isFreeShipping === true || order.deliveryFeeText === 'FREE')
+                  ? '<span style="color:#16a34a; font-weight:bold;">FREE</span>'
+                  : '<span style="color: #0284c7; font-weight: bold;">Calculated &amp; Payable upon Delivery 🚚</span><br><span style="color: #64748b; font-size: 0.78rem;">(Freight / Shipping fee collected during delivery)</span>')}
+            </td>
           </tr>
           ${order.discountAmount ? `
           <tr>

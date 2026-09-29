@@ -911,16 +911,28 @@ async function handleCheckoutSubmit(e) {
 
   const subtotal = cart.reduce((sum, item) => sum + (getItemPriceWithGst(item, storeSettings) * (item.quantity || item.qty || 1)), 0);
   let discountAmount = 0;
+  let isFreeDelivery = false;
   if (appliedCoupon && subtotal >= (appliedCoupon.minOrderAmount || 0)) {
     if (appliedCoupon.discountPercent) {
       discountAmount = Math.round((subtotal * appliedCoupon.discountPercent) / 100);
     } else if (appliedCoupon.discountFlat) {
       discountAmount = appliedCoupon.discountFlat;
     }
+
+    const couponCode = String(appliedCoupon.code || '').toUpperCase().trim();
+    if (appliedCoupon.freeDelivery === true || 
+        appliedCoupon.type === 'FREE_DELIVERY' || 
+        appliedCoupon.type === 'FREE_SHIPPING' || 
+        couponCode === 'SHIP' || 
+        couponCode === 'FREESHIP' || 
+        couponCode === 'FREESHIPPING' ||
+        (!appliedCoupon.discountPercent && !appliedCoupon.discountFlat)) {
+      isFreeDelivery = true;
+    }
   }
 
   const finalTotal = Math.max(0, subtotal - discountAmount);
-  const codDetails = getCodAdvanceDetails(finalTotal);
+  const codDetails = getCodAdvanceDetails(finalTotal, isFreeDelivery);
   const codAdvanceFee = codDetails.advance;
   const remainingBalance = codDetails.balance;
   const amountToPayNow = selectedPaymentMethod === 'COD' ? codAdvanceFee : finalTotal;
@@ -985,6 +997,8 @@ async function handleCheckoutSubmit(e) {
           razorpayOrderId: response.razorpay_order_id || '',
           subtotal: subtotal,
           deliveryFee: 0,
+          isFreeDelivery: isFreeDelivery,
+          deliveryFeeText: isFreeDelivery ? 'FREE' : 'Calculated & Payable upon Delivery',
           discountAmount: discountAmount,
           finalTotal: finalTotal,
           totalAmount: finalTotal,
