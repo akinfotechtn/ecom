@@ -38,6 +38,10 @@
       "destination": "/api/sitemap.js"
     },
     {
+      "source": "/sitemap.xml/",
+      "destination": "/api/sitemap.js"
+    },
+    {
       "source": "/api/send-order-email",
       "destination": "/api/send-order-email.js"
     },
