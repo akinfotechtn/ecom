@@ -1066,7 +1066,7 @@ function generateSitemapAndRobots(products, brands, categories) {
 
     xml += `</urlset>`;
     
-    writeIfChanged(path.join(__dirname, '../public/sitemap.xml'), xml);
+    writeIfChanged(path.join(__dirname, '../public/sitemap-catalog.xml'), xml);
 
     // Generate robots.txt
     let robots = `User-agent: *\n`;
@@ -1169,6 +1169,22 @@ function generateGoogleShoppingFeed(products) {
     console.error('[Google Feed] Error generating XML feed:', err.message);
   }
 }
+
+// ---------------------------------------------------------
+// SITEMAP XML ROUTE (Clean response without Content-Disposition)
+// ---------------------------------------------------------
+app.get('/sitemap.xml', (req, res) => {
+  const sitemapPath = path.join(__dirname, '../public/sitemap-catalog.xml');
+  if (fs.existsSync(sitemapPath)) {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400');
+    if (typeof res.removeHeader === 'function') {
+      res.removeHeader('Content-Disposition');
+    }
+    return res.sendFile(sitemapPath);
+  }
+  res.status(404).send('Sitemap not found');
+});
 
 // ---------------------------------------------------------
 // GOOGLE SHOPPING FEED API

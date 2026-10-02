@@ -10,7 +10,9 @@ const path = require('path');
 const https = require('https');
 
 const HOST = 'shop.akinfotechcctv.in';
-const SITEMAP_PATH = path.join(__dirname, '../public/sitemap.xml');
+const SITEMAP_PATH = fs.existsSync(path.join(__dirname, '../public/sitemap-catalog.xml'))
+  ? path.join(__dirname, '../public/sitemap-catalog.xml')
+  : path.join(__dirname, '../public/sitemap.xml');
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const ROOT_DIR = path.join(__dirname, '..');
 

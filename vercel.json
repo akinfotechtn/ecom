@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/sitemap.js": {
+      "includeFiles": "public/sitemap-catalog.xml"
+    }
+  },
   "redirects": [
     {
       "source": "/categories/cctv-camera(.html)?",
@@ -28,6 +33,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap.js"
+    },
     {
       "source": "/api/send-order-email",
       "destination": "/api/send-order-email.js"
